@@ -13,7 +13,10 @@ public class ServicioRegistroImpl implements ServicioRegistro {
     }
 
     @Override
-    public void registrar(String mail, String password) {
-
+    public Usuario registrar(String mail, String password) {
+        if (password.length() < 6){
+            return null;
+        }
+        return new Usuario();
     }
 }
