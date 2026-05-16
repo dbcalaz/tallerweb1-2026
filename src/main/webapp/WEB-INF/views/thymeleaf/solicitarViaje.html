@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -21,6 +21,24 @@
         <a class="navbar-brand" th:action="@{/home}" href="/home">Home</a>
     </nav>
 </header>
+<div class="container">
+    <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+        <form action="#" th:action="@{/solicitar}" method="POST" th:object="${viaje}">
+            <h3 class="form-signin-heading">Solicitar Viaje</h3>
+            <hr class="colorgraph"><br>
+
+            <label for="origen">Indique punto de partida</label>
+<!--           <input th:field="*{origen}" id="origen" class="form-control" required />-->
+            <label for="destino">Indique Destino</label>
+<!--           <input th:field="*{destino}"  id="destino" class="form-control" required />-->
+
+            <button id="btn-solicitar" class="btn btn-lg btn-primary btn-block" Type="Submit">Solicitar</button>
+            <p th:if="${error != null}" class="alert alert-danger" th:text="'Error ' + ${error}">
+            </p>
+        </form>
+
+    </div>
+</div>
 
 </body>
 </html>
