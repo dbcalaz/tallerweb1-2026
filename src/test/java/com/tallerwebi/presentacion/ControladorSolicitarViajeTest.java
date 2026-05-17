@@ -15,17 +15,18 @@ public class ControladorSolicitarViajeTest {
   @Test
   public void siSeIngresaOrigenydestinoElPedidoEsExitoso(){
     givenSeCreaViaje();
-    ModelAndView modelAndView = whenIniciaViaje(origen, destino);
+    DatosViaje datosViaje = new DatosViaje(origen, destino);
+    ModelAndView modelAndView = whenIniciaViaje(datosViaje);
     thenElPedidoEsExitoso(modelAndView);
   }
 
   private void thenElPedidoEsExitoso(ModelAndView modelAndView) {
-    assertThat(modelAndView.getViewName(), equalToIgnoringCase("solicitarViaje"));
+    assertThat(modelAndView.getViewName(), equalToIgnoringCase("viajeEnCurso"));
 
   }
 
-  private ModelAndView whenIniciaViaje(String origen, String destino) {
-    ModelAndView mav = controladorSolicitarViaje.solicitarViaje(origen, destino);
+  private ModelAndView whenIniciaViaje(DatosViaje datosViaje) {
+    ModelAndView mav = controladorSolicitarViaje.solicitarViaje(datosViaje);
     return mav;
   }
 

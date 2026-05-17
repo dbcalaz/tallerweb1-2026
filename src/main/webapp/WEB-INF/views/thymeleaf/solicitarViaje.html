@@ -18,7 +18,7 @@
     <link rel="stylesheet" th:href="@{/css/solicitar-viaje.css}">
 </head>
 <body>
-<div th:replace="componentes/nav-bar :: navbar"></div>
+<div th:replace="componentes/nav-bar :: navbar('solicitar')"></div>
 <main class="create-trip-page">
     <section class="page-header">
         <h1>
@@ -28,7 +28,7 @@
     </section>
     <section class="create-trip-layout">
         <article class="trip-form-card">
-            <form th:action="@{/viajeEnCurso}" method="POST" th:object="${viaje}" class="trip-form">
+            <form th:action="@{/viajeEnCurso}" method="POST" th:object="${datosViaje}" class="trip-form">
                 <div class="form-row two-columns-layout">
                     <div class="form-group">
                         <label for="origen">
@@ -38,7 +38,7 @@
                             <span class="material-symbols-outlined">
                                 location_on
                             </span>
-                            <input field="*{origen}" id="origen" type="text" placeholder="¿Desde dónde sales?" required>
+                            <input th:field="*{origen}" id="origen" type="text" placeholder="¿Desde dónde sales?" required>
                         </div>
                     </div>
                     <div class="form-group">
@@ -49,7 +49,7 @@
                             <span class="material-symbols-outlined">
                                 near_me
                             </span>
-                            <input field="*{destino}" id="destino" type="text" placeholder="¿A dónde vas?" required>
+                            <input th:field="*{destino}" id="destino" type="text" placeholder="¿A dónde vas?" required>
                         </div>
                     </div>
                 </div>

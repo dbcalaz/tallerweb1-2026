@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <body>
-<header class="topbar" th:fragment="navbar">
+<header class="topbar" th:fragment="navbar(activePage)">
     <div class="topbar-container">
         <a th:href="@{/home}" class="logo">
             <span class="logo-text">BondiWay</span>
         </a>
         <nav class="navbar">
-            <a th:href="@{/home}" class="active">Inicio</a>
-            <a th:href="@{/viajeEnCurso}">Mis viajes</a>
+            <a th:href="@{/home}" th:classappend="${activePage == 'home' ? ' active' : ''}">Inicio</a>
+            <a th:href="@{/viajeEnCurso}" th:classappend="${activePage == 'viaje' ? ' active' : ''}">Mis viajes</a>
             <a href="#">Historial</a>
             <a href="#">Reservas</a>
         </nav>
