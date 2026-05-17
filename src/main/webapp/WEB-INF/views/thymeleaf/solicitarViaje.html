@@ -1,44 +1,250 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Solicitar viaje</title>
+    <title>BondiWay - Crear viaje</title>
 
-    <!-- Boostrap core css -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
 
-    <!-- custom style -->
-    <link rel="stylesheet" th:href="@{/css/main.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
+    <link rel="stylesheet" th:href="@{/css/variables.css}">
+    <link rel="stylesheet" th:href="@{/css/components.css}">
+    <link rel="stylesheet" th:href="@{/css/solicitar-viaje.css}">
 </head>
 <body>
-<header class="conteiner">
-    <h1 class="container">BondiWay</h1>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" th:href="home">Home</a>
-    </nav>
-</header>
-<div class="container">
-    <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
-        <form action="#" th:action="@{/viajeEnCurso}" method="POST" th:object="${viaje}">
-            <h3 class="form-signin-heading">Solicitar Viaje</h3>
-            <hr class="colorgraph"><br>
-
-            <label for="origen">Indique punto de partida</label>
-           <input field="*{origen}" id="origen" class="form-control" required />
-            <label for="destino">Indique Destino</label>
-           <input field="*{destino}"  id="destino" class="form-control" required />
-
-            <button id="btn-solicitar" class="btn btn-lg btn-primary btn-block" Type="Submit">Solicitar</button>
-            <p th:if="${error != null}" class="alert alert-danger" th:text="'Error ' + ${error}">
-            </p>
-        </form>
-
+<header class="topbar">
+    <div class="topbar-container">
+        <a th:href="@{/home}" class="logo">
+            <div class="logo-container">
+                <span class="logo-text">
+                    BondiWay
+                </span>
+            </div>
+        </a>
+        <nav class="navbar">
+            <a th:href="@{/home}">Inicio</a>
+            <a href="#">
+                Mis viajes
+            </a>
+            <a href="#">
+                Historial
+            </a>
+            <a href="#">
+                Reservas
+            </a>
+        </nav>
+        <div class="topbar-actions">
+            <button class="create-trip-btn">
+                Crear viaje
+            </button>
+            <button class="profile-btn">
+                <span class="material-symbols-outlined">
+                    account_circle
+                </span>
+            </button>
+        </div>
     </div>
-</div>
-
+</header>
+<main class="create-trip-page">
+    <section class="page-header">
+        <h1>
+            Crear viaje </h1>
+        <p>
+            Configura los detalles de tu próximo trayecto inteligente. </p>
+    </section>
+    <section class="create-trip-layout">
+        <article class="trip-form-card">
+            <form th:action="@{/viajeEnCurso}" method="POST" th:object="${viaje}" class="trip-form">
+                <div class="form-row two-columns-layout">
+                    <div class="form-group">
+                        <label for="origen">
+                            ORIGEN
+                        </label>
+                        <div class="field-wrapper">
+                            <span class="material-symbols-outlined">
+                                location_on
+                            </span>
+                            <input field="*{origen}" id="origen" type="text" placeholder="¿Desde dónde sales?" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="destino">
+                            DESTINO
+                        </label>
+                        <div class="field-wrapper">
+                            <span class="material-symbols-outlined">
+                                near_me
+                            </span>
+                            <input field="*{destino}" id="destino" type="text" placeholder="¿A dónde vas?" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row three-columns-layout">
+                    <div class="form-group">
+                        <label>
+                            FECHA
+                        </label>
+                        <div class="field-wrapper">
+                            <span class="material-symbols-outlined">
+                                calendar_today
+                            </span>
+                            <input type="date">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            HORARIO
+                        </label>
+                        <div class="field-wrapper">
+                            <span class="material-symbols-outlined">
+                                schedule
+                            </span>
+                            <input type="time">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            PASAJEROS
+                        </label>
+                        <div class="field-wrapper">
+                            <span class="material-symbols-outlined">
+                                group
+                            </span>
+                            <select>
+                                <option>
+                                    1 Pasajero
+                                </option>
+                                <option>
+                                    2 Pasajeros
+                                </option>
+                                <option>
+                                    3 Pasajeros
+                                </option>
+                                <option>
+                                    4+ Pasajeros
+                                </option>
+                            </select>
+                            <span class="material-symbols-outlined select-arrow">
+                                expand_more
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary create-btn">
+                        <span class="material-symbols-outlined">
+                            add_road
+                        </span>
+                        Crear viaje
+                    </button>
+                    <button type="button" class="cancel-btn">
+                        Cancelar
+                    </button>
+                </div>
+                <p th:if="${error != null}" class="error-message" th:text="'Error: ' + ${error}"></p>
+            </form>
+        </article>
+        <aside class="route-preview">
+            <div class="preview-card">
+                <div class="preview-header">
+                    <h2>
+                        Vista previa de la ruta </h2>
+                    <span class="material-symbols-outlined">
+                        map
+                    </span>
+                </div>
+                <div class="map-preview">
+                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAbcMZxMh-P_pfCEAkKnQecTLFm2Xwx35HrwyONRvcnU9TbWpoKy31z7RJDNuFn_6rPJz3czi0NK067TGmMNc_grF0mnWvaZXCW0m50Z3eyHRmWbhF_l1OrZjNRZTvlrxKy1NMTM-4t-4kIkCc6d92ZHJTnLEgUNYvnHDEu-LyHOMBPAzohO-A_ruXGh8ubQjv6yetq1pNIu1El-HWcMVN89WRgaXY8zFPCcR_jpGgNs9_Nvx4X7Bvn0I1Hpz7W0z2DSKF5yyctnZ8"
+                         alt="Mapa ruta">
+                    <div class="map-info">
+                        <div>
+                            <span>
+                                Tiempo estimado
+                            </span>
+                            <h4>
+                                35 min </h4>
+                        </div>
+                        <div class="map-distance">
+                            <span>
+                                Distancia
+                            </span>
+                            <h4>
+                                12.4 km </h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="route-steps">
+                    <div class="step-item">
+                        <div class="step-icon start">
+                            <span class="material-symbols-outlined">
+                                radio_button_checked
+                            </span>
+                        </div>
+                        <div>
+                            <small>
+                                Punto de inicio
+                            </small>
+                            <p>
+                                Define un origen para ver la ruta </p>
+                        </div>
+                    </div>
+                    <div class="step-line"></div>
+                    <div class="step-item">
+                        <div class="step-icon end">
+                            <span class="material-symbols-outlined">
+                                location_on
+                            </span>
+                        </div>
+                        <div>
+                            <small>
+                                Punto de llegada
+                            </small>
+                            <p>
+                                Define un destino para ver la ruta </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ai-card">
+                <span class="material-symbols-outlined">
+                    info
+                </span>
+                <p>
+                    BondiWay utiliza inteligencia artificial
+                    para optimizar tu ruta en tiempo real. </p>
+            </div>
+        </aside>
+    </section>
+</main>
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-left">
+            <h4>
+                BondiWay </h4>
+            <p>
+                © 2024 BondiWay. Inteligencia en Movimiento. </p>
+        </div>
+        <div class="footer-links">
+            <a href="#">
+                Privacidad
+            </a>
+            <a href="#">
+                Términos
+            </a>
+            <a href="#">
+                Ayuda
+            </a>
+            <a href="#">
+                Contacto
+            </a>
+        </div>
+    </div>
+</footer>
 </body>
 </html>
