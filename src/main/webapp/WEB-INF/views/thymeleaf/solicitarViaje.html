@@ -18,39 +18,7 @@
     <link rel="stylesheet" th:href="@{/css/solicitar-viaje.css}">
 </head>
 <body>
-<header class="topbar">
-    <div class="topbar-container">
-        <a th:href="@{/home}" class="logo">
-            <div class="logo-container">
-                <span class="logo-text">
-                    BondiWay
-                </span>
-            </div>
-        </a>
-        <nav class="navbar">
-            <a th:href="@{/home}">Inicio</a>
-            <a href="#">
-                Mis viajes
-            </a>
-            <a href="#">
-                Historial
-            </a>
-            <a href="#">
-                Reservas
-            </a>
-        </nav>
-        <div class="topbar-actions">
-            <button class="create-trip-btn">
-                Crear viaje
-            </button>
-            <button class="profile-btn">
-                <span class="material-symbols-outlined">
-                    account_circle
-                </span>
-            </button>
-        </div>
-    </div>
-</header>
+<div th:replace="componentes/nav-bar :: navbar"></div>
 <main class="create-trip-page">
     <section class="page-header">
         <h1>
@@ -141,11 +109,13 @@
                         <span class="material-symbols-outlined">
                             add_road
                         </span>
-                        Crear viaje
+                        Solicitar viaje
                     </button>
+                    <a th:href="@{/home}">
                     <button type="button" class="cancel-btn">
                         Cancelar
                     </button>
+                    </a>
                 </div>
                 <p th:if="${error != null}" class="error-message" th:text="'Error: ' + ${error}"></p>
             </form>
@@ -222,29 +192,6 @@
         </aside>
     </section>
 </main>
-<footer class="footer">
-    <div class="footer-container">
-        <div class="footer-left">
-            <h4>
-                BondiWay </h4>
-            <p>
-                © 2024 BondiWay. Inteligencia en Movimiento. </p>
-        </div>
-        <div class="footer-links">
-            <a href="#">
-                Privacidad
-            </a>
-            <a href="#">
-                Términos
-            </a>
-            <a href="#">
-                Ayuda
-            </a>
-            <a href="#">
-                Contacto
-            </a>
-        </div>
-    </div>
-</footer>
+<div th:replace="componentes/footer :: footer"></div>
 </body>
 </html>

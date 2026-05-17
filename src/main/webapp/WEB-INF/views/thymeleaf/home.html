@@ -15,44 +15,7 @@
     <link rel="stylesheet" th:href="@{/css/home.css}">
 </head>
 <body>
-<header class="topbar">
-    <div class="topbar-container">
-
-        <a th:href="@{/home}" class="logo">
-            <span class="logo-text">BondiWay</span>
-        </a>
-        <nav class="navbar">
-            <a th:href="@{/home}" class="active">Inicio</a>
-            <a href="#">Mis viajes</a>
-            <a href="#">Historial</a>
-            <a href="#">Reservas</a>
-        </nav>
-        <div class="topbar-actions">
-            <a th:href="solicitarViaje"><button class="create-trip-btn">Solicitar Viaje</button></a>
-            <div class="profile-menu">
-                <button class="profile-btn">
-            <span class="material-symbols-outlined">
-                account_circle
-            </span>
-                </button>
-                <div class="profile-dropdown">
-                    <a href="#">
-                <span class="material-symbols-outlined">
-                    person
-                </span>
-                        Mi perfil
-                    </a>
-                    <a th:href="@{/}">
-                <span class="material-symbols-outlined">
-                    logout
-                </span>
-                        Cerrar sesión
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-</header>
+<div th:replace="componentes/nav-bar :: navbar"></div>
 <main class="home-page">
     <section class="hero-section">
         <div class="hero-image">
@@ -288,28 +251,6 @@
         </div>
     </section>
 </main>
-<footer class="footer">
-    <div class="footer-container">
-        <div class="footer-left">
-            <h4>BondiWay</h4>
-            <p>
-                © 2024 BondiWay. Inteligencia en Movimiento. </p>
-        </div>
-        <div class="footer-links">
-            <a href="#">Privacidad</a>
-            <a href="#">Términos</a>
-            <a href="#">Ayuda</a>
-            <a href="#">Contacto</a>
-        </div>
-        <div class="footer-icons">
-            <span class="material-symbols-outlined">
-                language
-            </span>
-            <span class="material-symbols-outlined">
-                share
-            </span>
-        </div>
-    </div>
-</footer>
+<div th:replace="componentes/footer :: footer"></div>
 </body>
 </html>
