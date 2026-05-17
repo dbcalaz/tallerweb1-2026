@@ -15,6 +15,20 @@ public class ControladorSolicitarViaje {
 
   public ModelAndView solicitarViaje(String origen, String destino) {
     ModelMap modelo = new ModelMap();
-    return new ModelAndView("solicitarViaje", modelo);
+    if (origen.isEmpty()){
+      modelo.put("error", "El punto de origen es obligatorio");
+      return new ModelAndView("solicitarViaje", modelo);
+    }
+    if (destino.isEmpty()){
+      modelo.put("error", "El punto de destino es obligatorio");
+      return new ModelAndView("solicitarViaje", modelo);
+    }
+    return new ModelAndView("viajeEnCurso", modelo);
   }
+
+  @RequestMapping("/viajeEnCurso")
+  public ModelAndView viajeEnCurso() {
+    return new ModelAndView("viajeEnCurso");
+  }
+
 }
