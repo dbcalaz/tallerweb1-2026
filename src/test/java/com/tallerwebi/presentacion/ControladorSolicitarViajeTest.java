@@ -33,4 +33,33 @@ public class ControladorSolicitarViajeTest {
   private void givenSeCreaViaje() {
   }
 
+  @Test
+  public void siNoSeIngresaOrigenyDestinoLaSolicitudNoEsExitosa(){
+    givenSeCreaViaje();
+    DatosViaje datosViaje = new DatosViaje("", "");
+    ModelAndView modelAndView = whenIniciaViaje(datosViaje);
+    thenLaSolicitudNoEsExitosa(modelAndView);
+  }
+
+  private void thenLaSolicitudNoEsExitosa(ModelAndView modelAndView) {
+    assertThat(modelAndView.getViewName(), equalToIgnoringCase("solicitarViaje"));
+  }
+
+  @Test
+  public void queSePuedaConfirmarUnaSolicitudDeViaje(){
+    givenSeCreaViaje();
+    DatosViaje datosViaje = new DatosViaje(origen, destino);
+    ModelAndView modelAndView = whenSeConfirmaViaje(datosViaje);
+    thenLaConfirmacionEsExitosa(modelAndView);
+  }
+
+    private ModelAndView whenSeConfirmaViaje(DatosViaje datosViaje) {
+        ModelAndView mav = controladorSolicitarViaje.confirmarViaje(datosViaje);
+        return mav;
+    }
+
+  private void thenLaConfirmacionEsExitosa(ModelAndView modelAndView) {
+      assertThat( modelAndView.getViewName(), equalToIgnoringCase("home"));
+    }
+
 }

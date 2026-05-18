@@ -82,13 +82,14 @@
                 </div>
             </div>
             <div class="status-actions">
-
-                <form> <!-- th:action="@{/cancelarViaje}" method="post" -->
+                <form th:action="@{/confirmarViaje}" method="post">
+                    <button type="submit" class="cancel-trip-btn">
+                        Comfirmar viaje
+                    </button>
+                </form>
                     <button type="button" class="cancel-trip-btn" id="openModal">
                         Cancelar viaje
                     </button>
-                </form>
-
             </div>
         </article>
         <p class="support-text">

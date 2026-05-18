@@ -17,6 +17,8 @@
 <body>
 <div th:replace="componentes/nav-bar :: navbar('home')"></div>
 <main class="home-page">
+    <p th:if="${mensaje != null}" class="message" th:text="${mensaje}"></p>
+    <p th:if="${error != null}" class="error-message" th:text="'Error: ' + ${error}"></p>
     <section class="hero-section">
         <div class="hero-image">
             <div class="hero-overlay"></div>

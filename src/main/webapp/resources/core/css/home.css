@@ -332,7 +332,9 @@ body {
     font-size: 240px !important;
     opacity: 0.08;
 }
-
+.message{
+    color: green;
+}
 @media (max-width: 1200px) {
     .search-grid,
     .trips-grid,
