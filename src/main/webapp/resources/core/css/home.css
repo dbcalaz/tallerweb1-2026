@@ -1,0 +1,409 @@
+body {
+    background: var(--background);
+    color: var(--text);
+}
+
+.home-page {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 36px 40px 80px;
+}
+
+.hero-image {
+    position: relative;
+    min-height: 620px;
+    border-radius: 36px;
+    overflow: hidden;
+}
+
+.hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    inset: 0;
+}
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+            linear-gradient(
+                    90deg,
+                    rgba(248, 242, 250, 0.94) 0%,
+                    rgba(248, 242, 250, 0.75) 30%,
+                    rgba(248, 242, 250, 0.10) 70%
+            );
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 70px 60px;
+    max-width: 760px;
+}
+
+.hero-content h1 {
+    font-size: var(--text-display);
+    line-height: 1.1;
+    margin-bottom: 24px;
+}
+
+.hero-content p {
+    font-size: 24px;
+    line-height: 1.5;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin-bottom: 40px;
+}
+
+.search-card {
+    background: rgba(255,255,255,0.96);
+    padding: 32px;
+    border-radius: 28px;
+    box-shadow: var(--shadow-card);
+    max-width: 760px;
+}
+
+.search-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-bottom: 24px;
+}
+
+.search-grid .input-group {
+    gap: 8px;
+}
+
+.search-grid label {
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.search-grid .input-wrapper {
+    position: relative;
+}
+
+.search-grid .input-wrapper span {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    color: #8a8396;
+    pointer-events: none;
+}
+
+.search-grid input,
+.search-grid select {
+    width: 100%;
+    height: 56px;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    background: var(--surface-soft);
+    padding-left: 48px;
+    padding-right: 42px;
+    font-size: 15px;
+    outline: none;
+    appearance: none;
+    transition: 0.2s ease;
+}
+
+.search-grid input:focus,
+.search-grid select:focus {
+    border-color: var(--primary);
+    box-shadow:
+            0 0 0 4px rgba(79, 55, 138, 0.12);
+}
+
+.select-arrow {
+    left: unset !important;
+    right: 16px;
+    font-size: 22px !important;
+}
+
+.search-btn {
+    border-radius: 18px !important;
+    font-size: 22px !important;
+}
+
+.recommended-section {
+    margin-top: 72px;
+}
+
+.section-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 34px;
+}
+
+.section-header h2 {
+    margin-bottom: 10px;
+    font-size: 32px;
+    line-height: 1.2;
+}
+
+.section-header p {
+    color: var(--text-secondary);
+    font-size: 18px;
+}
+
+.see-all-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    color: var(--primary);
+    font-weight: 700;
+}
+
+.see-all-link span {
+    font-size: 20px;
+}
+
+.trips-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.trip-card {
+    background: white;
+    border-radius: 28px;
+    padding: 28px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-card);
+    display: flex;
+    flex-direction: column;
+    min-height: 320px;
+}
+
+.trip-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 28px;
+}
+
+.trip-date {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #8a8396;
+}
+
+.trip-card h3 {
+    font-size: 22px;
+    line-height: 1.3;
+}
+
+.seats-tag {
+    white-space: nowrap;
+    background: #efe5bf;
+    color: #7d5b00;
+    padding: 7px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.trip-info {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    flex: 1;
+}
+
+.trip-info-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.trip-info-item span {
+    color: var(--primary);
+}
+
+.trip-info-item p {
+    color: var(--text-secondary);
+}
+
+.trip-footer {
+    border-top: 1px solid var(--border);
+    padding-top: 22px;
+    margin-top: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.price-label {
+    display: block;
+    font-size: 13px;
+    color: #8a8396;
+    margin-bottom: 6px;
+}
+
+.trip-footer h4 {
+    font-size: 28px;
+    color: var(--primary);
+}
+
+.details-btn {
+    border: none;
+    background: #ece6f2;
+    color: var(--text);
+    padding: 14px 20px;
+    border-radius: 14px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.cta-section {
+    margin-top: 90px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+}
+
+.cta-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 36px;
+    padding: 42px;
+    min-height: 360px;
+    display: flex;
+    align-items: center;
+}
+
+.driver-card {
+    background: var(--gradient-primary);
+    color: white;
+}
+
+.business-card {
+    background: #f3edf5;
+}
+
+.cta-content {
+    position: relative;
+    z-index: 2;
+}
+
+.cta-content h3 {
+    font-size: 32px;
+    line-height: 1.2;
+    margin-bottom: 22px;
+}
+
+.cta-content p {
+    font-size: 17px;
+    line-height: 1.7;
+    max-width: 420px;
+    margin-bottom: 34px;
+}
+
+.cta-content button {
+    border: none;
+    background: white;
+    color: var(--primary);
+    padding: 18px 30px;
+    border-radius: 999px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.business-card button {
+    background: transparent;
+    border: 2px solid var(--primary);
+}
+
+.cta-icon {
+    position: absolute;
+    right: -20px;
+    bottom: -30px;
+    font-size: 240px !important;
+    opacity: 0.08;
+}
+.message{
+    color: green;
+}
+@media (max-width: 1200px) {
+    .search-grid,
+    .trips-grid,
+    .cta-section {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 992px) {
+    .search-grid,
+    .trips-grid,
+    .cta-section {
+        grid-template-columns: 1fr;
+    }
+    .hero-content h1 {
+        font-size: 40px;
+    }
+    .hero-content p {
+        font-size: 20px;
+    }
+    .hero-content {
+        max-width: 100%;
+    }
+    .search-card {
+        max-width: 100%;
+    }
+    .section-header h2 {
+        font-size: 30px;
+    }
+    .cta-content h3 {
+        font-size: 28px;
+    }
+}
+
+@media (max-width: 768px) {
+    .home-page{
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    .hero-content {
+        padding: 36px 24px;
+    }
+    .hero-content h1 {
+        font-size: 42px;
+    }
+    .hero-image {
+        min-height: auto;
+    }
+    .search-grid {
+        grid-template-columns: 1fr;
+    }
+    .hero-content p {
+        font-size: 18px;
+    }
+    .search-card {
+        padding: 22px;
+    }
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+    .trip-card h3 {
+        font-size: 28px;
+    }
+    .trip-footer h4 {
+        font-size: 30px;
+    }
+    .cta-card {
+        padding: 34px;
+    }
+}

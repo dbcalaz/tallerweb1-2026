@@ -1,0 +1,150 @@
+<!DOCTYPE HTML>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>BondiWay - Viaje solicitado</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+    <link rel="stylesheet" th:href="@{/css/variables.css}">
+    <link rel="stylesheet" th:href="@{/css/components.css}">
+    <link rel="stylesheet" th:href="@{/css/viaje-en-curso.css}">
+</head>
+<body>
+<div th:replace="componentes/nav-bar :: navbar('viaje')"></div>
+<main class="trip-status-page">
+    <section class="trip-status-wrapper">
+        <article class="status-card">
+            <div class="status-header">
+                <div class="status-icon">
+                    <span class="material-symbols-outlined">
+                        pending_actions
+                    </span>
+                </div>
+                <h1>
+                    Tu viaje fue solicitado </h1>
+                <p>
+                    Estamos procesando tu solicitud y
+                    asignando el mejor conductor para tu ruta. </p>
+            </div>
+            <div class="status-chip">
+                <span class="pulse-dot"></span>
+                <span>
+                    Buscando conductor
+                </span>
+            </div>
+            <!--<div class="route-preview">
+                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCdMoptI-5RbNLgEkl8HNv7UlWPgPlAMf3TGH9_BQv2QEvCUIeDS9QvzXZFOADRj-nc4QebrSECiw9c4gWlPl0AeBg_tka61k7-u9xOJtcTMyshCbHVyFUDsKasxObouA7qXmjaDNLRC1fiMqwjQzr4TOGK2krq_ilT7B4BD5UuFVPRkB7OUeuPg7T2g2DbQaUeBW8_rUAmChVqJzL3XqzR63ezn-LkLCCUPUhwh7rP6Taz1EiU7fQDsCOD_0SMDln4kXSCKEPoUo0"
+                     alt="Ruta del viaje">
+                <div class="route-overlay"></div>
+                <div class="route-info">
+                    <div class="route-tag">
+                        <span class="material-symbols-outlined">
+                            route
+                        </span>
+                        Ruta optimizada
+                    </div>
+                    <span class="route-loading">
+                        Calculando llegada...
+                    </span>
+                </div>
+            </div>-->
+            <div class="trip-details">
+                <div class="detail-item">
+                    <div class="detail-icon origin">
+                        <span class="material-symbols-outlined">
+                            location_on
+                        </span>
+                    </div>
+                    <div class="detail-content">
+                        <span class="detail-label">
+                            ORIGEN
+                        </span>
+                        <h3 th:text="${datosViaje.origen}"></h3>
+                    </div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-icon destination">
+                        <span class="material-symbols-outlined">
+                            sports_score
+                        </span>
+                    </div>
+                    <div class="detail-content">
+                        <span class="detail-label">
+                            DESTINO
+                        </span>
+                        <h3 th:text="${datosViaje.destino}"></h3>
+                    </div>
+                </div>
+            </div>
+            <div class="status-actions">
+                <form th:action="@{/confirmarViaje}" method="post">
+                    <button type="submit" class="cancel-trip-btn">
+                        Comfirmar viaje
+                    </button>
+                </form>
+                    <button type="button" class="cancel-trip-btn" id="openModal">
+                        Cancelar viaje
+                    </button>
+            </div>
+        </article>
+        <p class="support-text">
+            ¿Necesitas ayuda?
+            <a href="#">
+                Contactar soporte
+            </a>
+        </p>
+    </section>
+</main>
+<div class="modal-overlay" id="cancelModal">
+    <div class="modal-card">
+        <div class="modal-icon">
+            <span class="material-symbols-outlined">
+                warning
+            </span>
+        </div>
+        <h2>¿Cancelar viaje?</h2>
+        <p>
+            Tu solicitud será eliminada y perderás el viaje actual. </p>
+        <span class="modal-helper">
+            Podrás crear otro viaje cuando quieras.
+        </span>
+        <div class="modal-actions">
+            <form th:action="@{/cancelarViaje}" method="post">
+                <button type="submit" class="confirm-btn">
+                    Sí, cancelar viaje
+                </button>
+            </form>
+            <button type="button" class="cancel-btn" id="closeModal">
+                Volver
+            </button>
+        </div>
+    </div>
+</div>
+<div th:replace="componentes/footer :: footer"></div>
+</body>
+<script>
+    const openBtn = document.getElementById("openModal");
+    const closeBtn = document.getElementById("closeModal");
+    const modal = document.getElementById("cancelModal");
+
+    openBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        modal.classList.add("active");
+    });
+
+    closeBtn.addEventListener("click", () => {
+        modal.classList.remove("active");
+    });
+
+    modal.addEventListener("click", (e) => {
+        if (e.target === modal) {
+            modal.classList.remove("active");
+        }
+    });
+</script>
+</html>

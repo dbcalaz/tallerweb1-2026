@@ -1,9 +1,6 @@
 package com.tallerwebi.dominio;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Usuario {
@@ -16,6 +13,8 @@ public class Usuario {
   private String password;
   private String rol;
   private Boolean activo = false;
+  @OneToOne()
+  private Viaje viaje;
 
   public Long getId() {
     return id;

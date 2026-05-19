@@ -1,0 +1,32 @@
+:root {
+    --primary: #4f378a;
+    --primary-light: #6750a4;
+    --background: #fdf7ff;
+    --surface: #ffffff;
+    --surface-soft: #f8f2fa;
+    --text: #1d1b20;
+    --text-secondary: #6b7280;
+    --text-display: 42px;
+    --text-hero: 30px;
+    --text-title: 24px;
+    --text-subtitle: 18px;
+    --text-body: 15px;
+    --text-label: 13px;
+    --text-small: 12px;
+    --border: #d8d2df;
+    --error: #ba1a1a;
+    --gradient-primary:
+            linear-gradient(
+                    135deg,
+                    #4f378a 0%,
+                    #6750a4 100%
+            );
+    --shadow-card:
+            0 10px 40px rgba(79, 55, 138, 0.10);
+    --shadow-button:
+            0 6px 20px rgba(79, 55, 138, 0.25);
+    --radius-xl: 28px;
+    --radius-lg: 18px;
+    --radius-md: 14px;
+    --font-main: 'Inter', sans-serif;
+}
