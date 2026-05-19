@@ -16,6 +16,9 @@ import org.springframework.web.servlet.ModelAndView;
 public class ControladorLogin {
 
   private ServicioLogin servicioLogin;
+  private final String email ="test@test.com";
+  private final String passwordInvalida ="1234";
+
 
   @Autowired
   public ControladorLogin(ServicioLogin servicioLogin) {
@@ -25,7 +28,7 @@ public class ControladorLogin {
   @RequestMapping("/login")
   public ModelAndView irALogin() {
     ModelMap modelo = new ModelMap();
-    modelo.put("datosLogin", new DatosLogin());
+    modelo.put("datosLogin", new DatosLogin(email, passwordInvalida));
     return new ModelAndView("login", modelo);
   }
 
