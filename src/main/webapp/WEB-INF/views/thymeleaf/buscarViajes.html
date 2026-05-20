@@ -1,0 +1,72 @@
+<!DOCTYPE HTML>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>BondiWay - Buscar Viajes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+    <link rel="stylesheet" th:href="@{/css/variables.css}">
+    <link rel="stylesheet" th:href="@{/css/components.css}">
+    <link rel="stylesheet" th:href="@{/css/solicitar-viaje.css}">
+</head>
+<body style="background-color: var(--background);">
+<div th:replace="componentes/nav-bar :: navbar('busqueda')"></div>
+
+<main class="create-trip-page" style="padding-bottom: 120px;">
+    <section class="page-header" style="text-align: center;">
+        <h1>Buscar Viajes Disponibles</h1>
+        <p>Encuentra trayectos inteligentes activos y compartidos.</p>
+    </section>
+
+    <section class="create-trip-layout" style="display: flex; justify-content: center;">
+        <article class="trip-form-card" style="width: 100%; max-width: 650px; min-height: auto; padding: 28px; padding-bottom: 40px;">
+            <form th:action="@{/procesar-busqueda}" method="POST" th:object="${datosBusqueda}" class="trip-form">
+
+                <div class="form-row two-columns-layout">
+                    <div class="form-group">
+                        <label for="origen">ORIGEN</label>
+                        <div class="field-wrapper">
+                            <span class="material-symbols-outlined">location_on</span>
+                            <input th:field="*{origen}" id="origen" type="text" placeholder="¿Desde dónde sales?" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="destino">DESTINO</label>
+                        <div class="field-wrapper">
+                            <span class="material-symbols-outlined">near_me</span>
+                            <input th:field="*{destino}" id="destino" type="text" placeholder="¿A dónde vas?" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row one-column-layout">
+                    <div class="form-group">
+                        <label for="fecha">FECHA DEL VIAJE</label>
+                        <div class="field-wrapper">
+                            <span class="material-symbols-outlined">calendar_today</span>
+                            <input th:field="*{fecha}" id="fecha" type="date">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions" style="margin-top: 20px;">
+                    <button type="submit" class="btn-primary create-btn" style="width: 100%; justify-content: center; gap: 8px;">
+                        <span class="material-symbols-outlined">search</span>
+                        Buscar Viajes
+                    </button>
+                </div>
+
+                <p th:if="${error != null}" class="error-message" style="color: #dc3545; margin-top: 15px; font-weight: 600;" th:text="${error}"></p>
+            </form>
+        </article>
+    </section>
+</main>
+
+<div style="position: fixed; bottom: 0; left: 0; width: 100%; z-index: 1000;">
+    <div th:replace="componentes/footer :: footer"></div>
+</div>
+</body>
+</html>
