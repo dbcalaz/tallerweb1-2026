@@ -10,6 +10,6 @@ public class ServicioViajeImpl implements ServicioViaje {
 
     @Override
     public void confirmarViaje(Viaje viaje) {
-        repositorioViaje.asignarViaje(viaje);
+        repositorioViaje.guardarViaje(viaje);
     }
 }
