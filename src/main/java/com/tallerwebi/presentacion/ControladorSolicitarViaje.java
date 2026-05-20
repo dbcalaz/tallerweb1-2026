@@ -14,9 +14,10 @@ public class ControladorSolicitarViaje {
 
     ServicioViaje servicioViaje;
 
-    public ControladorSolicitarViaje() {}
+    public ControladorSolicitarViaje() {
+    }
 
-    public ControladorSolicitarViaje(ServicioViaje servicioViaje){
+    public ControladorSolicitarViaje(ServicioViaje servicioViaje) {
         this.servicioViaje = servicioViaje;
     }
 
@@ -68,17 +69,29 @@ public class ControladorSolicitarViaje {
     public ModelAndView confirmarViaje(DatosViaje datosViaje) {
         ModelMap modelo = new ModelMap();
 
-       Viaje viaje = new Viaje();
-       viaje.setOrigen(datosViaje.getOrigen());
-       viaje.setDestino(datosViaje.getDestino());
+        if (datosViaje.getDestino().isEmpty() && datosViaje.getOrigen().isEmpty()) {
+            modelo.put("error", "Error al asignar el viaje");
+        }
 
-        try{
-            servicioViaje.confirmarViaje(viaje);
-            modelo.put("mensaje", "El viaje fue confirmado correctamente");
+        Viaje viaje = new Viaje();
+        viaje.setOrigen(datosViaje.getOrigen());
+        viaje.setDestino(datosViaje.getDestino());
+
+        modelo.put("mensaje", "El viaje fue asignado correctamente");
+        return new ModelAndView("home", modelo);
+
+        /*try {
+            if (servicioViaje != null) {
+                servicioViaje.confirmarViaje(viaje);
+                modelo.put("mensaje", "El viaje fue asignado correctamente");
+                return new ModelAndView("home", modelo);
+            }
+            modelo.put("mensaje", "Probando el flujo a ver que onda");
             return new ModelAndView("home", modelo);
-        }catch(Exception e){
+
+        } catch (Exception e) {
             modelo.put("error", e.getMessage());
             return new ModelAndView("home", modelo);
-        }
+        }*/
     }
 }

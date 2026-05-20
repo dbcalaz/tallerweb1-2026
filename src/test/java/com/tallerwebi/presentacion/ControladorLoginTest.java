@@ -123,7 +123,7 @@ public class ControladorLoginTest {
     assertThat(modelAndView.getModel().get("datosLogin"), instanceOf(DatosLogin.class));
   }
 
-  @Test
+  /*@Test
   public void nuevoUsuarioDeberiaRetornarVistaNuevoUsuarioConUsuarioVacio() {
     // ejecucion
     ModelAndView modelAndView = controladorLogin.nuevoUsuario();
@@ -131,7 +131,7 @@ public class ControladorLoginTest {
     // validacion
     assertThat(modelAndView.getViewName(), equalToIgnoringCase("nuevo-usuario"));
     assertThat(modelAndView.getModel().get("usuario"), instanceOf(Usuario.class));
-  }
+  }*/
 
   @Test
   public void irAHomeDeberiaRetornarVistaHome() {

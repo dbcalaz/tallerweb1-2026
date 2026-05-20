@@ -1,0 +1,128 @@
+body {
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+}
+
+.background-overlay {
+    position: fixed;
+    inset: 0;
+    background:
+            radial-gradient(
+                    circle at top left,
+                    rgba(103, 80, 164, 0.06),
+                    transparent 40%
+            ),
+            radial-gradient(
+                    circle at bottom right,
+                    rgba(103, 80, 164, 0.05),
+                    transparent 40%
+            );
+    z-index: -3;
+}
+
+.background-blur {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(120px);
+    z-index: -2;
+}
+
+.background-top {
+    width: 500px;
+    height: 500px;
+    top: -120px;
+    right: -100px;
+    background: rgba(103, 80, 164, 0.10);
+}
+
+.background-bottom {
+    width: 300px;
+    height: 300px;
+    bottom: -50px;
+    left: -50px;
+    background: rgba(103, 80, 164, 0.08);
+}
+
+.register-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+.register-card {
+    width: 100%;
+    max-width: 520px;
+    background: var(--surface);
+    border-radius: var(--radius-xl);
+    padding: 42px;
+    border: 1px solid rgba(216, 210, 223, 0.5);
+    box-shadow: var(--shadow-card);
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 34px;
+}
+
+.logo-icon {
+    color: var(--primary);
+    font-size: 22px;
+}
+
+.logo-text {
+    color: var(--primary);
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.register-header {
+    margin-bottom: 36px;
+}
+
+.register-header h1 {
+    font-size: 46px;
+    line-height: 1.1;
+    margin-bottom: 14px;
+}
+
+.register-header p {
+    font-size: 17px;
+    line-height: 1.6;
+    color: var(--text-secondary);
+}
+
+.register-form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.section-divider p {
+    color: var(--text-secondary);
+}
+
+.section-divider a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.section-divider a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 640px) {
+    .register-card {
+        padding: 32px 24px;
+    }
+
+    .register-header h1 {
+        font-size: 34px;
+    }
+}

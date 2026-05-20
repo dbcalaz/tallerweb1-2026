@@ -59,7 +59,7 @@ public class ControladorSolicitarViajeTest {
     }
 
   private void thenLaConfirmacionEsExitosa(ModelAndView modelAndView) {
-      assertThat( modelAndView.getViewName(), equalToIgnoringCase("home"));
+      assertThat( modelAndView.getModel().get("mensaje").toString(), equalToIgnoringCase("El viaje fue asignado correctamente"));
     }
 
 }
