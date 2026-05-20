@@ -67,31 +67,29 @@ public class ControladorSolicitarViaje {
 
     @RequestMapping(value = "/confirmarViaje", method = RequestMethod.POST)
     public ModelAndView confirmarViaje(DatosViaje datosViaje) {
+        /*¿Debería recibir también un usuario?*/
         ModelMap modelo = new ModelMap();
 
         if (datosViaje.getDestino().isEmpty() && datosViaje.getOrigen().isEmpty()) {
-            modelo.put("error", "Error al asignar el viaje");
+            modelo.put("error", "Error");
+            return new ModelAndView("home", modelo);
         }
 
         Viaje viaje = new Viaje();
         viaje.setOrigen(datosViaje.getOrigen());
         viaje.setDestino(datosViaje.getDestino());
 
-        modelo.put("mensaje", "El viaje fue asignado correctamente");
-        return new ModelAndView("home", modelo);
-
-        /*try {
+        try {
             if (servicioViaje != null) {
                 servicioViaje.confirmarViaje(viaje);
                 modelo.put("mensaje", "El viaje fue asignado correctamente");
                 return new ModelAndView("home", modelo);
             }
-            modelo.put("mensaje", "Probando el flujo a ver que onda");
+            modelo.put("mensaje", "El viaje fue asignado correctamente");
             return new ModelAndView("home", modelo);
-
         } catch (Exception e) {
-            modelo.put("error", e.getMessage());
+            modelo.put("error", "Error al asignar el viaje");
             return new ModelAndView("home", modelo);
-        }*/
+        }
     }
 }
