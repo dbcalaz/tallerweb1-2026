@@ -12,6 +12,9 @@ public class DatosRegistroDTO {
     this.repitePassword = repitePassword;
   }
 
+  public DatosRegistroDTO() {
+  }
+
   public String getMail() {
     return mail;
   }

@@ -18,7 +18,7 @@
 <div th:replace="componentes/nav-bar :: navbar('home')"></div>
 <main class="home-page">
     <p th:if="${mensaje != null}" class="message" th:text="${mensaje}"></p>
-    <p th:if="${error != null}" class="error-message" th:text="'Error: ' + ${error}"></p>
+    <p th:if="${error != null}" class="error-message" th:text="${error}"></p>
     <section class="hero-section">
         <div class="hero-image">
             <div class="hero-overlay"></div>
@@ -76,10 +76,11 @@
                             </div>
                         </div>
                     </div>
-                    <button class="btn-primary search-btn">
-                        Buscar viaje
-                    </button>
-                </div>
+                    <a th:href="@{/buscar-viaje}" style="text-decoration: none;">
+                        <button type="button" class="btn-primary search-btn" style="width: 100%;">
+                            Buscar viaje
+                        </button>
+                    </a>
             </div>
         </div>
     </section>

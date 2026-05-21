@@ -117,7 +117,11 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+<<<<<<< HEAD
             <version>1.18.42</version>
+=======
+            <version>RELEASE</version>
+>>>>>>> e57d61d4c5649d71f53460e010b741fb573730a5
             <scope>provided</scope>
         </dependency>
         <!-- compile only, deployed container will provide this -->

@@ -1,7 +1,12 @@
 package com.tallerwebi.dominio;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 
+@Getter
+@Setter
 @Entity
 public class Viaje {
 
@@ -13,21 +18,5 @@ public class Viaje {
     private String destino;
     @ManyToOne()
     private Usuario usuario;
-
-    public String getOrigen() {
-        return origen;
-    }
-
-    public String getDestino() {
-        return destino;
-    }
-
-    public void setOrigen(String origen) {
-        this.origen = origen;
-    }
-
-    public void setDestino(String destino) {
-        this.destino = destino;
-    }
 
 }

@@ -82,7 +82,9 @@
                 </div>
             </div>
             <div class="status-actions">
-                <form th:action="@{/confirmarViaje}" method="post">
+                <form th:action="@{/confirmarViaje}" method="post" th:object="${datosViaje}">
+                    <input type="hidden" name="origen" th:value="${datosViaje.origen}">
+                    <input type="hidden" name="destino" th:value="${datosViaje.destino}">
                     <button type="submit" class="cancel-trip-btn">
                         Comfirmar viaje
                     </button>
