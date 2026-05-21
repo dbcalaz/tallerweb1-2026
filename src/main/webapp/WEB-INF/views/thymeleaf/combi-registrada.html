@@ -1,0 +1,117 @@
+<!DOCTYPE HTML>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>BondiWay - ¡Combi Registrada!</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <link rel="stylesheet" th:href="@{/css/variables.css}">
+    <link rel="stylesheet" th:href="@{/css/components.css}">
+    <link rel="stylesheet" th:href="@{/css/solicitar-viaje.css}">
+</head>
+<body>
+<div th:replace="componentes/nav-bar :: navbar('flota')"></div>
+<main class="create-trip-page">
+    <section class="page-header">
+        <h1>¡Registro Exitoso!</h1>
+        <p>La unidad ha sido dada de alta correctamente en el sistema.</p>
+    </section>
+
+    <section class="create-trip-layout">
+        <!-- Panel principal: Mensaje de éxito y acciones -->
+        <article class="trip-form-card" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 4rem 2rem;">
+            <span class="material-symbols-outlined" style="font-size: 5rem; color: #10b981; margin-bottom: 1rem;">
+                check_circle
+            </span>
+            <h2 style="margin-bottom: 0.5rem; font-size: 1.5rem;">¡Todo listo!</h2>
+            <p style="color: #6b7280; margin-bottom: 2.5rem; max-width: 400px;">
+                La combi ya forma parte de tu flota activa y está disponible para ser asignada a los próximos viajes.
+            </p>
+
+            <div class="form-actions" style="justify-content: center; gap: 1rem;">
+                <a th:href="@{/home}">
+                    <button type="button" class="btn-primary create-btn">
+                        <span class="material-symbols-outlined">
+                            home
+                        </span>
+                        Ir al inicio
+                    </button>
+                </a>
+                <a th:href="@{/crear-combi}">
+                    <button type="button" class="cancel-btn">
+                        Registrar otra unidad
+                    </button>
+                </a>
+            </div>
+        </article>
+
+        <!-- Barra lateral: Resumen de los datos guardados -->
+        <aside class="route-preview">
+            <div class="preview-card">
+                <div class="preview-header">
+                    <h2>Resumen de la Unidad</h2>
+                    <span class="material-symbols-outlined">
+                        directions_bus
+                    </span>
+                </div>
+
+                <!-- Reutilizamos las clases step-item para mostrar la info en forma de lista vertical -->
+                <div class="route-steps">
+                    <div class="step-item">
+                        <div class="step-icon start">
+                            <span class="material-symbols-outlined">
+                                airline_seat_recline_normal
+                            </span>
+                        </div>
+                        <div>
+                            <small>Capacidad</small>
+                            <!-- Thymeleaf inyecta la cantidad de asientos aquí -->
+                            <h4 th:text="${combi.cantidadDeAsientos} + ' Pasajeros'">19 Pasajeros</h4>
+                        </div>
+                    </div>
+
+                    <div class="step-line"></div>
+
+                    <div class="step-item">
+                        <div class="step-icon" style="background: var(--surface-200); color: var(--text-500);">
+                            <span class="material-symbols-outlined">
+                                settings
+                            </span>
+                        </div>
+                        <div>
+                            <small>Transmisión</small>
+
+                            <h4 th:text="${combi.tipoDeTransmision}">MANUAL</h4>
+                        </div>
+                    </div>
+
+                    <div class="step-line"></div>
+
+                    <div class="step-item">
+                        <div class="step-icon end">
+                            <span class="material-symbols-outlined">
+                                airport_shuttle
+                            </span>
+                        </div>
+                        <div>
+                            <small>Categoría</small>
+                            <!-- Thymeleaf inyecta el tipo de combi -->
+                            <h4 th:text="${combi.tipoDeCombi}">ESTANDAR</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </section>
+</main>
+<div th:replace="componentes/footer :: footer"></div>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE HTML>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>BondiWay - Registrar Combi</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <link rel="stylesheet" th:href="@{/css/variables.css}">
+    <link rel="stylesheet" th:href="@{/css/components.css}">
+    <link rel="stylesheet" th:href="@{/css/solicitar-viaje.css}">
+</head>
+<body>
+<div th:replace="componentes/nav-bar :: navbar('flota')"></div>
+<main class="create-trip-page">
+    <section class="page-header">
+        <h1>Registrar Nueva Combi</h1>
+        <p>Configura los detalles técnicos de la nueva unidad para tu flota.</p>
+    </section>
+    <section class="create-trip-layout">
+        <article class="trip-form-card">
+            <!-- Asegúrate de cambiar "datosCombi" por el nombre de tu objeto en el controlador -->
+            <form th:action="@{/crear-combi}" method="POST" th:object="${combi}" class="trip-form">
+
+                <div class="form-row three-columns-layout">
+                    <!-- Campo: Cantidad de Asientos -->
+                    <div class="form-group">
+                        <label for="asientos">
+                            CANTIDAD DE ASIENTOS
+                        </label>
+                        <div class="field-wrapper">
+                            <span class="material-symbols-outlined">
+                                airline_seat_recline_normal
+                            </span>
+                            <input th:field="*{cantidadDeAsientos}" id="asientos" type="number" min="1" max="50" placeholder="Ej: 19" required>
+                        </div>
+                    </div>
+
+                    <!-- Campo: Transmisión -->
+                    <div class="form-group">
+                        <label for="transmision">
+                            TRANSMISIÓN
+                        </label>
+                        <div class="field-wrapper">
+                            <span class="material-symbols-outlined">
+                                settings
+                            </span>
+                            <select th:field="*{tipoDeTransmision}" id="transmision" required>
+                                <option value="" disabled selected>Seleccione...</option>
+                                <option value="MANUAL">Manual</option>
+                                <option value="AUTOMATICA">Automática</option>
+                            </select>
+                            <span class="material-symbols-outlined select-arrow">
+                                expand_more
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Campo: Tipo de Combi -->
+                    <div class="form-group">
+                        <label for="tipo">
+                            TIPO DE COMBI
+                        </label>
+                        <div class="field-wrapper">
+                            <span class="material-symbols-outlined">
+                                airport_shuttle
+                            </span>
+                            <select th:field="*{tipoDeCombi}" id="tipo" required>
+                                <option value="" disabled selected>Seleccione...</option>
+                                <option value="ESTANDAR">Estándar</option>
+                                <option value="TURISTICO">Turístico</option>
+                            </select>
+                            <span class="material-symbols-outlined select-arrow">
+                                expand_more
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary create-btn">
+                        <span class="material-symbols-outlined">
+                            directions_bus
+                        </span>
+                        Registrar unidad
+                    </button>
+                    <a th:href="@{/home}">
+                        <button type="button" class="cancel-btn">
+                            Cancelar
+                        </button>
+                    </a>
+                </div>
+                <p th:if="${error != null}" class="error-message" th:text="'Error: ' + ${error}"></p>
+            </form>
+        </article>
+
+        <aside class="route-preview">
+            <div class="preview-card">
+                <div class="preview-header">
+                    <h2>Detalles de la Unidad</h2>
+                    <span class="material-symbols-outlined">
+                        directions_car
+                    </span>
+                </div>
+                <div class="route-steps">
+                    <div class="step-item">
+                        <div class="step-icon start">
+                            <span class="material-symbols-outlined">
+                                info
+                            </span>
+                        </div>
+                        <div>
+                            <small>Importante</small>
+                            <p>Verifica que la cantidad de asientos coincida con la cédula verde del vehículo.</p>
+                        </div>
+                    </div>
+                    <div class="step-line"></div>
+                    <div class="step-item">
+                        <div class="step-icon end">
+                            <span class="material-symbols-outlined">
+                                verified_user
+                            </span>
+                        </div>
+                        <div>
+                            <small>Seguro</small>
+                            <p>Las combis tipo "Turístico" requieren documentación adicional.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ai-card">
+                <span class="material-symbols-outlined">
+                    admin_panel_settings
+                </span>
+                <p>Al registrar este vehículo, pasará a estar disponible inmediatamente para la asignación de viajes en el sistema.</p>
+            </div>
+        </aside>
+    </section>
+</main>
+<div th:replace="componentes/footer :: footer"></div>
+</body>
+</html>
