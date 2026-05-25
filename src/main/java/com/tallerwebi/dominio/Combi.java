@@ -23,4 +23,11 @@ public class Combi {
     private String tipoDeTransmision;
 
 
+    public Combi(Integer cantidadAsientos, TipoDeCombi tipoDeCombi, String transmision) {
+    this.cantidadDeAsientos = cantidadAsientos;
+    this.tipoDeCombi = tipoDeCombi;
+    this.tipoDeTransmision = transmision;
+    }
+
+    public Combi() {}
 }

@@ -1,6 +1,5 @@
 package com.tallerwebi.dominio;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -9,16 +8,21 @@ import javax.transaction.Transactional;
 @Transactional
 public class ServicioCombiImplements implements ServicioCombi {
 
-   //@Autowired
-  // private RepositorioCombi repositorioCombi;
 
 
     @Override
-    public Combi crearCombi(Combi combi) {
+    public Combi crearCombi(Integer cantidadAsientos, TipoDeCombi tipoDeCombi, String transmision) {
 
-       // repositorioCombi.save(combi);
-        Combi combie1 = new Combi();
-        combie1=combi;
-        return combie1;
+        if(cantidadAsientos<10 || cantidadAsientos>20){
+            throw new CantidadDeAsientosInvalidaException() ;
+        }
+        if (!("MANUAL".equals(transmision) || "AUTOMATICA".equals(transmision))) {
+            throw new TipoDeTransmisionInvalidaException();
+        }
+        if(!(tipoDeCombi == TipoDeCombi.ESTANDAR || tipoDeCombi == TipoDeCombi.TURISTICA)){
+            throw new TipoDeCombiInvalidaException();
+        }
+
+        return new Combi(cantidadAsientos,tipoDeCombi,transmision);
     }
 }
