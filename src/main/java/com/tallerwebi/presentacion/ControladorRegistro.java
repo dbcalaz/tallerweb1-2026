@@ -1,6 +1,7 @@
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.ServicioLogin;
+import com.tallerwebi.dominio.TipoDeLicencia;
 import com.tallerwebi.dominio.Usuario;
 import com.tallerwebi.dominio.excepcion.UsuarioExistente;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,5 +66,13 @@ public class ControladorRegistro {
     model.put("datosLogin", new DatosLogin());
 
     return new ModelAndView("login", model);
+  }
+
+  /* Conductor*/
+  @RequestMapping(path = "/nuevo-conductor", method = RequestMethod.GET)
+  public ModelAndView nuevoConductor() {
+    ModelMap model = new ModelMap();
+    model.put("tiposLicencias", TipoDeLicencia.values());
+    return new ModelAndView("nuevo-conductor", model);
   }
 }

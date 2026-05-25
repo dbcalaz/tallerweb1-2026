@@ -29,4 +29,28 @@
     --radius-lg: 18px;
     --radius-md: 14px;
     --font-main: 'Inter', sans-serif;
+
+    /*Conductor*/
+    --driver-background: #2f2b36;
+    --driver-surface: #3b3644;
+    --driver-surface-soft: rgba(255,255,255,0.05);
+    --driver-text: #ffffff;
+    --driver-text-secondary: rgba(255,255,255,0.68);
+    --driver-text-muted: rgba(255,255,255,0.32);
+    --driver-border: rgba(255,255,255,0.08);
+    --driver-primary: #cfbdff;
+    --driver-primary-strong: #b69cff;
+    --driver-overlay:
+            linear-gradient(
+                    180deg,
+                    rgba(15,15,20,0.25) 0%,
+                    rgba(15,15,20,0.78) 100%
+            );
+    --driver-shadow:
+            0 25px 60px rgba(0,0,0,0.35);
+    --driver-button-shadow:
+            0 10px 30px rgba(182,156,255,0.22);
+    --driver-input-bg: #312f35;
+    --driver-text-soft: #d7d1e0;
+    --driver-text-muted: #a8a2b3;
 }

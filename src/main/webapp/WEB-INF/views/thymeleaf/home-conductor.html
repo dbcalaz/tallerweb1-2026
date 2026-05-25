@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BondiWay - Panel del conductor</title>
+
+    <link rel="icon" th:href="@{/imagenes/logo.png}" type="image/x-icon">
+    <link rel="stylesheet" th:href="@{/css/variables.css}">
+    <link rel="stylesheet" th:href="@{/css/home-conductor.css}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
+</head>
+<body>
+<div class="driver-layout">
+    <header class="driver-navbar">
+        <div class="driver-navbar-left">
+            <h1 class="driver-logo">BondiWay</h1>
+            <span class="driver-navbar-divider"></span>
+            <span class="driver-navbar-subtitle">
+                    Panel del conductor
+                </span>
+        </div>
+        <div class="driver-navbar-right">
+            <div class="driver-status-pill">
+                <span class="driver-status-dot"></span>
+                <span>En línea</span>
+            </div>
+            <div class="driver-profile">
+                <div class="driver-profile-info">
+                        <span class="driver-profile-name">
+                            Carlos G.
+                        </span>
+                </div>
+                <div class="driver-avatar">
+                    C
+                </div>
+                <a th:href="@{/login-conductor}">
+                    <button class="driver-logout-btn">
+                        <span class="material-symbols-outlined">
+                            logout
+                        </span>
+                    </button>
+                </a>
+            </div>
+        </div>
+    </header>
+    <main class="driver-main">
+        <section class="driver-hero">
+            <div>
+                <h2 class="driver-title">
+                    ¡Hola de nuevo, Carlos! </h2>
+                <p class="driver-subtitle">
+                    Listo para tus rutas de hoy en el sector Norte. </p>
+            </div>
+            <div class="driver-hero-stats">
+                <article class="driver-stat-card">
+                        <span class="material-symbols-outlined">
+                            stars
+                        </span>
+                    <div>
+                        <p>Calificación</p>
+                        <h3>4.92</h3>
+                    </div>
+                </article>
+                <article class="driver-stat-card driver-stat-card-income">
+                        <span class="material-symbols-outlined">
+                            payments
+                        </span>
+                    <div>
+                        <p>Ganancias hoy</p>
+                        <h3>$12.450</h3>
+                    </div>
+                </article>
+            </div>
+        </section>
+        <section class="driver-grid">
+            <article class="driver-card driver-vehicle-card">
+                <div class="driver-card-badge">
+                    Vehículo asignado
+                </div>
+                <h3>
+                    Mercedes-Benz Sprinter 515 </h3>
+                <div class="driver-vehicle-info">
+                        <span>
+                            <span class="material-symbols-outlined">
+                                badge
+                            </span>
+                            AD-542-XQ
+                        </span>
+                    <span>
+                            <span class="material-symbols-outlined">
+                                event_seat
+                            </span>
+                            19 asientos
+                        </span>
+                    <span>
+                            <span class="material-symbols-outlined">
+                                distance
+                            </span>
+                            42.300 km
+                        </span>
+                </div>
+                <div class="driver-vehicle-actions">
+                    <button class="driver-primary-btn">
+                                    <span class="material-symbols-outlined">
+     fact_check
+    </span>
+                        Revisión diaria
+
+                    </button>
+                    <button class="driver-secondary-btn">
+                        <span class="material-symbols-outlined">
+        warning
+    </span>
+                        Reportar falla
+                    </button>
+                </div>
+            </article>
+            <article class="driver-card driver-status-card">
+                <div>
+                    <h3>
+                        Estado operativo </h3>
+                    <p>
+                        Tu visibilidad para nuevas asignaciones. </p>
+                </div>
+                <button class="driver-toggle-btn">
+                        <span class="material-symbols-outlined">
+                            radio_button_checked
+                        </span>
+                    ESTÁS EN LÍNEA
+                </button>
+                <small>
+                    Última conexión: hace 4 min
+                </small>
+            </article>
+        </section>
+        <section class="driver-section">
+            <div class="driver-section-header">
+                <h3>
+                    Viajes disponibles </h3>
+                <a href="#">
+                    Ver mapa de demanda
+                </a>
+            </div>
+            <div class="driver-trips-grid">
+                <article class="driver-trip-card">
+                    <div class="driver-trip-top">
+                            <span class="driver-tag">
+                                EXPRESS
+                            </span>
+                        <h4>$3.200</h4>
+                    </div>
+                    <div class="driver-trip-route">
+                        <div>
+                                <span class="material-symbols-outlined">
+        location_on
+    </span>
+                            <p>ORIGEN</p>
+                            <strong>Terminal Central</strong>
+                        </div>
+                        <div>
+                            <span class="material-symbols-outlined">
+      near_me
+    </span>
+                            <p>DESTINO</p>
+                            <strong>Parque Industrial Norte</strong>
+                        </div>
+                    </div>
+                    <div class="driver-trip-actions">
+                        <button class="driver-primary-btn">
+                            Aceptar
+                        </button>
+                        <button class="driver-icon-btn">
+                                <span class="material-symbols-outlined">
+                                    info
+                                </span>
+                        </button>
+                    </div>
+                </article>
+                <article class="driver-trip-card">
+                    <div class="driver-trip-top">
+                            <span class="driver-tag driver-tag-gold">
+                                CORPORATIVO
+                            </span>
+                        <h4>$4.500</h4>
+                    </div>
+                    <div class="driver-trip-route">
+                        <div>
+                                <span class="material-symbols-outlined">
+        location_on
+    </span>
+                            <p>ORIGEN</p>
+                            <strong>Sede Tech Solutions</strong>
+                        </div>
+                        <div>
+                                <span class="material-symbols-outlined">
+      near_me
+    </span>
+                            <p>DESTINO</p>
+                            <strong>Aeropuerto Intl. B2</strong>
+                        </div>
+                    </div>
+                    <div class="driver-trip-actions">
+                        <button class="driver-primary-btn">
+                            Aceptar
+                        </button>
+                        <button class="driver-icon-btn">
+                                <span class="material-symbols-outlined">
+                                    info
+                                </span>
+                        </button>
+                    </div>
+                </article>
+                <article class="driver-trip-card">
+                    <div class="driver-trip-top">
+                            <span class="driver-tag">
+                                REGULAR
+                            </span>
+                        <h4>$2.800</h4>
+                    </div>
+                    <div class="driver-trip-route">
+                        <div>
+                                <span class="material-symbols-outlined">
+        location_on
+    </span>
+                            <p>ORIGEN</p>
+                            <strong>Barrio San Martín</strong>
+                        </div>
+                        <div>
+                                <span class="material-symbols-outlined">
+      near_me
+    </span>
+                            <p>DESTINO</p>
+                            <strong>Centro Cívico</strong>
+                        </div>
+                    </div>
+                    <div class="driver-trip-actions">
+                        <button class="driver-primary-btn">
+                            Aceptar
+                        </button>
+                        <button class="driver-icon-btn">
+                                <span class="material-symbols-outlined">
+                                    info
+                                </span>
+                        </button>
+                    </div>
+                </article>
+            </div>
+        </section>
+        <section class="driver-bottom-grid">
+            <article class="driver-card">
+                <h3 class="driver-card-title">
+                    Próximas salidas </h3>
+                <div class="driver-schedule-list">
+                    <div class="driver-schedule-item">
+                        <div class="driver-time">
+                            14:30
+                        </div>
+                        <p class="driver-time-status">Puntual</p>
+                        <div>
+                            <strong>
+                                Ruta N-42
+                            </strong>
+                            <p>
+                                12 pasajeros confirmados </p>
+                        </div>
+                        <span class="material-symbols-outlined">
+    arrow_forward_ios
+</span>
+                    </div>
+                    <div class="driver-schedule-item">
+                        <div class="driver-time">
+                            16:00
+                        </div>
+                        <p class="driver-time-status pending">Pendiente</p>
+                        <div>
+                            <strong>
+                                Traslado especial
+                            </strong>
+                            <p>
+                                8 pasajeros </p>
+                        </div>
+                        <span class="material-symbols-outlined">
+    arrow_forward_ios
+</span>
+                    </div>
+                </div>
+            </article>
+            <article class="driver-card">
+                <div class="driver-section-header driver-history-header">
+                    <h3>
+                        Historial reciente </h3>
+                    <a href="#">
+                        Ver todo
+                    </a>
+                </div>
+                <div class="driver-history-list">
+                    <div class="driver-history-item">
+                        <div>
+                            <strong>
+                                Ruta Centro - Sur
+                            </strong>
+                            <p>
+                                Finalizado • 11:20 AM </p>
+                        </div>
+                        <span>
+                                +$3.400
+                            </span>
+                    </div>
+                    <div class="driver-history-item">
+                        <div>
+                            <strong>
+                                Express: Polo IT
+                            </strong>
+                            <p>
+                                Finalizado • 09:45 AM </p>
+                        </div>
+                        <span>
+                                +$2.950
+                            </span>
+                    </div>
+                    <div class="driver-history-item">
+                        <div>
+                            <strong>
+                                Traslado aeropuerto
+                            </strong>
+                            <p>
+                                Finalizado • 07:15 AM </p>
+                        </div>
+                        <span>
+                                +$5.100
+                            </span>
+                    </div>
+                </div>
+            </article>
+        </section>
+    </main>
+</div>
+<footer>
+    <p>© 2024 Bondiy. Inteligencia en Movimiento.</p>
+    <div>
+        <a href="#">Centro de Ayuda</a>
+        <a href="#">Regulaciones</a>
+        <a href="#">Privacidad</a>
+        <a href="#">Soporte 24/7</a>
+    </div>
+</footer>
+</body>
+</html>

@@ -19,7 +19,7 @@ public class Usuario {
   private String rol;
   private Boolean activo = false;
   @OneToMany(mappedBy = "usuario")
-  private List<Viaje> viaje;
+  private List<Viaje> viajes;
 
     public void activar() {
     activo = true;

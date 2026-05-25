@@ -18,5 +18,7 @@ public class Viaje {
     private String destino;
     @ManyToOne()
     private Usuario usuario;
+    @ManyToOne()
+    private Conductor conductor;
 
 }

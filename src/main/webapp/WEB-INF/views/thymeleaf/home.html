@@ -5,6 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>BondiWay - Inicio</title>
+
+    <link rel="icon" th:href="@{/imagenes/logo.png}" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -81,6 +83,7 @@
                             Buscar viaje
                         </button>
                     </a>
+                </div>
             </div>
         </div>
     </section>
@@ -228,9 +231,11 @@
                     Genera ingresos adicionales compartiendo
                     tus viajes diarios. Únete a nuestra red
                     de conductores profesionales. </p>
-                <button>
-                    Convertirse en Conductor
-                </button>
+
+                <a th:href="@{/nuevo-conductor}">
+                    <button> Convertirse en Conductor</button>
+                </a>
+
             </div>
             <span class="material-symbols-outlined cta-icon">
                 directions_car
