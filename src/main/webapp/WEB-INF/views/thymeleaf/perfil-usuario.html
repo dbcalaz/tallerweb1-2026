@@ -18,8 +18,326 @@
 </head>
 <body>
 <div th:replace="componentes/nav-bar :: navbar('home')"></div>
-<main>
-Esto es perfil Usuario
+<main class="page-container">
+
+    <section class="hero-section">
+        <div class="hero-content">
+            <div class="hero-image-continer">
+                <img src="" alt="Perfil de usuario" class="hero-image">
+            </div>
+            <div class="hero-text">
+                <h1 class="hero-title">
+                    Juan
+                </h1>
+               <!-- <p class="hero-subtitle" th:text="${datosLogin.mail}"> -->
+                <p class="hero-subtitle" >
+                    mail
+                </p>
+                <div class="cta-buttons">
+                    <button class="btn-primary">
+                        Editar Perfil
+                    </button>
+                    <button class="btn-secundary">
+                        Configuracion
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Estadisticas -->
+
+    <section class="features-grid">
+        <div class="feature-card">
+            <h3 class="feature-title">
+                Viajes Realizados
+            </h3>
+            <p class="feature-description">
+                124
+            </p>
+        </div>
+
+        <div class="feature-card">
+            <h3 class="feature-title">
+                Viajes Cancelados
+            </h3>
+            <p class="feature-description" style="color:var(--error);">
+                2
+            </p>
+        </div>
+
+        <div class="feature-card">
+            <h3 class="feature-title">
+                Puntuacion
+            </h3>
+            <p class="feature-description">
+                4.9
+            </p>
+        </div>
+
+        <div class="feature-card">
+            <h3 class="feature-title">
+                Conductor Favorito
+            </h3>
+            <p class="feature-description">
+                Luis G.
+            </p>
+        </div>
+
+    </section>
+
+    <!--HISTORIAL-->
+
+    <section class="section">
+
+        <div class="section-header">
+            <h2 class="section-title">
+                Historial de Viajes
+            </h2>
+            <button class="btn-secondary">
+                Filtrar por Fecha
+            </button>
+        </div>
+
+        <!-- VIAJE -->
+
+        <div class="feature-card"
+             style="margin-bottom: 24px;">
+
+            <div
+                    style="
+                    display:flex;
+                    justify-content:space-between;
+                    align-items:center;
+                    gap:40px;
+            ">
+
+                <div
+                        style="
+                        display:flex;
+                        gap:60px;
+                ">
+
+                    <div>
+
+                        <p
+                                style="
+                                color: var(--primary);
+                                margin-bottom:12px;
+                                font-weight:600;
+                        ">
+                            Finalizado
+                        </p>
+
+                        <span
+                                style="
+                                color: var(--text-secondary);
+                        ">
+                            Origen
+                        </span>
+
+                        <h3>
+                            Av. Libertador 1200, CABA
+                        </h3>
+
+                    </div>
+
+                    <div>
+
+                        <span
+                                style="
+                                color: var(--text-secondary);
+                        ">
+                            Destino
+                        </span>
+
+                        <h3>
+                            Distrito Tecnológico
+                        </h3>
+
+                    </div>
+
+                </div>
+
+                <div>
+
+                    <span
+                            style="
+                            color: var(--text-secondary);
+                    ">
+                        Precio
+                    </span>
+
+                    <h2>
+                        $12.450
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- VIAJE -->
+
+        <div class="feature-card"
+             style="margin-bottom: 24px;">
+
+            <div
+                    style="
+                    display:flex;
+                    justify-content:space-between;
+                    align-items:center;
+                    gap:40px;
+            ">
+
+                <div
+                        style="
+                        display:flex;
+                        gap:60px;
+                ">
+
+                    <div>
+
+                        <p
+                                style="
+                                color: #b68c00;
+                                margin-bottom:12px;
+                                font-weight:600;
+                        ">
+                            En curso
+                        </p>
+
+                        <span
+                                style="
+                                color: var(--text-secondary);
+                        ">
+                            Origen
+                        </span>
+
+                        <h3>
+                            Barrio Norte, CABA
+                        </h3>
+
+                    </div>
+
+                    <div>
+
+                        <span
+                                style="
+                                color: var(--text-secondary);
+                        ">
+                            Destino
+                        </span>
+
+                        <h3>
+                            Aeroparque Jorge Newbery
+                        </h3>
+
+                    </div>
+
+                </div>
+
+                <div>
+
+                    <span
+                            style="
+                            color: var(--text-secondary);
+                    ">
+                        Precio Est.
+                    </span>
+
+                    <h2>
+                        $8.900
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- VIAJE -->
+
+        <div class="feature-card">
+
+            <div
+                    style="
+                    display:flex;
+                    justify-content:space-between;
+                    align-items:center;
+                    gap:40px;
+            ">
+
+                <div
+                        style="
+                        display:flex;
+                        gap:60px;
+                ">
+
+                    <div>
+
+                        <p
+                                style="
+                                color: var(--error);
+                                margin-bottom:12px;
+                                font-weight:600;
+                        ">
+                            Cancelado
+                        </p>
+
+                        <span
+                                style="
+                                color: var(--text-secondary);
+                        ">
+                            Origen
+                        </span>
+
+                        <h3>
+                            Pilar Centro
+                        </h3>
+
+                    </div>
+
+                    <div>
+
+                        <span
+                                style="
+                                color: var(--text-secondary);
+                        ">
+                            Destino
+                        </span>
+
+                        <h3>
+                            Microcentro, Florida y Lavalle
+                        </h3>
+
+                    </div>
+
+                </div>
+
+                <div>
+
+                    <span
+                            style="
+                            color: var(--text-secondary);
+                    ">
+                        Precio
+                    </span>
+
+                    <h2>
+                        $15.200
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
 </main>
 <div th:replace="componentes/footer :: footer"></div>
 </body>
