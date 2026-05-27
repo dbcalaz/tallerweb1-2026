@@ -1,16 +1,27 @@
 package com.tallerwebi.presentacion;
 
+import com.tallerwebi.dominio.ServicioViaje;
+import com.tallerwebi.dominio.Usuario;
+import com.tallerwebi.dominio.Viaje;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 public class ControladorBusqueda {
+
+    private ServicioViaje servicioViaje;
+
+    @Autowired
+    public ControladorBusqueda(ServicioViaje servicioViaje) {
+        this.servicioViaje = servicioViaje;
+    }
 
     @RequestMapping(path = "/buscar-viaje", method = RequestMethod.GET)
     public ModelAndView irABuscarViaje() {
@@ -29,20 +40,55 @@ public class ControladorBusqueda {
             return new ModelAndView("buscarViajes", modelo);
         }
 
-        List<ViajeDisponible> viajesSimulados = new ArrayList<>();
-        viajesSimulados.add(new ViajeDisponible(datosBusqueda.getOrigen(), datosBusqueda.getDestino(), "10:30", 4500.0, 4));
-        viajesSimulados.add(new ViajeDisponible(datosBusqueda.getOrigen(), datosBusqueda.getDestino(), "14:00", 3800.0, 2));
-        viajesSimulados.add(new ViajeDisponible(datosBusqueda.getOrigen(), datosBusqueda.getDestino(), "18:30", 5200.0, 6));
+        List<Viaje> viajesEncontrados = servicioViaje.buscarViajes(
+                datosBusqueda.getOrigen(),
+                datosBusqueda.getDestino(),
+                datosBusqueda.getFecha()
+        );
 
-        modelo.put("viajes", viajesSimulados);
+        modelo.put("viajes", viajesEncontrados);
         modelo.put("origen", datosBusqueda.getOrigen());
         modelo.put("destino", datosBusqueda.getDestino());
+
+        if (viajesEncontrados.isEmpty()) {
+            modelo.put("sinResultados", true);
+        }
 
         return new ModelAndView("listadoViajes", modelo);
     }
 
     @RequestMapping(path = "/seleccionar-asiento", method = RequestMethod.GET)
-    public ModelAndView irASeleccionarAsiento() {
-        return new ModelAndView("seleccionarAsiento");
+    public ModelAndView irASeleccionarAsiento(@RequestParam("idViaje") Long idViaje) {
+        ModelMap modelo = new ModelMap();
+        modelo.put("idViaje", idViaje);
+        return new ModelAndView("seleccionarAsiento", modelo);
+    }
+
+    @RequestMapping(path = "/confirmar-asiento", method = RequestMethod.POST)
+    public ModelAndView confirmarAsiento(@RequestParam("idViaje") Long idViaje) {
+        ModelMap modelo = new ModelMap();
+
+        try {
+            Usuario usuarioTemporal = new Usuario();
+            usuarioTemporal.setId(1L);
+            servicioViaje.reservarAsiento(idViaje, usuarioTemporal);
+
+            Viaje viajeConfirmado = servicioViaje.buscarPorId(idViaje);
+
+            if (viajeConfirmado == null) {
+                modelo.put("error", "Hubo un problema. No se encontró el viaje en la base de datos.");
+                modelo.put("idViaje", idViaje);
+                return new ModelAndView("seleccionarAsiento", modelo);
+            }
+
+            modelo.put("datosViaje", viajeConfirmado);
+            modelo.put("mensaje", "¡Asiento confirmado con éxito!");
+            return new ModelAndView("viajeEnCurso", modelo);
+
+        } catch (Exception e) {
+            modelo.put("error", "Ocurrió un error: " + e.getMessage());
+            modelo.put("idViaje", idViaje);
+            return new ModelAndView("seleccionarAsiento", modelo);
+        }
     }
 }

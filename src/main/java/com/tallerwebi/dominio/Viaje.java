@@ -2,7 +2,6 @@ package com.tallerwebi.dominio;
 
 import lombok.Getter;
 import lombok.Setter;
-
 import javax.persistence.*;
 
 @Getter
@@ -16,9 +15,14 @@ public class Viaje {
 
     private String origen;
     private String destino;
-    @ManyToOne()
-    private Usuario usuario;
-    @ManyToOne()
-    private Conductor conductor;
+    private String fecha;
+    private String horario;
+    private Double precio;
+    private Integer asientosDisponibles;
 
+    @ManyToOne
+    private Usuario usuario;
+
+    @ManyToOne
+    private Conductor conductor;
 }

@@ -55,7 +55,7 @@
                     <span class="price-label">Precio</span>
                     <h4 th:text="'$' + ${viaje.precio}" style="font-size: 24px;"></h4>
                 </div>
-                <a th:href="@{/seleccionar-asiento}" class="btn-primary text-center"
+                <a th:href="@{/seleccionar-asiento(idViaje=${viaje.id})}" class="btn-primary text-center"
                    style="text-decoration: none;
                     display: inline-block;
                     border-radius: 12px;
