@@ -26,7 +26,6 @@
     </section>
 
     <section class="create-trip-layout">
-        <!-- Panel principal: Mensaje de éxito y acciones -->
         <article class="trip-form-card" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 4rem 2rem;">
             <span class="material-symbols-outlined" style="font-size: 5rem; color: #10b981; margin-bottom: 1rem;">
                 check_circle
@@ -53,7 +52,7 @@
             </div>
         </article>
 
-        <!-- Barra lateral: Resumen de los datos guardados -->
+
         <aside class="route-preview">
             <div class="preview-card">
                 <div class="preview-header">
@@ -62,8 +61,6 @@
                         directions_bus
                     </span>
                 </div>
-
-                <!-- Reutilizamos las clases step-item para mostrar la info en forma de lista vertical -->
                 <div class="route-steps">
                     <div class="step-item">
                         <div class="step-icon start">
@@ -73,8 +70,8 @@
                         </div>
                         <div>
                             <small>Capacidad</small>
-                            <!-- Thymeleaf inyecta la cantidad de asientos aquí -->
-                            <h4 th:text="${combi.cantidadDeAsientos} + ' Pasajeros'">19 Pasajeros</h4>
+
+                            <h4 th:text="${combi.cantidadAsientos} + ' Pasajeros'">19 Pasajeros</h4>
                         </div>
                     </div>
 
@@ -89,7 +86,7 @@
                         <div>
                             <small>Transmisión</small>
 
-                            <h4 th:text="${combi.tipoDeTransmision}">MANUAL</h4>
+                            <h4 th:text="${combi.transmision}">MANUAL</h4>
                         </div>
                     </div>
 
@@ -103,7 +100,7 @@
                         </div>
                         <div>
                             <small>Categoría</small>
-                            <!-- Thymeleaf inyecta el tipo de combi -->
+
                             <h4 th:text="${combi.tipoDeCombi}">ESTANDAR</h4>
                         </div>
                     </div>

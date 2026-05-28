@@ -18,4 +18,8 @@ public class DatosCombi {
         this.transmision = transmision;
         this.tipoDeCombi = tipoDeCombi;
     }
+
+    public DatosCombi() {
+
+    }
 }

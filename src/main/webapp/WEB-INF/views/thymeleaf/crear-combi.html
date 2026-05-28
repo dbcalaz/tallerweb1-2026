@@ -26,7 +26,6 @@
     </section>
     <section class="create-trip-layout">
         <article class="trip-form-card">
-            <!-- Asegúrate de cambiar "datosCombi" por el nombre de tu objeto en el controlador -->
             <form th:action="@{/crear-combi}" method="POST" th:object="${combi}" class="trip-form">
 
                 <div class="form-row three-columns-layout">
@@ -39,7 +38,7 @@
                             <span class="material-symbols-outlined">
                                 airline_seat_recline_normal
                             </span>
-                            <input th:field="*{cantidadDeAsientos}" id="asientos" type="number" min="1" max="50" placeholder="Ej: 19" required>
+                            <input th:field="*{cantidadAsientos}" id="asientos" type="number" min="1" max="50" placeholder="Ej: 19" required>
                         </div>
                     </div>
 
@@ -52,8 +51,8 @@
                             <span class="material-symbols-outlined">
                                 settings
                             </span>
-                            <select th:field="*{tipoDeTransmision}" id="transmision" required>
-                                <option value="" disabled selected>Seleccione...</option>
+                            <select th:field="*{transmision}" id="transmision" >
+                                <option value="" >Seleccione...</option>
                                 <option value="MANUAL">Manual</option>
                                 <option value="AUTOMATICA">Automática</option>
                             </select>
@@ -72,10 +71,10 @@
                             <span class="material-symbols-outlined">
                                 airport_shuttle
                             </span>
-                            <select th:field="*{tipoDeCombi}" id="tipo" required>
-                                <option value="" disabled selected>Seleccione...</option>
+                            <select th:field="*{tipoDeCombi}" id="tipo" >
+                                <option value="" >Seleccione...</option>
                                 <option value="ESTANDAR">Estándar</option>
-                                <option value="TURISTICO">Turístico</option>
+                                <option value="TURISTICA">Turístico</option>
                             </select>
                             <span class="material-symbols-outlined select-arrow">
                                 expand_more

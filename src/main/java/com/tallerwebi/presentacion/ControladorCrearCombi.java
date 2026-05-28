@@ -25,7 +25,7 @@ public class ControladorCrearCombi {
     @RequestMapping("/crear-combi")
     public ModelAndView crearCombi() {
         ModelMap modelo = new ModelMap();
-        modelo.put("combi", new Combi());
+        modelo.put("combi", new DatosCombi());
         return new ModelAndView("crear-combi", modelo);
 
     }
