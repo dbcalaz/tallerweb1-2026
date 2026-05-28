@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>BondiWay - Seleccionar Asiento</title>
 
+    <link rel="icon" th:href="@{/imagenes/logo.png}" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -64,13 +65,18 @@
 
     <div class="text-center mt-5 mb-5">
         <p class="text-muted">Hacé clic en un asiento verde para seleccionarlo y continuar con tu reserva.</p>
-        <a th:href="@{/solicitarViaje}" class="btn text-white btn-lg px-5 mt-2 shadow"
-           style="background-color: var(--primary, #4f378a); border-radius: 12px; transition: 0.3s; font-weight: 600; padding: 16px 32px; border: none; text-decoration: none;"
-           onmouseover="this.style.filter='brightness(1.15)';"
-           onmouseout="this.style.filter='brightness(1.0)';"
-           onmousedown="this.style.transform='scale(0.98)';">
-            Confirmar Asiento y Solicitar Viaje
-        </a>
+
+        <form th:action="@{/confirmar-asiento}" method="post" id="form-confirmar">
+            <input type="hidden" name="idViaje" th:value="${idViaje}" />
+
+            <button type="submit" class="btn text-white btn-lg px-5 mt-2 shadow"
+                    style="background-color: var(--primary, #4f378a); border-radius: 12px; transition: 0.3s; font-weight: 600; padding: 16px 32px; border: none;"
+                    onmouseover="this.style.filter='brightness(1.15)';"
+                    onmouseout="this.style.filter='brightness(1.0)';"
+                    onmousedown="this.style.transform='scale(0.98)';">
+                Confirmar Asiento y Solicitar Viaje
+            </button>
+        </form>
     </div>
 </main>
 

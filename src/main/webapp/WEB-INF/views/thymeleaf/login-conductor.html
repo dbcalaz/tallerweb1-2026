@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BondiWay - Ingresar conductor</title>
+
+    <link rel="icon" th:href="@{/imagenes/logo.png}" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+    <link rel="stylesheet" th:href="@{/css/variables.css}">
+    <link rel="stylesheet" th:href="@{/css/components.css}">
+    <link rel="stylesheet" th:href="@{/css/login-conductor.css}">
+</head>
+
+<body>
+<main class="driver-layout">
+    <section class="driver-hero">
+        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDMPrmtTjeHvwZGydQsHUcBgjugfUcOn7sYbCca1Rho8mLJNGJvOTLEd-1h0y8vcUdDCYEkvnJCNdU2eeTRHj9ttGzHvXqEjw-aMKSWEUMkjwhGb5sgvDTg62w4H2bLJapgSxDzf6urS-SpvkmpOhnziDA4gCtt_lXMbGxOrR5oj2ezGyk2CeXIQub8rEHZyw0zlwsU_utpKyy3S2rlVtpgCmLFO9Mtex9Dr-4Nc0ovKTbrHFxWgRqY58R3sXcJA8o2BCaZpkRxnF8"
+             alt="BondiWay Driver">
+        <div class="driver-overlay"></div>
+        <div class="driver-hero-content">
+            <div class="driver-brand">
+                BondiWay
+            </div>
+            <h1>
+                Mové la ciudad con nosotros </h1>
+            <p>
+                Sumate a la red de transporte inteligente que está transformando la movilidad urbana. </p>
+        </div>
+        <div class="hero-lines">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </section>
+    <section class="driver-login-side">
+        <div>
+            <div class="driver-login-card">
+                <h2>
+                    Acceso Conductores </h2>
+                <p>
+                    Ingresá a tu panel operativo para iniciar tu jornada. </p>
+
+                <form class="driver-form">
+                    <div class="driver-input-group">
+                        <label>
+                            Correo electrónico
+                        </label>
+                        <div class="driver-input-wrapper">
+                            <span class="material-symbols-outlined">
+                                mail
+                            </span>
+                            <input type="email" placeholder="usuario@bondiway.com">
+                        </div>
+                    </div>
+                    <div class="driver-input-group">
+                        <div class="driver-login-options">
+                            <label>
+                                Contraseña
+                            </label>
+                            <a href="#">
+                                ¿Olvidaste tu contraseña?
+                            </a>
+                        </div>
+                        <div class="driver-input-wrapper">
+                            <span class="material-symbols-outlined">
+                                lock
+                            </span>
+                            <input type="password" placeholder="••••••••">
+                        </div>
+                    </div>
+                    <button class="driver-login-btn">
+                        <a th:href="@{/home-conductor}"> Ingresar</a>
+                        <span class="material-symbols-outlined">
+                            arrow_forward
+                        </span>
+                    </button>
+                </form>
+                <div class="driver-footer">
+                    <p>
+                        ¿No tenés una cuenta operativa? </p>
+
+                    <a th:href="@{/nuevo-conductor}">
+                        ¿Querés registrarte?
+                    </a>
+                </div>
+            </div>
+            <div class="driver-system-info">
+                <span>
+                    v2.4.0 Stable
+                </span>
+                <span>
+                    Sistema Encriptado
+                </span>
+            </div>
+        </div>
+    </section>
+</main>
+</body>
+</html>

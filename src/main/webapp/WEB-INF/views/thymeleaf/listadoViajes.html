@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Viajes Disponibles - BondiWay</title>
 
+    <link rel="icon" th:href="@{/imagenes/logo.png}" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -54,7 +55,7 @@
                     <span class="price-label">Precio</span>
                     <h4 th:text="'$' + ${viaje.precio}" style="font-size: 24px;"></h4>
                 </div>
-                <a th:href="@{/seleccionar-asiento}" class="btn-primary text-center"
+                <a th:href="@{/seleccionar-asiento(idViaje=${viaje.id})}" class="btn-primary text-center"
                    style="text-decoration: none;
                     display: inline-block;
                     border-radius: 12px;

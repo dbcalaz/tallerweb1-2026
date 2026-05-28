@@ -1,5 +1,7 @@
 package com.tallerwebi.dominio;
 
+
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,8 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-@Getter
 @Setter
+@Getter
 public class Combi {
 
 
@@ -30,4 +32,5 @@ public class Combi {
     }
 
     public Combi() {}
+
 }
