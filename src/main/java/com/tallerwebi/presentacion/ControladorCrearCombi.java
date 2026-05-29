@@ -1,6 +1,9 @@
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.*;
+import com.tallerwebi.dominio.excepcion.CantidadDeAsientosInvalidaException;
+import com.tallerwebi.dominio.excepcion.TipoDeCombiInvalidaException;
+import com.tallerwebi.dominio.excepcion.TipoDeTransmisionInvalidaException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;

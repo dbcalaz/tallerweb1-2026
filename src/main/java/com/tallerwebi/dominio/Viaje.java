@@ -14,15 +14,22 @@ public class Viaje {
     private Long id;
 
     private String origen;
+    /*private float latitudOrigen;
+    private float longitudOrigen;*/
     private String destino;
+    /*private float latitudDestino;
+    private float longitudDestino;*/
     private String fecha;
     private String horario;
     private Double precio;
     private Integer asientosDisponibles;
+    //private Combi combi;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Usuario usuario;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Conductor conductor;
+
+
 }

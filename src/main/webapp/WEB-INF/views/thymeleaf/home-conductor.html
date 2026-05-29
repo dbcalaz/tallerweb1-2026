@@ -31,13 +31,10 @@
             </div>
             <div class="driver-profile">
                 <div class="driver-profile-info">
-                        <span class="driver-profile-name">
-                            Carlos G.
-                        </span>
+                        <span class="driver-profile-name" th:text="${conductor.nombre}">
+                                                    </span>
                 </div>
-                <div class="driver-avatar">
-                    C
-                </div>
+
                 <a th:href="@{/login-conductor}">
                     <button class="driver-logout-btn">
                         <span class="material-symbols-outlined">
@@ -51,8 +48,7 @@
     <main class="driver-main">
         <section class="driver-hero">
             <div>
-                <h2 class="driver-title">
-                    ¡Hola de nuevo, Carlos! </h2>
+                <h2 class="driver-title" th:text="'¡Hola de nuevo, ' + ${conductor.nombre} + '!'"></h2>
                 <p class="driver-subtitle">
                     Listo para tus rutas de hoy en el sector Norte. </p>
             </div>
@@ -63,7 +59,7 @@
                         </span>
                     <div>
                         <p>Calificación</p>
-                        <h3>4.92</h3>
+                        <h3 th:text="${conductor.calificacion}"></h3>
                     </div>
                 </article>
                 <article class="driver-stat-card driver-stat-card-income">
@@ -72,7 +68,7 @@
                         </span>
                     <div>
                         <p>Ganancias hoy</p>
-                        <h3>$12.450</h3>
+                        <h3 th:text="'$ ' + ${conductor.ganancia}"></h3>
                     </div>
                 </article>
             </div>

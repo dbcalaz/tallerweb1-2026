@@ -1,5 +1,8 @@
 package com.tallerwebi.dominio;
 
+import com.tallerwebi.dominio.excepcion.CantidadDeAsientosInvalidaException;
+import com.tallerwebi.dominio.excepcion.TipoDeCombiInvalidaException;
+import com.tallerwebi.dominio.excepcion.TipoDeTransmisionInvalidaException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;

@@ -1,6 +1,9 @@
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.*;
+import com.tallerwebi.dominio.excepcion.CantidadDeAsientosInvalidaException;
+import com.tallerwebi.dominio.excepcion.TipoDeCombiInvalidaException;
+import com.tallerwebi.dominio.excepcion.TipoDeTransmisionInvalidaException;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.servlet.ModelAndView;
 
