@@ -11,8 +11,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
 </head>
 <body>
 <div class="driver-layout">
@@ -251,34 +250,16 @@
             <article class="driver-card">
                 <h3 class="driver-card-title">
                     Próximas salidas </h3>
-                <div class="driver-schedule-list">
+                <div class="driver-schedule-list" th:each="viaje : ${viajes}" th:if="${viaje.estadoDeViaje.name() == 'PENDIENTE'}">
                     <div class="driver-schedule-item">
-                        <div class="driver-time">
-                            14:30
+                        <div class="driver-time" th:text="${viaje.horario}">
+
                         </div>
                         <p class="driver-time-status">Puntual</p>
                         <div>
-                            <strong>
-                                Ruta N-42
-                            </strong>
+                            <strong th:text="${viaje.origen} + ' - ' + ${viaje.destino}"></strong>
                             <p>
                                 12 pasajeros confirmados </p>
-                        </div>
-                        <span class="material-symbols-outlined">
-    arrow_forward_ios
-</span>
-                    </div>
-                    <div class="driver-schedule-item">
-                        <div class="driver-time">
-                            16:00
-                        </div>
-                        <p class="driver-time-status pending">Pendiente</p>
-                        <div>
-                            <strong>
-                                Traslado especial
-                            </strong>
-                            <p>
-                                8 pasajeros </p>
                         </div>
                         <span class="material-symbols-outlined">
     arrow_forward_ios
@@ -295,41 +276,12 @@
                     </a>
                 </div>
                 <div class="driver-history-list">
-                    <div class="driver-history-item">
+                    <div class="driver-history-item" th:each="viaje : ${viajes}" th:if="${viaje.estadoDeViaje.name() == 'FINALIZADO'}">
                         <div>
-                            <strong>
-                                Ruta Centro - Sur
-                            </strong>
-                            <p>
-                                Finalizado • 11:20 AM </p>
+                            <strong th:text="${viaje.origen} + ' - ' + ${viaje.destino}"></strong>
+                            <p th:text="${viaje.horario}"></p>
                         </div>
-                        <span>
-                                +$3.400
-                            </span>
-                    </div>
-                    <div class="driver-history-item">
-                        <div>
-                            <strong>
-                                Express: Polo IT
-                            </strong>
-                            <p>
-                                Finalizado • 09:45 AM </p>
-                        </div>
-                        <span>
-                                +$2.950
-                            </span>
-                    </div>
-                    <div class="driver-history-item">
-                        <div>
-                            <strong>
-                                Traslado aeropuerto
-                            </strong>
-                            <p>
-                                Finalizado • 07:15 AM </p>
-                        </div>
-                        <span>
-                                +$5.100
-                            </span>
+                        <span th:text="'$' + ${viaje.precio}"></span>
                     </div>
                 </div>
             </article>

@@ -3,6 +3,7 @@ package com.tallerwebi.presentacion;
 import com.tallerwebi.dominio.Conductor;
 import com.tallerwebi.dominio.ServicioConductor;
 import com.tallerwebi.dominio.TipoDeLicencia;
+import com.tallerwebi.dominio.Viaje;
 import com.tallerwebi.dominio.excepcion.ConductorExistente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 public class ControladorConductor {
@@ -34,7 +36,7 @@ public class ControladorConductor {
     }
 
     @RequestMapping(path = "/validar-login-conductor",  method = RequestMethod.POST)
-    public ModelAndView validarLoginConductor(@ModelAttribute("datosLogin") DatosLogin datosLogin, HttpServletRequest  request) {
+    public ModelAndView validarLoginConductor(@ModelAttribute("datosLogin") DatosLogin datosLogin, HttpServletRequest request) {
 
         Conductor conductorEncontrado = servicioConductor.consultarConductor(
                 datosLogin.getEmail(), datosLogin.getPassword()
@@ -44,7 +46,7 @@ public class ControladorConductor {
             request.getSession().setAttribute("conductor", conductorEncontrado);
             ModelMap model = new ModelMap();
             model.put("conductor", conductorEncontrado);
-            return new ModelAndView("home-conductor",  model);
+            return new ModelAndView("redirect:/home-conductor",  model);
         }else{
             ModelMap model = new ModelMap();
             model.put("error","Las credenciales no son correctas");
@@ -69,21 +71,37 @@ public class ControladorConductor {
         try {
             servicioConductor.registrarConductor(conductor);
         }catch (ConductorExistente e){
-            model.put("error","El usuario ya existe");
+            model.put("error","El conductor ya existe");
             return new ModelAndView("nuevo-conductor",model);
         }catch (Exception e){
             model.put("error", "Error al registrar conductor");
             return new ModelAndView("nuevo-conductor",model);
         }
-        model.put("mensaje","conductor registrado correctamente");
+        model.put("mensaje","Conductor registrado correctamente");
         return new ModelAndView("redirect:/login-conductor",model);
     }
 
+    @RequestMapping(path = "/home-conductor")
+    public ModelAndView mostrarViajesDelConductor(HttpServletRequest request) {
+        Conductor conductor = (Conductor) request.getSession().getAttribute("conductor");
+
+        if(conductor == null){
+            return new ModelAndView("redirect:/login-conductor");
+        }
+
+        List<Viaje> viajes = servicioConductor.obtenerViajesDelConductor(conductor.getId());
+
+        ModelMap model = new ModelMap();
+        model.put("conductor", conductor);
+        model.put("viajes", viajes);
+
+        return new ModelAndView("home-conductor",model);
+    }
     /*Otras cosas*/
     /*
-    * Mostrar el historial de viajes hechos
-    * Mostrar las ganancias acumuladas
-    * Vincular la combi al conductor
-    * Validar nueva cuenta o recupero de contraseña con email (librería - JavaMailSender + Jakarta Mail (o Javax Mail))
-    * */
+     * Mostrar el historial de viajes hechos
+     * Mostrar las ganancias acumuladas
+     * Vincular la combi al conductor
+     * Validar nueva cuenta o recupero de contraseña con email (librería - JavaMailSender + Jakarta Mail (o Javax Mail))
+     * */
 }

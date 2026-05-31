@@ -1,8 +1,13 @@
 package com.tallerwebi.dominio;
 
+import com.tallerwebi.dominio.excepcion.ConductorExistente;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
+@Transactional
 public class ServicioConductorImpl implements ServicioConductor {
 
     private RepositorioConductor repositorioConductor;
@@ -17,7 +22,19 @@ public class ServicioConductorImpl implements ServicioConductor {
     }
 
     @Override
-    public void registrarConductor(Conductor conductor) {
+    public void registrarConductor(Conductor conductor) throws ConductorExistente {
+        Conductor conductorExistente = repositorioConductor.buscarConductor(conductor.getEmail(), conductor.getPassword());
+        if (conductorExistente != null) {
+            throw new ConductorExistente();
+        }
         repositorioConductor.guardarConductor(conductor);
+    }
+
+    @Override
+    public List<Viaje> obtenerViajesDelConductor(Long idConductor){
+        if(idConductor == null){
+            throw new IllegalArgumentException("El id del conductor es obligatorio");
+        }
+        return repositorioConductor.obtenerViajesPorConductor(idConductor);
     }
 }

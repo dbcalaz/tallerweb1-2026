@@ -22,13 +22,18 @@ public class Viaje {
     private String fecha;
     private String horario;
     private Double precio;
+    private Integer numeroViaje;
     private Integer asientosDisponibles;
-    //private Combi combi;
+
+    @Enumerated(EnumType.STRING)
+    private EstadoDeViaje estadoDeViaje;
+
+    @ManyToOne
+    @JoinColumn(name = "id_combi")
+    private Combi combi;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    private Usuario usuario;
-
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "id_conductor")
     private Conductor conductor;
 
 

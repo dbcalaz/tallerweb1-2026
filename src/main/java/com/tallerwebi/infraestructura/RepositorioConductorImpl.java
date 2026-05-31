@@ -2,12 +2,13 @@ package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.Conductor;
 import com.tallerwebi.dominio.RepositorioConductor;
+import com.tallerwebi.dominio.Viaje;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
-@Transactional
+import java.util.List;
+
 @Repository
 public class RepositorioConductorImpl implements RepositorioConductor {
 
@@ -17,7 +18,6 @@ public class RepositorioConductorImpl implements RepositorioConductor {
         this.sessionFactory = sessionFactory;
     }
 
-    @Transactional
     @Override
     public Conductor buscarConductor(String email, String password) {
 
@@ -27,5 +27,14 @@ public class RepositorioConductorImpl implements RepositorioConductor {
     @Override
     public void guardarConductor(Conductor conductor) {
         sessionFactory.getCurrentSession().save(conductor);
+    }
+
+    @Override
+    public List<Viaje> obtenerViajesPorConductor(Long idConductor){
+        return (List<Viaje>) sessionFactory.getCurrentSession()
+                .createCriteria(Viaje.class)
+                .createAlias("conductor", "c")
+                .add(Restrictions.eq("c.id",idConductor))
+                .list();
     }
 }
