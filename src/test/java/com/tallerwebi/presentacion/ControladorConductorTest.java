@@ -3,7 +3,6 @@ package com.tallerwebi.presentacion;
 import com.tallerwebi.dominio.Conductor;
 import com.tallerwebi.dominio.ServicioConductor;
 import com.tallerwebi.dominio.TipoDeLicencia;
-import com.tallerwebi.dominio.Viaje;
 import com.tallerwebi.dominio.excepcion.ConductorExistente;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,9 +11,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
@@ -88,7 +84,7 @@ public class ControladorConductorTest {
         ModelAndView modelAndView = controladorConductor.validarLoginConductor(datosLogin, request);
 
         //validación
-        assertThat(modelAndView.getViewName(), equalToIgnoringCase("home-conductor"));
+        assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/home-conductor"));
     }
 
     @Test
