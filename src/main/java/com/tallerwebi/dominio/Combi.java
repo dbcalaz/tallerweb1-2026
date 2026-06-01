@@ -2,13 +2,14 @@ package com.tallerwebi.dominio;
 
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.*;
 
 @Entity
-
+@Setter
+@Getter
 public class Combi {
 
 
@@ -16,39 +17,18 @@ public class Combi {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     private TipoDeCombi tipoDeCombi;
     private Integer cantidadDeAsientos;
     private String tipoDeTransmision;
 
-    public Long getId() {
-        return id;
+
+    public Combi(Integer cantidadAsientos, TipoDeCombi tipoDeCombi, String transmision) {
+    this.cantidadDeAsientos = cantidadAsientos;
+    this.tipoDeCombi = tipoDeCombi;
+    this.tipoDeTransmision = transmision;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public Combi() {}
 
-    public TipoDeCombi getTipoDeCombi() {
-        return tipoDeCombi;
-    }
-
-    public void setTipoDeCombi(TipoDeCombi tipoDeCombi) {
-        this.tipoDeCombi = tipoDeCombi;
-    }
-
-    public String getTipoDeTransmision() {
-        return tipoDeTransmision;
-    }
-
-    public void setTipoDeTransmision(String tipoDeTransmision) {
-        this.tipoDeTransmision = tipoDeTransmision;
-    }
-
-    public Integer getCantidadDeAsientos() {
-        return cantidadDeAsientos;
-    }
-
-    public void setCantidadDeAsientos(Integer cantidadDeAsientos) {
-        this.cantidadDeAsientos = cantidadDeAsientos;
-    }
 }

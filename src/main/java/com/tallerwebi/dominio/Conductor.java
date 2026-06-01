@@ -19,8 +19,11 @@ public class Conductor {
     private String apellido;
     private String email;
     private String telefono;
-    private int documento;
+    private String documento;
+    private String password;
+    @Enumerated(EnumType.STRING)
     private TipoDeLicencia licencia;
-    @OneToMany(mappedBy = "conductor")
-    private List<Viaje> viajes;
+    private float calificacion;
+    private float ganancia;
+
 }

@@ -41,8 +41,9 @@
                     Acceso Conductores </h2>
                 <p>
                     Ingresá a tu panel operativo para iniciar tu jornada. </p>
-
-                <form class="driver-form">
+                <p th:if="${mensaje != null}" class="message" th:text="${mensaje}"></p>
+                <form class="driver-form" th:action="@{/validar-login-conductor}" method="post"
+                      th:object="${datosLogin}">
                     <div class="driver-input-group">
                         <label>
                             Correo electrónico
@@ -51,7 +52,8 @@
                             <span class="material-symbols-outlined">
                                 mail
                             </span>
-                            <input type="email" placeholder="usuario@bondiway.com">
+                            <input th:fiel="*{email}" id="email" name="email" type="email"
+                                   placeholder="usuario@bondiway.com">
                         </div>
                     </div>
                     <div class="driver-input-group">
@@ -67,11 +69,12 @@
                             <span class="material-symbols-outlined">
                                 lock
                             </span>
-                            <input type="password" placeholder="••••••••">
+                            <input th:field="*{password}" id="password" name="password" type="password"
+                                   placeholder="••••••••">
                         </div>
                     </div>
-                    <button class="driver-login-btn">
-                        <a th:href="@{/home-conductor}"> Ingresar</a>
+                    <button class="driver-login-btn" type="submit">
+                        Ingresar
                         <span class="material-symbols-outlined">
                             arrow_forward
                         </span>

@@ -2,5 +2,6 @@ package com.tallerwebi.dominio;
 
 public interface ServicioCombi {
 
-    Combi crearCombi(Combi combi);
+
+    Combi crearCombi(Integer cantidadAsientos, TipoDeCombi tipoDeCombi, String transmision);
 }

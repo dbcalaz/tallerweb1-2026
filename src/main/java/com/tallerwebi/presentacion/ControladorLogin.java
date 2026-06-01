@@ -66,13 +66,6 @@ public class ControladorLogin {
         return new ModelAndView("redirect:/login");
     }
 
-  /*@RequestMapping(path = "/nuevo-usuario", method = RequestMethod.GET)
-  public ModelAndView nuevoUsuario() {
-    ModelMap model = new ModelMap();
-    model.put("usuario", new Usuario());
-    return new ModelAndView("nuevo-usuario", model);
-  }*/
-
     @RequestMapping(path = "/home", method = RequestMethod.GET)
     public ModelAndView irAHome() {
         return new ModelAndView("home");
@@ -81,18 +74,5 @@ public class ControladorLogin {
     @RequestMapping(path = "/", method = RequestMethod.GET)
     public ModelAndView inicio() {
         return new ModelAndView("redirect:/login");
-    }
-
-    /*Conductor*/
-    @RequestMapping(path = "/login-conductor")
-    public ModelAndView loginConductor() {
-        ModelMap model = new ModelMap();
-        return new ModelAndView("login-conductor", model);
-    }
-
-    @RequestMapping(path = "/home-conductor")
-    public ModelAndView validarLoginConductor() {
-        ModelMap model = new ModelMap();
-        return new ModelAndView("home-conductor", model);
     }
 }

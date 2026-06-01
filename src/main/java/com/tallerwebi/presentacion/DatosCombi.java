@@ -13,9 +13,13 @@ public class DatosCombi {
     private TipoDeCombi tipoDeCombi;
 
 
-    public DatosCombi(Integer cantidadAsientos, String transmision, TipoDeCombi tipoDeCombi) {
+    public DatosCombi(Integer cantidadAsientos,  TipoDeCombi tipoDeCombi,String transmision) {
         this.cantidadAsientos = cantidadAsientos;
         this.transmision = transmision;
         this.tipoDeCombi = tipoDeCombi;
+    }
+
+    public DatosCombi() {
+
     }
 }

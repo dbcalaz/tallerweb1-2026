@@ -1,26 +1,30 @@
 package com.tallerwebi.presentacion;
 
+import com.tallerwebi.dominio.ServicioViaje;
+import com.tallerwebi.dominio.Viaje;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.servlet.ModelAndView;
-
+import java.util.ArrayList;
 import java.util.List;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class ControladorBusquedaTest {
 
     private ControladorBusqueda controladorBusqueda;
+    private ServicioViaje servicioViajeMock;
 
     @BeforeEach
     public void init() {
-        this.controladorBusqueda = new ControladorBusqueda();
+        this.servicioViajeMock = mock(ServicioViaje.class);
+        this.controladorBusqueda = new ControladorBusqueda(this.servicioViajeMock);
     }
 
-    // 1. Test para verificar que el inicio del flujo cargue bien
     @Test
     public void queAlPedirBuscarViajeDevuelvaLaVistaBuscarViajes() {
         ModelAndView modelAndView = controladorBusqueda.irABuscarViaje();
@@ -29,10 +33,17 @@ public class ControladorBusquedaTest {
         assertThat(modelAndView.getModel().get("datosBusqueda"), notNullValue());
     }
 
-    // 2. Test ACTUALIZADO: Ahora verifica que mande al listado en vez de a los asientos
     @Test
     public void queAlBuscarConDatosValidosDevuelvaElListadoDeViajes() {
         DatosBusqueda datosValidos = new DatosBusqueda("San Justo", "Ramos Mejia", "20/05/2026");
+
+        List<Viaje> viajesSimulados = new ArrayList<>();
+        viajesSimulados.add(new Viaje());
+        viajesSimulados.add(new Viaje());
+        viajesSimulados.add(new Viaje());
+
+        when(servicioViajeMock.buscarViajes("San Justo", "Ramos Mejia", "20/05/2026"))
+                .thenReturn(viajesSimulados);
 
         ModelAndView modelAndView = controladorBusqueda.procesarBusqueda(datosValidos);
 
@@ -42,7 +53,7 @@ public class ControladorBusquedaTest {
         assertThat(modelAndView.getModel().get("destino").toString(), equalToIgnoringCase("Ramos Mejia"));
 
         @SuppressWarnings("unchecked")
-        List<ViajeDisponible> viajes = (List<ViajeDisponible>) modelAndView.getModel().get("viajes");
+        List<Viaje> viajes = (List<Viaje>) modelAndView.getModel().get("viajes");
         assertThat(viajes, notNullValue());
         assertThat(viajes, hasSize(3));
     }
@@ -57,8 +68,7 @@ public class ControladorBusquedaTest {
 
     @Test
     public void queAlPedirSeleccionarAsientoDevuelvaLaVistaCorrespondiente() {
-        ModelAndView modelAndView = controladorBusqueda.irASeleccionarAsiento();
-
+        ModelAndView modelAndView = controladorBusqueda.irASeleccionarAsiento(1L);
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("seleccionarAsiento"));
     }
 }
