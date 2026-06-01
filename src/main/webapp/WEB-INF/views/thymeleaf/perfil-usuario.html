@@ -26,8 +26,9 @@
                 <img src="" alt="Perfil de usuario" class="hero-image">
             </div>
             <div class="hero-text">
-                <h1 class="driver-title" th:text="${usuario.nombre}"></h1>
-                <h2 class="driver-title" th:text="${usuario.apellido}"></h2>
+                <h1  th:text="${usuario.nombre}"></h1>
+                <h2  th:text="${usuario.apellido}"></h2>
+                <h2 th:text="${usuario.email}"></h2>
                 <div class="cta-buttons">
                     <button class="btn-primary">
                         Editar Perfil
