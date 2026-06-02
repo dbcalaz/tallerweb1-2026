@@ -29,7 +29,44 @@
             <form th:action="@{/crear-combi}" method="POST" th:object="${combi}" class="trip-form">
 
                 <div class="form-row three-columns-layout">
-                    <!-- Campo: Cantidad de Asientos -->
+                    <div class="form-group">
+                        <label for="patente">
+                            PATENTE
+                        </label>
+                        <div class="field-wrapper">
+                            <span class="material-symbols-outlined">
+                                pin
+                            </span>
+                            <input th:field="*{patente}" id="patente" type="text" placeholder="Ej: AB123CD" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="marca">
+                            MARCA
+                        </label>
+                        <div class="field-wrapper">
+                            <span class="material-symbols-outlined">
+                                sell
+                            </span>
+                            <input th:field="*{marca}" id="marca" type="text" placeholder="Ej: Mercedes-Benz" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="modelo">
+                            MODELO
+                        </label>
+                        <div class="field-wrapper">
+                            <span class="material-symbols-outlined">
+                                directions_car
+                            </span>
+                            <input th:field="*{modelo}" id="modelo" type="text" placeholder="Ej: Sprinter 311" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row three-columns-layout">
                     <div class="form-group">
                         <label for="asientos">
                             CANTIDAD DE ASIENTOS
@@ -42,7 +79,6 @@
                         </div>
                     </div>
 
-                    <!-- Campo: Transmisión -->
                     <div class="form-group">
                         <label for="transmision">
                             TRANSMISIÓN
@@ -62,7 +98,6 @@
                         </div>
                     </div>
 
-                    <!-- Campo: Tipo de Combi -->
                     <div class="form-group">
                         <label for="tipo">
                             TIPO DE COMBI

@@ -15,6 +15,9 @@ public class ControladorCrearCombiTest {
     private final TipoDeCombi tipoCombi = TipoDeCombi.ESTANDAR;
     private final String transmision= "MANUAL";
     private final TipoDeCombi tipoCombi2 = TipoDeCombi.TURISTICA;
+    private final String patente="abc1234";
+    private final String marca= "ford";
+    private final String modelo= "trafic";
 
 
     ServicioCombi servicioCombi= mock(ServicioCombiImplements.class);
@@ -25,7 +28,7 @@ public class ControladorCrearCombiTest {
 
         //preparacioon
         givenNoExisteUnaCombi();
-        DatosCombi datosCombi= new DatosCombi(NUMERO_ASIENTOS,tipoCombi,transmision);
+        DatosCombi datosCombi= new DatosCombi(NUMERO_ASIENTOS,tipoCombi,transmision,patente,marca,modelo);
         //ejecuto
         ModelAndView mv = whenCreoUnaCombie(datosCombi);
         //verifico
@@ -51,8 +54,8 @@ public class ControladorCrearCombiTest {
         //preparacioon
         givenNoExisteUnaCombi();
         //seteo el comportamiento de mi mock de servicioCrearCombi
-        doThrow(CantidadDeAsientosInvalidaException.class).when(servicioCombi).crearCombi(1,tipoCombi,transmision);
-        DatosCombi datosCombi= new DatosCombi(1,tipoCombi,transmision);
+        doThrow(CantidadDeAsientosInvalidaException.class).when(servicioCombi).crearCombi(1,tipoCombi,transmision,patente,marca,modelo);
+        DatosCombi datosCombi= new DatosCombi(1,tipoCombi,transmision,patente,marca,modelo);
         //ejecuto
         ModelAndView mv = whenCreoUnaCombie(datosCombi);
         //verifico
@@ -62,8 +65,8 @@ public class ControladorCrearCombiTest {
     @Test
     public void siIngresoAsientosYTipoDeCombiCorrectosYTransmisionDeFormaIncorrectaLaCreacionFalla(){
         givenNoExisteUnaCombi();
-        doThrow(TipoDeTransmisionInvalidaException.class).when(servicioCombi).crearCombi(11,tipoCombi,"monual");
-        DatosCombi datosCombi= new DatosCombi(11,tipoCombi,"monual");
+        doThrow(TipoDeTransmisionInvalidaException.class).when(servicioCombi).crearCombi(11,tipoCombi,"monual",patente,marca,modelo);
+        DatosCombi datosCombi= new DatosCombi(11,tipoCombi,"monual",patente,marca,modelo);
         ModelAndView mv = whenCreoUnaCombie(datosCombi);
         thenLaCreacionDeCombiEsErroneo(mv,"El tipo de transmision es incorrecta");
     }
@@ -71,8 +74,8 @@ public class ControladorCrearCombiTest {
     @Test
     public void siIngresoAsientosYTipoDeTransmisionCorrectosYTipoDeCombiDeFormaIncorrectaLaCreacionFalla(){
         givenNoExisteUnaCombi();
-        doThrow(TipoDeCombiInvalidaException.class).when(servicioCombi).crearCombi(11,tipoCombi2,transmision);
-        DatosCombi datosCombi= new DatosCombi(11,tipoCombi2,transmision);
+        doThrow(TipoDeCombiInvalidaException.class).when(servicioCombi).crearCombi(11,tipoCombi2,transmision,patente,marca,modelo);
+        DatosCombi datosCombi= new DatosCombi(11,tipoCombi2,transmision,patente,marca,modelo);
         ModelAndView mv = whenCreoUnaCombie(datosCombi);
         thenLaCreacionDeCombiEsErroneo(mv,"El tipo de combi es incorrecta");
     }

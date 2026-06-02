@@ -34,6 +34,33 @@ public class ControladorCrearCombi {
     public ModelAndView crearCombi(@ModelAttribute("combi") DatosCombi datosCombi) {
         ModelMap modelo = new ModelMap();
 
+        ModelAndView modelo1 = capturarInputVaciosDelDto(datosCombi, modelo);
+        if (modelo1 != null) return modelo1;
+
+        try {
+            servicioCombi.crearCombi(datosCombi.getCantidadAsientos(), datosCombi.getTipoDeCombi(), datosCombi.getTransmision(),datosCombi.getPatente(),datosCombi.getMarca(),datosCombi.getModelo());
+        } catch (CantidadDeAsientosInvalidaException ex) {
+            modelo.put("error", "La cantidad de asientos debe estar entre 10 y 20");
+            return new ModelAndView("crear-combi", modelo);
+        } catch (TipoDeTransmisionInvalidaException e) {
+            modelo.put("error", "El tipo de transmision es incorrecta");
+            return new ModelAndView("crear-combi", modelo);
+        }
+        catch (TipoDeCombiInvalidaException ext) {
+            modelo.put("error", "El tipo de combi es incorrecta");
+            return new ModelAndView("crear-combi", modelo);
+        }
+        catch (CombiExistenteException e){
+            modelo.put("error", "La combi con esa patente ya es existente");
+            return new ModelAndView("crear-combi", modelo);
+        }
+            modelo.put("combi", datosCombi);
+            modelo.put("mensaje", "La creacion fue exitosa");
+            return new ModelAndView("combi-registrada", modelo);
+
+    }
+
+    private static ModelAndView capturarInputVaciosDelDto(DatosCombi datosCombi, ModelMap modelo) {
         if (datosCombi.getTipoDeCombi() == null || datosCombi.getTipoDeCombi().toString().isEmpty()) {
             modelo.put("error", "La combi debe tener elegida el tipo de combi");
 
@@ -50,23 +77,18 @@ public class ControladorCrearCombi {
 
             return new ModelAndView("crear-combi", modelo);
         }
-
-        try {
-            servicioCombi.crearCombi(datosCombi.getCantidadAsientos(), datosCombi.getTipoDeCombi(), datosCombi.getTransmision());
-        } catch (CantidadDeAsientosInvalidaException ex) {
-            modelo.put("error", "La cantidad de asientos debe estar entre 10 y 20");
-            return new ModelAndView("crear-combi", modelo);
-        } catch (TipoDeTransmisionInvalidaException e) {
-            modelo.put("error", "El tipo de transmision es incorrecta");
+        if(datosCombi.getPatente() == null || datosCombi.getPatente().isEmpty()) {
+            modelo.put("error", "La patente debe ser escrita");
             return new ModelAndView("crear-combi", modelo);
         }
-        catch (TipoDeCombiInvalidaException ext) {
-            modelo.put("error", "El tipo de combi es incorrecta");
+        if(datosCombi.getMarca() == null || datosCombi.getMarca().isEmpty()) {
+            modelo.put("error", "La marca debe ser escrita");
             return new ModelAndView("crear-combi", modelo);
         }
-            modelo.put("combi", datosCombi);
-            modelo.put("mensaje", "La creacion fue exitosa");
-            return new ModelAndView("combi-registrada", modelo);
-
+        if(datosCombi.getModelo() == null || datosCombi.getModelo().isEmpty()) {
+            modelo.put("error", "El modelo debe ser escrito");
+            return new ModelAndView("crear-combi", modelo);
+        }
+        return null;
     }
 }

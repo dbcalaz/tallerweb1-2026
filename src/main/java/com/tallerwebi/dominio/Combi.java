@@ -23,13 +23,12 @@ public class Combi {
     private TipoDeCombi tipoDeCombi;
     private Integer cantidadDeAsientos;
     private String tipoDeTransmision;
+    private String patente;
+    private String marca;
+    private String modelo;
 
 
-    public Combi(Integer cantidadAsientos, TipoDeCombi tipoDeCombi, String transmision) {
-    this.cantidadDeAsientos = cantidadAsientos;
-    this.tipoDeCombi = tipoDeCombi;
-    this.tipoDeTransmision = transmision;
-    }
+
 
     public Combi() {}
 
