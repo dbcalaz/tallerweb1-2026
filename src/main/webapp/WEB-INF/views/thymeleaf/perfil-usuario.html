@@ -84,8 +84,7 @@
 
     <!--HISTORIAL-->
 
-    <h1>Historial</h1>
-    <h2 th:text="${#lists.size(reservas)}"></h2>
+
 
     <div class="feature-card"
          th:each="reserva : ${reservas}">
@@ -99,7 +98,7 @@
         <h2 th:text="${'$' + reserva.viaje.precio}"></h2>
 
     </div>
-    <h2>Fin historial</h2>
+
 
 
 

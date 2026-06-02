@@ -23,29 +23,11 @@ public class ControladorPerfilUsuario {
     public ModelAndView verPerfil(HttpServletRequest request) {
         Usuario usuario = (Usuario)request.getSession().getAttribute("usuario");
 
-        System.out.println(
-                request.getSession().getAttribute("usuario")
-        );
-
-
         if (usuario == null) {
             return new ModelAndView("redirect:/login");
         }
 
-        System.out.println("Usuario logueado ID: " + usuario.getId());
-        System.out.println("Usuario logueado Email: " + usuario.getEmail());
-
         List<Reserva> reservas = servicioperfilUsuario.obtenerReservasPorUsuario(usuario.getId());
-
-        System.out.println("Cantidad reservas: " + reservas.size());
-
-        for (Reserva r : reservas) {
-            System.out.println(
-                    "Reserva " + r.getId() +
-                            " Viaje: " + r.getViaje().getOrigen() +
-                            " -> " + r.getViaje().getDestino()
-            );
-        }
 
         ModelMap model = new ModelMap();
         model.put("usuario", usuario);
