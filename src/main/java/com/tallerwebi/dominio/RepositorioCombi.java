@@ -1,10 +1,7 @@
 package com.tallerwebi.dominio;
 
-import org.springframework.stereotype.Repository;
+public interface RepositorioCombi {
+    void guardar(Combi combi);
 
-@Repository
-public class RepositorioCombi {
-    public void save(Combi combi) {
-
-    }
+    Combi buscarPorPatente(String patente);
 }

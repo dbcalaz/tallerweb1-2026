@@ -63,15 +63,57 @@
                     </span>
                 </div>
                 <div class="route-steps">
+
                     <div class="step-item">
                         <div class="step-icon start">
+                            <span class="material-symbols-outlined">
+                                pin
+                            </span>
+                        </div>
+                        <div>
+                            <small>Patente</small>
+                            <h4 th:text="${combi.patente}">AB123CD</h4>
+                        </div>
+                    </div>
+
+                    <div class="step-line"></div>
+
+                    <div class="step-item">
+                        <div class="step-icon" style="background: var(--surface-200); color: var(--text-500);">
+                            <span class="material-symbols-outlined">
+                                sell
+                            </span>
+                        </div>
+                        <div>
+                            <small>Marca</small>
+                            <h4 th:text="${combi.marca}">Mercedes-Benz</h4>
+                        </div>
+                    </div>
+
+                    <div class="step-line"></div>
+
+                    <div class="step-item">
+                        <div class="step-icon" style="background: var(--surface-200); color: var(--text-500);">
+                            <span class="material-symbols-outlined">
+                                directions_car
+                            </span>
+                        </div>
+                        <div>
+                            <small>Modelo</small>
+                            <h4 th:text="${combi.modelo}">Sprinter 311</h4>
+                        </div>
+                    </div>
+
+                    <div class="step-line"></div>
+
+                    <div class="step-item">
+                        <div class="step-icon" style="background: var(--surface-200); color: var(--text-500);">
                             <span class="material-symbols-outlined">
                                 airline_seat_recline_normal
                             </span>
                         </div>
                         <div>
                             <small>Capacidad</small>
-
                             <h4 th:text="${combi.cantidadAsientos} + ' Pasajeros'">19 Pasajeros</h4>
                         </div>
                     </div>
@@ -86,7 +128,6 @@
                         </div>
                         <div>
                             <small>Transmisión</small>
-
                             <h4 th:text="${combi.transmision}">MANUAL</h4>
                         </div>
                     </div>
@@ -101,10 +142,10 @@
                         </div>
                         <div>
                             <small>Categoría</small>
-
                             <h4 th:text="${combi.tipoDeCombi}">ESTANDAR</h4>
                         </div>
                     </div>
+
                 </div>
             </div>
         </aside>
