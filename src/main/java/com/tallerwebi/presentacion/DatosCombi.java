@@ -17,7 +17,12 @@ public class DatosCombi {
 
 
     public DatosCombi(Integer numeroAsientos, TipoDeCombi tipoCombi, String transmision, String patente, String marca, String modelo) {
-    }
+    this.cantidadAsientos = numeroAsientos;
+    this.tipoDeCombi = tipoCombi;
+    this.transmision = transmision;
+    this.patente = patente;
+    this.marca = marca;
+    this.modelo = modelo;}
 
     public DatosCombi() {
 

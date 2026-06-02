@@ -14,7 +14,7 @@ import static org.mockito.Mockito.mock;
 
 public class ControladorCrearCombiTest {
 
-    private final Integer NUMERO_ASIENTOS = 20;
+    private final Integer NUMERO_ASIENTOS = 18;
     private final TipoDeCombi tipoCombi = TipoDeCombi.ESTANDAR;
     private final String transmision= "MANUAL";
     private final TipoDeCombi tipoCombi2 = TipoDeCombi.TURISTICA;
