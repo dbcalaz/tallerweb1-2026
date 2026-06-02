@@ -28,3 +28,20 @@ insert into Viaje
 (origen, destino, fecha, horario, precio, numeroViaje, asientosDisponibles, estadoDeViaje, id_conductor)
 values
 ('Castelar', 'Ituzaingo', '2026-05-18', '14:15', 1900.0, 1004, 0, 'FINALIZADO', 1);
+
+
+-- Prueba de reservas
+
+insert into Usuario
+(id,email,password,rol,activo,nombre,apellido,telefono)
+values
+    (2,'j@j','123','CLIENTE',true,'Juan','Bringa','1122334455');
+
+insert into Reserva (id_usuario, id_viaje, estadoReserva)
+values (2, 3, 'FINALIZADA');
+
+insert into Reserva (id_usuario, id_viaje, estadoReserva)
+values (2, 4, 'FINALIZADA');
+
+insert into Reserva (id_usuario, id_viaje, estadoReserva)
+values (2, 2, 'CONFIRMADA');
