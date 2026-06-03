@@ -147,7 +147,7 @@
                             <span class="driver-tag">
                                 EXPRESS
                             </span>
-                        <h4>$3.200</h4>
+                        <h4>$60.000</h4>
                     </div>
                     <div class="driver-trip-route">
                         <div>
@@ -181,7 +181,7 @@
                             <span class="driver-tag driver-tag-gold">
                                 CORPORATIVO
                             </span>
-                        <h4>$4.500</h4>
+                        <h4>$75.000</h4>
                     </div>
                     <div class="driver-trip-route">
                         <div>
@@ -215,7 +215,7 @@
                             <span class="driver-tag">
                                 REGULAR
                             </span>
-                        <h4>$2.800</h4>
+                        <h4>$40.000</h4>
                     </div>
                     <div class="driver-trip-route">
                         <div>
@@ -250,14 +250,13 @@
             <article class="driver-card">
                 <h3 class="driver-card-title">
                     Próximas salidas </h3>
-                <div class="driver-schedule-list" th:each="viaje : ${viajes}" th:if="${viaje.estadoDeViaje.name() == 'PENDIENTE'}">
+                <div class="driver-schedule-list" th:each="viaje : ${viajesPendientes}">
                     <div class="driver-schedule-item">
                         <div class="driver-time" th:text="${viaje.horario}">
-
                         </div>
                         <p class="driver-time-status">Puntual</p>
                         <div>
-                            <strong th:text="${viaje.origen} + ' - ' + ${viaje.destino}"></strong>
+                            <strong th:text="${viaje.origen + ' - ' + viaje.destino}"></strong>
                             <p>
                                 12 pasajeros confirmados </p>
                         </div>
@@ -267,7 +266,7 @@
                     </div>
                 </div>
             </article>
-            <article class="driver-card">
+           <article class="driver-card">
                 <div class="driver-section-header driver-history-header">
                     <h3>
                         Historial reciente </h3>
@@ -276,9 +275,9 @@
                     </a>
                 </div>
                 <div class="driver-history-list">
-                    <div class="driver-history-item" th:each="viaje : ${viajes}" th:if="${viaje.estadoDeViaje.name() == 'FINALIZADO'}">
+                    <div class="driver-history-item" th:each="viaje : ${viajesFinalizados}">
                         <div>
-                            <strong th:text="${viaje.origen} + ' - ' + ${viaje.destino}"></strong>
+                            <strong th:text="${viaje.origen + ' - ' + viaje.destino}"></strong>
                             <p th:text="${viaje.horario}"></p>
                         </div>
                         <span th:text="'$' + ${viaje.precio}"></span>

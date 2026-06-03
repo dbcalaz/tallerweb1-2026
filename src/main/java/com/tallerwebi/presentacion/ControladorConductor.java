@@ -82,24 +82,25 @@ public class ControladorConductor {
     }
 
     @RequestMapping(path = "/home-conductor")
-    public ModelAndView mostrarViajesDelConductor(HttpServletRequest request) {
+    public ModelAndView mostrarViajesPendientesDelConductor(HttpServletRequest request) {
         Conductor conductor = (Conductor) request.getSession().getAttribute("conductor");
 
         if(conductor == null){
             return new ModelAndView("redirect:/login-conductor");
         }
 
-        List<Viaje> viajes = servicioConductor.obtenerViajesDelConductor(conductor.getId());
+        List<Viaje> viajesPendientes = servicioConductor.obtenerViajesPendientesDelConductor(conductor.getId());
+        List<Viaje> viajesFinalizados = servicioConductor.obtenerViajesFinalizadosDelConductor(conductor.getId());
 
         ModelMap model = new ModelMap();
         model.put("conductor", conductor);
-        model.put("viajes", viajes);
-
+        model.put("viajesPendientes", viajesPendientes);
+        model.put("viajesFinalizados", viajesFinalizados);
         return new ModelAndView("home-conductor",model);
     }
+
     /*Otras cosas*/
     /*
-     * Mostrar el historial de viajes hechos
      * Mostrar las ganancias acumuladas
      * Vincular la combi al conductor
      * Validar nueva cuenta o recupero de contraseña con email (librería - JavaMailSender + Jakarta Mail (o Javax Mail))

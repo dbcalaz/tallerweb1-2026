@@ -9,4 +9,8 @@ public interface RepositorioConductor {
     void guardarConductor(Conductor conductor);
 
     List<Viaje> obtenerViajesPorConductor(Long idConductor);
+
+    List<Viaje> obtenerViajesPendientesPorConductor(Long idConductor);
+
+    List<Viaje> obtenerViajesFinalizadosPorConductor(Long idConductor);
 }

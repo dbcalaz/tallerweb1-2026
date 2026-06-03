@@ -11,4 +11,10 @@ public interface ServicioConductor {
     void registrarConductor(Conductor conductor) throws ConductorExistente;
 
     List<Viaje> obtenerViajesDelConductor(Long idConductor);
+
+    //Todos los viajes con estado = PENDIENTE
+    List<Viaje> obtenerViajesPendientesDelConductor(Long idConductor);
+
+    //Todos los viajes con estado = FINALIZADO
+    List<Viaje> obtenerViajesFinalizadosDelConductor(Long idConductor);
 }
