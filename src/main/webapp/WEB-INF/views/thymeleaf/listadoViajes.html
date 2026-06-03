@@ -29,11 +29,26 @@
         </div>
     </div>
 
-    <div class="trips-grid">
+    <div th:if="${sinResultados}" style="text-align: center; margin-top: 50px; background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); max-width: 600px; margin-left: auto; margin-right: auto;">
+        <span class="material-symbols-outlined" style="font-size: 64px; color: #ff9800; margin-bottom: 15px;">directions_bus</span>
+        <h3 style="margin-bottom: 10px;">No encontramos viajes activos</h3>
+        <p style="color: var(--text-secondary); margin-bottom: 25px; line-height: 1.5;">Actualmente no hay conductores viajando de <strong th:text="${origen}"></strong> a <strong th:text="${destino}"></strong>. Puedes solicitar el viaje de todas formas y te avisaremos cuando un conductor acepte tu ruta.</p>
+
+        <form th:action="@{/solicitar-espera}" method="POST">
+            <input type="hidden" name="origen" th:value="${origen}">
+            <input type="hidden" name="destino" th:value="${destino}">
+            <input type="hidden" name="pasajeros" th:value="${pasajeros}">
+            <button type="submit" class="btn-primary" style="padding: 14px 28px; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: 600;">
+                Solicitar viaje y quedar a la espera
+            </button>
+        </form>
+    </div>
+
+    <div th:if="${!sinResultados}" class="trips-grid">
         <article class="trip-card" th:each="viaje : ${viajes}">
             <div class="trip-top">
                 <div>
-                    <span class="trip-date" th:text="'HOY, ' + ${viaje.horario}"></span>
+                    <span class="trip-date" th:text="${viaje.fecha} + ' a las ' + ${viaje.horario}"></span>
                     <h3 th:text="${viaje.origen} + ' → ' + ${viaje.destino}"></h3>
                 </div>
                 <span class="seats-tag" th:text="${viaje.asientosDisponibles} + ' Asientos libres'"></span>
@@ -42,11 +57,11 @@
             <div class="trip-info">
                 <div class="trip-info-item">
                     <span class="material-symbols-outlined">schedule</span>
-                    <p>Duración aprox: 45 min</p>
+                    <p th:text="'Duración aprox: ' + ${viaje.duracion}"></p>
                 </div>
                 <div class="trip-info-item">
                     <span class="material-symbols-outlined">directions_bus</span>
-                    <p>Servicio: Combi Express</p>
+                    <p th:text="'Servicio: ' + ${viaje.tipoServicio}"></p>
                 </div>
             </div>
 
@@ -55,7 +70,7 @@
                     <span class="price-label">Precio</span>
                     <h4 th:text="'$' + ${viaje.precio}" style="font-size: 24px;"></h4>
                 </div>
-                <a th:href="@{/seleccionar-asiento(idViaje=${viaje.id})}" class="btn-primary text-center"
+                <a th:href="@{/seleccionar-asiento(idViaje=${viaje.id}, pasajeros=${pasajeros})}" class="btn-primary text-center"
                    style="text-decoration: none;
                     display: inline-block;
                     border-radius: 12px;
@@ -64,7 +79,8 @@
                     background-color: var(--primary, #4f378a);
                     color: #ffffff;
                     transition: 0.3s;
-                    border: none;"
+                    border: none;
+                    padding: 10px;"
                    onmouseover="this.style.filter='brightness(1.15)';"
                    onmouseout="this.style.filter='brightness(1.0)';"
                    onmousedown="this.style.transform='scale(0.95)';">

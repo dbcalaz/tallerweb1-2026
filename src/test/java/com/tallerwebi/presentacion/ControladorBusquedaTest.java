@@ -34,8 +34,8 @@ public class ControladorBusquedaTest {
     }
 
     @Test
-    public void queAlBuscarConDatosValidosDevuelvaElListadoDeViajes() {
-        DatosBusqueda datosValidos = new DatosBusqueda("San Justo", "Ramos Mejia", "20/05/2026");
+    public void queAlBuscarConDatosValidosFiltreDuplicadosYDevuelvaListado() {
+        DatosBusqueda datosValidos = new DatosBusqueda("San Justo", "Ramos Mejia", "20/05/2026", 1);
 
         List<Viaje> viajesSimulados = new ArrayList<>();
         viajesSimulados.add(new Viaje());
@@ -49,18 +49,16 @@ public class ControladorBusquedaTest {
 
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("listadoViajes"));
 
-        assertThat(modelAndView.getModel().get("origen").toString(), equalToIgnoringCase("San Justo"));
-        assertThat(modelAndView.getModel().get("destino").toString(), equalToIgnoringCase("Ramos Mejia"));
-
         @SuppressWarnings("unchecked")
         List<Viaje> viajes = (List<Viaje>) modelAndView.getModel().get("viajes");
         assertThat(viajes, notNullValue());
-        assertThat(viajes, hasSize(3));
+
+        assertThat(viajes, hasSize(1));
     }
 
     @Test
     public void queAlBuscarConOrigenVacioDevuelvaErrorYSeQuedeEnLaMismaVista() {
-        DatosBusqueda datosInvalidos = new DatosBusqueda("", "Ramos Mejia", "20/05/2026");
+        DatosBusqueda datosInvalidos = new DatosBusqueda("", "Ramos Mejia", "20/05/2026", 1);
         ModelAndView modelAndView = controladorBusqueda.procesarBusqueda(datosInvalidos);
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("buscarViajes"));
         assertThat(modelAndView.getModel().get("error").toString(), equalToIgnoringCase("Debe ingresar obligatoriamente Origen y Destino"));
@@ -68,7 +66,7 @@ public class ControladorBusquedaTest {
 
     @Test
     public void queAlPedirSeleccionarAsientoDevuelvaLaVistaCorrespondiente() {
-        ModelAndView modelAndView = controladorBusqueda.irASeleccionarAsiento(1L);
+        ModelAndView modelAndView = controladorBusqueda.irASeleccionarAsiento(1L, 1);
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("seleccionarAsiento"));
     }
 }

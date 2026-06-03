@@ -4,13 +4,15 @@ public class DatosBusqueda {
     private String origen;
     private String destino;
     private String fecha;
+    private Integer pasajeros;
 
     public DatosBusqueda() {}
 
-    public DatosBusqueda(String origen, String destino, String fecha) {
+    public DatosBusqueda(String origen, String destino, String fecha, Integer pasajeros) {
         this.origen = origen;
         this.destino = destino;
         this.fecha = fecha;
+        this.pasajeros = pasajeros;
     }
 
     public String getOrigen() { return origen; }
@@ -21,4 +23,7 @@ public class DatosBusqueda {
 
     public String getFecha() { return fecha; }
     public void setFecha(String fecha) { this.fecha = fecha; }
+
+    public Integer getPasajeros() { return pasajeros; }
+    public void setPasajeros(Integer pasajeros) { this.pasajeros = pasajeros; }
 }
