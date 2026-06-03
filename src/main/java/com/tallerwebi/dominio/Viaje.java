@@ -25,4 +25,6 @@ public class Viaje {
 
     @ManyToOne
     private Conductor conductor;
+    private String duracion;
+    private String tipoServicio;
 }
