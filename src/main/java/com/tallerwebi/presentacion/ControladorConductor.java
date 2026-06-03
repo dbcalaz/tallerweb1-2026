@@ -82,7 +82,7 @@ public class ControladorConductor {
     }
 
     @RequestMapping(path = "/home-conductor")
-    public ModelAndView mostrarViajesPendientesDelConductor(HttpServletRequest request) {
+    public ModelAndView mostrarViajesDelConductor(HttpServletRequest request) {
         Conductor conductor = (Conductor) request.getSession().getAttribute("conductor");
 
         if(conductor == null){
