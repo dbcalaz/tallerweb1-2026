@@ -517,6 +517,7 @@ body{
     border-left:4px solid var(--driver-primary);
     border-radius:22px;
     padding:22px;
+    margin-top: 8px;
 }
 
 .driver-time{

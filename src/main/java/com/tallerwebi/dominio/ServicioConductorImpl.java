@@ -30,11 +30,30 @@ public class ServicioConductorImpl implements ServicioConductor {
         repositorioConductor.guardarConductor(conductor);
     }
 
+    //Todos los viajes con todos los estados del viajes
     @Override
     public List<Viaje> obtenerViajesDelConductor(Long idConductor){
         if(idConductor == null){
             throw new IllegalArgumentException("El id del conductor es obligatorio");
         }
         return repositorioConductor.obtenerViajesPorConductor(idConductor);
+    }
+
+    //Todos los viajes con estado = PENDIENTE
+    @Override
+    public List<Viaje> obtenerViajesPendientesDelConductor(Long idConductor){
+        if(idConductor == null){
+            throw new IllegalArgumentException("El id del conductor es obligatorio");
+        }
+        return repositorioConductor.obtenerViajesPendientesPorConductor(idConductor);
+    }
+
+    //Todos los viajes con estado = FINALIZADO
+    @Override
+    public List<Viaje> obtenerViajesFinalizadosDelConductor(Long idConductor){
+        if(idConductor == null){
+            throw new IllegalArgumentException("El id del conductor es obligatorio");
+        }
+        return repositorioConductor.obtenerViajesFinalizadosPorConductor(idConductor);
     }
 }

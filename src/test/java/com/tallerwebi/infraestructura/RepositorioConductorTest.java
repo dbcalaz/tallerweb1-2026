@@ -1,66 +1,123 @@
 package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.Conductor;
+import com.tallerwebi.dominio.EstadoDeViaje;
 import com.tallerwebi.dominio.RepositorioConductor;
-import org.hibernate.Criteria;
+import com.tallerwebi.dominio.Viaje;
+import com.tallerwebi.integracion.config.HibernateTestConfig;
+import com.tallerwebi.integracion.config.SpringWebTestConfig;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Criterion;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import java.util.List;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
+
+@ExtendWith(SpringExtension.class)
+@WebAppConfiguration
+@ContextConfiguration(classes = {SpringWebTestConfig.class, HibernateTestConfig.class})
+@Transactional
 public class RepositorioConductorTest {
 
-    private RepositorioConductor repositorioConductor;
+    @Autowired
     private SessionFactory sessionFactory;
-    private Session session;
-    private Criteria criteria;
 
-    @BeforeEach
-    public void init() {
-        sessionFactory = Mockito.mock(SessionFactory.class);
-        session = Mockito.mock(Session.class);
-        criteria = Mockito.mock(Criteria.class);
+    @Autowired
+    private RepositorioConductor repositorioConductor;
 
-        when(sessionFactory.getCurrentSession()).thenReturn(session);
-        when(session.createCriteria(Conductor.class)).thenReturn(criteria);
-        when(criteria.add(any(Criterion.class))).thenReturn(criteria);
-
-        repositorioConductor = new RepositorioConductorImpl(sessionFactory);
+    private Session session() {
+        return sessionFactory.getCurrentSession();
     }
 
     @Test
-    @Transactional
     @Rollback
     public void queSeGuardeCorrectamenteUnConductor() {
-        //preparación
+
         Conductor conductor = new Conductor();
-        //ejecución
+        conductor.setEmail("test@email.com");
+        conductor.setPassword("1234");
+
         repositorioConductor.guardarConductor(conductor);
-        //validación
-        verify(session).save(conductor);
+
+        assertThat(conductor.getId(), notNullValue());
     }
 
     @Test
-    @Transactional
     @Rollback
     public void queCuandoSeBusqueUnConductorDevuelveConductor() {
-        //preparación
-        Conductor conductorEsperado = new Conductor();
-        when(criteria.uniqueResult()).thenReturn(conductorEsperado);
-        //ejecución
-        Conductor conductorEncontrado = repositorioConductor.buscarConductor("carlossanchez@email.com","asd");
-        //validación
-        assertThat(conductorEncontrado, equalTo(conductorEsperado));
+
+        Conductor conductor = new Conductor();
+        conductor.setEmail("carlossanchez@email.com");
+        conductor.setPassword("asd");
+
+        session().save(conductor);
+
+        Conductor conductorEncontrado = repositorioConductor.buscarConductor(conductor.getEmail(), conductor.getPassword());
+
+        assertThat(conductorEncontrado, notNullValue());
+        assertThat(conductorEncontrado.getEmail(), equalTo(conductor.getEmail()));
     }
 
+    @Test
+    @Rollback
+    public void queSeObtenganCorrectamenteLosViajesPendientesDeUnConductor() {
+
+        Conductor conductor = new Conductor();
+        session().save(conductor);
+
+        Viaje viaje1 = new Viaje();
+        viaje1.setConductor(conductor);
+        viaje1.setEstadoDeViaje(EstadoDeViaje.PENDIENTE);
+        session().save(viaje1);
+
+        Viaje viaje2 = new Viaje();
+        viaje2.setConductor(conductor);
+        viaje2.setEstadoDeViaje(EstadoDeViaje.PENDIENTE);
+        session().save(viaje2);
+
+        Viaje viaje3 = new Viaje();
+        viaje3.setConductor(conductor);
+        viaje3.setEstadoDeViaje(EstadoDeViaje.FINALIZADO);
+        session().save(viaje3);
+
+        List<Viaje> viajes = repositorioConductor.obtenerViajesPendientesPorConductor(conductor.getId());
+
+        assertThat(viajes.size(), equalTo(2));
+    }
+
+    @Test
+    @Rollback
+    public void queSeObtenganCorrectamenteLosViajesFinalizadosDeUnConductor() {
+
+        Conductor conductor = new Conductor();
+        session().save(conductor);
+
+        Viaje viaje1 = new Viaje();
+        viaje1.setConductor(conductor);
+        viaje1.setEstadoDeViaje(EstadoDeViaje.PENDIENTE);
+        session().save(viaje1);
+
+        Viaje viaje2 = new Viaje();
+        viaje2.setConductor(conductor);
+        viaje2.setEstadoDeViaje(EstadoDeViaje.PENDIENTE);
+        session().save(viaje2);
+
+        Viaje viaje3 = new Viaje();
+        viaje3.setConductor(conductor);
+        viaje3.setEstadoDeViaje(EstadoDeViaje.FINALIZADO);
+        session().save(viaje3);
+
+        List<Viaje> viajes = repositorioConductor.obtenerViajesFinalizadosPorConductor(conductor.getId());
+
+        assertThat(viajes.size(), equalTo(1));
+    }
 }

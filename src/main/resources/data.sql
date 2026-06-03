@@ -12,19 +12,19 @@ insert into Conductor(nombre, apellido, email, telefono, documento, password, li
 insert into Viaje
 (origen, destino, fecha, horario, precio, numeroViaje, asientosDisponibles, estadoDeViaje, id_conductor)
 values
-('Móron', 'Ramos Mejia', '2026-06-01', '08:00', 2500.0, 1001, 2, 'PENDIENTE', 1);
+('Móron', 'Ramos Mejia', '2026-06-01', '08:00', 50000.0, 1001, 2, 'PENDIENTE', 1);
 
 insert into Viaje
 (origen, destino, fecha, horario, precio, numeroViaje, asientosDisponibles, estadoDeViaje, id_conductor)
 values
-('San Justo', 'Liniers', '2026-06-02', '09:30', 3200.0, 1002, 3, 'PENDIENTE', 1);
+('San Justo', 'Liniers', '2026-06-02', '09:30', 32000.0, 1002, 3, 'PENDIENTE', 1);
 
 insert into Viaje
 (origen, destino, fecha, horario, precio, numeroViaje, asientosDisponibles, estadoDeViaje, id_conductor)
 values
-('Haedo', 'Moreno', '2026-05-20', '18:00', 2800.0, 1003, 0, 'FINALIZADO', 1);
+('Haedo', 'Moreno', '2026-05-20', '18:00', 28000.0, 1003, 0, 'FINALIZADO', 1);
 
 insert into Viaje
 (origen, destino, fecha, horario, precio, numeroViaje, asientosDisponibles, estadoDeViaje, id_conductor)
 values
-('Castelar', 'Ituzaingo', '2026-05-18', '14:15', 1900.0, 1004, 0, 'FINALIZADO', 1);
+('Castelar', 'Ituzaingo', '2026-05-18', '14:15', 19000.0, 1004, 0, 'FINALIZADO', 1);

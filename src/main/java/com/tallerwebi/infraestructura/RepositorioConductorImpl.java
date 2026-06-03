@@ -1,6 +1,7 @@
 package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.Conductor;
+import com.tallerwebi.dominio.EstadoDeViaje;
 import com.tallerwebi.dominio.RepositorioConductor;
 import com.tallerwebi.dominio.Viaje;
 import org.hibernate.SessionFactory;
@@ -29,6 +30,7 @@ public class RepositorioConductorImpl implements RepositorioConductor {
         sessionFactory.getCurrentSession().save(conductor);
     }
 
+    //Con todos los estados de viajes (pendientes, en curso, finalizados.)
     @Override
     public List<Viaje> obtenerViajesPorConductor(Long idConductor){
         return (List<Viaje>) sessionFactory.getCurrentSession()
@@ -37,4 +39,27 @@ public class RepositorioConductorImpl implements RepositorioConductor {
                 .add(Restrictions.eq("c.id",idConductor))
                 .list();
     }
+
+    //Sólo viajes con estado PENDIENTE
+    @Override
+    public List<Viaje> obtenerViajesPendientesPorConductor(Long idConductor){
+        return (List<Viaje>) sessionFactory.getCurrentSession()
+                .createCriteria(Viaje.class)
+                .createAlias("conductor", "c")
+                .add(Restrictions.eq("c.id",idConductor))
+                .add(Restrictions.eq("estadoDeViaje", EstadoDeViaje.PENDIENTE))
+                .list();
+    }
+
+    //Sólo viajes con estado FINALIZADO
+    @Override
+    public List<Viaje> obtenerViajesFinalizadosPorConductor(Long idConductor){
+        return (List<Viaje>) sessionFactory.getCurrentSession()
+                .createCriteria(Viaje.class)
+                .createAlias("conductor", "c")
+                .add(Restrictions.eq("c.id",idConductor))
+                .add(Restrictions.eq("estadoDeViaje", EstadoDeViaje.FINALIZADO))
+                .list();
+    }
 }
+
