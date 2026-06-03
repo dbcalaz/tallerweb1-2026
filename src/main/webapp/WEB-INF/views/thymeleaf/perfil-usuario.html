@@ -15,66 +15,98 @@
     <link rel="stylesheet" th:href="@{/css/variables.css}">
     <link rel="stylesheet" th:href="@{/css/components.css}">
     <link rel="stylesheet" th:href="@{/css/home.css}">
+    <link rel="stylesheet" th:href="@{/css/perfilUsuario.css}">
 </head>
 <body>
 <div th:replace="componentes/nav-bar :: navbar('home')"></div>
 <main class="page-container">
 
-    <section class="hero-section">
-        <div class="hero-content">
-            <div class="hero-image-continer">
-                <img src="" alt="Perfil de usuario" class="hero-image">
-            </div>
-            <div class="hero-text">
-                <h1  th:text="${usuario.nombre}"></h1>
-                <h2  th:text="${usuario.apellido}"></h2>
-                <h2 th:text="${usuario.email}"></h2>
-                <div class="cta-buttons">
-                    <button class="btn-primary">
-                        Editar Perfil
-                    </button>
-                    <button class="btn-secundary">
-                        Configuracion
-                    </button>
-                </div>
-            </div>
+    <!-- PERFIL -->
+    <div class="perfil-card">
+
+        <div class="perfil-avatar">
+            <img th:src="@{/imagenes/avatarPerfil.png}"
+                 alt="Foto de perfil">
         </div>
-    </section>
 
-    <!-- Estadisticas -->
+        <div class="perfil-info">
 
-    <section class="features-grid">
+            <h1 th:text="${usuario.nombre}"></h1>
+
+            <h2 th:text="${usuario.apellido}"></h2>
+
+            <p th:text="${usuario.email}"></p>
+
+            <div class="perfil-botones">
+
+                <button class="btn-primary">
+                    Editar Perfil
+                </button>
+
+                <button class="btn-secundary">
+                    Configuración
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ESTADÍSTICAS -->
+    <section class="estadisticas-grid">
+
         <div class="feature-card">
+        <span class="material-symbols-outlined feature-icon">
+            route
+        </span>
+
             <h3 class="feature-title">
                 Viajes Realizados
             </h3>
+
             <p class="feature-description">
                 124
             </p>
         </div>
 
         <div class="feature-card">
+        <span class="material-symbols-outlined feature-icon">
+            cancel
+        </span>
+
             <h3 class="feature-title">
                 Viajes Cancelados
             </h3>
-            <p class="feature-description" style="color:var(--error);">
+
+            <p class="feature-description">
                 2
             </p>
         </div>
 
         <div class="feature-card">
+        <span class="material-symbols-outlined feature-icon">
+            star
+        </span>
+
             <h3 class="feature-title">
-                Puntuacion
+                Puntuación
             </h3>
+
             <p class="feature-description">
                 4.9
             </p>
         </div>
 
         <div class="feature-card">
+        <span class="material-symbols-outlined feature-icon">
+            person
+        </span>
+
             <h3 class="feature-title">
                 Conductor Favorito
             </h3>
+
             <p class="feature-description">
                 Luis G.
             </p>
@@ -82,25 +114,83 @@
 
     </section>
 
+
     <!--HISTORIAL-->
 
+    <section class="recommended-section">
 
+        <div class="section-header">
+            <div>
+                <h2>Historial de Viajes</h2>
+                <p>Tus últimas reservas realizadas</p>
+            </div>
+        </div>
 
-    <div class="feature-card"
-         th:each="reserva : ${reservas}">
+        <div class="trips-history-list">
 
-        <p th:text="${reserva.estadoReserva}"></p>
+            <article class="trip-card"
+                     th:each="reserva : ${reservas}">
 
-        <h3 th:text="${reserva.viaje.origen}"></h3>
+                <div class="trip-top">
 
-        <h3 th:text="${reserva.viaje.destino}"></h3>
+                    <div>
+                    <span class="trip-date"
+                          th:text="${reserva.estadoReserva}">
+                    </span>
 
-        <h2 th:text="${'$' + reserva.viaje.precio}"></h2>
+                        <h3 th:text="${reserva.viaje.origen}">
+                        </h3>
+                    </div>
 
-    </div>
+                </div>
 
+                <div class="trip-info">
 
+                    <div class="trip-info-item">
+                    <span class="material-symbols-outlined">
+                        location_on
+                    </span>
 
+                        <p>
+                            Destino:
+                            <span th:text="${reserva.viaje.destino}">
+                        </span>
+                        </p>
+                    </div>
+
+                    <div class="trip-info-item">
+                    <span class="material-symbols-outlined">
+                        directions_bus
+                    </span>
+
+                        <p th:text="${reserva.estadoReserva}">
+                        </p>
+                    </div>
+
+                </div>
+
+                <div class="trip-footer">
+
+                    <div>
+                    <span class="price-label">
+                        Precio
+                    </span>
+
+                        <h4 th:text="'$' + ${reserva.viaje.precio}">
+                        </h4>
+                    </div>
+
+                    <button class="details-btn">
+                        Ver detalle
+                    </button>
+
+                </div>
+
+            </article>
+
+        </div>
+
+    </section>
 
 
 
