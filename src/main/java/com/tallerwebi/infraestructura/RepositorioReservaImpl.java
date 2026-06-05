@@ -31,6 +31,7 @@ public class RepositorioReservaImpl implements RepositorioReserva {
                 .createCriteria(Reserva.class)
                 .add(Restrictions.eq("usuario.id",idUsuario))
                 .addOrder(Order.desc("id"))
+                .setMaxResults(3)
                 .list();
 
     }
