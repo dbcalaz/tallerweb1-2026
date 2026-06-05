@@ -8,5 +8,5 @@ public interface RepositorioViaje {
     Viaje buscarPorId(Long id);
     void actualizar(Viaje viaje);
 
-    List<Viaje> buscarUltimosViajesDelUsuario(Long idUsuario);
+
 }

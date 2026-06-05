@@ -43,18 +43,5 @@ public class RepositorioViajeImpl implements RepositorioViaje {
         sessionFactory.getCurrentSession().update(viaje);
     }
 
-    @Override
-    public List<Viaje> buscarUltimosViajesDelUsuario(Long idUsuario) {
-        String hql =
-                "FROM Viaje v " +
-                        "WHERE v.usuario.id = :idUsuario " +
-                        "ORDER BY v.id DESC";
 
-        return sessionFactory
-                .getCurrentSession()
-                .createQuery(hql, Viaje.class)
-                .setParameter("idUsuario", idUsuario)
-                .setMaxResults(3)
-                .getResultList();
-    }
 }

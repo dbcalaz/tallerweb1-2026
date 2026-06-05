@@ -3,6 +3,8 @@ package com.tallerwebi.infraestructura;
 import com.tallerwebi.dominio.RepositorioReserva;
 import com.tallerwebi.dominio.Reserva;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -23,17 +25,14 @@ public class RepositorioReservaImpl implements RepositorioReserva {
 
     @Override
     public List<Reserva> buscarUltimasReservasPorUsuario(long idUsuario) {
-        String hql =
-                "FROM Reserva r " +
-                        "WHERE r.usuario.id = :idUsuario " +
-                        "ORDER BY r.id DESC";
 
-        return sessionFactory
+        return (List<Reserva>) sessionFactory
                 .getCurrentSession()
-                .createQuery(hql, Reserva.class)
-                .setParameter("idUsuario", idUsuario)
-                .setMaxResults(3)
-                .getResultList();
+                .createCriteria(Reserva.class)
+                .add(Restrictions.eq("usuario.id",idUsuario))
+                .addOrder(Order.desc("id"))
+                .list();
+
     }
 
 }
