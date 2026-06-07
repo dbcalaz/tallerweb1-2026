@@ -19,4 +19,6 @@ public interface ServicioConductor {
     List<Viaje> obtenerViajesFinalizadosDelConductor(Long idConductor);
 
     Combi buscarCombiActivePorIdConductor(Long id);
+
+    void registrarFalla(ReporteFalla reporteFalla);
 }

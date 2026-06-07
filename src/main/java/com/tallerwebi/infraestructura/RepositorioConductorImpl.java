@@ -74,5 +74,10 @@ public class RepositorioConductorImpl implements RepositorioConductor {
         }
         return asignacion.getCombi();
     }
+
+    @Override
+    public void guardarFalla(ReporteFalla reporteFalla) {
+        sessionFactory.getCurrentSession().save(reporteFalla);
+    }
 }
 

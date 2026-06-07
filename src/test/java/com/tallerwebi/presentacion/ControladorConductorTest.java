@@ -116,7 +116,7 @@ public class ControladorConductorTest {
         when(servicioConductor.obtenerViajesFinalizadosDelConductor(conductor.getId())).thenReturn(finalizados);
 
         // ejecución
-        ModelAndView modelAndView = controladorConductor.mostrarViajesDelConductor(request);
+        ModelAndView modelAndView = controladorConductor.homeConductor(request);
 
         // validación
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("home-conductor"));

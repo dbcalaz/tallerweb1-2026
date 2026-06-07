@@ -62,5 +62,16 @@ public class ServicioConductorImpl implements ServicioConductor {
         return repositorioConductor.obtenerCombiActivaPorIdConductor(id);
     }
 
+    @Override
+    public void registrarFalla(ReporteFalla reporteFalla) {
+        if(reporteFalla.getCombi() == null){
+            throw new IllegalArgumentException("Falta el id de la combi");
+        }
+        if (reporteFalla.getConductor() == null){
+            throw new IllegalArgumentException("Falta el id de la conductor");
+        }
+        repositorioConductor.guardarFalla(reporteFalla);
+    }
+
 
 }

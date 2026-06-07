@@ -45,6 +45,8 @@
         </div>
     </header>
     <main class="driver-main">
+            <p th:if="${mensaje != null}" class="message" th:text="${mensaje}"></p>
+    <p th:if="${error != null}" class="error-message" th:text="${error}"></p>
         <section class="driver-hero">
             <div>
                 <h2 class="driver-title" th:text="'¡Hola de nuevo, ' + ${conductor.nombre} + '!'"></h2>
@@ -79,7 +81,7 @@
                 </div>
                 <h3 th:text="${combi.marca + ' ' + combi.modelo}"></h3>
                 <div class="driver-vehicle-info">
-                        <span >
+                        <span>
                             <span class="material-symbols-outlined">
                                 badge
                             </span>
@@ -106,7 +108,7 @@
                         Revisión diaria
 
                     </button>
-                    <button class="driver-secondary-btn">
+                    <button id="btn-reportar-falla" class="driver-secondary-btn">
                         <span class="material-symbols-outlined">
         warning
     </span>
@@ -295,5 +297,68 @@
         <a href="#">Soporte 24/7</a>
     </div>
 </footer>
+<div id="modal-falla" class="modal-overlay">
+    <div class="driver-modal">
+        <div class="driver-modal-icon">
+            <span class="material-symbols-outlined">
+                warning
+            </span>
+        </div>
+        <h2>Reportar falla</h2>
+        <p class="driver-modal-description">
+            Describí el problema detectado en el vehículo.
+        </p>
+        <form th:action="@{/reportar-falla}" method="post" th:object="${reporteFalla}">
+            <div class="driver-modal-field">
+                <textarea th:field="*{descripcion}" id="motivos" name="motivos" rows="6" placeholder="Describí la falla encontrada..." required>
+                </textarea>
+            </div>
+            <div class="driver-modal-actions">
+                <button type="button" id="btn-cancelar-falla" class="driver-secondary-btn">
+                    Cancelar
+                </button>
+                <button type="submit" class="driver-primary-btn">
+                    Enviar reporte
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const btnAbrirModal =
+        document.getElementById("btn-reportar-falla");
+
+    const btnCerrarModal =
+        document.getElementById("btn-cancelar-falla");
+
+    const modal =
+        document.getElementById("modal-falla");
+    if (!btnAbrirModal || !btnCerrarModal || !modal) {
+        console.error("No se encontraron elementos del modal");
+        return;
+    }
+    btnAbrirModal.addEventListener("click", () => {
+        modal.classList.add("active");
+    });
+    btnCerrarModal.addEventListener("click", () => {
+        modal.classList.remove("active");
+    });
+
+    modal.addEventListener("click", (e) => {
+        if (e.target === modal) {
+            modal.classList.remove("active");
+        }
+    });
+
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+            modal.classList.remove("active");
+        }
+
+    });
+});
+</script>
 </body>
 </html>
