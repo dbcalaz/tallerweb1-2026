@@ -20,7 +20,7 @@ public class DatabaseInitializationConfig {
   public DataSourceInitializer dataSourceInitializer() {
     ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
     populator.addScript(new ClassPathResource("data.sql"));
-    populator.setContinueOnError(true);
+   // populator.setContinueOnError(true);
     DataSourceInitializer initializer = new DataSourceInitializer();
     initializer.setDataSource(dataSource);
     initializer.setDatabasePopulator(populator);

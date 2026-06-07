@@ -77,26 +77,25 @@
                 <div class="driver-card-badge">
                     Vehículo asignado
                 </div>
-                <h3>
-                    Mercedes-Benz Sprinter 515 </h3>
+                <h3 th:text="${combi.marca + ' ' + combi.modelo}"></h3>
                 <div class="driver-vehicle-info">
-                        <span>
+                        <span >
                             <span class="material-symbols-outlined">
                                 badge
                             </span>
-                            AD-542-XQ
+                            <span th:text="${combi.patente}"></span>
                         </span>
                     <span>
                             <span class="material-symbols-outlined">
                                 event_seat
                             </span>
-                            19 asientos
+                             <span th:text="${combi.cantidadDeAsientos} + ' asientos'"></span>
                         </span>
                     <span>
                             <span class="material-symbols-outlined">
                                 distance
                             </span>
-                            42.300 km
+                            <span th:text="${combi.tipoDeTransmision}"></span>
                         </span>
                 </div>
                 <div class="driver-vehicle-actions">

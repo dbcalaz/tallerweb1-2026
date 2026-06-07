@@ -2,6 +2,7 @@ package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.*;
 import com.tallerwebi.dominio.excepcion.CantidadDeAsientosInvalidaException;
+import com.tallerwebi.dominio.excepcion.CombiExistenteException;
 import com.tallerwebi.dominio.excepcion.TipoDeCombiInvalidaException;
 import com.tallerwebi.dominio.excepcion.TipoDeTransmisionInvalidaException;
 import org.springframework.beans.factory.annotation.Autowired;

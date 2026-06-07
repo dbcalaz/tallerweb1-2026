@@ -17,4 +17,6 @@ public interface ServicioConductor {
 
     //Todos los viajes con estado = FINALIZADO
     List<Viaje> obtenerViajesFinalizadosDelConductor(Long idConductor);
+
+    Combi buscarCombiActivePorIdConductor(Long id);
 }

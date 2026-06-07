@@ -1,5 +1,6 @@
 package com.tallerwebi.dominio;
 
+import com.tallerwebi.dominio.excepcion.CombiExistenteException;
 import com.tallerwebi.infraestructura.RepositorioCombiImpl;
 import com.tallerwebi.dominio.excepcion.CantidadDeAsientosInvalidaException;
 import com.tallerwebi.dominio.excepcion.TipoDeCombiInvalidaException;

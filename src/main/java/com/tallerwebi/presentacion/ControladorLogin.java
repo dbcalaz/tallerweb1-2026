@@ -41,7 +41,11 @@ public class ControladorLogin {
                 datosLogin.getPassword()
         );
         if (usuarioBuscado != null) {
-            request.getSession().setAttribute("ROL", usuarioBuscado.getRol());
+            if(usuarioBuscado.getRol().equals("ADMIN")){
+                request.getSession().setAttribute("usuario", usuarioBuscado);
+                return new ModelAndView("redirect:/panel-administrador");
+            }
+           // request.getSession().setAttribute("ROL", usuarioBuscado.getRol());
             request.getSession().setAttribute("usuario", usuarioBuscado);
             return new ModelAndView("redirect:/home");
         } else {
@@ -65,6 +69,11 @@ public class ControladorLogin {
             return new ModelAndView("nuevo-usuario", model);
         }
         return new ModelAndView("redirect:/login");
+    }
+
+    @RequestMapping(path = "/panel-administrador", method = RequestMethod.GET)
+    public ModelAndView irAPanelAdministrador() {
+        return new ModelAndView("panel-administrador");
     }
 
     @RequestMapping(path = "/home", method = RequestMethod.GET)

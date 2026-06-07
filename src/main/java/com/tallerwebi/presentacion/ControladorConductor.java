@@ -1,9 +1,6 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.Conductor;
-import com.tallerwebi.dominio.ServicioConductor;
-import com.tallerwebi.dominio.TipoDeLicencia;
-import com.tallerwebi.dominio.Viaje;
+import com.tallerwebi.dominio.*;
 import com.tallerwebi.dominio.excepcion.ConductorExistente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -89,11 +86,13 @@ public class ControladorConductor {
             return new ModelAndView("redirect:/login-conductor");
         }
 
+        Combi combi = servicioConductor.buscarCombiActivePorIdConductor(conductor.getId());
         List<Viaje> viajesPendientes = servicioConductor.obtenerViajesPendientesDelConductor(conductor.getId());
         List<Viaje> viajesFinalizados = servicioConductor.obtenerViajesFinalizadosDelConductor(conductor.getId());
 
         ModelMap model = new ModelMap();
         model.put("conductor", conductor);
+        model.put("combi", combi);
         model.put("viajesPendientes", viajesPendientes);
         model.put("viajesFinalizados", viajesFinalizados);
         return new ModelAndView("home-conductor",model);

@@ -56,4 +56,11 @@ public class ServicioConductorImpl implements ServicioConductor {
         }
         return repositorioConductor.obtenerViajesFinalizadosPorConductor(idConductor);
     }
+
+    @Override
+    public Combi buscarCombiActivePorIdConductor(Long id) {
+        return repositorioConductor.obtenerCombiActivaPorIdConductor(id);
+    }
+
+
 }
