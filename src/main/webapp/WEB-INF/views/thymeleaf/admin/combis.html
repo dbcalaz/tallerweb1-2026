@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Combis</title>
+
+    <link rel="stylesheet" th:href="@{/css/variables.css}">
+    <link rel="stylesheet" th:href="@{/css/components.css}">
+    <link rel="stylesheet" th:href="@{/css/panel-administrador.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    <link rel="icon" th:href="@{/imagenes/logo.png}" type="image/x-icon">
+</head>
+
+<body>
+
+<div class="admin-layout">
+    <div th:replace="componentes/sidebar-admin :: sidebar-admin('combis')"></div>
+    <main class="admin-content combis-content">
+        <div class="combis-header">
+            <div>
+                <h1>Gestión de vehículos</h1>
+                <p>Administra la flota de combis, estado técnico y asignaciones.</p>
+            </div>
+            <a th:href="@{/crear-combi}">
+                       <button class="btn-primary">
+                <span class="material-symbols-outlined">add_circle</span>
+                Agregar combi
+            </button>
+            </a>
+
+        </div>
+        <div class="combis-stats">
+            <div class="combi-stat-card">
+                <span class="material-symbols-outlined">directions_bus</span>
+                <h2>24</h2>
+                <p>Total Flota</p>
+            </div>
+            <div class="combi-stat-card">
+                <span class="material-symbols-outlined">check_circle</span>
+                <h2>18</h2>
+                <p>Disponibles</p>
+            </div>
+            <div class="combi-stat-card">
+                <span class="material-symbols-outlined">build</span>
+                <h2>3</h2>
+                <p>Mantenimiento</p>
+            </div>
+            <div class="combi-stat-card">
+                <span class="material-symbols-outlined">near_me</span>
+                <h2>3</h2>
+                <p>En viaje</p>
+            </div>
+        </div>
+        <div class="combis-filters">
+            <button class="filter active">Todos</button>
+            <button class="filter">Disponibles</button>
+            <button class="filter">En Taller</button>
+        </div>
+        <div class="combis-grid">
+            <div class="combi-card">
+                <div class="combi-img">
+                    <span class="status disponible">Disponible</span>
+                </div>
+                <div class="combi-body">
+                    <div class="combi-title">
+                        <div>
+                            <h3>Mercedes-Benz</h3>
+                            <p>Sprinter 516 • 2023</p>
+                        </div>
+                        <span class="patente">AF 123 BK</span>
+                    </div>
+                    <div class="combi-info">
+                        <span><i class="material-symbols-outlined">airline_seat_recline_normal</i>19 asientos</span>
+                        <span><i class="material-symbols-outlined">distance</i>42k km</span>
+                    </div>
+                    <div class="combi-actions">
+                        <button>Detalle</button>
+                        <button>Editar</button>
+                        <button>Asignar</button>
+                    </div>
+                </div>
+            </div>
+            <div class="combi-card">
+                <div class="combi-img">
+                    <span class="status viaje">En viaje</span>
+                </div>
+                <div class="combi-body">
+                    <div class="combi-title">
+                        <div>
+                            <h3>Ford Transit</h3>
+                            <p>Custom V362 • 2022</p>
+                        </div>
+                        <span class="patente">AD 988 RT</span>
+                    </div>
+                    <div class="combi-info">
+                        <span><i class="material-symbols-outlined">airline_seat_recline_normal</i>15 asientos</span>
+                        <span><i class="material-symbols-outlined">distance</i>88k km</span>
+                    </div>
+                    <div class="combi-actions">
+                        <button>Detalle</button>
+                        <button>Editar</button>
+                        <button>Asignar</button>
+                    </div>
+                </div>
+            </div>
+            <div class="combi-card">
+                <div class="combi-img">
+                    <span class="status mantenimiento">En mantenimiento</span>
+                </div>
+                <div class="combi-body">
+                    <div class="combi-title">
+                        <div>
+                            <h3>Renault Master</h3>
+                            <p>H2 L3 • 2021</p>
+                        </div>
+                        <span class="patente">AE 552 PL</span>
+                    </div>
+                    <div class="combi-info error">
+                        <span><i class="material-symbols-outlined">airline_seat_recline_normal</i>17 asientos</span>
+                        <span><i class="material-symbols-outlined">warning</i>Falla motor</span>
+                    </div>
+                    <div class="combi-actions">
+                        <button>Detalle</button>
+                        <button>Editar</button>
+                        <button>Asignar</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+<section class="combis-fallas">
+    <div class="fallas-header">
+        <div>
+            <h2>Fallas reportadas</h2>
+            <p>Alertas enviadas por choferes en tiempo real.</p>
+        </div>
+        <button class="fallas-link">
+            Ver historial completo
+            <span class="material-symbols-outlined">arrow_forward</span>
+        </button>
+    </div>
+    <div class="fallas-table-wrapper">
+        <table class="fallas-table">
+            <thead>
+            <tr>
+                <th>Vehículo</th>
+                <th>Fecha</th>
+                <th>Descripción</th>
+                <th>Estado</th>
+                <th class="text-right">Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="reporte : ${reportes}">
+                <td>
+                    <div class="vehiculo-cell">
+                        <div class="avatar">MB</div>
+                        <div>
+                            <p th:text="${reporte.combi.marca + ' ' + reporte.combi.modelo}"></p>
+                            <span th:text="${reporte.conductor.nombre + ' ' + reporte.conductor.apellido}"></span>
+                        </div>
+                    </div>
+                </td>
+                <td th:text="${reporte.fechaCreacionReporte}"></td>
+                <td class="descripcion" th:text="${reporte.descripcion}">
+                </td>
+                <td>
+                    <span class="estado pendiente">Pendiente</span>
+                </td>
+                <td class="acciones">
+                    <button title="Resuelta"><span class="material-symbols-outlined">check_circle</span></button>
+                    <button title="Mantenimiento"><span class="material-symbols-outlined">build_circle</span></button>
+                    <button title="Ver"><span class="material-symbols-outlined">visibility</span></button>
+                </td>
+            </tr>
+           <!-- <tr>
+                <td>
+                    <div class="vehiculo-cell">
+                        <div class="avatar">FT</div>
+                        <div>
+                            <p>Transit AD 988</p>
+                            <span>Chofer: Carlos Ruiz</span>
+                        </div>
+                    </div>
+                </td>
+                <td>Ayer, 19:20</td>
+                <td class="descripcion">
+                    Luz de presión de neumáticos encendida.
+                </td>
+                <td><span class="estado revision">En revisión</span></td>
+                <td class="acciones">
+                    <button title="Resuelta"><span class="material-symbols-outlined">check_circle</span></button>
+                    <button title="Mantenimiento"><span class="material-symbols-outlined">build_circle</span></button>
+                    <button title="Ver"><span class="material-symbols-outlined">visibility</span></button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="vehiculo-cell">
+                        <div class="avatar">RM</div>
+                        <div>
+                            <p>Master AE 552</p>
+                            <span>Chofer: Maria Sosa</span>
+                        </div>
+                    </div>
+                </td>
+                <td>12 Oct, 10:15</td>
+                <td class="descripcion"> Pérdida de potencia en pendientes pronunciadas.</td>
+                <td>
+                    <span class="estado critico">Crítico</span>
+                </td>
+                <td class="acciones">
+                    <button title="Resuelta"><span class="material-symbols-outlined">check_circle</span></button>
+                    <button title="Mantenimiento"><span class="material-symbols-outlined">build_circle</span></button>
+                    <button title="Ver"><span class="material-symbols-outlined">visibility</span></button>
+                </td>
+            </tr>-->
+            </tbody>
+        </table>
+    </div>
+    <div class="fallas-footer">
+        <button>Cargar más registros</button>
+    </div>
+</section>
+    </main>
+</div>
+</body>
+</html>

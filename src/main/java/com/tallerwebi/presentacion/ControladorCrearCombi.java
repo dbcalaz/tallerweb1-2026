@@ -34,7 +34,7 @@ public class ControladorCrearCombi {
 
     }
 
-    @RequestMapping(value = "/crear-combi", method = RequestMethod.POST)
+    @RequestMapping(path = "/crear-combi", method = RequestMethod.POST)
     public ModelAndView crearCombi(@ModelAttribute("combi") DatosCombi datosCombi) {
         ModelMap modelo = new ModelMap();
 

@@ -15,47 +15,7 @@
 </head>
 <body>
 <div class="admin-layout">
-    <aside class="admin-sidebar">
-        <div class="admin-brand">
-            <h2>BondiWay</h2>
-            <span>Panel de Gestión</span>
-        </div>
-        <nav class="admin-nav">
-            <a href="#" class="active">
-                <span class="material-symbols-outlined">
-                    leaderboard
-                </span>
-                Estadísticas
-            </a>
-            <a href="#">
-                <span class="material-symbols-outlined">
-                    directions_bus
-                </span>
-                Viajes
-            </a>
-            <a href="#">
-                <span class="material-symbols-outlined">
-                    directions_car
-                </span>
-                Vehículos
-            </a>
-            <a href="#">
-                <span class="material-symbols-outlined">
-                    person_pin
-                </span>
-                Conductores
-            </a>
-        </nav>
-        <div class="admin-user">
-            <span class="material-symbols-outlined">
-                account_circle
-            </span>
-            <div>
-                <strong>Admin Usuario</strong>
-                <small>Operaciones</small>
-            </div>
-        </div>
-    </aside>
+    <div th:replace="componentes/sidebar-admin :: sidebar-admin('admin')"></div>
     <main class="admin-content">
         <header class="admin-header">
             <div>
@@ -196,6 +156,5 @@
         </section>
     </main>
 </div>
-<div th:replace="componentes/footer :: footer"></div>
 </body>
 </html>

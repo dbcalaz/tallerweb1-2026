@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -23,4 +24,9 @@ public class ReporteFalla {
     private String descripcion;
 
     private Boolean resuelta;
+
+    private Date fechaCreacionReporte;
+
+    private Date fechaRealizadoReporte;
+
 }

@@ -39,3 +39,8 @@ values (2, 2, 'CONFIRMADA');
 
 -- inserts para la vista de administrador
 insert into Usuario(email, password, rol, activo) values('admin@mail.com', 'admin', 'ADMIN', true);
+
+INSERT INTO ReporteFalla (descripcion, resuelta, conductor_id, combi_id, fechaCreacionReporte, fechaRealizadoReporte) VALUES
+('Falla en el motor, pérdida de potencia en subida', false, 1, 1, '2026-06-01 08:30:00', NULL),
+('Luz de aceite encendida intermitente', false, 1, 1, '2026-06-02 10:15:00', NULL),
+('Ruido en tren delantero al girar', false, 1, 1, '2026-06-03 18:45:00', NULL);

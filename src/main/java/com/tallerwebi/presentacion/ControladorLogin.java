@@ -73,7 +73,7 @@ public class ControladorLogin {
 
     @RequestMapping(path = "/panel-administrador", method = RequestMethod.GET)
     public ModelAndView irAPanelAdministrador() {
-        return new ModelAndView("panel-administrador");
+        return new ModelAndView("admin/panel-administrador");
     }
 
     @RequestMapping(path = "/home", method = RequestMethod.GET)
