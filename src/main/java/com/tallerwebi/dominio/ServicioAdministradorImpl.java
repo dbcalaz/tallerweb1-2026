@@ -20,4 +20,20 @@ public class ServicioAdministradorImpl implements ServicioAdministrador {
     public List<ReporteFalla> obtenerFallasDeCombis() {
         return repositorioAdministrador.getFallas();
     }
+
+    @Override
+    public List<Conductor> obtenerConductores() {
+        return repositorioAdministrador.getConductores();
+    }
+
+    @Override
+    public void asignarNuevaCombiAConductor(Long idReporte, Long idCombi) {
+        repositorioAdministrador.updateCombiConductor(idReporte,idCombi);
+    }
+
+    @Override
+    public List<Combi> obtenerCombis() {
+        return repositorioAdministrador.getCombis();
+    }
+
 }
