@@ -7,4 +7,5 @@ public interface ServicioPerfilUsuario {
     Usuario buscarPorId(Long id);
     List<Reserva> obtenerReservasPorUsuario(Long idUsuario);
 
+    Conductor obtenerConductorFavorito(Long id);
 }

@@ -1,5 +1,6 @@
 package com.tallerwebi.infraestructura;
 
+import com.tallerwebi.dominio.Conductor;
 import com.tallerwebi.dominio.Reserva;
 import com.tallerwebi.dominio.Usuario;
 import com.tallerwebi.dominio.Viaje;
@@ -20,6 +21,7 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 @ExtendWith(SpringExtension.class)
@@ -91,6 +93,54 @@ public class RepositorioReservaTest {
 
     }
 
+    @Test
+    @Rollback
+    public void queSePuedaobtenerElConductorFavorito(){
+        Usuario usuario = new Usuario();
+        session().save(usuario);
+
+        Conductor conductor1 = new Conductor();
+        conductor1.setNombre("La Conductor 1");
+        session().save(conductor1);
+
+        Conductor conductor2 = new Conductor();
+        conductor2.setNombre("La Conductor 2");
+        session().save(conductor2);
+
+        Viaje viaje1 = new Viaje();
+        viaje1.setConductor(conductor1);
+        session().save(viaje1);
+        Viaje viaje2 = new Viaje();
+        viaje2.setConductor(conductor2);
+        session().save(viaje2);
+        Viaje viaje3 = new Viaje();
+        viaje3.setConductor(conductor2);
+        session().save(viaje3);
+        Viaje viaje4 = new Viaje();
+        viaje4.setConductor(conductor2);
+        session().save(viaje4);
+
+        Reserva reserva1 = new Reserva();
+        reserva1.setUsuario(usuario);
+        reserva1.setViaje(viaje1);
+        session().save(reserva1);
+        Reserva reserva2 = new Reserva();
+        reserva2.setUsuario(usuario);
+        reserva2.setViaje(viaje2);
+        session().save(reserva2);
+        Reserva reserva3 = new Reserva();
+        reserva3.setUsuario(usuario);
+        reserva3.setViaje(viaje3);
+        session().save(reserva3);
+        Reserva reserva4 = new Reserva();
+        reserva4.setUsuario(usuario);
+        reserva4.setViaje(viaje4);
+        session().save(reserva4);
+
+        Conductor favorito = repositorioReserva.obtenerConductorFavorito(usuario.getId());
+
+        assertEquals(conductor2.getId(),favorito.getId());
+    }
 
 
 

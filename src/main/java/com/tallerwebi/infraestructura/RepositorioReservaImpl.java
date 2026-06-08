@@ -1,5 +1,6 @@
 package com.tallerwebi.infraestructura;
 
+import com.tallerwebi.dominio.Conductor;
 import com.tallerwebi.dominio.RepositorioReserva;
 import com.tallerwebi.dominio.Reserva;
 import org.hibernate.SessionFactory;
@@ -34,6 +35,42 @@ public class RepositorioReservaImpl implements RepositorioReserva {
                 .setMaxResults(3)
                 .list();
 
+    }
+
+    @Override
+    public Conductor obtenerConductorFavorito(Long idUsuario) {
+
+        List<Reserva> reservas = sessionFactory
+                .getCurrentSession()
+                .createCriteria(Reserva.class)
+                .add(Restrictions.eq("usuario.id", idUsuario))
+                .list();
+
+        Conductor favorito = null;
+        int maxCantidad = 0;
+
+        for (Reserva reserva : reservas) {
+            Conductor conductor = reserva.getViaje().getConductor();
+
+            int cantidad = 0;
+
+            for (Reserva otraReserva : reservas) {
+                if (otraReserva.getViaje()
+                        .getConductor()
+                        .getId()
+                        .equals(conductor.getId())) {
+                    cantidad++;
+
+                }
+            }
+
+            if (cantidad > maxCantidad) {
+                maxCantidad = cantidad;
+                favorito = conductor;
+            }
+        }
+
+        return favorito;
     }
 
 }

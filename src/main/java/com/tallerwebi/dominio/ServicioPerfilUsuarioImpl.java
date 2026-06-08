@@ -29,4 +29,11 @@ public class ServicioPerfilUsuarioImpl implements ServicioPerfilUsuario {
         return repositorioReserva.buscarUltimasReservasPorUsuario(idUsuario);
     }
 
+    @Override
+    public Conductor obtenerConductorFavorito(Long idUsuario) {
+
+        List<Reserva> reservas = repositorioReserva.buscarUltimasReservasPorUsuario(idUsuario);
+        return repositorioReserva.obtenerConductorFavorito(idUsuario);
+    }
+
 }

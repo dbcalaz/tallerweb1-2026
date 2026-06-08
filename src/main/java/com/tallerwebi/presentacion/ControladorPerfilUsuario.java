@@ -1,9 +1,6 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.Reserva;
-import com.tallerwebi.dominio.ServicioPerfilUsuario;
-import com.tallerwebi.dominio.Usuario;
-import com.tallerwebi.dominio.Viaje;
+import com.tallerwebi.dominio.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,10 +26,12 @@ public class ControladorPerfilUsuario {
         }
 
         List<Reserva> reservas = servicioperfilUsuario.obtenerReservasPorUsuario(usuario.getId());
+        Conductor favorito = servicioperfilUsuario.obtenerConductorFavorito(usuario.getId());
 
         ModelMap model = new ModelMap();
         model.put("usuario", usuario);
         model.put("reservas", reservas);
+        model.put("favorito", favorito != null ? favorito.getNombre() : "Sin datos");
         return new ModelAndView("perfil-usuario", model);
 
     }
