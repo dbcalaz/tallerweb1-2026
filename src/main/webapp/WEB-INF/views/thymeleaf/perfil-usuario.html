@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>BondiWay - Inicio</title>
+
+    <link rel="icon" th:href="@{/imagenes/logo.png}" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+
+    <link rel="stylesheet" th:href="@{/css/variables.css}">
+    <link rel="stylesheet" th:href="@{/css/components.css}">
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+    <link rel="stylesheet" th:href="@{/css/perfilUsuario.css}">
+</head>
+<body>
+<div th:replace="componentes/nav-bar :: navbar('home')"></div>
+<main class="page-container">
+
+    <!-- PERFIL -->
+    <div class="perfil-card">
+
+        <div class="perfil-avatar">
+            <img th:src="@{/imagenes/avatarPerfil.png}"
+                 alt="Foto de perfil">
+        </div>
+
+        <div class="perfil-info">
+
+            <h1 th:text="${usuario.nombre}"></h1>
+
+            <h2 th:text="${usuario.apellido}"></h2>
+
+            <p th:text="${usuario.email}"></p>
+
+            <div class="perfil-botones">
+
+                <button class="btn-primary">
+                    Editar Perfil
+                </button>
+
+                <button class="btn-secundary">
+                    Configuración
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ESTADÍSTICAS -->
+    <section class="estadisticas-grid">
+
+        <div class="feature-card">
+        <span class="material-symbols-outlined feature-icon">
+            route
+        </span>
+
+            <h3 class="feature-title">
+                Viajes Realizados
+            </h3>
+
+            <p class="feature-description">
+                124
+            </p>
+        </div>
+
+        <div class="feature-card">
+        <span class="material-symbols-outlined feature-icon">
+            cancel
+        </span>
+
+            <h3 class="feature-title">
+                Viajes Cancelados
+            </h3>
+
+            <p class="feature-description">
+                2
+            </p>
+        </div>
+
+        <div class="feature-card">
+        <span class="material-symbols-outlined feature-icon">
+            star
+        </span>
+
+            <h3 class="feature-title">
+                Puntuación
+            </h3>
+
+            <p class="feature-description">
+                4.9
+            </p>
+        </div>
+
+        <div class="feature-card">
+        <span class="material-symbols-outlined feature-icon">
+            person
+        </span>
+
+            <h3 class="feature-title">
+                Conductor Favorito
+            </h3>
+
+            <p class="feature-description">
+                Luis G.
+            </p>
+        </div>
+
+    </section>
+
+
+    <!--HISTORIAL-->
+
+    <section class="recommended-section">
+
+        <div class="section-header">
+            <div>
+                <h2>Historial de Viajes</h2>
+                <p>Tus últimas reservas realizadas</p>
+            </div>
+        </div>
+
+        <div class="trips-history-list">
+
+            <article class="trip-card"
+                     th:each="reserva : ${reservas}">
+
+                <div class="trip-top">
+
+                    <div>
+                    <span class="trip-date"
+                          th:text="${reserva.estadoReserva}">
+                    </span>
+
+                        <h3 th:text="${reserva.viaje.origen}">
+                        </h3>
+                    </div>
+
+                </div>
+
+                <div class="trip-info">
+
+                    <div class="trip-info-item">
+                    <span class="material-symbols-outlined">
+                        location_on
+                    </span>
+
+                        <p>
+                            Destino:
+                            <span th:text="${reserva.viaje.destino}">
+                        </span>
+                        </p>
+                    </div>
+
+                    <div class="trip-info-item">
+                    <span class="material-symbols-outlined">
+                        directions_bus
+                    </span>
+
+                        <p th:text="${reserva.estadoReserva}">
+                        </p>
+                    </div>
+
+                </div>
+
+                <div class="trip-footer">
+
+                    <div>
+                    <span class="price-label">
+                        Precio
+                    </span>
+
+                        <h4 th:text="'$' + ${reserva.viaje.precio}">
+                        </h4>
+                    </div>
+
+                    <button class="details-btn">
+                        Ver detalle
+                    </button>
+
+                </div>
+
+            </article>
+
+        </div>
+
+    </section>
+
+
+
+</main>
+<div th:replace="componentes/footer :: footer"></div>
+</body>
+</html>

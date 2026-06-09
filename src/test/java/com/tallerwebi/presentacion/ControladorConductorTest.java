@@ -3,6 +3,7 @@ package com.tallerwebi.presentacion;
 import com.tallerwebi.dominio.Conductor;
 import com.tallerwebi.dominio.ServicioConductor;
 import com.tallerwebi.dominio.TipoDeLicencia;
+import com.tallerwebi.dominio.Viaje;
 import com.tallerwebi.dominio.excepcion.ConductorExistente;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,7 +13,10 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import java.util.List;
+
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
 import static org.mockito.Mockito.*;
 
@@ -97,5 +101,30 @@ public class ControladorConductorTest {
 
         //validación
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("login-conductor"));
+    }
+
+    @Test
+    public void queSeObtenganCorrectamenteViajesAsociadoAUnConductorPorSuId() {
+        // preparación
+        when(request.getSession()).thenReturn(session);
+        when(session.getAttribute("conductor")).thenReturn(conductor);
+
+        List<Viaje> pendientes = List.of(Mockito.mock(Viaje.class), Mockito.mock(Viaje.class));
+        List<Viaje> finalizados = List.of(Mockito.mock(Viaje.class));
+
+        when(servicioConductor.obtenerViajesPendientesDelConductor(conductor.getId())).thenReturn(pendientes);
+        when(servicioConductor.obtenerViajesFinalizadosDelConductor(conductor.getId())).thenReturn(finalizados);
+
+        // ejecución
+        ModelAndView modelAndView = controladorConductor.homeConductor(request);
+
+        // validación
+        assertThat(modelAndView.getViewName(), equalToIgnoringCase("home-conductor"));
+        assertThat(modelAndView.getModel().get("conductor"), equalTo(conductor));
+        assertThat(modelAndView.getModel().get("viajesPendientes"), equalTo(pendientes));
+        assertThat(modelAndView.getModel().get("viajesFinalizados"), equalTo(finalizados));
+
+        verify(servicioConductor, times(1)).obtenerViajesPendientesDelConductor(conductor.getId());
+        verify(servicioConductor, times(1)).obtenerViajesFinalizadosDelConductor(conductor.getId());
     }
 }

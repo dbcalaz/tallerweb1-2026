@@ -3,151 +3,93 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>BondiWay - Viaje solicitado</title>
+    <title>Mis Viajes - BondiWay</title>
 
     <link rel="icon" th:href="@{/imagenes/logo.png}" type="image/x-icon">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
     <link rel="stylesheet" th:href="@{/css/variables.css}">
     <link rel="stylesheet" th:href="@{/css/components.css}">
-    <link rel="stylesheet" th:href="@{/css/viaje-en-curso.css}">
+
+    <style>
+        .resumen-card {
+            background: white; border-radius: 16px; padding: 35px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            max-width: 550px; margin: 20px auto 40px auto; border-top: 6px solid #00a650;
+        }
+        .success-icon { color: #00a650; font-size: 54px; text-align: center; display: block; margin-bottom: 10px;}
+        .info-row { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f0f0f0; padding: 15px 0; font-size: 15px;}
+        .info-row:last-child { border-bottom: none; }
+        .info-label { color: #666; font-weight: 500;}
+        .info-value { font-weight: 700; color: #333; text-align: right;}
+        .total-row { background-color: #f8f9fa; border-radius: 8px; padding: 15px; margin-top: 15px;}
+        .total-row .info-value { font-size: 20px; color: var(--primary, #4f378a);}
+    </style>
 </head>
-<body>
+<body style="background-color: var(--background); display: flex; flex-direction: column; min-height: 100vh; margin: 0;">
+
 <div th:replace="componentes/nav-bar :: navbar('viaje')"></div>
-<main class="trip-status-page">
-    <section class="trip-status-wrapper">
-        <article class="status-card">
-            <div class="status-header">
-                <div class="status-icon">
-                    <span class="material-symbols-outlined">
-                        pending_actions
-                    </span>
-                </div>
-                <h1>
-                    Tu viaje fue solicitado </h1>
-                <p>
-                    Estamos procesando tu solicitud y
-                    asignando el mejor conductor para tu ruta. </p>
+
+<main style="padding-bottom: 60px; flex: 1;">
+    <div th:if="${misReservas != null && !misReservas.isEmpty()}" style="padding-top: 80px;">
+        <h2 style="text-align: center; color: #333; margin-bottom: 10px;">Mis Viajes Activos</h2>
+        <p style="text-align: center; color: #666; margin-bottom: 30px;">Aquí tienes el detalle de todas tus reservas en curso.</p>
+
+        <div class="resumen-card" th:each="reserva : ${misReservas}">
+            <span class="material-symbols-outlined success-icon">check_circle</span>
+            <h3 style="text-align: center; font-size: 22px; color: #333; margin-bottom: 5px;">¡Viaje Reservado!</h3>
+
+            <div class="info-row">
+                <span class="info-label">Origen</span>
+                <span class="info-value" th:text="${reserva.viaje.origen}"></span>
             </div>
-            <div class="status-chip">
-                <span class="pulse-dot"></span>
-                <span>
-                    Buscando conductor
-                </span>
+            <div class="info-row">
+                <span class="info-label">Destino</span>
+                <span class="info-value" th:text="${reserva.viaje.destino}"></span>
             </div>
-            <!--<div class="route-preview">
-                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCdMoptI-5RbNLgEkl8HNv7UlWPgPlAMf3TGH9_BQv2QEvCUIeDS9QvzXZFOADRj-nc4QebrSECiw9c4gWlPl0AeBg_tka61k7-u9xOJtcTMyshCbHVyFUDsKasxObouA7qXmjaDNLRC1fiMqwjQzr4TOGK2krq_ilT7B4BD5UuFVPRkB7OUeuPg7T2g2DbQaUeBW8_rUAmChVqJzL3XqzR63ezn-LkLCCUPUhwh7rP6Taz1EiU7fQDsCOD_0SMDln4kXSCKEPoUo0"
-                     alt="Ruta del viaje">
-                <div class="route-overlay"></div>
-                <div class="route-info">
-                    <div class="route-tag">
-                        <span class="material-symbols-outlined">
-                            route
-                        </span>
-                        Ruta optimizada
-                    </div>
-                    <span class="route-loading">
-                        Calculando llegada...
-                    </span>
-                </div>
-            </div>-->
-            <div class="trip-details">
-                <div class="detail-item">
-                    <div class="detail-icon origin">
-                        <span class="material-symbols-outlined">
-                            location_on
-                        </span>
-                    </div>
-                    <div class="detail-content">
-                        <span class="detail-label">
-                            ORIGEN
-                        </span>
-                        <h3 th:text="${datosViaje.origen}"></h3>
-                    </div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-icon destination">
-                        <span class="material-symbols-outlined">
-                            sports_score
-                        </span>
-                    </div>
-                    <div class="detail-content">
-                        <span class="detail-label">
-                            DESTINO
-                        </span>
-                        <h3 th:text="${datosViaje.destino}"></h3>
-                    </div>
-                </div>
+            <div class="info-row">
+                <span class="info-label">Fecha y Horario</span>
+                <span class="info-value" th:text="${reserva.viaje.fecha} + ' ' + ${reserva.viaje.horario}"></span>
             </div>
-            <div class="status-actions">
-                <form th:action="@{/confirmarViaje}" method="post" th:object="${datosViaje}">
-                    <input type="hidden" name="origen" th:value="${datosViaje.origen}">
-                    <input type="hidden" name="destino" th:value="${datosViaje.destino}">
-                    <button type="submit" class="cancel-trip-btn">
-                        Confirmar viaje
+            <div class="info-row">
+                <span class="info-label">Asientos asignados</span>
+                <span class="info-value">N° <span th:text="${reserva.asientos}"></span></span>
+            </div>
+            <div class="info-row total-row">
+                <span class="info-label" style="color: #333; font-weight: 700;">Total a pagar</span>
+                <span class="info-value" th:text="'$' + ${reserva.precioTotal}"></span>
+            </div>
+
+            <div style="margin-top: 30px; display: flex; gap: 15px;">
+                <form th:action="@{/cancelar-viaje}" method="post" style="flex: 1;">
+                    <input type="hidden" name="idViaje" th:value="${reserva.viaje.id}">
+                    <button type="submit" style="width: 100%; padding: 12px; background: white; border: 1px solid #dc3545; color: #dc3545; border-radius: 8px; font-weight: 600; cursor: pointer;">
+                        Cancelar Reserva
                     </button>
                 </form>
-                    <button type="button" class="cancel-trip-btn" id="openModal">
-                        Cancelar viaje
-                    </button>
             </div>
-        </article>
-        <p class="support-text">
-            ¿Necesitas ayuda?
-            <a href="#">
-                Contactar soporte
-            </a>
-        </p>
-    </section>
-</main>
-<div class="modal-overlay" id="cancelModal">
-    <div class="modal-card">
-        <div class="modal-icon">
-            <span class="material-symbols-outlined">
-                warning
-            </span>
         </div>
-        <h2>¿Cancelar viaje?</h2>
-        <p>
-            Tu solicitud será eliminada y perderás el viaje actual. </p>
-        <span class="modal-helper">
-            Podrás crear otro viaje cuando quieras.
-        </span>
-        <div class="modal-actions">
-            <form th:action="@{/cancelarViaje}" method="post">
-                <button type="submit" class="confirm-btn">
-                    Sí, cancelar viaje
-                </button>
-            </form>
-            <button type="button" class="cancel-btn" id="closeModal">
-                Volver
-            </button>
+
+        <div style="display: flex; justify-content: center; margin-top: 30px; gap: 15px;">
+            <a th:href="@{/inicio-exito}" class="btn-primary" style="text-decoration: none; padding: 12px 30px; border-radius: 8px; font-weight: 600;">
+                Volver al Inicio
+            </a>
         </div>
     </div>
-</div>
+
+    <div class="resumen-card" th:if="${sinViajes}" style="border-top: 8px solid #ff9800; margin-top: 120px;">
+        <span class="material-symbols-outlined success-icon" style="color: #ff9800;">directions_bus</span>
+        <h1 style="text-align: center; margin-bottom: 10px; font-size: 28px; color: #333;">No tienes viajes activos</h1>
+        <p style="text-align: center; color: #666; margin-bottom: 30px; font-size: 16px;">
+            Aun no has reservado ningun asiento o tu ultimo viaje ya termino.
+        </p>
+        <div style="display: flex; justify-content: center;">
+            <a th:href="@{/buscar-viaje}" class="btn-primary" style="text-decoration: none; padding: 14px 28px; border-radius: 8px; font-weight: 600;">
+                Buscar un viaje
+            </a>
+        </div>
+    </div>
+</main>
+
 <div th:replace="componentes/footer :: footer"></div>
 </body>
-<script>
-    const openBtn = document.getElementById("openModal");
-    const closeBtn = document.getElementById("closeModal");
-    const modal = document.getElementById("cancelModal");
-
-    openBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        modal.classList.add("active");
-    });
-
-    closeBtn.addEventListener("click", () => {
-        modal.classList.remove("active");
-    });
-
-    modal.addEventListener("click", (e) => {
-        if (e.target === modal) {
-            modal.classList.remove("active");
-        }
-    });
-</script>
 </html>

@@ -46,4 +46,9 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario {
   public void modificar(Usuario usuario) {
     sessionFactory.getCurrentSession().update(usuario);
   }
+
+  @Override
+  public Usuario burscarPorId(Long id) {
+    return null;
+  }
 }

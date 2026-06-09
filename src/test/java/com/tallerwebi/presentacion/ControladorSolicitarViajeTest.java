@@ -6,8 +6,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
+import static org.hamcrest.Matchers.containsString;
 import static org.mockito.Mockito.*;
 
 public class ControladorSolicitarViajeTest {
@@ -16,68 +22,68 @@ public class ControladorSolicitarViajeTest {
     private final String destino = "estacion merlo";
 
     private ServicioViaje servicioViajeMock;
-    private ControladorSolicitarViaje controladorSolicitarViaje;
-    private ControladorSolicitarViaje controladorSolicitarViajeMock;
+    private ControladorBusqueda controladorBusqueda;
+
+    private HttpServletRequest requestMock;
+    private HttpSession sessionMock;
 
     @BeforeEach
     public void init() {
         this.servicioViajeMock = mock(ServicioViaje.class);
-        this.controladorSolicitarViaje = new ControladorSolicitarViaje();
-        this.controladorSolicitarViajeMock = new ControladorSolicitarViaje(this.servicioViajeMock);
+        this.controladorBusqueda = new ControladorBusqueda(this.servicioViajeMock);
+
+        this.requestMock = mock(HttpServletRequest.class);
+        this.sessionMock = mock(HttpSession.class);
+        when(this.requestMock.getSession()).thenReturn(this.sessionMock);
     }
 
     @Test
-    public void siSeIngresaOrigenydestinoElPedidoEsExitoso() {
-        givenSeCreaViaje();
-        DatosViaje datosViaje = new DatosViaje(origen, destino);
-        ModelAndView modelAndView = whenIniciaViaje(datosViaje);
-        thenElPedidoEsExitoso(modelAndView);
-    }
+    public void siSeIngresaOrigenYDestinoElPedidoEsExitoso() {
+        DatosBusqueda datosBusqueda = new DatosBusqueda(origen, destino, "2026-06-15", 1);
+        when(servicioViajeMock.buscarViajes(origen, destino, "2026-06-15")).thenReturn(new ArrayList<>());
 
-    private void thenElPedidoEsExitoso(ModelAndView modelAndView) {
-        assertThat(modelAndView.getViewName(), equalToIgnoringCase("viajeEnCurso"));
+        ModelAndView modelAndView = controladorBusqueda.procesarBusqueda(datosBusqueda);
 
-    }
-
-    private ModelAndView whenIniciaViaje(DatosViaje datosViaje) {
-        ModelAndView mav = controladorSolicitarViaje.solicitarViaje(datosViaje);
-        return mav;
-    }
-
-    private void givenSeCreaViaje() {
+        assertThat(modelAndView.getViewName(), equalToIgnoringCase("listadoViajes"));
     }
 
     @Test
-    public void siNoSeIngresaOrigenyDestinoLaSolicitudNoEsExitosa() {
-        givenSeCreaViaje();
-        DatosViaje datosViaje = new DatosViaje("", "");
-        ModelAndView modelAndView = whenIniciaViaje(datosViaje);
-        thenLaSolicitudNoEsExitosa(modelAndView);
-    }
+    public void siNoSeIngresaOrigenYDestinoLaSolicitudNoEsExitosa() {
+        DatosBusqueda datosBusqueda = new DatosBusqueda("", "", "", 1);
 
-    private void thenLaSolicitudNoEsExitosa(ModelAndView modelAndView) {
-        assertThat(modelAndView.getViewName(), equalToIgnoringCase("solicitarViaje"));
+        ModelAndView modelAndView = controladorBusqueda.procesarBusqueda(datosBusqueda);
+
+        assertThat(modelAndView.getViewName(), equalToIgnoringCase("buscarViajes"));
+        assertThat(modelAndView.getModel().get("error").toString(), equalToIgnoringCase("Debe ingresar obligatoriamente Origen y Destino"));
     }
 
     @Test
-    public void queSePuedaConfirmarUnaSolicitudDeViaje() {
-        givenSeCreaViaje();
-        DatosViaje datosViaje = new DatosViaje(origen, destino);
-        ModelAndView modelAndView = whenSeConfirmaViaje(datosViaje);
-        thenLaConfirmacionEsExitosa(modelAndView);
-    }
+    public void queSePuedaConfirmarUnaSolicitudDeViajeEnEspera() {
+        ModelAndView modelAndView = controladorBusqueda.solicitarViajeEnEspera(origen, destino);
 
-    private ModelAndView whenSeConfirmaViaje(DatosViaje datosViaje) {
-        ModelAndView mav = controladorSolicitarViajeMock.confirmarViaje(datosViaje);
-        /*¿Cómo le agrego al usuario?*/
-        return mav;
-    }
-
-    private void thenLaConfirmacionEsExitosa(ModelAndView modelAndView) {
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("home"));
-        assertThat(modelAndView.getModel().get("mensaje").toString(), equalToIgnoringCase("El viaje fue asignado correctamente"));
-        verify(servicioViajeMock, times(1)).confirmarViaje(any(Viaje.class));
+        assertThat(modelAndView.getModel().get("mensaje").toString(), containsString("¡Solicitud registrada!"));
+    }
+
+    @Test
+    public void queSePuedaConfirmarUnAsientoYElViajeQuedeEnCurso() {
+        Long idViaje = 1L;
+        String asientosSeleccionados = "1,2";
+        Integer pasajeros = 1;
+
+        Viaje viajeMock = new Viaje();
+        viajeMock.setPrecio(1500.0);
+
+        when(servicioViajeMock.buscarPorId(idViaje)).thenReturn(viajeMock);
+
+        List<Reserva> reservasMock = new ArrayList<>();
+        when(sessionMock.getAttribute("misReservas")).thenReturn(reservasMock);
+
+        ModelAndView modelAndView = controladorBusqueda.confirmarAsiento(idViaje, pasajeros, asientosSeleccionados, requestMock);
+
+        assertThat(modelAndView.getViewName(), equalToIgnoringCase("viajeEnCurso"));
+        assertThat(modelAndView.getModel().get("mensaje").toString(), equalToIgnoringCase("¡Asiento(s) confirmado(s) con éxito!"));
+
+        verify(sessionMock, times(1)).setAttribute(eq("misReservas"), anyList());
     }
 }
-
-

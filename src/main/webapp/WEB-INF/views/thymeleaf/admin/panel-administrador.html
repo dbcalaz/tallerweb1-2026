@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BondiWay - Panel Administrador</title>
+    <link rel="icon" th:href="@{/imagenes/logo.png}" type="image/x-icon">
+    <link rel="stylesheet" th:href="@{/css/variables.css}">
+    <link rel="stylesheet" th:href="@{/css/components.css}">
+    <link rel="stylesheet" th:href="@{/css/panel-administrador.css}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"/>
+</head>
+<body>
+<div class="admin-layout">
+    <div th:replace="componentes/sidebar-admin :: sidebar-admin('admin')"></div>
+    <main class="admin-content">
+        <header class="admin-header">
+            <div>
+                <h1>Dashboard de Estadísticas</h1>
+                <p>Bienvenido de nuevo. Aquí está el resumen de hoy.</p>
+            </div>
+            <div class="admin-actions">
+                <button class="btn-secondary">Descargar reporte</button>
+                <button class="btn-primary">Nuevo viaje</button>
+            </div>
+        </header>
+
+        <section class="admin-stats">
+            <article class="admin-stat-card"><span class="material-symbols-outlined">route</span><h3>1.284</h3><p>Total de viajes</p></article>
+            <article class="admin-stat-card"><span class="material-symbols-outlined">payments</span><h3>$45.210</h3><p>Ingresos totales</p></article>
+            <article class="admin-stat-card"><span class="material-symbols-outlined">group</span><h3>8.542</h3><p>Usuarios activos</p></article>
+        </section>
+
+        <section class="admin-table-card">
+            <div class="table-header">
+                <h2>Viajes en tiempo real</h2>
+                <div class="table-search">
+                    <span class="material-symbols-outlined">search</span>
+                    <input type="text" placeholder="Buscar viaje...">
+                </div>
+            </div>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID Viaje</th>
+                            <th>Pasajero</th>
+                            <th>Ruta</th>
+                            <th>Estado</th>
+                            <th>Monto</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#BON-8921</td>
+                            <td>Julian Diaz</td>
+                            <td>Centro → Terminal Norte</td>
+                            <td><span class="status success">En curso</span></td>
+                            <td>$12.50</td>
+                            <td><button class="action-btn"><span class="material-symbols-outlined">visibility</span></button></td>
+                        </tr>
+                        <tr>
+                            <td>#BON-8920</td>
+                            <td>Sofía Morales</td>
+                            <td>Zona Rosa → Aeropuerto</td>
+                            <td><span class="status info">Programado</span></td>
+                            <td>$28.00</td>
+                            <td><button class="action-btn"><span class="material-symbols-outlined">visibility</span></button></td>
+                        </tr>
+                        <tr>
+                            <td>#BON-8919</td>
+                            <td>Ricardo Alva</td>
+                            <td>Plaza Mayor → Altavista</td>
+                            <td><span class="status neutral">Finalizado</span></td>
+                            <td>$15.75</td>
+                            <td><button class="action-btn"><span class="material-symbols-outlined">visibility</span></button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="pagination">
+                <span>Mostrando 3 de 150 viajes</span>
+                <div>
+                    <button>Anterior</button>
+                    <button class="active-page">1</button>
+                    <button>Siguiente</button>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+</body>
+</html>

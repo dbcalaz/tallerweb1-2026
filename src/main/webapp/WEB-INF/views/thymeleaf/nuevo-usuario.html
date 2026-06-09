@@ -36,10 +36,10 @@
         <form th:action="@{/registro}" method="POST" th:object="${datosRegistro}" class="register-form">
             <div class="two-columns">
                 <div class="input-group input-simple">
-                    <input id="nombre" type="text" placeholder="Ingresa tu nombre" required>
+                    <input th:field="*{nombre}" id="nombre" type="text" placeholder="Ingresa tu nombre" required>
                 </div>
                 <div class="input-group input-simple">
-                    <input id="apellido" type="text" placeholder="Ingresa tu apellido" required>
+                    <input th:field="*{apellido}" id="apellido" type="text" placeholder="Ingresa tu apellido" required>
                 </div>
             </div>
             <div class="input-group">

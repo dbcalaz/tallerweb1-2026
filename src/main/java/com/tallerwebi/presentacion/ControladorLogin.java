@@ -41,7 +41,12 @@ public class ControladorLogin {
                 datosLogin.getPassword()
         );
         if (usuarioBuscado != null) {
-            request.getSession().setAttribute("ROL", usuarioBuscado.getRol());
+            if(usuarioBuscado.getRol().equals("ADMIN")){
+                request.getSession().setAttribute("usuario", usuarioBuscado);
+                return new ModelAndView("redirect:/panel-administrador");
+            }
+           // request.getSession().setAttribute("ROL", usuarioBuscado.getRol());
+            request.getSession().setAttribute("usuario", usuarioBuscado);
             return new ModelAndView("redirect:/home");
         } else {
             /* Se instancia el ModelMap solo cuando es necesario (en el flujo de error) para evitar anomalías en el flujo de datos (DU-anomaly de PMD) */
@@ -64,6 +69,11 @@ public class ControladorLogin {
             return new ModelAndView("nuevo-usuario", model);
         }
         return new ModelAndView("redirect:/login");
+    }
+
+    @RequestMapping(path = "/panel-administrador", method = RequestMethod.GET)
+    public ModelAndView irAPanelAdministrador() {
+        return new ModelAndView("admin/panel-administrador");
     }
 
     @RequestMapping(path = "/home", method = RequestMethod.GET)

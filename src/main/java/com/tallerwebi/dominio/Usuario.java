@@ -11,9 +11,17 @@ import java.util.List;
 @Entity
 public class Usuario {
 
+    @OneToMany
+    private List<Reserva> reservas;
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private String nombre;
+    private String apellido;
+    private String telefono;
 
     private String email;
     private String password;
@@ -22,4 +30,5 @@ public class Usuario {
     public void activar() {
         activo = true;
     }
+
 }

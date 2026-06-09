@@ -1,0 +1,166 @@
+@media (max-width: 992px){
+    .features-grid{
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px){
+    .features-grid{
+        grid-template-columns: 1fr;
+    }
+}
+
+.page-container{
+    max-width:1400px;
+    margin:auto;
+    padding:40px;
+}
+
+.perfil-header{
+    display:flex;
+    align-items:center;
+    gap:32px;
+    margin-bottom:50px;
+}
+
+.perfil-avatar img{
+    width:140px;
+    height:140px;
+    border-radius:50%;
+    object-fit:cover;
+    border:4px solid white;
+    box-shadow:var(--shadow-card);
+}
+
+.perfil-info h1{
+    font-size:42px;
+    margin-bottom:10px;
+}
+
+.perfil-info p{
+    color:var(--text-secondary);
+    margin-bottom:20px;
+}
+
+.perfil-botones{
+    display:flex;
+    gap:15px;
+}
+
+.btn-secundary{
+    border:1px solid var(--border);
+    background:white;
+    padding:18px 24px;
+    border-radius:999px;
+    cursor:pointer;
+}
+
+.estadisticas-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:24px;
+    margin-bottom:60px;
+}
+
+.feature-card{
+    background:white;
+    border:1px solid var(--border);
+    border-radius:var(--radius-xl);
+    padding:28px;
+    box-shadow:var(--shadow-card);
+}
+
+.feature-title{
+    color:var(--text-secondary);
+    margin-bottom:10px;
+}
+
+.feature-description{
+    font-size:32px;
+    font-weight:700;
+    color:var(--primary);
+}
+
+.historial-section h2{
+    margin-bottom:30px;
+    font-size:36px;
+}
+
+.historial-section .trip-card{
+    margin-bottom:20px;
+}
+
+.features-grid{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    margin: 40px 0;
+}
+
+.feature-card{
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    padding: 28px;
+    box-shadow: var(--shadow-card);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.perfil-card{
+    background:white;
+    border-radius:var(--radius-xl);
+    box-shadow:var(--shadow-card);
+    border:1px solid var(--border);
+
+    display:flex;
+    overflow:hidden;
+
+    margin-bottom:50px;
+    min-height:260px;
+}
+
+.perfil-avatar{
+    width:280px;
+    flex-shrink:0;
+}
+
+.perfil-avatar img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+}
+
+.perfil-info{
+    flex:1;
+
+    padding:40px;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+}
+
+.perfil-info h1{
+    font-size:42px;
+    margin-bottom:8px;
+}
+
+.perfil-info h2{
+    font-size:28px;
+    color:var(--text-secondary);
+    margin-bottom:12px;
+}
+
+.perfil-info p{
+    color:var(--text-secondary);
+    margin-bottom:30px;
+}
+
+.perfil-botones{
+    display:flex;
+    gap:16px;
+}

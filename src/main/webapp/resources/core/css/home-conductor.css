@@ -517,6 +517,7 @@ body{
     border-left:4px solid var(--driver-primary);
     border-radius:22px;
     padding:22px;
+    margin-top: 8px;
 }
 
 .driver-time{
@@ -619,6 +620,98 @@ footer a{
 
 footer a:hover{
     color:var(--driver-primary);
+}
+
+/* Modal */
+.modal-overlay{
+    position: fixed;
+    inset: 0;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0,0,0,.70);
+    backdrop-filter: blur(6px);
+    z-index: 9999;
+}
+
+.modal-overlay.active{
+    display: flex;
+}
+
+.driver-modal{
+    width: min(520px, 90vw);
+    background: var(--driver-surface);
+    border: 1px solid var(--driver-border);
+    border-radius: 24px;
+    padding: 32px;
+    box-shadow: var(--driver-shadow);
+    display: flex;
+    flex-direction: column;
+}
+
+.driver-modal-icon{
+    width: 72px;
+    height: 72px;
+    margin: 0 auto 24px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(207,189,255,.12);
+}
+
+.driver-modal-icon span{
+    font-size: 40px;
+    color: var(--driver-primary);
+}
+
+.driver-modal h2{
+    margin-bottom: 10px;
+    text-align: center;
+    color: var(--driver-text);
+    font-size: 26px;
+}
+
+.driver-modal-description{
+    margin-bottom: 24px;
+    text-align: center;
+    color: var(--driver-text-secondary);
+    line-height: 1.5;
+}
+
+.driver-modal-field{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.driver-modal-field label{
+    font-weight: 600;
+    color: var(--driver-text);
+}
+
+.driver-modal-field textarea{
+    width: 100%;
+    min-height: 140px;
+    resize: none;
+    padding: 16px;
+    border-radius: 16px;
+    border: 1px solid var(--driver-border);
+    background: var(--driver-input-bg);
+    color: var(--driver-text);
+    font-family: inherit;
+    outline: none;
+}
+
+.driver-modal-field textarea:focus{
+    border-color: var(--driver-primary);
+}
+
+.driver-modal-actions{
+    margin-top: 24px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
 }
 
 @media (max-width:1100px){

@@ -47,6 +47,9 @@ public class ControladorRegistro {
 
     try {
       Usuario nuevoUsuario = new Usuario();
+      nuevoUsuario.setNombre(datosRegistro.getNombre());
+      nuevoUsuario.setApellido(datosRegistro.getApellido());
+      nuevoUsuario.setTelefono(datosRegistro.getTelefono());
       nuevoUsuario.setEmail(datosRegistro.getMail());
       nuevoUsuario.setPassword(datosRegistro.getPassword());
       // nuevoUsuario.setRol("USUARIO");

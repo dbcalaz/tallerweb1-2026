@@ -30,6 +30,7 @@ public class ServicioConductorImpl implements ServicioConductor {
         repositorioConductor.guardarConductor(conductor);
     }
 
+    //Todos los viajes con todos los estados del viajes
     @Override
     public List<Viaje> obtenerViajesDelConductor(Long idConductor){
         if(idConductor == null){
@@ -37,4 +38,40 @@ public class ServicioConductorImpl implements ServicioConductor {
         }
         return repositorioConductor.obtenerViajesPorConductor(idConductor);
     }
+
+    //Todos los viajes con estado = PENDIENTE
+    @Override
+    public List<Viaje> obtenerViajesPendientesDelConductor(Long idConductor){
+        if(idConductor == null){
+            throw new IllegalArgumentException("El id del conductor es obligatorio");
+        }
+        return repositorioConductor.obtenerViajesPendientesPorConductor(idConductor);
+    }
+
+    //Todos los viajes con estado = FINALIZADO
+    @Override
+    public List<Viaje> obtenerViajesFinalizadosDelConductor(Long idConductor){
+        if(idConductor == null){
+            throw new IllegalArgumentException("El id del conductor es obligatorio");
+        }
+        return repositorioConductor.obtenerViajesFinalizadosPorConductor(idConductor);
+    }
+
+    @Override
+    public Combi buscarCombiActivePorIdConductor(Long id) {
+        return repositorioConductor.obtenerCombiActivaPorIdConductor(id);
+    }
+
+    @Override
+    public void registrarFalla(ReporteFalla reporteFalla) {
+        if(reporteFalla.getCombi() == null){
+            throw new IllegalArgumentException("Falta el id de la combi");
+        }
+        if (reporteFalla.getConductor() == null){
+            throw new IllegalArgumentException("Falta el id de la conductor");
+        }
+        repositorioConductor.guardarFalla(reporteFalla);
+    }
+
+
 }

@@ -1,17 +1,14 @@
 <!DOCTYPE HTML>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>BondiWay - Inicio</title>
-
     <link rel="icon" th:href="@{/imagenes/logo.png}" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
-
     <link rel="stylesheet" th:href="@{/css/variables.css}">
     <link rel="stylesheet" th:href="@{/css/components.css}">
     <link rel="stylesheet" th:href="@{/css/home.css}">
@@ -21,241 +18,92 @@
 <main class="home-page">
     <p th:if="${mensaje != null}" class="message" th:text="${mensaje}"></p>
     <p th:if="${error != null}" class="error-message" th:text="${error}"></p>
+
     <section class="hero-section">
         <div class="hero-image">
             <div class="hero-overlay"></div>
-            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcjN9bcremedgjQcLn-CwoKDXo07W8xF7rXQNEB5qnVHVb2L-EF932Sgg7Ak6GsYBzUrYoB_zJ-lw0hnpfZ_WOqujKmZ3kxOc1GoMJppgmEKbrBA_JghVD4JxaMIB0a4zpV9JoUs9vlP71EjQRpFRpLg_r_S4xJXej41P_m4SMbey5JFWxXqSgBnNqS2nuq8VRt6l8ed_E0Tylie69Yr6RapUsnIyqC5Qz5e_uKVb-vYNACSt976xyz9npIVgvZF4CYJJ_cUW_YGs"
-                 alt="Transporte BondiWay">
+            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcjN9bcremedgjQcLn-CwoKDXo07W8xF7rXQNEB5qnVHVb2L-EF932Sgg7Ak6GsYBzUrYoB_zJ-lw0hnpfZ_WOqujKmZ3kxOc1GoMJppgmEKbrBA_JghVD4JxaMIB0a4zpV9JoUs9vlP71EjQRpFRpLg_r_S4xJXej41P_m4SMbey5JFWxXqSgBnNqS2nuq8VRt6l8ed_E0Tylie69Yr6RapUsnIyqC5Qz5e_uKVb-vYNACSt976xyz9npIVgvZF4CYJJ_cUW_YGs" alt="Transporte BondiWay">
             <div class="hero-content">
-                <h1>
-                    Inteligencia en Movimiento </h1>
-                <p>
-                    Descubre la forma más eficiente y cómoda
-                    de moverte por la ciudad con BondiWay. </p>
-                <div class="search-card">
+                <h1>Inteligencia en Movimiento</h1>
+                <p>Descubre la forma más eficiente y cómoda de moverte por la ciudad con BondiWay.</p>
+
+                <form th:action="@{/procesar-busqueda}" method="POST" class="search-card">
                     <div class="search-grid">
-                        <div class="input-group">
-                            <label>Origen</label>
-                            <div class="input-wrapper">
-                                <span class="material-symbols-outlined">
-                                    location_on
-                                </span>
-                                <input type="text" placeholder="¿Desde dónde?">
-                            </div>
-                        </div>
-                        <div class="input-group">
-                            <label>Destino</label>
-                            <div class="input-wrapper">
-                                <span class="material-symbols-outlined">
-                                    navigation
-                                </span>
-                                <input type="text" placeholder="¿A dónde vas?">
-                            </div>
-                        </div>
-                        <div class="input-group">
-                            <label>Fecha</label>
-                            <div class="input-wrapper">
-                                <span class="material-symbols-outlined">
-                                    calendar_today
-                                </span>
-                                <input type="date">
-                            </div>
-                        </div>
+                        <div class="input-group"><label>Origen</label><div class="input-wrapper"><span class="material-symbols-outlined">location_on</span><input type="text" name="origen" placeholder="¿Desde dónde?"></div></div>
+                        <div class="input-group"><label>Destino</label><div class="input-wrapper"><span class="material-symbols-outlined">navigation</span><input type="text" name="destino" placeholder="¿A dónde vas?"></div></div>
+                        <div class="input-group"><label>Fecha</label><div class="input-wrapper"><span class="material-symbols-outlined">calendar_today</span><input type="date" name="fecha"></div></div>
                         <div class="input-group">
                             <label>Pasajeros</label>
                             <div class="input-wrapper">
-                                <span class="material-symbols-outlined">
-                                    group
-                                </span>
-                                <select>
-                                    <option>1 Pasajero</option>
-                                    <option>2 Pasajeros</option>
-                                    <option>3 Pasajeros</option>
+                                <span class="material-symbols-outlined">group</span>
+                                <select name="pasajeros" style="width: 100%; border: none; background: transparent; outline: none; -webkit-appearance: none; cursor: pointer;">
+                                    <option value="1">1 Pasajero</option>
+                                    <option value="2">2 Pasajeros</option>
+                                    <option value="3">3 Pasajeros</option>
                                 </select>
-                                <span class="material-symbols-outlined select-arrow">
-                                    expand_more
-                                </span>
+                                <span class="material-symbols-outlined select-arrow">expand_more</span>
                             </div>
                         </div>
                     </div>
-                    <a th:href="@{/buscar-viaje}" style="text-decoration: none;">
-                        <button type="button" class="btn-primary search-btn" style="width: 100%;">
-                            Buscar viaje
-                        </button>
-                    </a>
-                </div>
+                    <button type="submit" class="btn-primary search-btn" style="width: 100%;">Buscar viaje</button>
+                </form>
             </div>
         </div>
     </section>
+
     <section class="recommended-section">
         <div class="section-header">
             <div>
                 <h2>Viajes recomendados</h2>
-                <p>
-                    Basado en tus rutas frecuentes y preferencias. </p>
+                <p>Basado en tus rutas frecuentes y preferencias.</p>
             </div>
-            <a href="#" class="see-all-link">
-                Ver todos
-                <span class="material-symbols-outlined">
-                    arrow_forward
-                </span>
-            </a>
+            <a href="#" class="see-all-link">Ver todos <span class="material-symbols-outlined">arrow_forward</span></a>
         </div>
+
         <div class="trips-grid">
             <article class="trip-card">
-                <div class="trip-top">
-                    <div>
-                        <span class="trip-date">
-                            HOY, 18:30
-                        </span>
-                        <h3>
-                            Buenos Aires → Pilar </h3>
-                    </div>
-                    <span class="seats-tag">
-                        4 Asientos
-                    </span>
-                </div>
+                <div class="trip-top"><div><span class="trip-date">HOY, 18:30</span><h3>Buenos Aires → Pilar</h3></div><span class="seats-tag">4 Asientos</span></div>
                 <div class="trip-info">
-                    <div class="trip-info-item">
-                        <span class="material-symbols-outlined">
-                            schedule
-                        </span>
-                        <p>Duración: 55 min</p>
-                    </div>
-
-                    <div class="trip-info-item">
-                        <span class="material-symbols-outlined">
-                            directions_bus
-                        </span>
-                        <p>Servicio Premium Express</p>
-                    </div>
+                    <div class="trip-info-item"><span class="material-symbols-outlined">schedule</span><p>Duración: 55 min</p></div>
+                    <div class="trip-info-item"><span class="material-symbols-outlined">directions_bus</span><p>Servicio Premium Express</p></div>
                 </div>
-                <div class="trip-footer">
-                    <div>
-                        <span class="price-label">
-                            Precio
-                        </span>
-                        <h4>$4.500</h4>
-                    </div>
-                    <button class="details-btn">
-                        Ver detalle
-                    </button>
-                </div>
+                <div class="trip-footer"><div><span class="price-label">Precio</span><h4>$4.500</h4></div><button class="details-btn">Ver detalle</button></div>
             </article>
             <article class="trip-card">
-                <div class="trip-top">
-                    <div>
-                        <span class="trip-date">
-                            MAÑANA, 09:15
-                        </span>
-                        <h3>
-                            La Plata → CABA </h3>
-                    </div>
-                    <span class="seats-tag">
-                        2 Asientos
-                    </span>
-                </div>
+                <div class="trip-top"><div><span class="trip-date">MAÑANA, 09:15</span><h3>La Plata → CABA</h3></div><span class="seats-tag">2 Asientos</span></div>
                 <div class="trip-info">
-                    <div class="trip-info-item">
-                        <span class="material-symbols-outlined">
-                            schedule
-                        </span>
-                        <p>Duración: 1h 10 min</p>
-                    </div>
-                    <div class="trip-info-item">
-                        <span class="material-symbols-outlined">
-                            eco
-                        </span>
-                        <p>Vehículo Eléctrico</p>
-                    </div>
+                    <div class="trip-info-item"><span class="material-symbols-outlined">schedule</span><p>Duración: 1h 10 min</p></div>
+                    <div class="trip-info-item"><span class="material-symbols-outlined">eco</span><p>Vehículo Eléctrico</p></div>
                 </div>
-                <div class="trip-footer">
-                    <div>
-                        <span class="price-label">
-                            Precio
-                        </span>
-                        <h4>$3.800</h4>
-                    </div>
-                    <button class="details-btn">
-                        Ver detalle
-                    </button>
-                </div>
+                <div class="trip-footer"><div><span class="price-label">Precio</span><h4>$3.800</h4></div><button class="details-btn">Ver detalle</button></div>
             </article>
             <article class="trip-card">
-                <div class="trip-top">
-                    <div>
-                        <span class="trip-date">
-                            MAÑANA, 20:00
-                        </span>
-                        <h3>
-                            Nordelta → Belgrano </h3>
-                    </div>
-                    <span class="seats-tag">
-                        6 Asientos
-                    </span>
-                </div>
+                <div class="trip-top"><div><span class="trip-date">MAÑANA, 20:00</span><h3>Nordelta → Belgrano</h3></div><span class="seats-tag">6 Asientos</span></div>
                 <div class="trip-info">
-                    <div class="trip-info-item">
-                        <span class="material-symbols-outlined">
-                            schedule
-                        </span>
-                        <p>Duración: 40 min</p>
-                    </div>
-                    <div class="trip-info-item">
-                        <span class="material-symbols-outlined">
-                            workspace_premium
-                        </span>
-                        <p>Servicio VIP Concierge</p>
-                    </div>
+                    <div class="trip-info-item"><span class="material-symbols-outlined">schedule</span><p>Duración: 40 min</p></div>
+                    <div class="trip-info-item"><span class="material-symbols-outlined">workspace_premium</span><p>Servicio VIP Concierge</p></div>
                 </div>
-                <div class="trip-footer">
-                    <div>
-                        <span class="price-label">
-                            Precio
-                        </span>
-                        <h4>$5.200</h4>
-                    </div>
-                    <button class="details-btn">
-                        Ver detalle
-                    </button>
-                </div>
+                <div class="trip-footer"><div><span class="price-label">Precio</span><h4>$5.200</h4></div><button class="details-btn">Ver detalle</button></div>
             </article>
         </div>
     </section>
+
     <section class="cta-section">
         <div class="cta-card driver-card">
             <div class="cta-content">
-                <h3>
-                    ¿Tienes un vehículo? </h3>
-                <p>
-                    Genera ingresos adicionales compartiendo
-                    tus viajes diarios. Únete a nuestra red
-                    de conductores profesionales. </p>
-
-                <a th:href="@{/nuevo-conductor}">
-                    <button> Convertirse en Conductor</button>
-                </a>
-
+                <h3>¿Tienes un vehículo?</h3>
+                <p>Genera ingresos adicionales compartiendo tus viajes diarios. Únete a nuestra red de conductores profesionales.</p>
+                <a th:href="@{/nuevo-conductor}"><button>Convertirse en Conductor</button></a>
             </div>
-            <span class="material-symbols-outlined cta-icon">
-                directions_car
-            </span>
+            <span class="material-symbols-outlined cta-icon">directions_car</span>
         </div>
         <div class="cta-card business-card">
             <div class="cta-content">
-                <h3>
-                    BondiWay Business </h3>
-                <p>
-                    Soluciones corporativas para el transporte
-                    de tus empleados. Eficiencia, control y
-                    sostenibilidad. </p>
-                <button>
-                    Saber más
-                </button>
+                <h3>BondiWay Business</h3>
+                <p>Soluciones corporativas para el transporte de tus empleados. Eficiencia, control y sostenibilidad.</p>
+                <button>Saber más</button>
             </div>
-            <span class="material-symbols-outlined cta-icon">
-                corporate_fare
-            </span>
+            <span class="material-symbols-outlined cta-icon">corporate_fare</span>
         </div>
     </section>
 </main>

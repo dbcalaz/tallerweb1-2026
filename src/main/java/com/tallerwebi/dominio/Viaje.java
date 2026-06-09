@@ -2,7 +2,9 @@ package com.tallerwebi.dominio;
 
 import lombok.Getter;
 import lombok.Setter;
+
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -36,5 +38,7 @@ public class Viaje {
     @JoinColumn(name = "id_conductor")
     private Conductor conductor;
 
+    @OneToMany
+    private List<Reserva> reservas;
 
 }
