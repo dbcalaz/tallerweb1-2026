@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Controller
 public class ControladorCrearCombi {
 
@@ -39,59 +42,65 @@ public class ControladorCrearCombi {
 
         ModelAndView modelo1 = capturarInputVaciosDelDto(datosCombi, modelo);
         if (modelo1 != null) return modelo1;
-
+        Combi combiGuardada;
         try {
-            servicioCombi.crearCombi(datosCombi.getCantidadAsientos(), datosCombi.getTipoDeCombi(), datosCombi.getTransmision(),datosCombi.getPatente(),datosCombi.getMarca(),datosCombi.getModelo());
-        } catch (CantidadDeAsientosInvalidaException ex) {
-            modelo.put("error", "La cantidad de asientos debe estar entre 10 y 20");
-            return new ModelAndView("crear-combi", modelo);
-        } catch (TipoDeTransmisionInvalidaException e) {
-            modelo.put("error", "El tipo de transmision es incorrecta");
+           combiGuardada = servicioCombi.crearCombi(datosCombi);
+        } catch (BondiWayException ex) {
+            modelo.put("error", ex.getMessage());
             return new ModelAndView("crear-combi", modelo);
         }
-        catch (TipoDeCombiInvalidaException ext) {
-            modelo.put("error", "El tipo de combi es incorrecta");
-            return new ModelAndView("crear-combi", modelo);
-        }
-        catch (CombiExistenteException e){
-            modelo.put("error", "La combi con esa patente ya es existente");
-            return new ModelAndView("crear-combi", modelo);
-        }
-            modelo.put("combi", datosCombi);
+            modelo.put("combi", combiGuardada);
             modelo.put("mensaje", "La creacion fue exitosa");
             return new ModelAndView("combi-registrada", modelo);
 
     }
-
     private static ModelAndView capturarInputVaciosDelDto(DatosCombi datosCombi, ModelMap modelo) {
-        if (datosCombi.getTipoDeCombi() == null || datosCombi.getTipoDeCombi().toString().isEmpty()) {
-            modelo.put("error", "La combi debe tener elegida el tipo de combi");
+        List<String> camposFaltantes = new ArrayList<>();
 
-            return new ModelAndView("crear-combi", modelo);
+        // 1. Evaluamos cada campo y si está vacío, agregamos su nombre a la lista
+        if (datosCombi.getTipoDeCombi() == null) {
+            camposFaltantes.add("Tipo de combi");
         }
-        if ( datosCombi.getTransmision() == null || datosCombi.getTransmision().isEmpty()) {
-            modelo.put("error", "La combi debe tener elegida el tipo de transmision");
+        if (datosCombi.getTransmision() == null || datosCombi.getTransmision().trim().isEmpty()) {
+            camposFaltantes.add("Transmisión");
+        }
+        if (datosCombi.getCantidadAsientos() == null) {
+            camposFaltantes.add("Cantidad de asientos");
+        }
+        if (datosCombi.getPatente() == null || datosCombi.getPatente().trim().isEmpty()) {
+            camposFaltantes.add("Patente");
+        }
+        if (datosCombi.getMarca() == null || datosCombi.getMarca().trim().isEmpty()) {
+            camposFaltantes.add("Marca");
+        }
+        if (datosCombi.getModelo() == null || datosCombi.getModelo().trim().isEmpty()) {
+            camposFaltantes.add("Modelo");
+        }
 
-            return new ModelAndView("crear-combi", modelo);
-        }
-        if (datosCombi.getCantidadAsientos() == null || datosCombi.getCantidadAsientos().toString().isEmpty()) {
+        // 2. Si la lista NO está vacía, significa que faltaron datos
+        if (!camposFaltantes.isEmpty()) {
 
-            modelo.put("error", "La cantidad de asientos debe ser elegida");
+            String mensaje = "Por favor, complete los siguientes campos obligatorios: " + String.join(", ", camposFaltantes);
 
+            modelo.put("error", mensaje);
             return new ModelAndView("crear-combi", modelo);
         }
-        if(datosCombi.getPatente() == null || datosCombi.getPatente().isEmpty()) {
-            modelo.put("error", "La patente debe ser escrita");
-            return new ModelAndView("crear-combi", modelo);
-        }
-        if(datosCombi.getMarca() == null || datosCombi.getMarca().isEmpty()) {
-            modelo.put("error", "La marca debe ser escrita");
-            return new ModelAndView("crear-combi", modelo);
-        }
-        if(datosCombi.getModelo() == null || datosCombi.getModelo().isEmpty()) {
-            modelo.put("error", "El modelo debe ser escrito");
-            return new ModelAndView("crear-combi", modelo);
-        }
+
+        // 3. Si llega hasta aquí, todos los campos estaban llenos
         return null;
     }
+
+   /* @RequestMapping(path = "/mis-flotas")
+    public ModelAndView mostrarFlota() {
+        ModelMap modelo = new ModelMap();
+
+        List<Combi> miFlota = servicioCombi.obtenerFlota();
+
+        // 2. Metes esa lista en el modelo
+        modelo.put("flota", miFlota);
+
+        return new ModelAndView("mis-flotas", modelo);
+    }
+*/
+
 }

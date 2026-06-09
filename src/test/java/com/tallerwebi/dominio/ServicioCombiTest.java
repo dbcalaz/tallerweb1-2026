@@ -4,6 +4,7 @@ import com.tallerwebi.infraestructura.RepositorioCombiImpl;
 import com.tallerwebi.dominio.excepcion.CantidadDeAsientosInvalidaException;
 import com.tallerwebi.dominio.excepcion.TipoDeCombiInvalidaException;
 import com.tallerwebi.dominio.excepcion.TipoDeTransmisionInvalidaException;
+import com.tallerwebi.presentacion.DatosCombi;
 import org.junit.jupiter.api.Test;
 
 
@@ -25,10 +26,11 @@ public class ServicioCombiTest {
     ServicioCombi servicioCombi = new ServicioCombiImplements(repositorioCombi);
 
     @Test
-    public void siSeIngresaAsientosTipoDeCombiYTransmisionDeFormaCorrectaLaCreacionEsExitosa(){
+    public void siSeIngresaAsientosTipoDeCombiYTransmisionDeFormaCorrectaLaCreacionEsExitosa() throws BondiWayException {
         givenNoExisteCombi();
+        DatosCombi datosCombi = new DatosCombi(cantidadAsientos,tipoDeCombi, transmision,"ABCD1234",marca,modelo);
 
-       Combi  combiCreada= whenCreoCombi(cantidadAsientos,transmision,tipoDeCombi, "ABCD1234",marca,modelo);
+       Combi  combiCreada= servicioCombi.crearCombi(datosCombi);
 
        thenLaCreacionEsExitosa(combiCreada);
 
@@ -38,8 +40,11 @@ public class ServicioCombiTest {
         assertThat(combiCreada,is(notNullValue()));
     }
 
-    private Combi whenCreoCombi(Integer cantidadAsientos, String transmision, TipoDeCombi tipoDeCombi, String patente,String marca, String modelo) {
-     return  servicioCombi.crearCombi(cantidadAsientos,tipoDeCombi,transmision,patente,marca,modelo);
+    private Combi whenCreoCombi(Integer cantidadAsientos, String transmision, TipoDeCombi tipoDeCombi, String patente,String marca, String modelo) throws BondiWayException {
+        DatosCombi datosCombi= new DatosCombi(cantidadAsientos,tipoDeCombi,transmision,patente,marca,modelo);
+        Combi combi = servicioCombi.crearCombi(datosCombi);
+
+        return combi;
     }
 
     private void givenNoExisteCombi() {

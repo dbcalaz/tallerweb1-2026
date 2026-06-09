@@ -1,5 +1,6 @@
 package com.tallerwebi.dominio;
 
+import com.tallerwebi.presentacion.DatosCombi;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.tallerwebi.dominio.excepcion.CantidadDeAsientosInvalidaException;
 import com.tallerwebi.dominio.excepcion.TipoDeCombiInvalidaException;
@@ -7,6 +8,7 @@ import com.tallerwebi.dominio.excepcion.TipoDeTransmisionInvalidaException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 @Transactional
@@ -23,30 +25,35 @@ public class ServicioCombiImplements implements ServicioCombi {
 
 
     @Override
-    public Combi crearCombi(Integer cantidadAsientos, TipoDeCombi tipoDeCombi, String transmision, String patente,String  marca,String modelo) {
+    public Combi crearCombi(DatosCombi datosCombi) throws BondiWayException {
 
-        if(cantidadAsientos<10 || cantidadAsientos>20){
-            throw new CantidadDeAsientosInvalidaException() ;
+        if(datosCombi.getCantidadAsientos()<10 || datosCombi.getCantidadAsientos()>20){
+                throw new CantidadDeAsientosInvalidaException() ;
         }
-        if (!("MANUAL".equals(transmision) || "AUTOMATICA".equals(transmision))) {
+        if (!("MANUAL".equals(datosCombi.getTransmision()) || "AUTOMATICA".equals(datosCombi.getTransmision()))) {
             throw new TipoDeTransmisionInvalidaException();
         }
-        if(!(tipoDeCombi == TipoDeCombi.ESTANDAR || tipoDeCombi == TipoDeCombi.TURISTICA)){
+        if(!(datosCombi.getTipoDeCombi()  == TipoDeCombi.ESTANDAR || datosCombi.getTipoDeCombi() == TipoDeCombi.TURISTICA)){
             throw new TipoDeCombiInvalidaException();
         }
-        if (this.repositorioCombi.buscarPorPatente(patente)!=null) {
-            throw new CombiExistenteException();
+        if (this.repositorioCombi.buscarPorPatente(datosCombi.getPatente())!=null) {
+            throw new CombiExistenteException(datosCombi.getPatente());
         }
 
         Combi combi = new Combi();
-        combi.setTipoDeCombi(tipoDeCombi);
-        combi.setCantidadDeAsientos(cantidadAsientos);
-        combi.setTipoDeTransmision(transmision);
-        combi.setPatente(patente);
-        combi.setMarca(marca);
-        combi.setModelo(modelo);
+        combi.setTipoDeCombi(datosCombi.getTipoDeCombi());
+        combi.setCantidadDeAsientos(datosCombi.getCantidadAsientos());
+        combi.setTipoDeTransmision(datosCombi.getTransmision());
+        combi.setPatente(datosCombi.getPatente());
+        combi.setMarca(datosCombi.getMarca());
+        combi.setModelo(datosCombi.getModelo());
         this.repositorioCombi.guardar(combi);
 
 return combi;
     }
+
+    /*@Override
+    public List<Combi> obtenerFlota() {
+        return repositorioCombi.obtenerTodasLasCombis();
+    }*/
 }

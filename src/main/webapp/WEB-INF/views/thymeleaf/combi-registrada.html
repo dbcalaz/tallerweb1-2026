@@ -67,6 +67,20 @@
                     <div class="step-item">
                         <div class="step-icon start">
                             <span class="material-symbols-outlined">
+                                tag
+                            </span>
+                        </div>
+                        <div>
+                            <small>Número de Unidad</small>
+                            <h4 th:text="'# ' + ${combi.id}"># 1</h4>
+                        </div>
+                    </div>
+
+                    <div class="step-line"></div>
+
+                    <div class="step-item">
+                        <div class="step-icon" style="background: var(--surface-200); color: var(--text-500);">
+                            <span class="material-symbols-outlined">
                                 pin
                             </span>
                         </div>
@@ -114,7 +128,7 @@
                         </div>
                         <div>
                             <small>Capacidad</small>
-                            <h4 th:text="${combi.cantidadAsientos} + ' Pasajeros'">19 Pasajeros</h4>
+                            <h4 th:text="${combi.cantidadDeAsientos} + ' Pasajeros'">19 Pasajeros</h4>
                         </div>
                     </div>
 
@@ -128,7 +142,7 @@
                         </div>
                         <div>
                             <small>Transmisión</small>
-                            <h4 th:text="${combi.transmision}">MANUAL</h4>
+                            <h4 th:text="${combi.tipoDeTransmision}">MANUAL</h4>
                         </div>
                     </div>
 
