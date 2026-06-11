@@ -52,13 +52,14 @@ public class ControladorCrearCombiTest {
     }
 
     @Test
-    public void siIngresoErroneamenteAsientosYTransmisionYtipoDeCombiDeFormaCorrectaLaCreacionFalla(){
+    public void siIngresoErroneamenteAsientosYTransmisionYtipoDeCombiDeFormaCorrectaLaCreacionFalla() throws BondiWayException {
 
         //preparacioon
         givenNoExisteUnaCombi();
+        DatosCombi datosCombi = new DatosCombi(1,tipoCombi,transmision,patente,marca,modelo);
         //seteo el comportamiento de mi mock de servicioCrearCombi
-        doThrow(CantidadDeAsientosInvalidaException.class).when(servicioCombi).crearCombi(1,tipoCombi,transmision,patente,marca,modelo);
-        DatosCombi datosCombi= new DatosCombi(1,tipoCombi,transmision,patente,marca,modelo);
+        doThrow(new CantidadDeAsientosInvalidaException()).when(servicioCombi).crearCombi(datosCombi);
+
         //ejecuto
         ModelAndView mv = whenCreoUnaCombie(datosCombi);
         //verifico
@@ -66,19 +67,21 @@ public class ControladorCrearCombiTest {
 
     }
     @Test
-    public void siIngresoAsientosYTipoDeCombiCorrectosYTransmisionDeFormaIncorrectaLaCreacionFalla(){
+    public void siIngresoAsientosYTipoDeCombiCorrectosYTransmisionDeFormaIncorrectaLaCreacionFalla() throws BondiWayException {
         givenNoExisteUnaCombi();
-        doThrow(TipoDeTransmisionInvalidaException.class).when(servicioCombi).crearCombi(11,tipoCombi,"monual",patente,marca,modelo);
         DatosCombi datosCombi= new DatosCombi(11,tipoCombi,"monual",patente,marca,modelo);
+        doThrow(new TipoDeTransmisionInvalidaException()).when(servicioCombi).crearCombi(datosCombi);
+
         ModelAndView mv = whenCreoUnaCombie(datosCombi);
         thenLaCreacionDeCombiEsErroneo(mv,"El tipo de transmision es incorrecta");
     }
 
     @Test
-    public void siIngresoAsientosYTipoDeTransmisionCorrectosYTipoDeCombiDeFormaIncorrectaLaCreacionFalla(){
+    public void siIngresoAsientosYTipoDeTransmisionCorrectosYTipoDeCombiDeFormaIncorrectaLaCreacionFalla() throws BondiWayException {
         givenNoExisteUnaCombi();
-        doThrow(TipoDeCombiInvalidaException.class).when(servicioCombi).crearCombi(11,tipoCombi2,transmision,patente,marca,modelo);
         DatosCombi datosCombi= new DatosCombi(11,tipoCombi2,transmision,patente,marca,modelo);
+        doThrow(new TipoDeCombiInvalidaException()).when(servicioCombi).crearCombi(datosCombi);
+
         ModelAndView mv = whenCreoUnaCombie(datosCombi);
         thenLaCreacionDeCombiEsErroneo(mv,"El tipo de combi es incorrecta");
     }

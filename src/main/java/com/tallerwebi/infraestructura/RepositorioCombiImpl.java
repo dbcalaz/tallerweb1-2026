@@ -7,6 +7,8 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository("RespositorioCombi")
 public class RepositorioCombiImpl implements RepositorioCombi {
 
@@ -32,5 +34,9 @@ public class RepositorioCombiImpl implements RepositorioCombi {
     public Combi buscarPorPatente(String patente) {
        return (Combi) sessionFactory.getCurrentSession().createCriteria(Combi.class).add(Restrictions.eq("patente",patente)).uniqueResult();
 
+    }
+    @Override
+    public List<Combi> obtenerTodasLasCombis(){
+        return sessionFactory.getCurrentSession().createCriteria(Combi.class).list();
     }
 }

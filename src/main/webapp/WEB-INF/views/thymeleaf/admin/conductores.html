@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BondiWay - Conductores</title>
+    <link rel="stylesheet" th:href="@{/css/variables.css}">
+    <link rel="stylesheet" th:href="@{/css/components.css}">
+    <link rel="stylesheet" th:href="@{/css/panel-administrador.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    <link rel="icon" th:href="@{/imagenes/logo.png}" type="image/x-icon">
+</head>
+<body>
+<div th:replace="componentes/sidebar-admin :: sidebar-admin('conductores')"></div>
+<main class="panel-administracion">
+    <section class="conductores">
+        <div class="conductores-header">
+            <div class="conductores-header__info">
+                <h1>Gestión de conductores</h1>
+                <p>Supervisión y control de la flota humana de BondiWay.</p>
+            </div>
+            <button class="btn-nuevo-conductor"><span class="material-symbols-outlined">person_add</span> Nuevo conductor</button>
+        </div>
+
+        <section class="solicitudes-pendientes">
+            <div class="seccion-titulo">
+                <span class="material-symbols-outlined icono-prioridad">priority_high</span>
+                <h2>Solicitudes pendientes</h2>
+                <span class="badge-nuevas">3 NUEVAS</span>
+            </div>
+            <div class="solicitudes-grid">
+                <article class="solicitud-card">
+                    <div class="solicitud-card__decoracion"></div>
+                    <div class="solicitud-card__header">
+                        <img src="https://placehold.co/80x80" alt="Conductor">
+                        <div><h3>Carlos Mendoza</h3><p><span class="material-symbols-outlined">calendar_today</span> Hace 2 horas</p></div>
+                    </div>
+                    <div class="solicitud-card__datos">
+                        <div class="dato"><span>Licencia:</span> <strong>Profesional Clase A</strong></div>
+                        <div class="dato"><span>Expedida:</span> <strong>12 Oct 2022</strong></div>
+                    </div>
+                    <div class="solicitud-card__acciones"><button class="btn-aprobar">Aprobar</button><button class="btn-rechazar">Rechazar</button></div>
+                </article>
+                <article class="solicitud-card">
+                    <div class="solicitud-card__decoracion"></div>
+                    <div class="solicitud-card__header">
+                        <img src="https://placehold.co/80x80" alt="Conductor">
+                        <div><h3>Elena Rivas</h3><p><span class="material-symbols-outlined">calendar_today</span> Ayer, 14:30</p></div>
+                    </div>
+                    <div class="solicitud-card__datos">
+                        <div class="dato"><span>Licencia:</span> <strong>Profesional Clase B</strong></div>
+                        <div class="dato"><span>Expedida:</span> <strong>05 Ene 2023</strong></div>
+                    </div>
+                    <div class="solicitud-card__acciones"><button class="btn-aprobar">Aprobar</button><button class="btn-rechazar">Rechazar</button></div>
+                </article>
+                <article class="solicitud-extra">
+                    <span class="material-symbols-outlined">assignment_ind</span>
+                    <p>1 Solicitud adicional</p>
+                    <button>Ver todas las colas</button>
+                </article>
+            </div>
+        </section>
+
+        <section class="conductores-activos">
+            <div class="conductores-activos__header">
+                <div class="seccion-titulo"><span class="material-symbols-outlined icono-grupo">group</span><h2>Conductores activos</h2></div>
+                <div class="acciones-tabla">
+                    <button><span class="material-symbols-outlined">filter_list</span> Filtrar</button>
+                    <button><span class="material-symbols-outlined">download</span> Exportar</button>
+                </div>
+            </div>
+            <div class="tabla-conductores-container">
+                <table class="tabla-conductores">
+                    <thead>
+                        <tr>
+                            <th>Conductor</th>
+                            <th>Tipo de licencia</th>
+                            <th>Calificación</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="conductor : ${conductores}">
+                            <td>
+                                <div class="conductor-info">
+                                    <img src="https://placehold.co/60x60" alt="Conductor">
+                                    <div><strong th:text="${conductor.nombre}"></strong><span th:text="'ID: ' + ${conductor.id}"></span></div>
+                                </div>
+                            </td>
+                            <td><span class="licencia" th:text="${conductor.licencia}"></span></td>
+                            <td><div class="calificacion"><span class="material-symbols-outlined">star</span><strong th:text="${conductor.calificacion}"></strong></div></td>
+                            <td><div class="estado estado-viaje"><span></span>En viaje</div></td>
+                            <td>
+                                <div class="acciones-fila">
+                                    <button><span class="material-symbols-outlined">visibility</span></button>
+                                    <button><span class="material-symbols-outlined">edit</span></button>
+                                    <button><span class="material-symbols-outlined">block</span></button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="paginacion">
+                    <p>Mostrando 1-3 de 128 conductores</p>
+                    <div class="paginacion-botones">
+                        <button><span class="material-symbols-outlined">chevron_left</span></button>
+                        <button><span class="material-symbols-outlined">chevron_right</span></button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+</main>
+</body>
+</html>

@@ -4,14 +4,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>BondiWay - Seleccionar Asiento</title>
-
     <link rel="icon" th:href="@{/imagenes/logo.png}" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
     <link rel="stylesheet" th:href="@{/css/variables.css}">
     <link rel="stylesheet" th:href="@{/css/components.css}">
     <style>
@@ -32,13 +30,15 @@
 <div th:replace="componentes/nav-bar :: navbar('busqueda')"></div>
 
 <main role="main" class="container" style="margin-top: 140px; margin-bottom: 80px; min-height: 70vh;">
-    <h2 class="text-center mb-4 fw-bold">Seleccioná tu asiento</h2>
+    <h2 class="text-center mb-4 fw-bold">Selecciona tu(s) asiento(s)</h2>
+
+    <p th:if="${error != null}" class="alert alert-danger text-center" th:text="${error}"></p>
 
     <div id="feedback" class="text-center mb-3 fw-bold text-primary" style="min-height: 24px; font-size: 1.1rem;"></div>
 
     <div class="d-flex justify-content-center mt-3">
         <div class="bg-white p-4 shadow border" style="width: fit-content; border-radius: 16px;">
-            <div class="text-center mb-4 pb-2 border-bottom text-muted fw-bold">FRENTE DEL VEHÍCULO (CHOFER)</div>
+            <div class="text-center mb-4 pb-2 border-bottom text-muted fw-bold">FRENTE DEL VEHiCULO (CHOFER)</div>
             <div class="d-flex mb-3">
                 <div class="asiento ocupado me-2">1</div>
                 <div class="asiento libre me-2" data-asiento="2">2</div>
@@ -64,10 +64,12 @@
     </div>
 
     <div class="text-center mt-5 mb-5">
-        <p class="text-muted">Hacé clic en un asiento verde para seleccionarlo y continuar con tu reserva.</p>
+        <p class="text-muted">Hace clic en los asientos verdes para seleccionarlos.</p>
 
         <form th:action="@{/confirmar-asiento}" method="post" id="form-confirmar">
             <input type="hidden" name="idViaje" th:value="${idViaje}" />
+            <input type="hidden" name="pasajeros" th:value="${pasajeros}" />
+            <input type="hidden" name="asientosSeleccionados" id="input-asientos" value="" />
 
             <button type="submit" class="btn text-white btn-lg px-5 mt-2 shadow"
                     style="background-color: var(--primary, #4f378a); border-radius: 12px; transition: 0.3s; font-weight: 600; padding: 16px 32px; border: none;"
@@ -80,14 +82,48 @@
     </div>
 </main>
 
-<script>
+<script th:inline="javascript">
+
+    const maxPasajeros = [[${pasajeros}]] || 1;
+    let asientosSeleccionados = [];
+
+    const feedback = document.getElementById('feedback');
+    const inputAsientos = document.getElementById('input-asientos');
+
+    feedback.innerText = "Deberás seleccionar " + maxPasajeros + " asiento(s).";
+
     document.querySelectorAll('.asiento.libre').forEach(asiento => {
         asiento.addEventListener('click', function() {
-            document.querySelectorAll('.asiento').forEach(a => a.classList.remove('seleccionado'));
-            this.classList.add('seleccionado');
             const numero = this.getAttribute('data-asiento');
-            document.getElementById('feedback').innerText = "🚌 Has seleccionado el asiento N° " + numero;
+
+            if (this.classList.contains('seleccionado')) {
+                this.classList.remove('seleccionado');
+                asientosSeleccionados = asientosSeleccionados.filter(asiento => asiento !== numero);
+            } else {
+
+                if (asientosSeleccionados.length < maxPasajeros) {
+                    this.classList.add('seleccionado');
+                    asientosSeleccionados.push(numero);
+                } else {
+                    alert("Solo puedes seleccionar " + maxPasajeros + " asiento(s) porque fue la cantidad de pasajeros que buscaste.");
+                }
+            }
+
+            inputAsientos.value = asientosSeleccionados.join(',');
+
+            if (asientosSeleccionados.length > 0) {
+                feedback.innerText = "Has seleccionado los asientos: " + asientosSeleccionados.join(', ');
+            } else {
+                feedback.innerText = "Deberas seleccionar " + maxPasajeros + " asiento(s).";
+            }
         });
+    });
+
+    document.getElementById('form-confirmar').addEventListener('submit', function(e) {
+        if(asientosSeleccionados.length !== maxPasajeros) {
+            e.preventDefault();
+            alert("Debes seleccionar exactamente " + maxPasajeros + " asiento(s) antes de confirmar.");
+        }
     });
 </script>
 

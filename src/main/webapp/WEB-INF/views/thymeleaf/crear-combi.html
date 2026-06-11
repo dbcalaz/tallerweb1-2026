@@ -18,7 +18,6 @@
     <link rel="stylesheet" th:href="@{/css/solicitar-viaje.css}">
 </head>
 <body>
-<div th:replace="componentes/nav-bar :: navbar('flota')"></div>
 <main class="create-trip-page">
     <section class="page-header">
         <h1>Registrar Nueva Combi</h1>
@@ -37,7 +36,7 @@
                             <span class="material-symbols-outlined">
                                 pin
                             </span>
-                            <input th:field="*{patente}" id="patente" type="text" placeholder="Ej: AB123CD" required>
+                            <input th:field="*{patente}" id="patente" type="text" placeholder="Ej: AB123CD" >
                         </div>
                     </div>
 
@@ -49,7 +48,7 @@
                             <span class="material-symbols-outlined">
                                 sell
                             </span>
-                            <input th:field="*{marca}" id="marca" type="text" placeholder="Ej: Mercedes-Benz" required>
+                            <input th:field="*{marca}" id="marca" type="text" placeholder="Ej: Mercedes-Benz" >
                         </div>
                     </div>
 
@@ -61,7 +60,7 @@
                             <span class="material-symbols-outlined">
                                 directions_car
                             </span>
-                            <input th:field="*{modelo}" id="modelo" type="text" placeholder="Ej: Sprinter 311" required>
+                            <input th:field="*{modelo}" id="modelo" type="text" placeholder="Ej: Sprinter 311" >
                         </div>
                     </div>
                 </div>
@@ -75,7 +74,7 @@
                             <span class="material-symbols-outlined">
                                 airline_seat_recline_normal
                             </span>
-                            <input th:field="*{cantidadAsientos}" id="asientos" type="number" min="1" max="50" placeholder="Ej: 19" required>
+                            <input th:field="*{cantidadAsientos}" id="asientos" type="number" min="1" max="50" placeholder="Ej: 19" >
                         </div>
                     </div>
 
@@ -178,6 +177,5 @@
         </aside>
     </section>
 </main>
-<div th:replace="componentes/footer :: footer"></div>
 </body>
 </html>

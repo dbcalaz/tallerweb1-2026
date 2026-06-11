@@ -1,9 +1,6 @@
 package com.tallerwebi.infraestructura;
 
-import com.tallerwebi.dominio.Conductor;
-import com.tallerwebi.dominio.EstadoDeViaje;
-import com.tallerwebi.dominio.RepositorioConductor;
-import com.tallerwebi.dominio.Viaje;
+import com.tallerwebi.dominio.*;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
@@ -60,6 +57,27 @@ public class RepositorioConductorImpl implements RepositorioConductor {
                 .add(Restrictions.eq("c.id",idConductor))
                 .add(Restrictions.eq("estadoDeViaje", EstadoDeViaje.FINALIZADO))
                 .list();
+    }
+
+    @Override
+    public Combi obtenerCombiActivaPorIdConductor(Long id) {
+        AsignacionCombiConductor asignacion =
+                (AsignacionCombiConductor) sessionFactory
+                        .getCurrentSession()
+                        .createCriteria(AsignacionCombiConductor.class)
+                        .add(Restrictions.eq("conductor.id", id))
+                        .add(Restrictions.eq("combiActiva", true))
+                        .uniqueResult();
+
+        if (asignacion == null) {
+            return null;
+        }
+        return asignacion.getCombi();
+    }
+
+    @Override
+    public void guardarFalla(ReporteFalla reporteFalla) {
+        sessionFactory.getCurrentSession().save(reporteFalla);
     }
 }
 

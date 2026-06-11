@@ -13,4 +13,8 @@ public interface RepositorioConductor {
     List<Viaje> obtenerViajesPendientesPorConductor(Long idConductor);
 
     List<Viaje> obtenerViajesFinalizadosPorConductor(Long idConductor);
+
+    Combi obtenerCombiActivaPorIdConductor(Long id);
+
+    void guardarFalla(ReporteFalla reporteFalla);
 }

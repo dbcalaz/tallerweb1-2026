@@ -1,5 +1,8 @@
 package com.tallerwebi.presentacion;
 
+/*
+package com.tallerwebi.presentacion;
+
 import com.tallerwebi.dominio.ServicioViaje;
 import com.tallerwebi.dominio.Viaje;
 import org.springframework.stereotype.Controller;
@@ -67,29 +70,30 @@ public class ControladorSolicitarViaje {
 
     @RequestMapping(value = "/confirmarViaje", method = RequestMethod.POST)
     public ModelAndView confirmarViaje(DatosViaje datosViaje) {
-        /*¿Debería recibir también un usuario?*/
-        ModelMap modelo = new ModelMap();
+        ¿Debería recibir también un usuario?
+ModelMap modelo = new ModelMap();
 
         if (datosViaje.getDestino().isEmpty() && datosViaje.getOrigen().isEmpty()) {
-            modelo.put("error", "Error");
+        modelo.put("error", "Error");
             return new ModelAndView("home", modelo);
         }
 
-        Viaje viaje = new Viaje();
+Viaje viaje = new Viaje();
         viaje.setOrigen(datosViaje.getOrigen());
         viaje.setDestino(datosViaje.getDestino());
 
         try {
-            if (servicioViaje != null) {
-                servicioViaje.confirmarViaje(viaje);
+        if (servicioViaje != null) {
+        servicioViaje.confirmarViaje(viaje);
                 modelo.put("mensaje", "El viaje fue asignado correctamente");
                 return new ModelAndView("home", modelo);
             }
-            modelo.put("mensaje", "El viaje fue asignado correctamente");
+                    modelo.put("mensaje", "El viaje fue asignado correctamente");
             return new ModelAndView("home", modelo);
         } catch (Exception e) {
-            modelo.put("error", "Error al asignar el viaje");
+        modelo.put("error", "Error al asignar el viaje");
             return new ModelAndView("home", modelo);
         }
-    }
-}
+                }
+                }
+*/

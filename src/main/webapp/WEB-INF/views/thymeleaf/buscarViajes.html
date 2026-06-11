@@ -44,12 +44,25 @@
                     </div>
                 </div>
 
-                <div class="form-row one-column-layout">
+                <div class="form-row two-columns-layout">
                     <div class="form-group">
                         <label for="fecha">FECHA DEL VIAJE</label>
                         <div class="field-wrapper">
                             <span class="material-symbols-outlined">calendar_today</span>
                             <input th:field="*{fecha}" id="fecha" type="date">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="pasajeros">PASAJEROS</label>
+                        <div class="field-wrapper">
+                            <span class="material-symbols-outlined">group</span>
+                            <select th:field="*{pasajeros}" id="pasajeros" style="width:100%; border:none; outline:none; background:transparent; font-family: inherit; font-size: inherit; cursor: pointer;">
+                                <option value="1">1 Pasajero</option>
+                                <option value="2">2 Pasajeros</option>
+                                <option value="3">3 Pasajeros</option>
+                                <option value="4">4 Pasajeros</option>
+                            </select>
+                            <span class="material-symbols-outlined select-arrow">expand_more</span>
                         </div>
                     </div>
                 </div>
