@@ -9,6 +9,8 @@ import javax.persistence.*;
 @Entity
 public class Reserva {
 
+        public Reserva() {}
+
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long id;
@@ -23,5 +25,16 @@ public class Reserva {
 
         @Enumerated(EnumType.STRING)
         private EstadoReserva estadoReserva;
+
+        private String asientos;
+        private Double precioTotal;
+
+        public Reserva(Viaje viaje, String asientos, Double precioTotal) {
+                this.viaje = viaje;
+                this.asientos = asientos;
+                this.precioTotal = precioTotal;
+        }
+
+
 
 }

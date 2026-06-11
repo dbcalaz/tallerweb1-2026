@@ -1,5 +1,6 @@
 package com.tallerwebi.presentacion;
 
+import com.tallerwebi.dominio.Reserva;
 import com.tallerwebi.dominio.ServicioViaje;
 import com.tallerwebi.dominio.Viaje;
 import org.junit.jupiter.api.BeforeEach;

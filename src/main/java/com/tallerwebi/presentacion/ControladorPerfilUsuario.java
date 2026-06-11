@@ -25,7 +25,7 @@ public class ControladorPerfilUsuario {
             return new ModelAndView("redirect:/login");
         }
 
-        List<Reserva> reservas = servicioperfilUsuario.obtenerReservasPorUsuario(usuario.getId());
+        List <Reserva> reservas = servicioperfilUsuario.obtenerReservasPorUsuario(usuario.getId());
         Conductor favorito = servicioperfilUsuario.obtenerConductorFavorito(usuario.getId());
 
         ModelMap model = new ModelMap();

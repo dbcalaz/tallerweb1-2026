@@ -59,22 +59,22 @@ public class RepositorioReservaTest {
         Viaje viaje4 = new Viaje();
         session().save(viaje4);
 
-        Reserva reserva1 = new Reserva();
+        Reserva reserva1 = new Reserva(viaje1,"3",4.500);
         reserva1.setUsuario(usuario);
         reserva1.setViaje(viaje1);
         session().save(reserva1);
 
-        Reserva reserva2 = new Reserva();
+        Reserva reserva2 = new Reserva(viaje2,"1",5.500);
         reserva2.setUsuario(usuario);
         reserva2.setViaje(viaje2);
         session().save(reserva2);
 
-        Reserva reserva3 = new Reserva();
+        Reserva reserva3 = new Reserva(viaje3,"4",2.500);
         reserva3.setUsuario(usuario);
         reserva3.setViaje(viaje3);
         session().save(reserva3);
 
-        Reserva reserva4 = new Reserva();
+        Reserva reserva4 = new Reserva(viaje4,"2",9.500);
         reserva4.setUsuario(usuario);
         reserva4.setViaje(viaje4);
         session().save(reserva4);
@@ -120,19 +120,19 @@ public class RepositorioReservaTest {
         viaje4.setConductor(conductor2);
         session().save(viaje4);
 
-        Reserva reserva1 = new Reserva();
+        Reserva reserva1 = new Reserva(viaje1,"1",5.500);
         reserva1.setUsuario(usuario);
         reserva1.setViaje(viaje1);
         session().save(reserva1);
-        Reserva reserva2 = new Reserva();
+        Reserva reserva2 = new Reserva(viaje2,"2",3.500);
         reserva2.setUsuario(usuario);
         reserva2.setViaje(viaje2);
         session().save(reserva2);
-        Reserva reserva3 = new Reserva();
+        Reserva reserva3 = new Reserva(viaje3,"3",7.500);
         reserva3.setUsuario(usuario);
         reserva3.setViaje(viaje3);
         session().save(reserva3);
-        Reserva reserva4 = new Reserva();
+        Reserva reserva4 = new Reserva(viaje4,"5",4.500);
         reserva4.setUsuario(usuario);
         reserva4.setViaje(viaje4);
         session().save(reserva4);
