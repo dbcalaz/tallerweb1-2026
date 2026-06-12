@@ -53,7 +53,7 @@ public class ControladorRegistro {
       nuevoUsuario.setEmail(datosRegistro.getMail());
       nuevoUsuario.setPassword(datosRegistro.getPassword());
       nuevoUsuario.activar();
-      // nuevoUsuario.setRol("USUARIO");
+      nuevoUsuario.setRol("CLIENTE");
 
       servicioLogin.registrar(nuevoUsuario);
 
