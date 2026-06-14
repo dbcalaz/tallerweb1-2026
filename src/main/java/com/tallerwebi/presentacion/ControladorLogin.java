@@ -41,15 +41,15 @@ public class ControladorLogin {
                 datosLogin.getPassword()
         );
         if (usuarioBuscado != null) {
-            if(usuarioBuscado.getRol().equals("ADMIN")){
+            // CORRECCIÓN: Validación segura invirtiendo el orden del .equals()
+            if("ADMIN".equals(usuarioBuscado.getRol())){
                 request.getSession().setAttribute("usuario", usuarioBuscado);
                 return new ModelAndView("redirect:/panel-administrador");
             }
-           // request.getSession().setAttribute("ROL", usuarioBuscado.getRol());
+            // request.getSession().setAttribute("ROL", usuarioBuscado.getRol());
             request.getSession().setAttribute("usuario", usuarioBuscado);
             return new ModelAndView("redirect:/home");
         } else {
-            /* Se instancia el ModelMap solo cuando es necesario (en el flujo de error) para evitar anomalías en el flujo de datos (DU-anomaly de PMD) */
             ModelMap model = new ModelMap();
             model.put("error", "Usuario o clave incorrecta");
             return new ModelAndView("login", model);

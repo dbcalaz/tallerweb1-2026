@@ -52,7 +52,9 @@ public class ControladorRegistro {
       nuevoUsuario.setTelefono(datosRegistro.getTelefono());
       nuevoUsuario.setEmail(datosRegistro.getMail());
       nuevoUsuario.setPassword(datosRegistro.getPassword());
-      // nuevoUsuario.setRol("USUARIO");
+
+      // CORRECCIÓN: Se asigna un rol por defecto para evitar NullPointerException
+      nuevoUsuario.setRol("USUARIO");
 
       servicioLogin.registrar(nuevoUsuario);
 
@@ -69,5 +71,4 @@ public class ControladorRegistro {
 
     return new ModelAndView("login", model);
   }
-
 }
