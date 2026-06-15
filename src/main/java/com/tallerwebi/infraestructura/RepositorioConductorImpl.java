@@ -5,6 +5,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -19,11 +20,16 @@ public class RepositorioConductorImpl implements RepositorioConductor {
     @Override
     public Conductor buscarConductor(String email, String password) {
 
-        return (Conductor) sessionFactory.getCurrentSession().createCriteria(Conductor.class).add(Restrictions.eq("email", email)).add(Restrictions.eq("password", password)).uniqueResult();
+        return (Conductor) sessionFactory.getCurrentSession()
+                .createCriteria(Conductor.class)
+                .add(Restrictions.eq("email", email))
+                .add(Restrictions.eq("password", password))
+                .uniqueResult();
     }
 
     @Override
     public void guardarConductor(Conductor conductor) {
+        conductor.setCuentaHabilitada(false);
         sessionFactory.getCurrentSession().save(conductor);
     }
 
@@ -77,6 +83,7 @@ public class RepositorioConductorImpl implements RepositorioConductor {
 
     @Override
     public void guardarFalla(ReporteFalla reporteFalla) {
+        reporteFalla.setFechaRealizadoReporte(new Date());
         sessionFactory.getCurrentSession().save(reporteFalla);
     }
 }

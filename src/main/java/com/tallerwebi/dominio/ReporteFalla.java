@@ -20,13 +20,9 @@ public class ReporteFalla {
 
     @ManyToOne
     private Combi combi;
-
     private String descripcion;
-
     private Boolean resuelta;
-
     private Date fechaCreacionReporte;
-
     private Date fechaRealizadoReporte;
 
 }

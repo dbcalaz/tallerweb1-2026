@@ -27,7 +27,7 @@
         </div>
 
         <div class="combis-stats">
-            <div class="combi-stat-card"><span class="material-symbols-outlined">directions_bus</span><h2>24</h2><p>Total Flota</p></div>
+            <div class="combi-stat-card"><span class="material-symbols-outlined">directions_bus</span><h2 th:text="${cantidadCombis}"></h2><p>Total Flota</p></div>
             <div class="combi-stat-card"><span class="material-symbols-outlined">check_circle</span><h2>18</h2><p>Disponibles</p></div>
             <div class="combi-stat-card"><span class="material-symbols-outlined">build</span><h2>3</h2><p>Mantenimiento</p></div>
             <div class="combi-stat-card"><span class="material-symbols-outlined">near_me</span><h2>3</h2><p>En viaje</p></div>
@@ -90,7 +90,6 @@
                     <h2>Fallas reportadas</h2>
                     <p>Alertas enviadas por choferes en tiempo real.</p>
                 </div>
-                <button class="fallas-link">Ver historial completo <span class="material-symbols-outlined">arrow_forward</span></button>
             </div>
             <div class="fallas-table-wrapper">
                 <table class="fallas-table">
