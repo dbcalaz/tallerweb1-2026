@@ -15,116 +15,109 @@
     <link rel="stylesheet" th:href="@{/css/components.css}">
     <link rel="stylesheet" th:href="@{/css/home.css}">
     <link rel="stylesheet" th:href="@{/css/perfilUsuario.css}">
+    <link rel="stylesheet" th:href="@{/css/detalle-viaje.css}">
 </head>
 
 <body>
 
 <div th:replace="componentes/nav-bar :: navbar('home')"></div>
 
-<main class="container py-5 d-flex justify-content-center">
 
-    <div class="w-100" style="max-width: 850px;">
+<main class="detalle-container">
 
-        <!-- HEADER VIAJE -->
-        <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
+    <!-- HERO -->
+    <div class="viaje-hero">
 
+        <div class="viaje-hero-top">
             <div>
-                <span class="badge bg-primary mb-2" th:text="${viaje.tipoServicio}"></span>
-
-                <h2 class="fw-bold mb-1">
-                    <span th:text="${viaje.origen}"></span>
-                    <span class="text-muted">→</span>
-                    <span th:text="${viaje.destino}"></span>
+                <span class="badge-servicio" th:text="${viaje.tipoServicio}">Estándar</span>
+                <h2 class="viaje-ruta">
+                    <span th:text="${viaje.origen}">Origen</span>
+                    <span class="arrow">→</span>
+                    <span th:text="${viaje.destino}">Destino</span>
                 </h2>
-
-                <div class="text-muted small">
-                    <span th:text="${viaje.fecha}"></span>
-                    ·
-                    <span th:text="${viaje.horario}"></span>
-                </div>
+                <p class="viaje-fecha">
+                    <span class="material-symbols-outlined" style="font-size:1rem;">calendar_month</span>
+                    <span th:text="${viaje.fecha}">Fecha</span>
+                    &nbsp;·&nbsp;
+                    <span class="material-symbols-outlined" style="font-size:1rem;">schedule</span>
+                    <span th:text="${viaje.horario}">Hora</span>
+                </p>
             </div>
 
-            <div class="text-end">
-                <div class="text-muted small">Precio por asiento</div>
-                <div class="fs-3 fw-bold text-success">
-                    $ <span th:text="${viaje.precio}"></span>
-                </div>
+            <div class="precio-box">
+                <div class="precio-label">Precio por asiento</div>
+                <div class="precio-valor">$ <span th:text="${viaje.precio}">0</span></div>
             </div>
-
         </div>
 
-        <hr class="my-4">
-
-        <!-- INFO GRID -->
-        <div class="row g-3">
-
-            <div class="col-md-4">
-                <div class="p-3 bg-light rounded text-center">
-                    <div class="text-muted small">Asientos</div>
-                    <div class="fs-5 fw-bold" th:text="${viaje.asientosDisponibles}"></div>
+        <div class="info-tiles">
+            <div class="info-tile">
+                <div class="tile-label">
+                    <span class="material-symbols-outlined">event_seat</span>
+                    Asientos libres
                 </div>
+                <div class="tile-value" th:text="${viaje.asientosDisponibles}">—</div>
             </div>
 
-            <div class="col-md-4">
-                <div class="p-3 bg-light rounded text-center">
-                    <div class="text-muted small">Duración</div>
-                    <div class="fs-5 fw-bold" th:text="${viaje.duracion}"></div>
+            <div class="info-tile">
+                <div class="tile-label">
+                    <span class="material-symbols-outlined">timer</span>
+                    Duración
                 </div>
+                <div class="tile-value" th:text="${viaje.duracion}">—</div>
             </div>
 
-            <div class="col-md-4">
-                <div class="p-3 bg-light rounded text-center">
-                    <div class="text-muted small">Estado</div>
-                    <div class="fw-bold" th:text="${viaje.estadoDeViaje}"></div>
+            <div class="info-tile">
+                <div class="tile-label">
+                    <span class="material-symbols-outlined">info</span>
+                    Estado
+                </div>
+                <div class="tile-value">
+                    <span class="estado-pill"
+                          th:classappend="'estado-' + ${viaje.estadoDeViaje}"
+                          th:text="${viaje.estadoDeViaje}">
+                    </span>
                 </div>
             </div>
-
         </div>
+
     </div>
 
     <!-- CONDUCTOR -->
-    <div class="card border-0 shadow-sm p-4 mt-4" style="border-radius: 16px;">
-
-        <h5 class="fw-bold mb-3">
-            <span class="material-symbols-outlined align-middle">person</span>
-            Conductor
-        </h5>
-
-        <div class="d-flex align-items-center gap-3">
-
-            <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center text-white fw-bold"
-                 style="width:50px;height:50px;">
-                <span th:text="${conductor.nombre.substring(0,1)}"></span>
-            </div>
-
-            <div>
-                <div class="fw-semibold">
-                    <span th:text="${conductor.nombre}"></span>
-                    <span th:text="${conductor.apellido}"></span>
-                </div>
-                <div class="text-muted small">Conductor verificado</div>
-            </div>
-
-            <div class="ms-auto text-end">
-                <div class="text-muted small">Rating</div>
-                <div class="fw-bold text-warning">⭐ 4.9</div>
-            </div>
-
+    <div class="conductor-card">
+        <div class="conductor-card-label">
+            <span class="material-symbols-outlined">badge</span>
+            Conductor asignado
         </div>
-
+        <div class="conductor-row">
+            <div class="conductor-avatar">
+                <span th:text="${conductor.nombre.substring(0,1)}">?</span>
+            </div>
+            <div>
+                <div class="conductor-nombre">
+                    <span th:text="${conductor.nombre}">Nombre</span>
+                    <span th:text="${conductor.apellido}">Apellido</span>
+                </div>
+                <div class="conductor-sub">Conductor verificado · BondiWay</div>
+            </div>
+            <div class="conductor-rating">
+                <div class="rating-label">Valoración</div>
+                <div class="rating-value">⭐ 4.9</div>
+            </div>
+        </div>
     </div>
 
     <!-- ACCIONES -->
-    <div class="d-flex gap-3 mt-4">
-
-        <a th:href="@{/spring/misViajes}" class="btn btn-outline-secondary">
-            ← Volver
+    <div class="acciones">
+        <a th:href="@{/perfil-usuario}" class="btn-volver">
+            <span class="material-symbols-outlined" style="font-size:1rem;">arrow_back</span>
+            Volver
         </a>
-
-        <a href="#" class="btn btn-primary">
+        <a href="#" class="btn-reservar">
+            <span class="material-symbols-outlined" style="font-size:1rem;">confirmation_number</span>
             Reservar asiento
         </a>
-
     </div>
 
 </main>
