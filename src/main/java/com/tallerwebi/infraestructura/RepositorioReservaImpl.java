@@ -9,7 +9,9 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class RepositorioReservaImpl implements RepositorioReserva {
@@ -46,31 +48,51 @@ public class RepositorioReservaImpl implements RepositorioReserva {
                 .add(Restrictions.eq("usuario.id", idUsuario))
                 .list();
 
-        Conductor favorito = null;
-        int maxCantidad = 0;
+        Map<Conductor, Integer> contador = new HashMap<>();
 
         for (Reserva reserva : reservas) {
             Conductor conductor = reserva.getViaje().getConductor();
 
-            int cantidad = 0;
+            contador.put(conductor, contador.getOrDefault(conductor, 0) + 1);
+        }
 
-            for (Reserva otraReserva : reservas) {
-                if (otraReserva.getViaje()
-                        .getConductor()
-                        .getId()
-                        .equals(conductor.getId())) {
-                    cantidad++;
+        Conductor favorito = null;
+        int max = 0;
 
-                }
-            }
-
-            if (cantidad > maxCantidad) {
-                maxCantidad = cantidad;
-                favorito = conductor;
+        for (Map.Entry<Conductor, Integer> entry : contador.entrySet()) {
+            if (entry.getValue() > max) {
+                max = entry.getValue();
+                favorito = entry.getKey();
             }
         }
 
         return favorito;
-    }
+//        Conductor favorito = null;
+//        int maxCantidad = 0;
+//
+//        for (Reserva reserva : reservas) {
+//            Conductor conductor = reserva.getViaje().getConductor();
+//
+//            int cantidad = 0;
+//
+//            for (Reserva otraReserva : reservas) {
+//                if (otraReserva.getViaje()
+//                        .getConductor()
+//                        .getId()
+//                        .equals(conductor.getId())) {
+//                    cantidad++;
+//
+//                }
+//            }
+//
+//            if (cantidad > maxCantidad) {
+//                maxCantidad = cantidad;
+//                favorito = conductor;
+//            }
+//        }
+//
+//        return favorito;
+//    }
 
+    }
 }
