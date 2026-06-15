@@ -51,4 +51,9 @@ public class ServicioPerfilUsuarioImpl implements ServicioPerfilUsuario {
         return repositorioViaje.contarViajesCanceladosPorUsuario(idUsuario);
     }
 
+    @Override
+    public Reserva buscarReservaPorId(Long id){
+        return repositorioReserva.buscarReservaPorId(id);
+    }
+
 }

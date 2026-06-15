@@ -13,4 +13,6 @@ public interface ServicioPerfilUsuario {
     Long obtenerCantidaddeViajes(Long idUsuario);
 
     Long obtenerCantidadViajesCancelados(Long idUsuario);
+
+    Reserva buscarReservaPorId(Long id);
 }

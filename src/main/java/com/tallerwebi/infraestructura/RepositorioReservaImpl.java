@@ -95,4 +95,13 @@ public class RepositorioReservaImpl implements RepositorioReserva {
 //    }
 
     }
+
+    @Override
+    public Reserva buscarReservaPorId(Long id){
+        return (Reserva) sessionFactory
+                .getCurrentSession()
+                .createCriteria(Reserva.class)
+                .add(Restrictions.eq("id", id))
+                .uniqueResult();
+    }
 }
