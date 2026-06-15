@@ -1,6 +1,7 @@
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,10 +28,14 @@ public class ControladorPerfilUsuario {
 
         List <Reserva> reservas = servicioperfilUsuario.obtenerReservasPorUsuario(usuario.getId());
         Conductor favorito = servicioperfilUsuario.obtenerConductorFavorito(usuario.getId());
+        Long viajesContados = servicioperfilUsuario.obtenerCantidaddeViajes(usuario.getId());
+        Long viajesCancelados = servicioperfilUsuario.obtenerCantidadViajesCancelados(usuario.getId());
 
         ModelMap model = new ModelMap();
         model.put("usuario", usuario);
         model.put("reservas", reservas);
+        model.put("viajesRealizados", viajesContados != null ? viajesContados : 0);
+        model.put("viajesCancelados", viajesCancelados != null ? viajesCancelados : 0);
         model.put("favorito", favorito != null ? favorito.getNombre() : "Sin datos");
         return new ModelAndView("perfil-usuario", model);
 

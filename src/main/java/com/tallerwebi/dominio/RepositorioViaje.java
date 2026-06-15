@@ -8,5 +8,7 @@ public interface RepositorioViaje {
     Viaje buscarPorId(Long id);
     void actualizar(Viaje viaje);
 
+    Long contarViajesPorUsuario(long idUsuario);
+    Long contarViajesCanceladosPorUsuario(long idUsuario);
 
 }

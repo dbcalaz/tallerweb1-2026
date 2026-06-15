@@ -1,7 +1,7 @@
 package com.tallerwebi.dominio;
 
 public enum EstadoReserva {
-    PENDENTE,
+    PENDIENTE,
     CONFIRMADA,
     CANCELADA,
     FINALIZADA

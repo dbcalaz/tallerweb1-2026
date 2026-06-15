@@ -164,3 +164,9 @@
     display:flex;
     gap:16px;
 }
+
+.trips-history-list{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 24px;
+}

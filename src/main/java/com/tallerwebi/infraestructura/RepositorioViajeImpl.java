@@ -1,13 +1,16 @@
 package com.tallerwebi.infraestructura;
 
-import com.tallerwebi.dominio.RepositorioViaje;
-import com.tallerwebi.dominio.Viaje;
+import com.tallerwebi.dominio.*;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.expression.spel.ast.Projection;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+
+import static org.hibernate.criterion.Restrictions.eq;
 
 @Repository
 public class RepositorioViajeImpl implements RepositorioViaje {
@@ -27,9 +30,9 @@ public class RepositorioViajeImpl implements RepositorioViaje {
     @Override
     public List<Viaje> buscarViajes(String origen, String destino, String fecha) {
         return sessionFactory.getCurrentSession().createCriteria(Viaje.class)
-                .add(Restrictions.eq("origen", origen))
-                .add(Restrictions.eq("destino", destino))
-                .add(Restrictions.eq("fecha", fecha))
+                .add(eq("origen", origen))
+                .add(eq("destino", destino))
+                .add(eq("fecha", fecha))
                 .list();
     }
 
@@ -41,6 +44,26 @@ public class RepositorioViajeImpl implements RepositorioViaje {
     @Override
     public void actualizar(Viaje viaje) {
         sessionFactory.getCurrentSession().update(viaje);
+    }
+
+    @Override
+    public Long contarViajesPorUsuario(long idUsuario) {
+        return (Long) sessionFactory.getCurrentSession()
+                .createCriteria(Reserva.class)
+                .add(eq("usuario.id", idUsuario))
+                .add(eq("estadoReserva", EstadoReserva.FINALIZADA))
+                .setProjection(Projections.rowCount())
+                .uniqueResult();
+    }
+
+    @Override
+    public Long contarViajesCanceladosPorUsuario(long idUsuario) {
+        return (Long) sessionFactory.getCurrentSession()
+                .createCriteria(Reserva.class)
+                .add(eq("usuario.id", idUsuario))
+                .add(eq("estadoReserva", EstadoReserva.CANCELADA))
+                .setProjection(Projections.rowCount())
+                .uniqueResult();
     }
 
 
