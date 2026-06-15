@@ -35,6 +35,9 @@ insert into Reserva (id_usuario, id_viaje, estadoReserva)
 values (2, 4, 'FINALIZADA');
 
 insert into Reserva (id_usuario, id_viaje, estadoReserva)
+values (2, 6, 'FINALIZADA');
+
+insert into Reserva (id_usuario, id_viaje, estadoReserva)
 values (2, 5, 'CONFIRMADA');
 
 -- inserts para la vista de administrador
