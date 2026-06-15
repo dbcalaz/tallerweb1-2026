@@ -129,26 +129,30 @@
         </div>
 
         <!-- Si NO hay reservas -->
-        <div class="empty-history"
-             th:if="${#lists.isEmpty(reservas)}">
+        <section th:if="${#lists.isEmpty(reservas)}" class="empty-state">
 
-    <span class="material-symbols-outlined empty-icon">
-        travel_explore
-    </span>
+            <div class="empty-state-icon">
+        <span class="material-symbols-outlined">
+            travel_explore
+        </span>
+            </div>
 
-            <h3 class="feature-title">Tu aventura todavía no comenzó</h3>
+            <h2>Tu aventura todavía no comenzó</h2>
 
-            <p class="feature-description">
+            <p>
                 Todavía no realizaste ningún viaje.
-                Reservá tu primer viaje y comenzá a disfrutar de BondiWay.
             </p>
 
-            <a th:href="@{/buscar-viaje}" class="btn-primary">
+            <p class="empty-state-secondary">
+                Reservá tu primer viaje y comenzá a construir tu historial
+                dentro de BondiWay.
+            </p>
+
+            <a th:href="@{/buscar-viaje}" class="empty-state-btn">
                 Buscar viajes
             </a>
 
-        </div>
-
+        </section>
         <!-- Si hay reservas -->
         <div class="trips-history-list"
              th:unless="${#lists.isEmpty(reservas)}">
