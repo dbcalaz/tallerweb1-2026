@@ -128,7 +128,31 @@
             </div>
         </div>
 
-        <div class="trips-history-list">
+        <!-- Si NO hay reservas -->
+        <div class="empty-history"
+             th:if="${#lists.isEmpty(reservas)}">
+
+    <span class="material-symbols-outlined empty-icon">
+        travel_explore
+    </span>
+
+            <h3 class="feature-title">Tu aventura todavía no comenzó</h3>
+
+            <p class="feature-description">
+                Todavía no realizaste ningún viaje.
+                Reservá tu primer viaje y comenzá a disfrutar de BondiWay.
+            </p>
+
+            <a th:href="@{/buscar-viaje}" class="btn-primary">
+                Buscar viajes
+            </a>
+
+        </div>
+
+        <!-- Si hay reservas -->
+        <div class="trips-history-list"
+             th:unless="${#lists.isEmpty(reservas)}">
+
 
             <article class="trip-card"
                      th:each="reserva : ${reservas}">
@@ -191,6 +215,7 @@
             </article>
 
         </div>
+
 
     </section>
 
