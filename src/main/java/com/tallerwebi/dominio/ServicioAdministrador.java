@@ -1,8 +1,4 @@
-package com.tallerwebi.presentacion;
-
-import com.tallerwebi.dominio.Combi;
-import com.tallerwebi.dominio.Conductor;
-import com.tallerwebi.dominio.ReporteFalla;
+package com.tallerwebi.dominio;
 
 import java.util.List;
 

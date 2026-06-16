@@ -1,9 +1,6 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.Conductor;
-import com.tallerwebi.dominio.ServicioConductor;
-import com.tallerwebi.dominio.TipoDeLicencia;
-import com.tallerwebi.dominio.Viaje;
+import com.tallerwebi.dominio.*;
 import com.tallerwebi.dominio.excepcion.ConductorExistente;
 import com.tallerwebi.dominio.excepcion.CuentaNoHabilitadaException;
 import com.tallerwebi.dominio.excepcion.CuentaSuspendidaException;
@@ -128,5 +125,24 @@ public class ControladorConductorTest {
 
         verify(servicioConductor, times(1)).obtenerViajesPendientesDelConductor(conductor.getId());
         verify(servicioConductor, times(1)).obtenerViajesFinalizadosDelConductor(conductor.getId());
+    }
+
+    @Test
+    public void queSePuedaReportarUnaFallaCorrectamente() {
+        // Preparación
+        Combi combi = new Combi();
+        ReporteFalla nuevoReporteFalla = new ReporteFalla();
+
+        when(request.getSession()).thenReturn(session);
+        when(session.getAttribute("conductor")).thenReturn(conductor);
+
+        when(servicioConductor.buscarCombiActivePorIdConductor(conductor.getId())).thenReturn(combi);
+
+        // Ejecución
+        ModelAndView modelAndView = controladorConductor.reportarFalla(nuevoReporteFalla, request);
+
+        // Validación
+        assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/home-conductor"));
+        verify(servicioConductor, times(1)).registrarFalla(any(ReporteFalla.class));
     }
 }
