@@ -21,10 +21,8 @@ public class RepositorioAdministradorImpl implements RepositorioAdministrador {
     /* Combis */
     @Override
     public List<ReporteFalla> getFallas() {
-
         return sessionFactory.getCurrentSession()
                 .createCriteria(ReporteFalla.class)
-                .setResultTransformer(org.hibernate.Criteria.DISTINCT_ROOT_ENTITY)
                 .list();
     }
 
@@ -39,13 +37,11 @@ public class RepositorioAdministradorImpl implements RepositorioAdministrador {
 
     @Override
     public void guardarAsignacion(AsignacionCombiConductor asignacion) {
-
         sessionFactory.getCurrentSession().save(asignacion);
     }
 
     @Override
     public void updateCombiConductor(Long idReporte, Long idCombi) {
-
         ReporteFalla reporte = (ReporteFalla) sessionFactory.getCurrentSession()
                 .createCriteria(ReporteFalla.class)
                 .add(Restrictions.eq("id", idReporte))
@@ -127,7 +123,6 @@ public class RepositorioAdministradorImpl implements RepositorioAdministrador {
 
     @Override
     public Conductor buscarConductorPorId(Long idConductor) {
-
         return (Conductor) sessionFactory.getCurrentSession()
                 .createCriteria(Conductor.class)
                 .add(Restrictions.eq("id", idConductor))

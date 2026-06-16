@@ -34,7 +34,7 @@ body {
 
 /* Error */
 .error-message{
-    color: #991b1b;
+    color: #991b1b !important;
     background: #fee2e2;
     border: 1px solid #fca5a5;
 }

@@ -65,10 +65,6 @@ public class ServicioAdministradorImpl implements ServicioAdministrador {
             throw new RuntimeException("No existe la combi seleccionada");
         }
 
-        if(conductor.isSuspendido()){
-            throw new RuntimeException("El conductor está suspendido");
-        }
-
         if(conductor.isCuentaHabilitada()){
             throw new RuntimeException("El conductor ya fue habilitado");
         }
