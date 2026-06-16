@@ -84,11 +84,12 @@ public class RepositorioReservaTest {
 
         List<Reserva> reservas = repositorioReserva.buscarUltimasReservasPorUsuario(usuario.getId());
 
-        assertThat(reservas.size(),equalTo(3));
+        assertThat(reservas.size(),equalTo(4));
 
         assertThat(reservas.get(0).getId(), equalTo(reserva4.getId()));
         assertThat(reservas.get(1).getId(), equalTo(reserva3.getId()));
         assertThat(reservas.get(2).getId(), equalTo(reserva2.getId()));
+        assertThat(reservas.get(3).getId(), equalTo(reserva1.getId()));
 
 
     }
