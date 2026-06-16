@@ -15,6 +15,7 @@ import java.util.List;
 public class ControladorPerfilUsuario {
 
     ServicioPerfilUsuario servicioperfilUsuario;
+    @Autowired
     public ControladorPerfilUsuario(ServicioPerfilUsuario servicioperfilUsuario) { this.servicioperfilUsuario = servicioperfilUsuario; }
 
 

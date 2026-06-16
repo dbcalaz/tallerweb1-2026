@@ -23,7 +23,7 @@ public class RepositorioReservaImpl implements RepositorioReserva {
 
     @Override
     public void guardar(Reserva reserva) {
-
+        sessionFactory.getCurrentSession().save(reserva);
     }
 
     @Override

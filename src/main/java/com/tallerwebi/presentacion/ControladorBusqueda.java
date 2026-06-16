@@ -110,38 +110,50 @@ public class ControladorBusqueda {
                                          HttpServletRequest request) {
         ModelMap modelo = new ModelMap();
 
+        // Usuario REAL de sesion
+        Usuario usuarioLogueado = (Usuario) request.getSession().getAttribute("usuario");
+        if (usuarioLogueado == null) {
+            return new ModelAndView("redirect:/login");
+        }
+
+
         try {
-            Usuario usuarioTemporal = new Usuario();
-            usuarioTemporal.setId(1L);
+//            Usuario usuarioTemporal = new Usuario();
+//            usuarioTemporal.setId(1L);
 
             for(int i = 0; i < pasajeros; i++) {
-                servicioViaje.reservarAsiento(idViaje, usuarioTemporal);
+                //servicioViaje.reservarAsiento(idViaje, usuarioTemporal);
+                //servicioViaje.reservarAsiento(idViaje, usuarioLogueado);
+                servicioViaje.crearReserva(idViaje, usuarioLogueado, asientosSeleccionados);
             }
 
-            Viaje viajeConfirmado = servicioViaje.buscarPorId(idViaje);
-
-            if (viajeConfirmado == null) {
-                modelo.put("error", "Hubo un problema. No se encontró el viaje.");
-                modelo.put("idViaje", idViaje);
-                return new ModelAndView("seleccionarAsiento", modelo);
-            }
-
-            Double precioTotal = viajeConfirmado.getPrecio() * pasajeros;
-
-            List<Reserva> misReservas = (List<Reserva>) request.getSession().getAttribute("misReservas");
-            if(misReservas == null) {
-                misReservas = new ArrayList<>();
-            }
-
-            Reserva nuevaReserva = new Reserva(viajeConfirmado, asientosSeleccionados != null ? asientosSeleccionados : "No especificados", precioTotal);
-            misReservas.add(nuevaReserva);
-
-            request.getSession().setAttribute("misReservas", misReservas);
-
-            modelo.put("misReservas", misReservas);
             modelo.put("mensaje", "¡Asiento(s) confirmado(s) con éxito!");
+            return new ModelAndView("redirect:/perfilUsuario");
 
-            return new ModelAndView("viajeEnCurso", modelo);
+            //Viaje viajeConfirmado = servicioViaje.buscarPorId(idViaje);
+
+//            if (viajeConfirmado == null) {
+//                modelo.put("error", "Hubo un problema. No se encontró el viaje.");
+//                modelo.put("idViaje", idViaje);
+//                return new ModelAndView("seleccionarAsiento", modelo);
+//            }
+//
+//            Double precioTotal = viajeConfirmado.getPrecio() * pasajeros;
+
+//            List<Reserva> misReservas = (List<Reserva>) request.getSession().getAttribute("misReservas");
+//            if(misReservas == null) {
+//                misReservas = new ArrayList<>();
+//            }
+//
+//            Reserva nuevaReserva = new Reserva(viajeConfirmado, asientosSeleccionados != null ? asientosSeleccionados : "No especificados", precioTotal);
+//            misReservas.add(nuevaReserva);
+//
+//            request.getSession().setAttribute("misReservas", misReservas);
+//
+//            modelo.put("misReservas", misReservas);
+//            modelo.put("mensaje", "¡Asiento(s) confirmado(s) con éxito!");
+//
+//            return new ModelAndView("viajeEnCurso", modelo);
 
         } catch (Exception e) {
             modelo.put("error", "Ocurrió un error: " + e.getMessage());
