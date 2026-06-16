@@ -4,9 +4,10 @@ import java.util.List;
 
 public interface RepositorioViaje {
     void guardarViaje(Viaje viaje);
-    List<Viaje> buscarViajes(String origen, String destino, String fecha);
+
+    List<Viaje> buscarViajes(String origen, String destino, String fecha, Integer pasajeros);
+
     Viaje buscarPorId(Long id);
     void actualizar(Viaje viaje);
-
     List<Viaje> buscarUltimosViajesDelUsuario(Long idUsuario);
 }

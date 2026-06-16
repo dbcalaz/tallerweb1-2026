@@ -25,11 +25,13 @@ public class RepositorioViajeImpl implements RepositorioViaje {
     }
 
     @Override
-    public List<Viaje> buscarViajes(String origen, String destino, String fecha) {
+    public List<Viaje> buscarViajes(String origen, String destino, String fecha, Integer pasajeros) {
         return sessionFactory.getCurrentSession().createCriteria(Viaje.class)
                 .add(Restrictions.eq("origen", origen))
                 .add(Restrictions.eq("destino", destino))
                 .add(Restrictions.eq("fecha", fecha))
+                // Esta línea hace todo el trabajo pesado de filtrar los asientos disponibles:
+                .add(Restrictions.ge("asientosDisponibles", pasajeros))
                 .list();
     }
 

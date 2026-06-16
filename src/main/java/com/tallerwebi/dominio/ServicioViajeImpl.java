@@ -1,5 +1,6 @@
 package com.tallerwebi.dominio;
 
+import com.tallerwebi.presentacion.DatosBusqueda;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,8 +24,14 @@ public class ServicioViajeImpl implements ServicioViaje {
     }
 
     @Override
-    public List<Viaje> buscarViajes(String origen, String destino, String fecha) {
-        return repositorioViaje.buscarViajes(origen, destino, fecha);
+    public List<Viaje> buscarViajes(DatosBusqueda datosBusqueda) {
+        // Le enviamos al repositorio los parámetros incluyendo la cantidad de pasajeros
+        return repositorioViaje.buscarViajes(
+                datosBusqueda.getOrigen(),
+                datosBusqueda.getDestino(),
+                datosBusqueda.getFecha(),
+                datosBusqueda.getPasajeros()
+        );
     }
 
     @Override

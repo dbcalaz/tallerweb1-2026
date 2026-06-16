@@ -1,5 +1,6 @@
 package com.tallerwebi.presentacion;
 
+import com.tallerwebi.dominio.Reserva;
 import com.tallerwebi.dominio.ServicioViaje;
 import com.tallerwebi.dominio.Usuario;
 import com.tallerwebi.dominio.Viaje;
@@ -12,10 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Controller
 public class ControladorBusqueda {
@@ -39,46 +37,21 @@ public class ControladorBusqueda {
         ModelMap modelo = new ModelMap();
 
         if (datosBusqueda.getOrigen() == null || datosBusqueda.getOrigen().trim().isEmpty() ||
-                datosBusqueda.getDestino() == null || datosBusqueda.getDestino().trim().isEmpty()) {
-            modelo.put("error", "Debe ingresar obligatoriamente Origen y Destino");
+                datosBusqueda.getDestino() == null || datosBusqueda.getDestino().trim().isEmpty() ||
+                datosBusqueda.getFecha() == null || datosBusqueda.getFecha().trim().isEmpty() ||
+                datosBusqueda.getPasajeros() == null) {
+
+            modelo.put("error", "Debe ingresar obligatoriamente Origen, Destino, Fecha y cantidad de Pasajeros");
             return new ModelAndView("buscarViajes", modelo);
         }
 
-        List<Viaje> viajesEncontrados = servicioViaje.buscarViajes(
-                datosBusqueda.getOrigen(),
-                datosBusqueda.getDestino(),
-                datosBusqueda.getFecha()
-        );
+        List<Viaje> viajesEncontrados = servicioViaje.buscarViajes(datosBusqueda);
 
-        Integer pasajeros = (datosBusqueda.getPasajeros() != null) ? datosBusqueda.getPasajeros() : 1;
-
-        List<Viaje> viajesUnicos = new ArrayList<>();
-        Set<String> viajesVistos = new HashSet<>();
-
-        for (Viaje v : viajesEncontrados) {
-
-            if (v.getAsientosDisponibles() == null || v.getAsientosDisponibles() < pasajeros) {
-                continue;
-            }
-
-            String origen = v.getOrigen() != null ? v.getOrigen() : "";
-            String destino = v.getDestino() != null ? v.getDestino() : "";
-            String fecha = v.getFecha() != null ? v.getFecha() : "";
-            String horario = v.getHorario() != null ? v.getHorario() : "";
-
-            String claveUnica = origen + "|" + destino + "|" + fecha + "|" + horario;
-
-            if (!viajesVistos.contains(claveUnica)) {
-                viajesVistos.add(claveUnica);
-                viajesUnicos.add(v);
-            }
-        }
-
-        modelo.put("viajes", viajesUnicos);
+        modelo.put("viajes", viajesEncontrados);
         modelo.put("origen", datosBusqueda.getOrigen());
         modelo.put("destino", datosBusqueda.getDestino());
-        modelo.put("pasajeros", pasajeros);
-        modelo.put("sinResultados", viajesUnicos.isEmpty());
+        modelo.put("pasajeros", datosBusqueda.getPasajeros());
+        modelo.put("sinResultados", viajesEncontrados.isEmpty());
 
         return new ModelAndView("listadoViajes", modelo);
     }
@@ -108,38 +81,18 @@ public class ControladorBusqueda {
                                          HttpServletRequest request) {
         ModelMap modelo = new ModelMap();
 
+        Usuario usuarioLogueado = (Usuario) request.getSession().getAttribute("usuario");
+        if (usuarioLogueado == null) {
+            return new ModelAndView("redirect:/login");
+        }
+
         try {
-            Usuario usuarioTemporal = new Usuario();
-            usuarioTemporal.setId(1L);
-
-            for(int i = 0; i < pasajeros; i++) {
-                servicioViaje.reservarAsiento(idViaje, usuarioTemporal);
+            for (int i = 0; i < pasajeros; i++) {
+                servicioViaje.reservarAsiento(idViaje, usuarioLogueado);
             }
 
-            Viaje viajeConfirmado = servicioViaje.buscarPorId(idViaje);
-
-            if (viajeConfirmado == null) {
-                modelo.put("error", "Hubo un problema. No se encontró el viaje.");
-                modelo.put("idViaje", idViaje);
-                return new ModelAndView("seleccionarAsiento", modelo);
-            }
-
-            Double precioTotal = viajeConfirmado.getPrecio() * pasajeros;
-
-            List<Reserva> misReservas = (List<Reserva>) request.getSession().getAttribute("misReservas");
-            if(misReservas == null) {
-                misReservas = new ArrayList<>();
-            }
-
-            Reserva nuevaReserva = new Reserva(viajeConfirmado, asientosSeleccionados != null ? asientosSeleccionados : "No especificados", precioTotal);
-            misReservas.add(nuevaReserva);
-
-            request.getSession().setAttribute("misReservas", misReservas);
-
-            modelo.put("misReservas", misReservas);
             modelo.put("mensaje", "¡Asiento(s) confirmado(s) con éxito!");
-
-            return new ModelAndView("viajeEnCurso", modelo);
+            return new ModelAndView("redirect:/perfilUsuario");
 
         } catch (Exception e) {
             modelo.put("error", "Ocurrió un error: " + e.getMessage());
@@ -155,7 +108,7 @@ public class ControladorBusqueda {
 
         List<Reserva> misReservas = (List<Reserva>) request.getSession().getAttribute("misReservas");
 
-        if(misReservas != null && !misReservas.isEmpty()) {
+        if (misReservas != null && !misReservas.isEmpty()) {
             modelo.put("misReservas", misReservas);
         } else {
             modelo.put("sinViajes", true);
