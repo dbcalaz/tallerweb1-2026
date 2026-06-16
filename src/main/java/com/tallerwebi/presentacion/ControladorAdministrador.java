@@ -81,13 +81,13 @@ public class ControladorAdministrador {
         return vistaConductores();
     }
 
-    @RequestMapping(path = "/suspender", method =  RequestMethod.PUT)
+    @RequestMapping(path = "/suspender", method =  RequestMethod.POST)
     public ModelAndView suspenderConductor(@RequestParam Long idConductor) {
         servicioAdministrador.suspenderConductor(idConductor);
         return vistaConductores();
     }
 
-    @RequestMapping(path = "/reactivar", method =  RequestMethod.PUT)
+    @RequestMapping(path = "/reactivar", method =  RequestMethod.POST)
     public ModelAndView reactivarConductor(@RequestParam Long idConductor) {
         servicioAdministrador.reactivarConductor(idConductor);
         return vistaConductores();
@@ -96,7 +96,7 @@ public class ControladorAdministrador {
     /* Viajes*/
     @GetMapping("/viajes")
     public ModelAndView viajes() {
-        return new ModelAndView("redirect:/admin/viajes");
+        return new ModelAndView("admin/viajes");
     }
 
 

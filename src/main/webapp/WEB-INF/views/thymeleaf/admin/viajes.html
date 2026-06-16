@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Viajes</title>
+    <link rel="stylesheet" th:href="@{/css/variables.css}">
+    <link rel="stylesheet" th:href="@{/css/components.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/panel-administrador.css}">
+     <link rel="stylesheet" th:href="@{/css/admin/viajes.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    <link rel="icon" th:href="@{/imagenes/logo.png}" type="image/x-icon">
+</head>
+<body>
+<div class="layout">
+    <div th:replace="componentes/sidebar-admin :: sidebar-admin('viajes')"></div>
+    <main class="admin-content">
+        <header class="admin-header">
+            <div>
+                <h1>Gestión de viajes</h1>
+                <p>Supervisa y coordina la logística en tiempo real.</p>
+            </div>
+            <div class="admin-actions">
+                <button class="primary-btn">
+                    <span class="material-symbols-outlined">add_road</span>
+                    Programar viaje
+                </button>
+            </div>
+        </header>
+        <section class="page">
+            <div class="section">
+                <div class="grid-3">
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="material-symbols-outlined">
+                                speed
+                            </span>
+                        </div>
+                        <small>Viajes hoy</small>
+                        <h3>42</h3>
+                        <p>+12% respecto a ayer</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="material-symbols-outlined">
+                                person_check
+                            </span>
+                        </div>
+                        <small>Conductores activos</small>
+                        <h3>18</h3>
+                        <p>Actualmente asignados</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="material-symbols-outlined">
+                                warning
+                            </span>
+                        </div>
+                        <small>Retrasos detectados</small>
+                        <h3>3</h3>
+                        <p>Requieren seguimiento</p>
+                    </div>
+                </div>
+            </div>
+            <div class="section">
+                <div class="card">
+                    <div class="filtros-viajes">
+                        <div class="driver-modal-field">
+                            <label>Fecha</label>
+                            <input type="date">
+                        </div>
+                        <div class="driver-modal-field">
+                            <label>Estado</label>
+                            <select>
+                                <option>Todos</option>
+                                <option>Programado</option>
+                                <option>En curso</option>
+                                <option>Finalizado</option>
+                                <option>Cancelado</option>
+                            </select>
+                        </div>
+                        <div class="driver-modal-field">
+                            <label>Conductor</label>
+                            <input type="text"
+                                    placeholder="Buscar conductor">
+                        </div>
+                        <button class="btn-secondary">
+                            Filtrar
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="section">
+                <div class="admin-table-card">
+                    <div class="table-header">
+                        <h3>Viajes registrados</h3>
+                        <div class="table-search">
+                            <span class="material-symbols-outlined">
+                                search
+                            </span>
+                            <input type="text"
+                                    placeholder="Buscar viaje">
+                        </div>
+                    </div>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>Origen</th>
+                                <th>Destino</th>
+                                <th>Fecha</th>
+                                <th>Conductor</th>
+                                <th>Vehículo</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>Terminal Central</td>
+                                <td>Aeropuerto</td>
+                                <td>12/10/2026 08:30</td>
+                                <td>Ricardo Mendoza</td>
+                                <td>Mercedes O500</td>
+                                <td>
+                                    <span class="status info">
+                                        En curso
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="acciones-fila">
+                                        <button class="action-btn">
+                                            <span class="material-symbols-outlined">
+                                                edit_calendar
+                                            </span>
+                                        </button>
+                                        <button class="action-btn">
+                                            <span class="material-symbols-outlined">
+                                                person_edit
+                                            </span>
+                                        </button>
+                                        <button class="action-btn">
+                                            <span class="material-symbols-outlined">
+                                                more_vert
+                                            </span>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Plaza Mayo</td>
+                                <td>San Telmo</td>
+                                <td>12/10/2026 14:15</td>
+                                <td>Sofía Alarcón</td>
+                                <td>Volvo B11R</td>
+                                <td>
+                                    <span class="status neutral">
+                                        Programado
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="acciones-fila">
+                                        <button class="action-btn">
+                                            <span class="material-symbols-outlined">
+                                                edit_calendar
+                                            </span>
+                                        </button>
+                                        <button class="action-btn">
+                                            <span class="material-symbols-outlined">
+                                                person_edit
+                                            </span>
+                                        </button>
+                                        <button class="action-btn">
+                                            <span class="material-symbols-outlined">
+                                                cancel
+                                            </span>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Barrio Norte</td>
+                                <td>Retiro</td>
+                                <td>11/10/2026 22:00</td>
+                                <td>Carlos Pérez</td>
+                                <td>Scania K440</td>
+                                <td>
+                                    <span class="status success">
+                                        Finalizado
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="acciones-fila">
+                                        <button class="action-btn">
+                                            <span class="material-symbols-outlined">
+                                                description
+                                            </span>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="pagination">
+                        <span>
+                            Mostrando 1 a 3 de 128 viajes
+                        </span>
+                        <div>
+                            <button>‹</button>
+                            <button class="active-page">1</button>
+                            <button>2</button>
+                            <button>3</button>
+                            <button>›</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+</body>
+</html>

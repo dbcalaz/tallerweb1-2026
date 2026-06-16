@@ -1,0 +1,30 @@
+.filtros-viajes{
+    display:flex;
+    gap:20px;
+    align-items:flex-end;
+    flex-wrap:wrap;
+}
+
+.filtros-viajes > *{
+    flex:1;
+    min-width:220px;
+}
+
+.acciones-fila{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:8px;
+}
+
+.card h3{
+    margin-top:12px;
+    font-size:36px;
+}
+
+.card small{
+    color:var(--text-secondary);
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    font-weight:600;
+}

@@ -69,12 +69,9 @@ public class RepositorioAdministradorImpl implements RepositorioAdministrador {
         nuevaAsignacion.setConductor(conductor);
         nuevaAsignacion.setCombi(nuevaCombi);
         nuevaAsignacion.setCombiActiva(true);
-
         sessionFactory.getCurrentSession().save(nuevaAsignacion);
 
-        reporte.setResuelta(true);
-        reporte.setFechaRealizadoReporte(new Date());
-
+        reporte.setFechaCreacionReporte(new Date());
         sessionFactory.getCurrentSession().update(reporte);
     }
 
@@ -107,7 +104,7 @@ public class RepositorioAdministradorImpl implements RepositorioAdministrador {
         return sessionFactory.getCurrentSession()
                 .createCriteria(Conductor.class)
                 .add(Restrictions.eq("cuentaHabilitada", true))
-                .add(Restrictions.eq("suspendido", false))
+                //.add(Restrictions.eq("suspendido", false))
                 .list();
     }
 
@@ -146,7 +143,6 @@ public class RepositorioAdministradorImpl implements RepositorioAdministrador {
     public void suspenderConductor(Conductor conductor) {
         conductor.setSuspendido(true);
         conductor.setEnViaje(false);
-        conductor.setEnViaje(false);
         conductor.setDisponible(false);
         sessionFactory.getCurrentSession().update(conductor);
     }
@@ -154,7 +150,6 @@ public class RepositorioAdministradorImpl implements RepositorioAdministrador {
     @Override
     public void reactivarConductor(Conductor conductor) {
         conductor.setSuspendido(false);
-        conductor.setEnViaje(false);
         conductor.setEnViaje(false);
         conductor.setDisponible(true);
         sessionFactory.getCurrentSession().update(conductor);

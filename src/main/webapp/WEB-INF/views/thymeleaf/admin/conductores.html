@@ -6,7 +6,9 @@
         <title>BondiWay - Conductores</title>
         <link rel="stylesheet" th:href="@{/css/variables.css}">
         <link rel="stylesheet" th:href="@{/css/components.css}">
-        <link rel="stylesheet" th:href="@{/css/panel-administrador.css}">
+        <link rel="stylesheet" th:href="@{/css/admin/panel-administrador.css}">
+        <link rel="stylesheet" th:href="@{/css/admin/combis.css}">
+        <link rel="stylesheet" th:href="@{/css/admin/conductores.css}">
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
         <link rel="icon" th:href="@{/imagenes/logo.png}" type="image/x-icon">
     </head>
@@ -14,16 +16,14 @@
     <div th:replace="componentes/sidebar-admin :: sidebar-admin('conductores')"></div>
     <main class="panel-administracion">
         <section class="conductores">
-            <div class="conductores-header">
-                <div class="conductores-header__info">
-                    <h1>Gestión de conductores</h1>
-                    <p>Supervisión y control de la flota humana de BondiWay.</p>
-                </div>
+            <header class="admin-header">
+                <div>
+                 <h1>Gestión de conductores</h1>
+                 <p>Supervisión y control de la flota humana de BondiWay.</p>
             </div>
-
+        </header>
             <section class="solicitudes-pendientes">
                 <div class="seccion-titulo">
-                    <span class="material-symbols-outlined icono-prioridad">priority_high</span>
                     <h2>Solicitudes pendientes</h2>
                     <span class="badge-nuevas" th:text="${pendientes}"></span>
                 </div>
@@ -31,7 +31,7 @@
                     <article class="solicitud-card" th:each="c : ${conductoresPendientes}">
                         <div class="solicitud-card__decoracion"></div>
                         <div class="solicitud-card__header">
-                            <img src="https://placehold.co/80x80" alt="Conductor">
+                            <!--<img src="https://placehold.co/80x80" alt="Conductor">-->
                             <div><h3 th:text="${c.nombre + ' ' + c.apellido}"></h3><p><span class="material-symbols-outlined">calendar_today</span> Hace 2 horas</p></div>
                         </div>
                         <div class="solicitud-card__datos">
@@ -48,65 +48,69 @@
                 </div>
             </section>
 
-            <section class="conductores-activos">
-                <div class="conductores-activos__header">
-                    <div class="seccion-titulo"><span class="material-symbols-outlined icono-grupo">group</span><h2>Conductores activos</h2></div>
+            <section class="combis-fallas">
+                <div class="fallas-header">
+                    <div>
+                        <h2>Conductores</h2>
+                        <p>Disponibles - En viaje - Suspendidos</p>
+                    </div>
                 </div>
-                <div class="tabla-conductores-container">
-                    <table class="tabla-conductores">
+                <div class="fallas-table-wrapper">
+                    <table class="fallas-table">
                         <thead>
                             <tr>
                                 <th>Conductor</th>
                                 <th>Tipo de licencia</th>
                                 <th>Calificación</th>
                                 <th>Estado</th>
-                                <th>Acciones</th>
+                                <th class="text-center">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr th:each="conductor : ${conductores}">
                                 <td>
                                     <div class="conductor-info">
-                                        <img src="https://placehold.co/60x60" alt="Conductor">
+                                        <!--<img src="https://placehold.co/60x60" alt="Conductor">-->
                                         <div><strong th:text="${conductor.nombre}"></strong><span th:text="'ID: ' + ${conductor.id}"></span></div>
                                     </div>
                                 </td>
                                 <td><span class="licencia" th:text="${conductor.licencia}"></span></td>
                                 <td><div class="calificacion"><span class="material-symbols-outlined">star</span><strong th:text="${conductor.calificacion}"></strong></div></td>
                                 <td>
-                                    <div th:class="'estado ' + (${conductor.suspendido} ? 'estado-descanso' : (${conductor.enViaje} ? 'estado-viaje' : 'estado-disponible'))" th:text="${conductor.suspendido} ? 'Suspendido' : (${conductor.enViaje} ? 'En viaje' : 'Disponible')">
+                                    <div th:class="'estado ' + (${conductor.suspendido} ? 'suspendido' : (${conductor.enViaje} ? 'viaje' : 'disponible'))" th:text="${conductor.suspendido} ? 'Suspendido' : (${conductor.enViaje} ? 'En viaje' : 'Disponible')">
 
                                     </div>
                                 </td>
                                 <td>
-                                    <div class="acciones-fila">
+                                    <div class="acciones">
                                         <button title="Ver detalle"><span class="material-symbols-outlined">visibility</span></button>
                                         <form th:action="@{/editar}">
                                             <button title="Editar"><span class="material-symbols-outlined">edit</span></button>
                                         </form>
+                                        <div th:if="${!conductor.suspendido}">
+                                            <form th:action="@{/suspender}" th:method="POST">
+                                                <input type="hidden" th:value="${conductor.id}" name="idConductor">
+                                                <button title="Suspender"><span class="material-symbols-outlined">block</span></button>
+                                            </form>
+                                        </div>
                                         <div th:if="${conductor.suspendido}">
-                                            <form th:action="@{/suspender}">
-                                             <button title="Suspender"><span class="material-symbols-outlined">block</span></button>
-                                        </form>
+                                            <form th:action="@{/reactivar}" th:method="POST">
+                                                <input type="hidden" th:value="${conductor.id}" name="idConductor">
+                                                 <button title="Reactivar"><span class="material-symbols-outlined">check</span></button>
+                                            </form>
                                         </div>
-                                          <div th:if="${!conductor.suspendido}">
-                                            <form th:action="@{/reactivar}">
-                                             <button title="Reactivar"><span class="material-symbols-outlined">check</span></button>
-                                        </form>
-                                        </div>
-
                                     </div>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
-                    <div class="paginacion">
+                    <!--<div class="paginacion">
                         <p>Mostrando 1-3 de 20 conductores</p>
                         <div class="paginacion-botones">
                             <button><span class="material-symbols-outlined">chevron_left</span></button>
                             <button><span class="material-symbols-outlined">chevron_right</span></button>
                         </div>
-                    </div>
+                    </div>-->
                 </div>
             </section>
         </section>
