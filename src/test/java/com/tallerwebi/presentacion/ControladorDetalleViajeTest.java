@@ -51,14 +51,14 @@ public class ControladorDetalleViajeTest {
         reserva.setViaje(viaje);
 
         when(request.getSession()).thenReturn(session);
-        when(session.getAttribute("USUARIO")).thenReturn(usuario);
+        when(session.getAttribute("usuario")).thenReturn(usuario);
         when(servicioPerfilUsuario.buscarReservaPorId(idReserva))
                 .thenReturn(reserva);
 
         ModelAndView mav = controladorDetalle.verDetalle(
                 idReserva, request);
 
-        assertThat(mav.getViewName(), equalTo("detalle-Viaje"));
+        assertThat(mav.getViewName(), equalTo("detalle-viaje"));
         assertThat(mav.getModelMap().get("reserva"), equalTo(reserva));
         assertThat(mav.getModelMap().get("viaje"), equalTo(viaje));
         assertThat(mav.getModelMap().get("conductor"), equalTo(conductor));

@@ -29,7 +29,7 @@ public class ControladorDetalle {
         this.servicioPerfilUsuario = servicioPerfilUsuario;
     }
 
-    @RequestMapping("/detalle-Viaje/{id}")
+    @RequestMapping("/detalle-viaje/{id}")
     public ModelAndView verDetalle(@PathVariable Long id, HttpServletRequest request) {
 
         ModelMap model = new ModelMap();
