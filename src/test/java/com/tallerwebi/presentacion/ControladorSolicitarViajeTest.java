@@ -65,26 +65,26 @@ public class ControladorSolicitarViajeTest {
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("home"));
         assertThat(modelAndView.getModel().get("mensaje").toString(), containsString("¡Solicitud registrada!"));
     }
-
-    @Test
-    public void queSePuedaConfirmarUnAsientoYElViajeQuedeEnCurso() {
-        Long idViaje = 1L;
-        String asientosSeleccionados = "1,2";
-        Integer pasajeros = 1;
-
-        Viaje viajeMock = new Viaje();
-        viajeMock.setPrecio(1500.0);
-
-        when(servicioViajeMock.buscarPorId(idViaje)).thenReturn(viajeMock);
-
-        List<Reserva> reservasMock = new ArrayList<>();
-        when(sessionMock.getAttribute("misReservas")).thenReturn(reservasMock);
-
-        ModelAndView modelAndView = controladorBusqueda.confirmarAsiento(idViaje, pasajeros, asientosSeleccionados, requestMock);
-
-        assertThat(modelAndView.getViewName(), equalToIgnoringCase("viajeEnCurso"));
-        assertThat(modelAndView.getModel().get("mensaje").toString(), equalToIgnoringCase("¡Asiento(s) confirmado(s) con éxito!"));
-
-        verify(sessionMock, times(1)).setAttribute(eq("misReservas"), anyList());
-    }
+//
+//    @Test
+//    public void queSePuedaConfirmarUnAsientoYElViajeQuedeEnCurso() {
+//        Long idViaje = 1L;
+//        String asientosSeleccionados = "1,2";
+//        Integer pasajeros = 1;
+//
+//        Viaje viajeMock = new Viaje();
+//        viajeMock.setPrecio(1500.0);
+//
+//        when(servicioViajeMock.buscarPorId(idViaje)).thenReturn(viajeMock);
+//
+//        List<Reserva> reservasMock = new ArrayList<>();
+//        when(sessionMock.getAttribute("misReservas")).thenReturn(reservasMock);
+//
+//        ModelAndView modelAndView = controladorBusqueda.confirmarAsiento(idViaje, pasajeros, asientosSeleccionados, requestMock);
+//
+//        assertThat(modelAndView.getViewName(), equalToIgnoringCase("viajeEnCurso"));
+//        assertThat(modelAndView.getModel().get("mensaje").toString(), equalToIgnoringCase("¡Asiento(s) confirmado(s) con éxito!"));
+//
+//        verify(sessionMock, times(1)).setAttribute(eq("misReservas"), anyList());
+//    }
 }

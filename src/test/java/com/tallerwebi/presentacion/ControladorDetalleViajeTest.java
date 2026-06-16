@@ -19,17 +19,19 @@ public class ControladorDetalleViajeTest {
     private RepositorioViaje servicioViaje;
     private Viaje viaje;
     ServicioPerfilUsuario servicioPerfilUsuario;
+    private ServicioPuntuacion servicioPuntuacion;
     private HttpSession session;
     private HttpServletRequest request;
 
     @BeforeEach
     public void init() {
         servicioPerfilUsuario = Mockito.mock(ServicioPerfilUsuario.class);
+        servicioPuntuacion = Mockito.mock(ServicioPuntuacion.class);
         request = Mockito.mock(HttpServletRequest.class);
         session = Mockito.mock(HttpSession.class);
 
         controladorDetalle =
-                new ControladorDetalle(servicioPerfilUsuario);
+                new ControladorDetalle(servicioPerfilUsuario, servicioPuntuacion, (ServicioViaje) servicioViaje);
     }
 
     @Test
