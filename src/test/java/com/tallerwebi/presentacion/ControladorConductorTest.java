@@ -5,6 +5,7 @@ import com.tallerwebi.dominio.ServicioConductor;
 import com.tallerwebi.dominio.TipoDeLicencia;
 import com.tallerwebi.dominio.Viaje;
 import com.tallerwebi.dominio.excepcion.ConductorExistente;
+import com.tallerwebi.dominio.excepcion.CuentaNoHabilitadaException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -75,7 +76,7 @@ public class ControladorConductorTest {
 
     /*Login*/
     @Test
-    public void conCredencialesCorrectasElLoginEsExitoso() {
+    public void conCredencialesCorrectasElLoginEsExitoso() throws CuentaNoHabilitadaException {
         //preparación
         Conductor conductorEncontrado = Mockito.mock(Conductor.class);
         when(conductorEncontrado.getNombre()).thenReturn("Carlos");
@@ -92,7 +93,7 @@ public class ControladorConductorTest {
     }
 
     @Test
-    public void conCredencialesIncorrectasElLoginNoEsExitosoYRedirigeAlogin() {
+    public void conCredencialesIncorrectasElLoginNoEsExitosoYRedirigeAlogin() throws CuentaNoHabilitadaException {
         //preparación
         when(servicioConductor.consultarConductor(anyString(), anyString())).thenReturn(null);
 

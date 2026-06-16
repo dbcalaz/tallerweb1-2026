@@ -35,8 +35,10 @@ public class ControladorAdministrador {
         ModelMap model = new ModelMap();
 
         List<Combi> combis = servicioAdministrador.obtenerCombis();
+        Long cantidadCombis = servicioAdministrador.obtenerCantidadCombis();
         List<ReporteFalla> reportes = servicioAdministrador.obtenerFallasDeCombis();
         model.put("combis", combis);
+        model.put("cantidadCombis", cantidadCombis);
         model.put("reportes", reportes);
         return new ModelAndView("admin/combis", model);
     }
@@ -62,10 +64,36 @@ public class ControladorAdministrador {
         ModelMap model = new ModelMap();
 
         List<Conductor> conductores = servicioAdministrador.obtenerConductores();
+        List<Conductor> conductoresPendientes = servicioAdministrador.obtenerConductoresPendientes();
+        Long pendientes = servicioAdministrador.obtenerCantidadDeConductoresPendientes();
+        List<Combi> combisDisponibles = servicioAdministrador.obtenerCombis();
+
         model.put("conductores", conductores);
+        model.put("conductoresPendientes", conductoresPendientes);
+        model.put("pendientes", pendientes);
+        model.put("combisDisponibles", combisDisponibles);
         return new ModelAndView("admin/conductores", model);
     }
 
+    @RequestMapping(path = "/habilitacion-asignacion", method =  RequestMethod.POST)
+    public ModelAndView asignarCombiHabilitacionConductor(@RequestParam Long idConductor, @RequestParam Long idCombi) {
+        servicioAdministrador.habilitarConductor(idConductor, idCombi);
+        return vistaConductores();
+    }
+
+    @RequestMapping(path = "/suspender", method =  RequestMethod.PUT)
+    public ModelAndView suspenderConductor(@RequestParam Long idConductor) {
+        servicioAdministrador.suspenderConductor(idConductor);
+        return vistaConductores();
+    }
+
+    @RequestMapping(path = "/reactivar", method =  RequestMethod.PUT)
+    public ModelAndView reactivarConductor(@RequestParam Long idConductor) {
+        servicioAdministrador.reactivarConductor(idConductor);
+        return vistaConductores();
+    }
+
+    /* Viajes*/
     @GetMapping("/viajes")
     public ModelAndView viajes() {
         return new ModelAndView("redirect:/admin/viajes");

@@ -1,12 +1,13 @@
 package com.tallerwebi.dominio;
 
 import com.tallerwebi.dominio.excepcion.ConductorExistente;
+import com.tallerwebi.dominio.excepcion.CuentaNoHabilitadaException;
 
 import java.util.List;
 
 public interface ServicioConductor {
 
-    Conductor consultarConductor(String email, String password);
+    Conductor consultarConductor(String email, String password) throws CuentaNoHabilitadaException;
 
     void registrarConductor(Conductor conductor) throws ConductorExistente;
 
