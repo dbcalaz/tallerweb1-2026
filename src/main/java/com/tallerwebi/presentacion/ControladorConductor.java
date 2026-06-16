@@ -3,6 +3,7 @@ package com.tallerwebi.presentacion;
 import com.tallerwebi.dominio.*;
 import com.tallerwebi.dominio.excepcion.ConductorExistente;
 import com.tallerwebi.dominio.excepcion.CuentaNoHabilitadaException;
+import com.tallerwebi.dominio.excepcion.CuentaSuspendidaException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -46,10 +47,9 @@ public class ControladorConductor {
                 request.getSession().setAttribute("conductor", conductorEncontrado);
                 return new ModelAndView("redirect:/home-conductor");
             }
-
             model.put("error", "Las credenciales no son correctas");
             return new ModelAndView("login-conductor", model);
-        } catch (CuentaNoHabilitadaException e) {
+        } catch (CuentaNoHabilitadaException | CuentaSuspendidaException e) {
             model.put("error", e.getMessage());
             return new ModelAndView("login-conductor", model);
         }

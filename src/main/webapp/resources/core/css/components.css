@@ -10,29 +10,33 @@ body {
     color: var(--text);
 }
 /*mensajes*/
-.message{
-    color: green;
-    border: 1px solid green;
-    border-radius: 20px;
-    padding: 10px;
-    background-color: #ccffcc;
-    margin-bottom: 10px;
-    max-width: 30%;
+.message,
+.error-message{
+    width: fit-content;
+    max-width: 600px;
+    padding: 14px 20px;
+    margin-bottom: 20px;
     display: flex;
     align-items: center;
-    justify-content: center;
+    gap: 10px;
+    border-radius: var(--radius-md);
+    font-size: var(--text-body);
+    font-weight: 500;
+    box-shadow: var(--shadow-card);
 }
-.error-message {
-    color: var(--error);
-    border: 1px solid red;
-    border-radius: 20px;
-    padding: 10px;
-    background-color: #ffaaaa;
-    margin-bottom: 10px;
-    max-width: 30%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+
+/* Éxito */
+.message{
+    color: #166534;
+    background: #dcfce7;
+    border: 1px solid #86efac;
+}
+
+/* Error */
+.error-message{
+    color: #991b1b;
+    background: #fee2e2;
+    border: 1px solid #fca5a5;
 }
 /*logo*/
 .logo-container {

@@ -83,7 +83,7 @@ public class RepositorioConductorImpl implements RepositorioConductor {
 
     @Override
     public void guardarFalla(ReporteFalla reporteFalla) {
-        reporteFalla.setFechaRealizadoReporte(new Date());
+        reporteFalla.setFechaCreacionReporte(new Date());
         sessionFactory.getCurrentSession().save(reporteFalla);
     }
 }
