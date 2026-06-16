@@ -15,14 +15,16 @@ public class ServicioReservaTest {
     private RepositorioUsuario repositorioUsuario;
     private RepositorioReserva repositorioReserva;
     private ServicioPerfilUsuario servicioPerfilUsuario;
+    private RepositorioViaje repositorioViaje;
 
     @BeforeEach
     void init(){
         repositorioUsuario = Mockito.mock(RepositorioUsuario.class);
         repositorioReserva = Mockito.mock(RepositorioReserva.class);
+        repositorioViaje = Mockito.mock(RepositorioViaje.class);
         servicioPerfilUsuario = Mockito.mock(ServicioPerfilUsuario.class);
 
-        servicioPerfilUsuario = new ServicioPerfilUsuarioImpl(repositorioUsuario, repositorioReserva);
+        servicioPerfilUsuario = new ServicioPerfilUsuarioImpl(repositorioUsuario, repositorioReserva, repositorioViaje);
         Usuario usuario = new Usuario();
         usuario.setId((long) 1L);
     }
@@ -68,6 +70,8 @@ public class ServicioReservaTest {
         reservas.add(reserva4);
 
         when(repositorioReserva.buscarUltimasReservasPorUsuario(1L)).thenReturn(reservas);
+        when(repositorioReserva.obtenerConductorFavorito(1L))
+                .thenReturn(conductor1);
 
         Conductor favorito = servicioPerfilUsuario.obtenerConductorFavorito(1L);
 
