@@ -169,4 +169,109 @@ public class RepositorioAdministradorTest {
     }
 
 
+    //test de combis
+
+    @Test
+    @Rollback
+    public void queSeObtenganLasCombisConEstadoEnViaje() {
+        // Preparación
+        Combi combiEnViaje1 = new Combi();
+        combiEnViaje1.setEstadoDeCombi(EstadoDeCombi.EN_VIAJE);
+
+        Combi combiEnViaje2 = new Combi();
+        combiEnViaje2.setEstadoDeCombi(EstadoDeCombi.EN_VIAJE);
+
+        Combi combiDisponible = new Combi();
+        combiDisponible.setEstadoDeCombi(EstadoDeCombi.DISPONIBLE);
+
+        session().save(combiEnViaje1);
+        session().save(combiEnViaje2);
+        session().save(combiDisponible);
+
+        // Ejecución
+        List<Combi> combis = repositorioAdministrador.obtenerCombisFiltradas("EN_VIAJE");
+
+        // Validación
+        assertThat(combis, notNullValue());
+        assertThat(combis.size(), equalTo(2));
+        assertThat(combis.get(0).getEstadoDeCombi(), equalTo(EstadoDeCombi.EN_VIAJE));
+        assertThat(combis.get(1).getEstadoDeCombi(), equalTo(EstadoDeCombi.EN_VIAJE));
+    }
+
+    @Test
+    @Rollback
+    public void queSeObtenganLasCombisEnMantenimiento() {
+        // Preparación
+        Combi combiMantenimiento = new Combi();
+        combiMantenimiento.setEstadoDeCombi(EstadoDeCombi.EN_MANTENIMIENTO);
+
+        Combi combiEnViaje = new Combi();
+        combiEnViaje.setEstadoDeCombi(EstadoDeCombi.EN_VIAJE);
+
+        session().save(combiMantenimiento);
+        session().save(combiEnViaje);
+
+        // Ejecución
+        List<Combi> combis = repositorioAdministrador.obtenerCombisFiltradas("EN_MANTENIMIENTO");
+
+        // Validación
+        assertThat(combis, notNullValue());
+        assertThat(combis.size(), equalTo(1));
+        assertThat(combis.get(0).getEstadoDeCombi(), equalTo(EstadoDeCombi.EN_MANTENIMIENTO));
+    }
+
+    @Test
+    @Rollback
+    public void queSeObtenganLasCombisDisponibles() {
+        // Preparación
+        Combi combiDisponible1 = new Combi();
+        combiDisponible1.setEstadoDeCombi(EstadoDeCombi.DISPONIBLE);
+
+        Combi combiDisponible2 = new Combi();
+        combiDisponible2.setEstadoDeCombi(EstadoDeCombi.DISPONIBLE);
+
+        Combi combiMantenimiento = new Combi();
+        combiMantenimiento.setEstadoDeCombi(EstadoDeCombi.EN_MANTENIMIENTO);
+
+        session().save(combiDisponible1);
+        session().save(combiDisponible2);
+        session().save(combiMantenimiento);
+
+        // Ejecución
+        List<Combi> combis = repositorioAdministrador.obtenerCombisFiltradas("DISPONIBLE");
+
+        // Validación
+        assertThat(combis, notNullValue());
+        assertThat(combis.size(), equalTo(2));
+        assertThat(combis.get(0).getEstadoDeCombi(), equalTo(EstadoDeCombi.DISPONIBLE));
+        assertThat(combis.get(1).getEstadoDeCombi(), equalTo(EstadoDeCombi.DISPONIBLE));
+    }
+
+    @Test
+    @Rollback
+    public void queSeObtenganTodasLasCombisSinImportarElEstado() {
+        // Preparación
+        Combi combiDisponible = new Combi();
+        combiDisponible.setEstadoDeCombi(EstadoDeCombi.DISPONIBLE);
+
+        Combi combiEnViaje = new Combi();
+        combiEnViaje.setEstadoDeCombi(EstadoDeCombi.EN_VIAJE);
+
+        Combi combiMantenimiento = new Combi();
+        combiMantenimiento.setEstadoDeCombi(EstadoDeCombi.EN_MANTENIMIENTO);
+
+        session().save(combiDisponible);
+        session().save(combiEnViaje);
+        session().save(combiMantenimiento);
+
+        // Ejecución
+        // se usa  el método que trae todo
+        List<Combi> todasLasCombis = repositorioAdministrador.getCombis();
+
+        // Validación
+        assertThat(todasLasCombis, notNullValue());
+        assertThat(todasLasCombis.size(), equalTo(3));
+    }
+
+
 }

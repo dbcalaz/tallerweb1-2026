@@ -123,4 +123,66 @@ public class ControladorAdministradorTest {
         verify(servicioAdministrador).reactivarConductor(idConductor);
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/admin/conductores"));
     }
+
+    //aca test de combis
+
+    @Test
+    public void queSeObtenganTodasLasCombisConEstadoEN_VIAJE() {
+        // Preparación
+        List<Combi> combisEnViaje = List.of(Mockito.mock(Combi.class), Mockito.mock(Combi.class));
+        when(servicioAdministrador.obtenerCombis("EN_VIAJE")).thenReturn(combisEnViaje);
+
+        // Ejecución
+        ModelAndView modelAndView = controladorAdministrador.listarCombis("EN_VIAJE");
+
+        // Validación
+        assertThat(modelAndView.getViewName(), equalToIgnoringCase("admin/combis-listas"));
+        assertThat(modelAndView.getModel().get("listaCombis"), equalTo(combisEnViaje));
+        verify(servicioAdministrador).obtenerCombis("EN_VIAJE");
+    }
+
+    @Test
+    public void queSeObtenganLasCombisEnMantenimiento() {
+        // Preparación
+        List<Combi> combisEnMantenimiento = List.of(Mockito.mock(Combi.class));
+        when(servicioAdministrador.obtenerCombis("EN_MANTENIMIENTO")).thenReturn(combisEnMantenimiento);
+
+        // Ejecución
+        ModelAndView modelAndView = controladorAdministrador.listarCombis("EN_MANTENIMIENTO");
+
+        // Validación
+        assertThat(modelAndView.getViewName(), equalToIgnoringCase("admin/combis-listas"));
+        assertThat(modelAndView.getModel().get("listaCombis"), equalTo(combisEnMantenimiento));
+        verify(servicioAdministrador).obtenerCombis("EN_MANTENIMIENTO");
+    }
+
+    @Test
+    public void queSeObtenganLasCombisDisponibles() {
+        // Preparación
+        List<Combi> combisDisponibles = List.of(Mockito.mock(Combi.class), Mockito.mock(Combi.class), Mockito.mock(Combi.class));
+        when(servicioAdministrador.obtenerCombis("DISPONIBLE")).thenReturn(combisDisponibles);
+
+        // Ejecución
+        ModelAndView modelAndView = controladorAdministrador.listarCombis("DISPONIBLE");
+
+        // Validación
+        assertThat(modelAndView.getViewName(), equalToIgnoringCase("admin/combis-listas"));
+        assertThat(modelAndView.getModel().get("listaCombis"), equalTo(combisDisponibles));
+        verify(servicioAdministrador).obtenerCombis("DISPONIBLE");
+    }
+
+    @Test
+    public void queSeObtenganTodasLasCombis() {
+        // Preparación
+        List<Combi> todasLasCombis = List.of(Mockito.mock(Combi.class), Mockito.mock(Combi.class));
+        when(servicioAdministrador.obtenerCombis()).thenReturn(todasLasCombis);
+
+        // Ejecución
+        ModelAndView modelAndView = controladorAdministrador.listarCombis(null);
+
+        // Validación
+        assertThat(modelAndView.getViewName(), equalToIgnoringCase("admin/combis-listas"));
+        assertThat(modelAndView.getModel().get("listaCombis"), equalTo(todasLasCombis));
+        verify(servicioAdministrador).obtenerCombis();
+    }
 }

@@ -210,4 +210,72 @@ public class ServicioAdministradorTest {
     }
 
 
+    //aca test de combis
+    @Test
+    public void queSeObtenganTodasLasCombisConEstadoEN_VIAJE() {
+        // Preparación
+        List<Combi> combisEnViaje = List.of(new Combi(), new Combi());
+
+        // Ahora mockeamos obtenerCombisFiltradas tal como hace tu impl
+        when(repositorioAdministrador.obtenerCombisFiltradas("EN_VIAJE")).thenReturn(combisEnViaje);
+
+        // Ejecución
+        List<Combi> resultado = servicioAdministrador.obtenerCombis("EN_VIAJE");
+
+        // Validación
+        assertEquals(2, resultado.size());
+        assertEquals(combisEnViaje, resultado);
+        verify(repositorioAdministrador, times(1)).obtenerCombisFiltradas("EN_VIAJE");
+    }
+
+    @Test
+    public void queSeObtenganLasCombisEnMantenimiento() {
+        // Preparación
+        List<Combi> combisEnMantenimiento = List.of(new Combi());
+
+        when(repositorioAdministrador.obtenerCombisFiltradas("EN_MANTENIMIENTO")).thenReturn(combisEnMantenimiento);
+
+        // Ejecución
+        List<Combi> resultado = servicioAdministrador.obtenerCombis("EN_MANTENIMIENTO");
+
+        // Validación
+        assertEquals(1, resultado.size());
+        assertEquals(combisEnMantenimiento, resultado);
+        verify(repositorioAdministrador, times(1)).obtenerCombisFiltradas("EN_MANTENIMIENTO");
+    }
+
+    @Test
+    public void queSeObtenganLasCombisDisponibles() {
+        // Preparación
+        List<Combi> combisDisponibles = List.of(new Combi(), new Combi(), new Combi());
+
+        when(repositorioAdministrador.obtenerCombisFiltradas("DISPONIBLE")).thenReturn(combisDisponibles);
+
+        // Ejecución
+        List<Combi> resultado = servicioAdministrador.obtenerCombis("DISPONIBLE");
+
+        // Validación
+        assertEquals(3, resultado.size());
+        assertEquals(combisDisponibles, resultado);
+        verify(repositorioAdministrador, times(1)).obtenerCombisFiltradas("DISPONIBLE");
+    }
+
+    @Test
+    public void queSeObtenganTodasLasCombis() {
+        // Preparación
+        List<Combi> todasLasCombis = List.of(new Combi(), new Combi(), new Combi(), new Combi());
+
+        // Este usa el método sin parámetros que llama a getCombis()
+        when(repositorioAdministrador.getCombis()).thenReturn(todasLasCombis);
+
+        // Ejecución
+        List<Combi> resultado = servicioAdministrador.obtenerCombis();
+
+        // Validación
+        assertEquals(4, resultado.size());
+        assertEquals(todasLasCombis, resultado);
+        verify(repositorioAdministrador, times(1)).getCombis();
+    }
+
+
 }
