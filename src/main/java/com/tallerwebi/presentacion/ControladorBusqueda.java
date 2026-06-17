@@ -36,6 +36,7 @@ public class ControladorBusqueda {
     public ModelAndView procesarBusqueda(@ModelAttribute("datosBusqueda") DatosBusqueda datosBusqueda) {
         ModelMap modelo = new ModelMap();
 
+
         if (esBusquedaInvalida(datosBusqueda)) {
             modelo.put("error", "Debe ingresar obligatoriamente Origen, Destino, Fecha y cantidad de Pasajeros");
             return new ModelAndView("buscarViajes", modelo);
@@ -121,6 +122,7 @@ public class ControladorBusqueda {
             misReservas.remove(reservaACancelar);
             servicioViaje.liberarAsiento(idViaje);
 
+
             if (reservaACancelar.getId() != null) {
                 servicioViaje.eliminarReserva(reservaACancelar.getId());
             }
@@ -153,8 +155,7 @@ public class ControladorBusqueda {
 
     private void registrarNuevasReservas(Integer pasajeros, String asientosSeleccionados, Usuario usuario, Viaje viaje, List<Reserva> misReservas) {
         String[] asientosArray = (asientosSeleccionados != null && !asientosSeleccionados.isEmpty())
-                ? asientosSeleccionados.split(",")
-                : new String[0];
+                ? asientosSeleccionados.split(",") : new String[0];
 
         for (int i = 0; i < pasajeros; i++) {
             servicioViaje.reservarAsiento(viaje.getId(), usuario);
@@ -167,7 +168,6 @@ public class ControladorBusqueda {
             if (i < asientosArray.length) {
                 nuevaReserva.setNumeroAsiento(Integer.parseInt(asientosArray[i].trim()));
             }
-
             servicioViaje.guardarReserva(nuevaReserva);
             misReservas.add(nuevaReserva);
         }

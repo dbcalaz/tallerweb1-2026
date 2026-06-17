@@ -7,7 +7,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
 import java.util.List;
 
 @Repository
@@ -29,10 +28,10 @@ public class RepositorioViajeImpl implements RepositorioViaje {
     @SuppressWarnings("unchecked")
     public List<Viaje> buscarViajes(String origen, String destino, String fecha, Integer pasajeros) {
         return sessionFactory.getCurrentSession().createCriteria(Viaje.class)
-                .add(Restrictions.eq("origen", origen))
-                .add(Restrictions.eq("destino", destino))
-                .add(Restrictions.eq("fecha", fecha))
-                .add(Restrictions.ge("asientosDisponibles", pasajeros))
+                .add(Restrictions.eq("origen", origen))     // Que coincida el origen exacto
+                .add(Restrictions.eq("destino", destino))   // Que coincida el destino exacto
+                .add(Restrictions.eq("fecha", fecha))       // Que coincida la fecha exacta
+                .add(Restrictions.ge("asientosDisponibles", pasajeros)) // CLAVE: Tráeme viajes donde los asientos libres sean MAYORES O IGUALES (ge) a los pasajeros que buscan
                 .list();
     }
 
@@ -56,7 +55,6 @@ public class RepositorioViajeImpl implements RepositorioViaje {
                 .setMaxResults(3)
                 .getResultList();
     }
-
 
     @Override
     public void guardarReserva(Reserva reserva) {

@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@Transactional
+@Transactional // Spring abre una transacción de BD automática para cada método
 public class ServicioViajeImpl implements ServicioViaje {
 
     private RepositorioViaje repositorioViaje;
@@ -22,6 +22,7 @@ public class ServicioViajeImpl implements ServicioViaje {
         repositorioViaje.guardarViaje(viaje);
     }
 
+    // Envía directo los campos desglosados del DTO hacia el repositorio
     @Override
     public List<Viaje> buscarViajes(DatosBusqueda datosBusqueda) {
         return repositorioViaje.buscarViajes(
@@ -32,17 +33,19 @@ public class ServicioViajeImpl implements ServicioViaje {
         );
     }
 
+    // REGLA DE NEGOCIO: Resta un asiento disponible de la combi al comprar
     @Override
     public void reservarAsiento(Long idViaje, Usuario usuarioLogueado) {
         Viaje viaje = repositorioViaje.buscarPorId(idViaje);
         if (viaje != null && viaje.getAsientosDisponibles() > 0) {
             viaje.setAsientosDisponibles(viaje.getAsientosDisponibles() - 1);
-            repositorioViaje.actualizar(viaje);
+            repositorioViaje.actualizar(viaje); // Guarda el nuevo stock de asientos
         } else {
             throw new RuntimeException("El viaje seleccionado no posee asientos disponibles.");
         }
     }
 
+    // REGLA DE NEGOCIO: Devuelve +1 asiento a la combi si el usuario cancela la reserva
     @Override
     public void liberarAsiento(Long idViaje) {
         Viaje viaje = repositorioViaje.buscarPorId(idViaje);
