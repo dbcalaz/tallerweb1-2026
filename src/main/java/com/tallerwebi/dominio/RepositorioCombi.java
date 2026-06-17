@@ -7,5 +7,10 @@ public interface RepositorioCombi {
 
     Combi buscarPorPatente(String patente);
 
-    List<Combi> obtenerTodasLasCombis();
+    Combi buscarPorId(Long idCombi);
+
+    //List<Combi> obtenerTodasLasCombis();
+
+
 }
+//

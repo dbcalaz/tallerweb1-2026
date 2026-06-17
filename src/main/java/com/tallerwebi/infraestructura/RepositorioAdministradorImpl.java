@@ -83,4 +83,23 @@ public class RepositorioAdministradorImpl implements RepositorioAdministrador {
                 .createCriteria(Combi.class)
                 .list();
     }
+
+    @Override
+    public List<Combi> obtenerCombisFiltradas(String valorDeBusqueda) {
+        EstadoDeCombi estado = EstadoDeCombi.valueOf(valorDeBusqueda);
+
+        return sessionFactory.getCurrentSession()
+                .createCriteria(Combi.class)
+                .add(Restrictions.eq("estadoDeCombi", estado))
+                .list();
+    }
+
+
+
+    @Override
+    public void actualizarCombi(Combi combiExiste) {
+        sessionFactory.getCurrentSession().update(combiExiste);
+    }
+
+
 }

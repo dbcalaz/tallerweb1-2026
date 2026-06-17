@@ -21,6 +21,7 @@ public class ServicioCombiTest {
     private final Integer cantidadAsientosErroneo =5;
     private final String transmision = "MANUAL";
     private final TipoDeCombi tipoDeCombi =TipoDeCombi.ESTANDAR;
+    private final EstadoDeCombi estadoDeCombi= EstadoDeCombi.DISPONIBLE;
     private final String marca ="FORD";
     private final String modelo ="trafic";
     RepositorioCombi repositorioCombi= mock(RepositorioCombiImpl.class);
@@ -29,7 +30,7 @@ public class ServicioCombiTest {
     @Test
     public void siSeIngresaAsientosTipoDeCombiYTransmisionDeFormaCorrectaLaCreacionEsExitosa() throws BondiWayException {
         givenNoExisteCombi();
-        DatosCombi datosCombi = new DatosCombi(cantidadAsientos,tipoDeCombi, transmision,"ABCD1234",marca,modelo);
+        DatosCombi datosCombi = new DatosCombi(cantidadAsientos,tipoDeCombi, transmision,"ABCD1234",marca,modelo,15000);
 
        Combi  combiCreada= servicioCombi.crearCombi(datosCombi);
 
@@ -42,7 +43,7 @@ public class ServicioCombiTest {
     }
 
     private Combi whenCreoCombi(Integer cantidadAsientos, String transmision, TipoDeCombi tipoDeCombi, String patente,String marca, String modelo) throws BondiWayException {
-        DatosCombi datosCombi= new DatosCombi(cantidadAsientos,tipoDeCombi,transmision,patente,marca,modelo);
+        DatosCombi datosCombi= new DatosCombi(cantidadAsientos,tipoDeCombi,transmision,patente,marca,modelo,1000);
         Combi combi = servicioCombi.crearCombi(datosCombi);
 
         return combi;

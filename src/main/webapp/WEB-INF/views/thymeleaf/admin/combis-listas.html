@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestión de Combis</title>
+  <link rel="stylesheet" th:href="@{/css/variables.css}">
+  <link rel="stylesheet" th:href="@{/css/components.css}">
+  <link rel="stylesheet" th:href="@{/css/panel-administrador.css}">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+  <link rel="icon" th:href="@{/imagenes/logo.png}" type="image/x-icon">
+</head>
+<body>
+
+<div class="admin-layout">
+  <div th:replace="componentes/sidebar-admin :: sidebar-admin('combis')"></div>
+  <main class="admin-content combis-content">
+    <div class="combis-header">
+      <div>
+        <h1>Gestión de vehículos</h1>
+        <p>Administra la flota de combis, estado técnico y asignaciones.</p>
+      </div>
+      <a th:href="@{/crear-combi}">
+        <button class="btn-primary"><span class="material-symbols-outlined">add_circle</span> Agregar combi</button>
+      </a>
+    </div>
+
+    <div class="combis-stats">
+      <div class="combi-stat-card"><span class="material-symbols-outlined">directions_bus</span><h2>24</h2><p>Total Flota</p></div>
+      <div class="combi-stat-card"><span class="material-symbols-outlined">check_circle</span><h2>18</h2><p>Disponibles</p></div>
+      <div class="combi-stat-card"><span class="material-symbols-outlined">build</span><h2>3</h2><p>Mantenimiento</p></div>
+      <div class="combi-stat-card"><span class="material-symbols-outlined">near_me</span><h2>3</h2><p>En viaje</p></div>
+    </div>
+
+    <div class="combis-filters">
+
+      <a th:href="@{/admin/combis}"
+         class="filter"
+         th:classappend="${param.criterio == null} ? 'active'">
+        Todos
+      </a>
+
+      <a th:href="@{/admin/combis(criterio='DISPONIBLE')}"
+         class="filter"
+         th:classappend="${param.criterio != null && param.criterio[0] == 'DISPONIBLE'} ? 'active'">
+        Disponibles
+      </a>
+
+      <a th:href="@{/admin/combis(criterio='EN_MANTENIMIENTO')}"
+         class="filter"
+         th:classappend="${param.criterio != null && param.criterio[0] == 'EN_MANTENIMIENTO'} ? 'active'">
+        En Mantenimiento
+      </a>
+
+      <a th:href="@{/admin/combis(criterio='EN_VIAJE')}"
+         class="filter"
+         th:classappend="${param.criterio != null && param.criterio[0] == 'EN_VIAJE'} ? 'active'">
+       En Viaje
+      </a>
+
+    </div>
+    <div class="combis-grid">
+      <div class="combi-card" th:each="combi : ${listaCombis}">
+
+        <div class="combi-img">
+          <span th:if="${combi.estadoDeCombi != null and combi.estadoDeCombi.name() == 'DISPONIBLE'}" class="status disponible">Disponible</span>
+          <span th:if="${combi.estadoDeCombi != null and combi.estadoDeCombi.name() == 'EN_MANTENIMIENTO'}" class="status mantenimiento">En mantenimiento</span>
+          <span th:if="${combi.estadoDeCombi != null and combi.estadoDeCombi.name() == 'EN_VIAJE'}" class="status viaje">En viaje</span>
+        </div>
+
+        <div class="combi-body">
+          <div class="combi-title">
+            <div>
+              <h3 th:text="${combi.marca}">Marca</h3>
+              <p><span th:text="${combi.modelo}">Modelo</span></p>
+            </div>
+            <span class="patente" th:text="${combi.patente}">Patente</span>
+          </div>
+
+          <div class="combi-info" th:classappend="${combi.estadoDeCombi != null and combi.estadoDeCombi.name() == 'EN_MANTENIMIENTO'} ? 'error'">
+            <span><i class="material-symbols-outlined">airline_seat_recline_normal</i><span th:text="${combi.cantidadDeAsientos}">19</span> asientos</span>
+
+            <span th:if="${combi.estadoDeCombi != null and combi.estadoDeCombi.name() == 'EN_MANTENIMIENTO'}">
+                <i class="material-symbols-outlined">warning</i>Falla técnica
+            </span>
+            <span th:unless="${combi.estadoDeCombi != null and combi.estadoDeCombi.name() == 'EN_MANTENIMIENTO'}">
+                <i class="material-symbols-outlined">distance</i><span th:text="${combi.kilometros}">42</span> km
+            </span>
+          </div>
+          <div class="combi-actions">
+            <button>Detalle</button>
+            <button type="button"
+                    class="btn-abrir-modal-editar"
+                    th:data-combi-id="${combi.id}"
+                    th:data-combi-estado="${combi.estadoDeCombi != null ? combi.estadoDeCombi.name() : ''}">
+              Editar
+            </button>
+            <button>Asignar</button>
+          </div>
+        </div>
+      </div>
+
+      <div th:if="${#lists.isEmpty(listaCombis)}" style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-secondary);">
+        <p>No se encontraron combis para el filtro seleccionado.</p>
+      </div>
+    </div>
+
+    <section class="combis-fallas">
+      <div class="fallas-header">
+        <div>
+          <h2>Fallas reportadas</h2>
+          <p>Alertas enviadas por choferes en tiempo real.</p>
+        </div>
+        <button class="fallas-link">Ver historial completo <span class="material-symbols-outlined">arrow_forward</span></button>
+      </div>
+      <div class="fallas-table-wrapper">
+        <table class="fallas-table">
+          <thead>
+          <tr>
+            <th>Vehículo</th>
+            <th>Fecha</th>
+            <th>Descripción</th>
+            <th>Estado</th>
+            <th class="text-right">Acciones</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="reporte : ${reportes}">
+            <td>
+              <div class="vehiculo-cell">
+                <div class="avatar">MB</div>
+                <div>
+                  <p th:text="${reporte.combi.marca + ' ' + reporte.combi.modelo}"></p>
+                  <span th:text="${reporte.conductor.nombre + ' ' + reporte.conductor.apellido}"></span>
+                </div>
+              </div>
+            </td>
+            <td th:text="${reporte.fechaCreacionReporte}"></td>
+            <td class="descripcion" th:text="${reporte.descripcion}"></td>
+            <td><span class="estado pendiente">Pendiente</span></td>
+            <td class="acciones">
+              <button title="Resuelta"><span class="material-symbols-outlined">check_circle</span></button>
+              <button title="Mantenimiento"><span class="material-symbols-outlined">build_circle</span></button>
+              <button type="button" class="btn-abrir-modal-asignacion" th:data-reporte-id="${reporte.id}" title="Asignar nueva combi"><span class="material-symbols-outlined">visibility</span></button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="fallas-footer"><button>Cargar más registros</button></div>
+    </section>
+  </main>
+</div>
+
+<div id="modal-asignar-combi" class="modal-overlay">
+  <div class="driver-modal">
+    <div class="driver-modal-icon"><span class="material-symbols-outlined">directions_bus</span></div>
+    <h2>Asignar nueva combi al conductor</h2>
+    <p class="driver-modal-description">Seleccioná una unidad disponible para reemplazar la combi reportada.</p>
+
+    <form th:action="@{/nueva-asignacion}" method="post">
+      <input type="hidden" name="idReporte" id="idReporteSeleccionado">
+      <div class="driver-modal-field">
+        <label for="combi">Combis disponibles</label>
+        <select id="combi" name="idCombi" required>
+          <option value="">Seleccionar combi...</option>
+          <option th:each="combi : ${listaCombis}" th:value="${combi.id}" th:text="${combi.marca + ' ' + combi.modelo + ' - ' + combi.patente}"></option>
+        </select>
+      </div>
+      <div class="driver-modal-actions">
+        <button type="button" id="btn-cancelar-asignacion" class="btn-primary">Cancelar</button>
+        <button type="submit" class="btn-primary">Asignar</button>
+      </div>
+    </form>
+  </div>
+</div>
+<div id="modal-editar-estado" class="modal-overlay">
+  <div class="driver-modal">
+    <div class="driver-modal-icon"><span class="material-symbols-outlined">edit</span></div>
+    <h2>Actualizar Estado Técnico</h2>
+    <p class="driver-modal-description">Modificá el estado operativo de esta unidad.</p>
+
+    <form th:action="@{/admin/combis/cambiar-estado}" method="post">
+      <input type="hidden" name="idCombi" id="idCombiEditar">
+
+      <div class="driver-modal-field">
+        <label for="selectNuevoEstado">Estado de la Combi</label>
+        <select id="selectNuevoEstado" name="nuevoEstado" required>
+          <option value="DISPONIBLE">Disponible</option>
+          <option value="EN_MANTENIMIENTO">En Mantenimiento</option>
+          <option value="EN_VIAJE">En Viaje</option>
+        </select>
+      </div>
+
+      <div class="driver-modal-actions">
+        <button type="button" id="btn-cancelar-editar" class="btn-primary" style="background: var(--surface-300); color: var(--text-700);">Cancelar</button>
+        <button type="submit" class="btn-primary">Guardar Cambios</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<script>
+  const botonesAbrir = document.querySelectorAll(".btn-abrir-modal-asignacion");
+  const btnCerrar = document.getElementById("btn-cancelar-asignacion");
+  const modal = document.getElementById("modal-asignar-combi");
+  const inputReporte = document.getElementById("idReporteSeleccionado");
+
+  botonesAbrir.forEach(boton => {
+      boton.addEventListener("click", () => {
+          inputReporte.value = boton.dataset.reporteId;
+          modal.classList.add("active");
+      });
+  });
+
+  btnCerrar.addEventListener("click", () => {
+      modal.classList.remove("active");
+  });
+  // LÓGICA PARA EL MODAL DE EDITAR ESTADO
+  const botonesEditar = document.querySelectorAll(".btn-abrir-modal-editar");
+  const modalEditar = document.getElementById("modal-editar-estado");
+  const btnCerrarEditar = document.getElementById("btn-cancelar-editar");
+  const inputIdCombiEditar = document.getElementById("idCombiEditar");
+  const selectEstado = document.getElementById("selectNuevoEstado");
+
+  botonesEditar.forEach(boton => {
+      boton.addEventListener("click", () => {
+          // 1. Pasamos el ID de la combi al input oculto
+          inputIdCombiEditar.value = boton.dataset.combiId;
+
+          // 2. Pre-seleccionamos el estado actual en el select
+          const estadoActual = boton.dataset.combiEstado;
+          if (estadoActual) {
+              selectEstado.value = estadoActual;
+          }
+
+          // 3. Mostramos el modal
+          modalEditar.classList.add("active");
+      });
+  });
+
+  btnCerrarEditar.addEventListener("click", () => {
+      modalEditar.classList.remove("active");
+  });
+</script>
+</body>
+</html>

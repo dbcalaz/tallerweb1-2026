@@ -37,7 +37,7 @@
             </p>
 
             <div class="form-actions" style="justify-content: center; gap: 1rem;">
-                <a th:href="@{/home}">
+                <a th:href="@{/admin}">
                     <button type="button" class="btn-primary create-btn">
                         <span class="material-symbols-outlined">
                             home
@@ -149,7 +149,7 @@
                     <div class="step-line"></div>
 
                     <div class="step-item">
-                        <div class="step-icon end">
+                        <div class="step-icon" style="background: var(--surface-200); color: var(--text-500);">
                             <span class="material-symbols-outlined">
                                 airport_shuttle
                             </span>
@@ -157,6 +157,20 @@
                         <div>
                             <small>Categoría</small>
                             <h4 th:text="${combi.tipoDeCombi}">ESTANDAR</h4>
+                        </div>
+                    </div>
+
+                    <div class="step-line"></div>
+
+                    <div class="step-item">
+                        <div class="step-icon end">
+                            <span class="material-symbols-outlined">
+                                speed
+                            </span>
+                        </div>
+                        <div>
+                            <small>Kilometraje Inicial</small>
+                            <h4 th:text="${combi.kilometros} + ' Km'">1500 Km</h4>
                         </div>
                     </div>
 

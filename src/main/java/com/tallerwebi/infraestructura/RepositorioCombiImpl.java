@@ -21,9 +21,6 @@ public class RepositorioCombiImpl implements RepositorioCombi {
     }
 
 
-
-
-
     @Override
     public void guardar(Combi combi) {
         sessionFactory.getCurrentSession().save(combi);
@@ -32,11 +29,15 @@ public class RepositorioCombiImpl implements RepositorioCombi {
 
     @Override
     public Combi buscarPorPatente(String patente) {
-       return (Combi) sessionFactory.getCurrentSession().createCriteria(Combi.class).add(Restrictions.eq("patente",patente)).uniqueResult();
+        return (Combi) sessionFactory.getCurrentSession().createCriteria(Combi.class).add(Restrictions.eq("patente", patente)).uniqueResult();
 
     }
+
     @Override
-    public List<Combi> obtenerTodasLasCombis(){
-        return sessionFactory.getCurrentSession().createCriteria(Combi.class).list();
+    public Combi buscarPorId(Long idCombi) {
+        return (Combi) sessionFactory.getCurrentSession().createCriteria(Combi.class).add(Restrictions.eq("id",idCombi)).uniqueResult();
     }
 }
+
+
+

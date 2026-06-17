@@ -34,9 +34,13 @@
         </div>
 
         <div class="combis-filters">
-            <button class="filter active">Todos</button>
-            <button class="filter">Disponibles</button>
-            <button class="filter">En Taller</button>
+            <a class="filter active" th:href="@{/admin/combis/listados}">Todos</a>
+
+            <a class="filter" th:href="@{/admin/combis/listados(criterio='disponible')}">Disponibles</a>
+
+            <a class="filter" th:href="@{/admin/combis/listados(criterio='enMantenimiento')}">En Mantenimiento</a>
+
+            <a class="filter" th:href="@{/admin/combis/listados(criterio='enViaje')}">En Viaje</a>
         </div>
 
         <div class="combis-grid">

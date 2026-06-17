@@ -24,6 +24,9 @@ public class Combi {
     private String patente;
     private String marca;
     private String modelo;
+    @Enumerated(EnumType.STRING)
+    private EstadoDeCombi estadoDeCombi;
+    private Integer kilometros;
 
 
 

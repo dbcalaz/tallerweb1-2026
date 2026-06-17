@@ -29,14 +29,17 @@ public class ServicioCombiImplements implements ServicioCombi {
     @Override
     public Combi crearCombi(DatosCombi datosCombi) throws BondiWayException {
 
-        if(datosCombi.getCantidadAsientos()<10 || datosCombi.getCantidadAsientos()>20){
+        if(datosCombi.getCantidadDeAsientos()<10 || datosCombi.getCantidadDeAsientos()>20){
                 throw new CantidadDeAsientosInvalidaException() ;
         }
-        if (!("MANUAL".equals(datosCombi.getTransmision()) || "AUTOMATICA".equals(datosCombi.getTransmision()))) {
+        if (!("MANUAL".equals(datosCombi.getTipoDeTransmision()) || "AUTOMATICA".equals(datosCombi.getTipoDeTransmision()))) {
             throw new TipoDeTransmisionInvalidaException();
         }
         if(!(datosCombi.getTipoDeCombi()  == TipoDeCombi.ESTANDAR || datosCombi.getTipoDeCombi() == TipoDeCombi.TURISTICA)){
             throw new TipoDeCombiInvalidaException();
+        }
+        if(datosCombi.getKilometros()<0){
+            throw new CantidadDeKilometrosException();
         }
         if (this.repositorioCombi.buscarPorPatente(datosCombi.getPatente())!=null) {
             throw new CombiExistenteException(datosCombi.getPatente());
@@ -44,18 +47,18 @@ public class ServicioCombiImplements implements ServicioCombi {
 
         Combi combi = new Combi();
         combi.setTipoDeCombi(datosCombi.getTipoDeCombi());
-        combi.setCantidadDeAsientos(datosCombi.getCantidadAsientos());
-        combi.setTipoDeTransmision(datosCombi.getTransmision());
+        combi.setCantidadDeAsientos(datosCombi.getCantidadDeAsientos());
+        combi.setTipoDeTransmision(datosCombi.getTipoDeTransmision());
         combi.setPatente(datosCombi.getPatente());
         combi.setMarca(datosCombi.getMarca());
         combi.setModelo(datosCombi.getModelo());
+        combi.setEstadoDeCombi(EstadoDeCombi.DISPONIBLE);
+        combi.setKilometros(datosCombi.getKilometros());
+
         this.repositorioCombi.guardar(combi);
 
 return combi;
     }
 
-    /*@Override
-    public List<Combi> obtenerFlota() {
-        return repositorioCombi.obtenerTodasLasCombis();
-    }*/
+
 }

@@ -31,7 +31,7 @@ public class ControladorCrearCombiTest {
 
         //preparacioon
         givenNoExisteUnaCombi();
-        DatosCombi datosCombi= new DatosCombi(NUMERO_ASIENTOS,tipoCombi,transmision,patente,marca,modelo);
+        DatosCombi datosCombi= new DatosCombi(NUMERO_ASIENTOS,tipoCombi,transmision,patente,marca,modelo,1555);
         //ejecuto
         ModelAndView mv = whenCreoUnaCombie(datosCombi);
         //verifico
@@ -56,7 +56,7 @@ public class ControladorCrearCombiTest {
 
         //preparacioon
         givenNoExisteUnaCombi();
-        DatosCombi datosCombi = new DatosCombi(1,tipoCombi,transmision,patente,marca,modelo);
+        DatosCombi datosCombi = new DatosCombi(1,tipoCombi,transmision,patente,marca,modelo,1666);
         //seteo el comportamiento de mi mock de servicioCrearCombi
         doThrow(new CantidadDeAsientosInvalidaException()).when(servicioCombi).crearCombi(datosCombi);
 
@@ -69,7 +69,7 @@ public class ControladorCrearCombiTest {
     @Test
     public void siIngresoAsientosYTipoDeCombiCorrectosYTransmisionDeFormaIncorrectaLaCreacionFalla() throws BondiWayException {
         givenNoExisteUnaCombi();
-        DatosCombi datosCombi= new DatosCombi(11,tipoCombi,"monual",patente,marca,modelo);
+        DatosCombi datosCombi= new DatosCombi(11,tipoCombi,"monual",patente,marca,modelo,1555);
         doThrow(new TipoDeTransmisionInvalidaException()).when(servicioCombi).crearCombi(datosCombi);
 
         ModelAndView mv = whenCreoUnaCombie(datosCombi);
@@ -79,7 +79,7 @@ public class ControladorCrearCombiTest {
     @Test
     public void siIngresoAsientosYTipoDeTransmisionCorrectosYTipoDeCombiDeFormaIncorrectaLaCreacionFalla() throws BondiWayException {
         givenNoExisteUnaCombi();
-        DatosCombi datosCombi= new DatosCombi(11,tipoCombi2,transmision,patente,marca,modelo);
+        DatosCombi datosCombi= new DatosCombi(11,tipoCombi2,transmision,patente,marca,modelo,1111);
         doThrow(new TipoDeCombiInvalidaException()).when(servicioCombi).crearCombi(datosCombi);
 
         ModelAndView mv = whenCreoUnaCombie(datosCombi);

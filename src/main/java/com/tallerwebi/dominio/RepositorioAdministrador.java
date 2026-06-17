@@ -13,4 +13,10 @@ public interface RepositorioAdministrador {
     AsignacionCombiConductor buscarAsignacionActiva(Long idConductor);
 
     List<Combi> getCombis();
+
+    List<Combi> obtenerCombisFiltradas(String valorDeBusqueda);
+
+
+
+    void actualizarCombi(Combi combiExiste);
 }

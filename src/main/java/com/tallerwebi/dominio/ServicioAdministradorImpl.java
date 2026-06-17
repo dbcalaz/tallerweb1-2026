@@ -1,6 +1,7 @@
 package com.tallerwebi.dominio;
 
 import com.tallerwebi.presentacion.ServicioAdministrador;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,9 +12,11 @@ import java.util.List;
 public class ServicioAdministradorImpl implements ServicioAdministrador {
 
     RepositorioAdministrador repositorioAdministrador;
+    RepositorioCombi repositorioCombi;
 
-    public ServicioAdministradorImpl(RepositorioAdministrador repositorioAdministrador) {
+    public ServicioAdministradorImpl(RepositorioAdministrador repositorioAdministrador, RepositorioCombi repositorioCombi) {
         this.repositorioAdministrador = repositorioAdministrador;
+        this.repositorioCombi = repositorioCombi;
     }
 
     @Override
@@ -35,5 +38,24 @@ public class ServicioAdministradorImpl implements ServicioAdministrador {
     public List<Combi> obtenerCombis() {
         return repositorioAdministrador.getCombis();
     }
+
+    @Override
+    public List<Combi> obtenerCombis(String parametro){
+        return repositorioAdministrador.obtenerCombisFiltradas(parametro);
+
+
+
+}
+
+    @Override
+    public void actualizarEstadoCombi(Long idCombi, EstadoDeCombi estado) {
+        Combi combiExiste= repositorioCombi.buscarPorId(idCombi);
+        if(combiExiste!=null){
+            combiExiste.setEstadoDeCombi(estado);
+            repositorioAdministrador.actualizarCombi(combiExiste);
+        }
+
+    }
+
 
 }

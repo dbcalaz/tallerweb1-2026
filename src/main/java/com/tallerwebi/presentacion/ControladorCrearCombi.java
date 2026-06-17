@@ -33,7 +33,7 @@ public class ControladorCrearCombi {
     public ModelAndView crearCombi() {
         ModelMap modelo = new ModelMap();
         modelo.put("combi", new DatosCombi());
-        return new ModelAndView("crear-combi", modelo);
+        return new ModelAndView("admin/crear-combi", modelo);
 
     }
 
@@ -52,7 +52,7 @@ public class ControladorCrearCombi {
         }
             modelo.put("combi", combiGuardada);
             modelo.put("mensaje", "La creacion fue exitosa");
-            return new ModelAndView("combi-registrada", modelo);
+            return new ModelAndView("admin/combi-registrada", modelo);
 
     }
     private static ModelAndView capturarInputVaciosDelDto(DatosCombi datosCombi, ModelMap modelo) {
@@ -62,10 +62,10 @@ public class ControladorCrearCombi {
         if (datosCombi.getTipoDeCombi() == null) {
             camposFaltantes.add("Tipo de combi");
         }
-        if (datosCombi.getTransmision() == null || datosCombi.getTransmision().trim().isEmpty()) {
+        if (datosCombi.getTipoDeTransmision() == null || datosCombi.getTipoDeTransmision().trim().isEmpty()) {
             camposFaltantes.add("Transmisión");
         }
-        if (datosCombi.getCantidadAsientos() == null) {
+        if (datosCombi.getCantidadDeAsientos() == null) {
             camposFaltantes.add("Cantidad de asientos");
         }
         if (datosCombi.getPatente() == null || datosCombi.getPatente().trim().isEmpty()) {
@@ -77,6 +77,9 @@ public class ControladorCrearCombi {
         if (datosCombi.getModelo() == null || datosCombi.getModelo().trim().isEmpty()) {
             camposFaltantes.add("Modelo");
         }
+        if (datosCombi.getKilometros() == null ) {
+            camposFaltantes.add("Kilometros");
+        }
 
         // 2. Si la lista NO está vacía, significa que faltaron datos
         if (!camposFaltantes.isEmpty()) {
@@ -84,24 +87,13 @@ public class ControladorCrearCombi {
             String mensaje = "Por favor, complete los siguientes campos obligatorios: " + String.join(", ", camposFaltantes);
 
             modelo.put("error", mensaje);
-            return new ModelAndView("crear-combi", modelo);
+            return new ModelAndView("admin/crear-combi", modelo);
         }
 
         // 3. Si llega hasta aquí, todos los campos estaban llenos
         return null;
     }
 
-   /* @RequestMapping(path = "/mis-flotas")
-    public ModelAndView mostrarFlota() {
-        ModelMap modelo = new ModelMap();
 
-        List<Combi> miFlota = servicioCombi.obtenerFlota();
-
-        // 2. Metes esa lista en el modelo
-        modelo.put("flota", miFlota);
-
-        return new ModelAndView("mis-flotas", modelo);
-    }
-*/
 
 }
