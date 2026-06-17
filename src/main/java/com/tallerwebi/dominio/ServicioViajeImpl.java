@@ -4,7 +4,6 @@ import com.tallerwebi.presentacion.DatosBusqueda;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
 @Service
@@ -14,8 +13,8 @@ public class ServicioViajeImpl implements ServicioViaje {
     private RepositorioViaje repositorioViaje;
 
     @Autowired
-    public ServicioViajeImpl(RepositorioViaje repositorio) {
-        this.repositorioViaje = repositorio;
+    public ServicioViajeImpl(RepositorioViaje repositorioViaje) {
+        this.repositorioViaje = repositorioViaje;
     }
 
     @Override
@@ -25,7 +24,6 @@ public class ServicioViajeImpl implements ServicioViaje {
 
     @Override
     public List<Viaje> buscarViajes(DatosBusqueda datosBusqueda) {
-        // Le enviamos al repositorio los parámetros incluyendo la cantidad de pasajeros
         return repositorioViaje.buscarViajes(
                 datosBusqueda.getOrigen(),
                 datosBusqueda.getDestino(),
@@ -41,12 +39,36 @@ public class ServicioViajeImpl implements ServicioViaje {
             viaje.setAsientosDisponibles(viaje.getAsientosDisponibles() - 1);
             repositorioViaje.actualizar(viaje);
         } else {
-            throw new RuntimeException("El viaje no existe o no tiene asientos disponibles.");
+            throw new RuntimeException("El viaje seleccionado no posee asientos disponibles.");
+        }
+    }
+
+    @Override
+    public void liberarAsiento(Long idViaje) {
+        Viaje viaje = repositorioViaje.buscarPorId(idViaje);
+        if (viaje != null) {
+            viaje.setAsientosDisponibles(viaje.getAsientosDisponibles() + 1);
+            repositorioViaje.actualizar(viaje);
         }
     }
 
     @Override
     public Viaje buscarPorId(Long id) {
         return repositorioViaje.buscarPorId(id);
+    }
+
+    @Override
+    public void guardarReserva(Reserva reserva) {
+        repositorioViaje.guardarReserva(reserva);
+    }
+
+    @Override
+    public List<Integer> obtenerAsientosOcupados(Long idViaje) {
+        return repositorioViaje.obtenerAsientosOcupados(idViaje);
+    }
+
+    @Override
+    public void eliminarReserva(Long idReserva) {
+        repositorioViaje.eliminarReserva(idReserva);
     }
 }

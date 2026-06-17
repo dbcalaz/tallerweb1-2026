@@ -16,16 +16,15 @@ public class Viaje {
     private Long id;
 
     private String origen;
-    /*private float latitudOrigen;
-    private float longitudOrigen;*/
     private String destino;
-    /*private float latitudDestino;
-    private float longitudDestino;*/
     private String fecha;
     private String horario;
     private Double precio;
     private Integer numeroViaje;
     private Integer asientosDisponibles;
+
+    private String duracion;
+    private String tipoDeViaje;
 
     @Enumerated(EnumType.STRING)
     private EstadoDeViaje estadoDeViaje;
@@ -41,4 +40,19 @@ public class Viaje {
     @OneToMany
     private List<Reserva> reservas;
 
+    public String getDuracion() {
+        return duracion;
+    }
+
+    public void setDuracion(String duracion) {
+        this.duracion = duracion;
+    }
+
+    public String getTipoDeViaje() {
+        return tipoDeViaje;
+    }
+
+    public void setTipoDeViaje(String tipoDeViaje) {
+        this.tipoDeViaje = tipoDeViaje;
+    }
 }

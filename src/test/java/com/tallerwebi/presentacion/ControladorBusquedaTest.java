@@ -38,9 +38,9 @@ public class ControladorBusquedaTest {
 
     @Test
     public void queAlBuscarConDatosValidosDevuelvaListado() {
-        DatosBusqueda datosValidos = new DatosBusqueda("San Justo", "Ramos Mejia", "20/05/2026", 1);
+        DatosBusqueda datosValidos = new DatosBusqueda("San Justo", "Ramos Mejia", "2026-05-29", 1);
         List<Viaje> viajesSimulados = new ArrayList<>();
-        viajesSimulados.add(new Viaje()); // Simulamos 1 viaje encontrado
+        viajesSimulados.add(new Viaje());
 
         when(servicioViajeMock.buscarViajes(any(DatosBusqueda.class))).thenReturn(viajesSimulados);
 
@@ -54,12 +54,14 @@ public class ControladorBusquedaTest {
     }
 
     @Test
-    public void queAlBuscarConOrigenVacioDevuelvaErrorYSeQuedeEnLaMismaVista() {
-        DatosBusqueda datosInvalidos = new DatosBusqueda("", "Ramos Mejia", "20/05/2026", 1);
+    public void queAlBuscarConCamposVaciosDevuelvaErrorYSeQuedeEnLaMismaVista() {
+        DatosBusqueda datosInvalidos = new DatosBusqueda("", "Ramos Mejia", "2026-05-29", 1);
+
         ModelAndView modelAndView = controladorBusqueda.procesarBusqueda(datosInvalidos);
 
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("buscarViajes"));
-        assertThat(modelAndView.getModel().get("error").toString(), equalToIgnoringCase("Debe ingresar obligatoriamente Origen, Destino, Fecha y cantidad de Pasajeros"));
+        assertThat(modelAndView.getModel().get("error").toString(),
+                equalToIgnoringCase("Debe ingresar obligatoriamente Origen, Destino, Fecha y cantidad de Pasajeros"));
     }
 
     @Test

@@ -2,6 +2,7 @@ package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.ServicioViaje;
 import com.tallerwebi.dominio.Usuario;
+import com.tallerwebi.dominio.Viaje;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.servlet.ModelAndView;
@@ -52,7 +53,7 @@ public class ControladorSolicitarViajeTest {
 
     @Test
     public void siNoSeIngresaOrigenYDestinoLaSolicitudNoEsExitosa() {
-        DatosBusqueda datosBusqueda = new DatosBusqueda("", "", "", null); // Pasajeros null fuerza error
+        DatosBusqueda datosBusqueda = new DatosBusqueda("", "", "", null);
 
         ModelAndView modelAndView = controladorBusqueda.procesarBusqueda(datosBusqueda);
 
@@ -69,16 +70,23 @@ public class ControladorSolicitarViajeTest {
     }
 
     @Test
-    public void queSePuedaConfirmarUnAsientoConExitoYRedirijaAlPerfil() {
+    public void queSePuedaConfirmarUnAsientoConExitoYRedirijaAViajeEnCurso() {
         Long idViaje = 1L;
         String asientosSeleccionados = "1,2";
         Integer pasajeros = 2;
 
+        // Simulamos que el servicio encuentra el viaje cuando el controlador pide sus datos
+        when(servicioViajeMock.buscarPorId(idViaje)).thenReturn(new Viaje());
+
         ModelAndView modelAndView = controladorBusqueda.confirmarAsiento(idViaje, pasajeros, asientosSeleccionados, requestMock);
 
-        assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/perfilUsuario"));
-        assertThat(modelAndView.getModel().get("mensaje").toString(), equalToIgnoringCase("¡Asiento(s) confirmado(s) con éxito!"));
+        // Verificamos únicamente la redirección, ya que el mensaje de éxito fue quitado
+        assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/viajeEnCurso"));
 
+        // Verificamos que el asiento se haya restado en la BD la cantidad de veces solicitada
         verify(servicioViajeMock, times(2)).reservarAsiento(idViaje, usuarioMock);
+
+        // Verificamos que la reserva se haya guardado correctamente en la sesión
+        verify(sessionMock, times(1)).setAttribute(eq("misReservas"), anyList());
     }
 }

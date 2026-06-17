@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+
 @Getter
 @Setter
 @Entity
@@ -24,4 +25,9 @@ public class Reserva {
         @Enumerated(EnumType.STRING)
         private EstadoReserva estadoReserva;
 
+        @Column(name = "numero_asiento")
+        private Integer numeroAsiento;
+
+        public Integer getNumeroAsiento() { return numeroAsiento; }
+        public void setNumeroAsiento(Integer numeroAsiento) { this.numeroAsiento = numeroAsiento; }
 }
