@@ -1,6 +1,8 @@
 package com.tallerwebi.dominio;
 
 import com.tallerwebi.dominio.excepcion.ConductorExistente;
+import com.tallerwebi.dominio.excepcion.CuentaNoHabilitadaException;
+import com.tallerwebi.dominio.excepcion.CuentaSuspendidaException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,8 +19,18 @@ public class ServicioConductorImpl implements ServicioConductor {
     }
 
     @Override
-    public Conductor consultarConductor(String email, String password) {
-        return repositorioConductor.buscarConductor(email,password);
+    public Conductor consultarConductor(String email, String password) throws CuentaNoHabilitadaException, CuentaSuspendidaException {
+
+        Conductor conductor = repositorioConductor.buscarConductor(email, password);
+
+        if (conductor != null && !conductor.isCuentaHabilitada()) {
+            throw new CuentaNoHabilitadaException("La cuenta no esta habilitada por un administrador.");
+        }
+        if(conductor != null && conductor.isSuspendido()){
+            throw new CuentaSuspendidaException("Su cuenta se encuentra suspendida.");
+        }
+
+        return conductor;
     }
 
     @Override

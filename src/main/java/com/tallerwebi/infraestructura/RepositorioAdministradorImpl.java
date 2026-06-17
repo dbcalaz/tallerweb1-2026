@@ -2,6 +2,7 @@ package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.*;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
@@ -17,19 +18,11 @@ public class RepositorioAdministradorImpl implements RepositorioAdministrador {
         this.sessionFactory = sessionFactory;
     }
 
+    /* Combis */
     @Override
     public List<ReporteFalla> getFallas() {
-
         return sessionFactory.getCurrentSession()
                 .createCriteria(ReporteFalla.class)
-                .setResultTransformer(org.hibernate.Criteria.DISTINCT_ROOT_ENTITY)
-                .list();
-    }
-
-    @Override
-    public List<Conductor> getConductores() {
-        return sessionFactory.getCurrentSession()
-                .createCriteria(Conductor.class)
                 .list();
     }
 
@@ -43,8 +36,12 @@ public class RepositorioAdministradorImpl implements RepositorioAdministrador {
     }
 
     @Override
-    public void updateCombiConductor(Long idReporte, Long idCombi) {
+    public void guardarAsignacion(AsignacionCombiConductor asignacion) {
+        sessionFactory.getCurrentSession().save(asignacion);
+    }
 
+    @Override
+    public void updateCombiConductor(Long idReporte, Long idCombi) {
         ReporteFalla reporte = (ReporteFalla) sessionFactory.getCurrentSession()
                 .createCriteria(ReporteFalla.class)
                 .add(Restrictions.eq("id", idReporte))
@@ -68,12 +65,9 @@ public class RepositorioAdministradorImpl implements RepositorioAdministrador {
         nuevaAsignacion.setConductor(conductor);
         nuevaAsignacion.setCombi(nuevaCombi);
         nuevaAsignacion.setCombiActiva(true);
-
         sessionFactory.getCurrentSession().save(nuevaAsignacion);
 
-        reporte.setResuelta(true);
-        reporte.setFechaRealizadoReporte(new Date());
-
+        reporte.setFechaCreacionReporte(new Date());
         sessionFactory.getCurrentSession().update(reporte);
     }
 
@@ -100,6 +94,87 @@ public class RepositorioAdministradorImpl implements RepositorioAdministrador {
     public void actualizarCombi(Combi combiExiste) {
         sessionFactory.getCurrentSession().update(combiExiste);
     }
+
+    @Override
+    public List<Combi> getCombisDisponibles(){
+
+
+        return sessionFactory.getCurrentSession()
+                .createCriteria(Combi.class).add(Restrictions.eq("estadoDeCombi", EstadoDeCombi.DISPONIBLE))
+                .list();
+    }
+
+    public Long getCantidadDeCombis() {
+        return (Long) sessionFactory.getCurrentSession()
+                .createCriteria(Combi.class)
+                .setProjection(Projections.rowCount())
+                .uniqueResult();
+    }
+
+    @Override
+    public Combi buscarCombiPorId(Long idCombi) {
+        return (Combi) sessionFactory.getCurrentSession()
+                .createCriteria(Combi.class)
+                .add(Restrictions.eq("id", idCombi))
+                .uniqueResult();
+    }
+
+    /* Conductores*/
+    @Override
+    public List<Conductor> getConductores() {
+        return sessionFactory.getCurrentSession()
+                .createCriteria(Conductor.class)
+                .add(Restrictions.eq("cuentaHabilitada", true))
+                //.add(Restrictions.eq("suspendido", false))
+                .list();
+    }
+
+    @Override
+    public List<Conductor> getConductoresPendientes() {
+        return sessionFactory.getCurrentSession()
+                .createCriteria(Conductor.class)
+                .add(Restrictions.eq("cuentaHabilitada",false))
+                .list();
+    }
+
+    @Override
+    public Long getCantidadDeConductoresPendientes() {
+        return (Long) sessionFactory.getCurrentSession()
+                .createCriteria(Conductor.class)
+                .add(Restrictions.eq("cuentaHabilitada",false))
+                .setProjection(Projections.rowCount())
+                .uniqueResult();
+    }
+
+    @Override
+    public Conductor buscarConductorPorId(Long idConductor) {
+        return (Conductor) sessionFactory.getCurrentSession()
+                .createCriteria(Conductor.class)
+                .add(Restrictions.eq("id", idConductor))
+                .uniqueResult();
+    }
+
+    @Override
+    public void actualizarConductor(Conductor conductor) {
+        sessionFactory.getCurrentSession().update(conductor);
+    }
+
+    @Override
+    public void suspenderConductor(Conductor conductor) {
+        conductor.setSuspendido(true);
+        conductor.setEnViaje(false);
+        conductor.setDisponible(false);
+        sessionFactory.getCurrentSession().update(conductor);
+    }
+
+    @Override
+    public void reactivarConductor(Conductor conductor) {
+        conductor.setSuspendido(false);
+        conductor.setEnViaje(false);
+        conductor.setDisponible(true);
+        sessionFactory.getCurrentSession().update(conductor);
+    }
+
 
 
 }

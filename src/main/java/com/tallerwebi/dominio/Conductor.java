@@ -25,5 +25,9 @@ public class Conductor {
     private TipoDeLicencia licencia;
     private float calificacion;
     private float ganancia;
+    private boolean cuentaHabilitada;
+    private boolean disponible;
+    private boolean enViaje;
+    private boolean suspendido;
 
 }

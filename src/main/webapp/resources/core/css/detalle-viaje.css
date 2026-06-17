@@ -1,0 +1,214 @@
+.detalle-container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 40px 20px 60px;
+}
+
+.viaje-hero {
+    background: linear-gradient(135deg, var(--primary, #4f378a) 0%, #7c5cbf 100%);
+    border-radius: var(--radius-xl, 20px);
+    padding: 36px 40px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 24px;
+    box-shadow: 0 8px 32px rgba(79,55,138,.25);
+}
+
+.viaje-hero::before {
+    content: '';
+    position: absolute;
+    top: -70px; right: -70px;
+    width: 260px; height: 260px;
+    background: rgba(255,255,255,.07);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.viaje-hero-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.badge-servicio {
+    display: inline-block;
+    background: rgba(255,255,255,.18);
+    border: 1px solid rgba(255,255,255,.3);
+    color: white;
+    padding: 4px 14px;
+    border-radius: 999px;
+    font-size: .75rem;
+    font-weight: 700;
+    letter-spacing: .6px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+}
+
+.viaje-ruta {
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -.5px;
+    line-height: 1.1;
+    margin: 0 0 8px;
+}
+
+.viaje-ruta .arrow { opacity: .55; margin: 0 8px; }
+
+.viaje-fecha {
+    font-size: .9rem;
+    opacity: .8;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+}
+
+.precio-box { text-align: right; }
+.precio-label { font-size: .8rem; opacity: .7; margin-bottom: 4px; }
+.precio-valor { font-size: 2.2rem; font-weight: 800; line-height: 1; }
+
+.info-tiles {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.info-tile {
+    background: rgba(255,255,255,.13);
+    border: 1px solid rgba(255,255,255,.2);
+    border-radius: 12px;
+    padding: 14px 18px;
+}
+
+.tile-label {
+    font-size: .72rem;
+    opacity: .7;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.tile-label .material-symbols-outlined { font-size: .9rem; }
+.tile-value { font-size: 1.1rem; font-weight: 700; }
+
+.estado-pill {
+    display: inline-block;
+    padding: 3px 12px;
+    border-radius: 999px;
+    font-size: .78rem;
+    font-weight: 700;
+}
+
+.estado-CONFIRMADO  { background: #d1fae5; color: #065f46; }
+.estado-PENDIENTE   { background: #fef3c7; color: #92400e; }
+.estado-FINALIZADO  { background: #e0e7ff; color: #3730a3; }
+.estado-CANCELADO   { background: #fee2e2; color: #991b1b; }
+
+.conductor-card {
+    background: white;
+    border: 1px solid var(--border, #e5e0f0);
+    border-radius: var(--radius-xl, 20px);
+    box-shadow: var(--shadow-card, 0 4px 24px rgba(79,55,138,.08));
+    padding: 28px 32px;
+    margin-bottom: 24px;
+}
+
+.conductor-card-label {
+    font-size: .78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .6px;
+    color: var(--text-secondary, #6c757d);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.conductor-card-label .material-symbols-outlined {
+    font-size: 1rem;
+    color: var(--primary, #4f378a);
+}
+
+.conductor-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.conductor-avatar {
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #4f378a, #7c5cbf);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.3rem;
+    font-weight: 800;
+    flex-shrink: 0;
+}
+
+.conductor-nombre { font-size: 1.15rem; font-weight: 700; margin-bottom: 2px; }
+.conductor-sub { font-size: .82rem; color: var(--text-secondary, #6c757d); }
+
+.conductor-rating { margin-left: auto; text-align: right; }
+.rating-label { font-size: .75rem; color: var(--text-secondary, #6c757d); margin-bottom: 2px; }
+.rating-value { font-size: 1.1rem; font-weight: 800; color: var(--primary, #4f378a); }
+
+.acciones { display: flex; gap: 14px; flex-wrap: wrap; }
+
+.btn-volver {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: white;
+    color: var(--primary, #4f378a);
+    border: 2px solid var(--border, #e5e0f0);
+    border-radius: 999px;
+    padding: 12px 26px;
+    font-size: .95rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: border-color .2s;
+}
+
+.btn-volver:hover { border-color: var(--primary, #4f378a); }
+
+.btn-reservar {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(135deg, #4f378a, #7c5cbf);
+    color: white;
+    border: none;
+    border-radius: 999px;
+    padding: 12px 30px;
+    font-size: .95rem;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform .2s, box-shadow .2s;
+}
+
+.btn-reservar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(79,55,138,.35);
+    color: white;
+}
+
+@media (max-width: 600px) {
+    .info-tiles { grid-template-columns: 1fr; }
+    .viaje-ruta { font-size: 1.4rem; }
+    .precio-valor { font-size: 1.7rem; }
+    .viaje-hero { padding: 24px 20px; }
+    .conductor-card { padding: 20px; }
+}

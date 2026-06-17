@@ -6,7 +6,8 @@
     <title>Gestión de Combis</title>
     <link rel="stylesheet" th:href="@{/css/variables.css}">
     <link rel="stylesheet" th:href="@{/css/components.css}">
-    <link rel="stylesheet" th:href="@{/css/panel-administrador.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/panel-administrador.css}">
+     <link rel="stylesheet" th:href="@{/css/admin/combis.css}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
     <link rel="icon" th:href="@{/imagenes/logo.png}" type="image/x-icon">
@@ -15,7 +16,7 @@
 
 <div class="admin-layout">
     <div th:replace="componentes/sidebar-admin :: sidebar-admin('combis')"></div>
-    <main class="admin-content combis-content">
+    <main class="admin-content">
         <div class="combis-header">
             <div>
                 <h1>Gestión de vehículos</h1>
@@ -27,7 +28,7 @@
         </div>
 
         <div class="combis-stats">
-            <div class="combi-stat-card"><span class="material-symbols-outlined">directions_bus</span><h2>24</h2><p>Total Flota</p></div>
+            <div class="combi-stat-card"><span class="material-symbols-outlined">directions_bus</span><h2 th:text="${cantidadCombis}"></h2><p>Total Flota</p></div>
             <div class="combi-stat-card"><span class="material-symbols-outlined">check_circle</span><h2>18</h2><p>Disponibles</p></div>
             <div class="combi-stat-card"><span class="material-symbols-outlined">build</span><h2>3</h2><p>Mantenimiento</p></div>
             <div class="combi-stat-card"><span class="material-symbols-outlined">near_me</span><h2>3</h2><p>En viaje</p></div>
@@ -94,7 +95,6 @@
                     <h2>Fallas reportadas</h2>
                     <p>Alertas enviadas por choferes en tiempo real.</p>
                 </div>
-                <button class="fallas-link">Ver historial completo <span class="material-symbols-outlined">arrow_forward</span></button>
             </div>
             <div class="fallas-table-wrapper">
                 <table class="fallas-table">
@@ -104,14 +104,13 @@
                             <th>Fecha</th>
                             <th>Descripción</th>
                             <th>Estado</th>
-                            <th class="text-right">Acciones</th>
+                            <th class="text-center">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr th:each="reporte : ${reportes}">
                             <td>
                                 <div class="vehiculo-cell">
-                                    <div class="avatar">MB</div>
                                     <div>
                                         <p th:text="${reporte.combi.marca + ' ' + reporte.combi.modelo}"></p>
                                         <span th:text="${reporte.conductor.nombre + ' ' + reporte.conductor.apellido}"></span>
@@ -130,7 +129,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="fallas-footer"><button>Cargar más registros</button></div>
+            <!--<div class="fallas-footer"><button>Cargar más registros</button></div>-->
         </section>
     </main>
 </div>

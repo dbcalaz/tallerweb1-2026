@@ -1,9 +1,4 @@
-package com.tallerwebi.presentacion;
-
-import com.tallerwebi.dominio.Combi;
-import com.tallerwebi.dominio.Conductor;
-import com.tallerwebi.dominio.EstadoDeCombi;
-import com.tallerwebi.dominio.ReporteFalla;
+package com.tallerwebi.dominio;
 
 import java.util.List;
 
@@ -16,10 +11,10 @@ public interface ServicioAdministrador {
     void asignarNuevaCombiAConductor(Long idReporte, Long idCombi);
 
     List<Combi> obtenerCombis();
+    List<Combi> obtenerCombis(String parametro);
+    List <Combi> obtenerCombisDisponibles();
 
-    List<Combi> obtenerCombis(String valorDeBusqueda);
-
-    void actualizarEstadoCombi(Long idCombi, EstadoDeCombi estado);
+    Long obtenerCantidadCombis();
 
     List<Conductor> obtenerConductoresPendientes();
 
@@ -30,4 +25,6 @@ public interface ServicioAdministrador {
     void suspenderConductor(Long idConductor);
 
     void reactivarConductor(Long idConductor);
+
+    void actualizarEstadoCombi(Long idCombi, EstadoDeCombi estado);
 }

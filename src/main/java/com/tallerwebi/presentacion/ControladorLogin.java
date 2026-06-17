@@ -41,7 +41,8 @@ public class ControladorLogin {
                 datosLogin.getPassword()
         );
         if (usuarioBuscado != null) {
-            if(usuarioBuscado.getRol().equals("ADMIN")){
+            //usuarioBuscado.getRol().equals("ADMIN")
+            if("ADMIN".equals(usuarioBuscado.getRol())){
                 request.getSession().setAttribute("usuario", usuarioBuscado);
                 return new ModelAndView("redirect:/panel-administrador");
             }

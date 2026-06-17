@@ -4,6 +4,7 @@ import com.tallerwebi.dominio.Combi;
 import com.tallerwebi.dominio.Conductor;
 import com.tallerwebi.dominio.EstadoDeCombi;
 import com.tallerwebi.dominio.ReporteFalla;
+import com.tallerwebi.dominio.ServicioAdministrador;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -33,27 +34,30 @@ public class ControladorAdministrador {
 
 
 
-
-
-    @RequestMapping("/admin/combis") // Usamos la URL más limpia y directa
+    @RequestMapping("/admin/combis")
     public ModelAndView listarCombis(@RequestParam(name = "criterio", required = false) String criterio) {
 
         ModelMap model = new ModelMap();
         List<Combi> listado;
-        List<ReporteFalla> reportes = servicioAdministrador.obtenerFallasDeCombis();
 
-        // Lógica de filtrado: sirve tanto para buscar por estado como para traer todas
         if (criterio != null && !criterio.isEmpty()) {
             listado = servicioAdministrador.obtenerCombis(criterio);
         } else {
             listado = servicioAdministrador.obtenerCombis();
         }
 
-        // Asegurate de que el nombre "listaCombis" sea el que usás en tu HTML con th:each
+
+
+
+        List<Combi> combisDisponibles = servicioAdministrador.obtenerCombisDisponibles();
+        Long cantidadCombis = servicioAdministrador.obtenerCantidadCombis();
+        List<ReporteFalla> reportes = servicioAdministrador.obtenerFallasDeCombis();
+        model.put("combisDisponibles", combisDisponibles);
+        model.put("cantidadCombis", cantidadCombis);
         model.put("listaCombis", listado);
         model.put("reportes", reportes);
 
-        // Poné el nombre exacto de tu archivo HTML (sin la extensión .html)
+
         return new ModelAndView("admin/combis-listas", model);
     }
 
@@ -61,14 +65,13 @@ public class ControladorAdministrador {
     public ModelAndView cambiarEstadoCombi(@RequestParam("idCombi") Long idCombi,
                                            @RequestParam("nuevoEstado") String nuevoEstado) {
 
-        // 1. Conviertes el String que viene del HTML al Enum real
+
         EstadoDeCombi estado = EstadoDeCombi.valueOf(nuevoEstado);
 
-        // 2. Llamas a tu servicio para que actualice la base de datos.
-        // (Asegúrate de tener o crear este método en tu Servicio/Repositorio)
+
         servicioAdministrador.actualizarEstadoCombi(idCombi, estado);
 
-        // 3. Rediriges de vuelta a la lista de combis para ver los cambios actualizados
+
         return new ModelAndView("redirect:/admin/combis");
     }
 
@@ -97,13 +100,39 @@ public class ControladorAdministrador {
         ModelMap model = new ModelMap();
 
         List<Conductor> conductores = servicioAdministrador.obtenerConductores();
+        List<Conductor> conductoresPendientes = servicioAdministrador.obtenerConductoresPendientes();
+        Long pendientes = servicioAdministrador.obtenerCantidadDeConductoresPendientes();
+        List<Combi> combisDisponibles = servicioAdministrador.obtenerCombisDisponibles();
+
         model.put("conductores", conductores);
+        model.put("conductoresPendientes", conductoresPendientes);
+        model.put("pendientes", pendientes);
+        model.put("combisDisponibles", combisDisponibles);
         return new ModelAndView("admin/conductores", model);
     }
 
+    @RequestMapping(path = "/habilitacion-asignacion", method =  RequestMethod.POST)
+    public ModelAndView asignarCombiHabilitacionConductor(@RequestParam Long idConductor, @RequestParam Long idCombi) {
+        servicioAdministrador.habilitarConductor(idConductor, idCombi);
+        return vistaConductores();
+    }
+
+    @RequestMapping(path = "/suspender", method =  RequestMethod.POST)
+    public ModelAndView suspenderConductor(@RequestParam Long idConductor) {
+        servicioAdministrador.suspenderConductor(idConductor);
+        return vistaConductores();
+    }
+
+    @RequestMapping(path = "/reactivar", method =  RequestMethod.POST)
+    public ModelAndView reactivarConductor(@RequestParam Long idConductor) {
+        servicioAdministrador.reactivarConductor(idConductor);
+        return vistaConductores();
+    }
+
+    /* Viajes*/
     @GetMapping("/viajes")
     public ModelAndView viajes() {
-        return new ModelAndView("redirect:/admin/viajes");
+        return new ModelAndView("admin/viajes");
     }
 
 

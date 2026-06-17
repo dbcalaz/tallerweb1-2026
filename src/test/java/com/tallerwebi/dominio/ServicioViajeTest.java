@@ -9,11 +9,13 @@ public class ServicioViajeTest {
 
   private ServicioViajeImpl servicioViajeImpl;
   private RepositorioViaje repositorioViajeMock;
+  private RepositorioReserva repositorioReservaMock;
 
   @BeforeEach
   public void init() {
     repositorioViajeMock = mock(RepositorioViaje.class);
-    servicioViajeImpl = new ServicioViajeImpl(repositorioViajeMock);
+    repositorioReservaMock = mock(RepositorioReserva.class);
+    servicioViajeImpl = new ServicioViajeImpl(repositorioViajeMock, repositorioReservaMock);
   }
 
   @Test

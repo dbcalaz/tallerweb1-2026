@@ -25,7 +25,7 @@
     <div class="perfil-card">
 
         <div class="perfil-avatar">
-            <img th:src="@{/imagenes/avatarPerfil.png}"
+            <img th:src="@{/imagenes/avatarDefault.webp}"
                  alt="Foto de perfil">
         </div>
 
@@ -65,8 +65,8 @@
                 Viajes Realizados
             </h3>
 
-            <p class="feature-description">
-                124
+            <p class="feature-description" th:text="${viajesRealizados}">
+            0
             </p>
         </div>
 
@@ -79,8 +79,8 @@
                 Viajes Cancelados
             </h3>
 
-            <p class="feature-description">
-                2
+            <p class="feature-description" th:text="${viajesCancelados}">
+
             </p>
         </div>
 
@@ -107,9 +107,11 @@
                 Conductor Favorito
             </h3>
 
-            <p class="feature-description">
-                Luis G.
+
+            <p>
+                <span class="feature-description" th:text="${favorito}"></span>
             </p>
+
         </div>
 
     </section>
@@ -117,7 +119,7 @@
 
     <!--HISTORIAL-->
 
-    <section class="recommended-section">
+    <section class="historial-section">
 
         <div class="section-header">
             <div>
@@ -126,7 +128,35 @@
             </div>
         </div>
 
-        <div class="trips-history-list">
+        <!-- Si NO hay reservas -->
+        <section th:if="${#lists.isEmpty(reservas)}" class="empty-state">
+
+            <div class="empty-state-icon">
+        <span class="material-symbols-outlined">
+            travel_explore
+        </span>
+            </div>
+
+            <h2>Tu aventura todavía no comenzó</h2>
+
+            <p>
+                Todavía no realizaste ningún viaje.
+            </p>
+
+            <p class="empty-state-secondary">
+                Reservá tu primer viaje y comenzá a construir tu historial
+                dentro de BondiWay.
+            </p>
+
+            <a th:href="@{/buscar-viaje}" class="empty-state-btn">
+                Buscar viajes
+            </a>
+
+        </section>
+        <!-- Si hay reservas -->
+        <div class="trips-history-list"
+             th:unless="${#lists.isEmpty(reservas)}">
+
 
             <article class="trip-card"
                      th:each="reserva : ${reservas}">
@@ -181,7 +211,8 @@
                     </div>
 
                     <button class="details-btn">
-                        Ver detalle
+                        <a th:href="@{/detalle-viaje/{id}(id=${reserva.id})}"> Ver detalle</a>
+
                     </button>
 
                 </div>
@@ -189,6 +220,7 @@
             </article>
 
         </div>
+
 
     </section>
 

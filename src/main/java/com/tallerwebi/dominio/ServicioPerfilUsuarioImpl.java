@@ -12,11 +12,16 @@ public class ServicioPerfilUsuarioImpl implements ServicioPerfilUsuario {
 
     private RepositorioUsuario repositorioUsuario;
     private RepositorioReserva repositorioReserva;
+    private RepositorioViaje repositorioViaje;
 
     @Autowired
-    public ServicioPerfilUsuarioImpl(RepositorioUsuario repositorioUsuario,  RepositorioReserva repositorioReserva) {
+    public ServicioPerfilUsuarioImpl(RepositorioUsuario repositorioUsuario,  RepositorioReserva repositorioReserva,  RepositorioViaje repositorioViaje) {
         this.repositorioUsuario = repositorioUsuario;
         this.repositorioReserva = repositorioReserva;
+        this.repositorioViaje = repositorioViaje;
+    }
+
+    public ServicioPerfilUsuarioImpl(RepositorioUsuario repositorioUsuario, RepositorioReserva repositorioReserva) {
     }
 
     @Override
@@ -27,6 +32,28 @@ public class ServicioPerfilUsuarioImpl implements ServicioPerfilUsuario {
     @Override
     public List<Reserva> obtenerReservasPorUsuario(Long idUsuario) {
         return repositorioReserva.buscarUltimasReservasPorUsuario(idUsuario);
+    }
+
+    @Override
+    public Conductor obtenerConductorFavorito(Long idUsuario) {
+
+        List<Reserva> reservas = repositorioReserva.buscarUltimasReservasPorUsuario(idUsuario);
+        return repositorioReserva.obtenerConductorFavorito(idUsuario);
+    }
+
+    @Override
+    public Long obtenerCantidaddeViajes(Long idUsuario){
+        return repositorioViaje.contarViajesPorUsuario(idUsuario);
+    }
+
+    @Override
+    public Long obtenerCantidadViajesCancelados(Long idUsuario){
+        return repositorioViaje.contarViajesCanceladosPorUsuario(idUsuario);
+    }
+
+    @Override
+    public Reserva buscarReservaPorId(Long id){
+        return repositorioReserva.buscarReservaPorId(id);
     }
 
 }

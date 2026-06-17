@@ -30,7 +30,7 @@
                 <h2>Acceso Conductores</h2>
                 <p>Ingresá a tu panel operativo para iniciar tu jornada.</p>
                 <p th:if="${mensaje != null}" class="message" th:text="${mensaje}"></p>
-
+                <p th:if="${error != null}" class="error-message" th:text="${error}"></p>
                 <form class="driver-form" th:action="@{/validar-login-conductor}" method="post" th:object="${datosLogin}">
                     <div class="driver-input-group">
                         <label>Correo electrónico</label>

@@ -1,0 +1,326 @@
+.combis-content {
+    padding: 40px;
+}
+
+.combis-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 36px;
+}
+
+.combis-header h1 {
+    font-size: 32px;
+    margin-bottom: 8px;
+}
+
+.combis-header p {
+    color: var(--text-secondary);
+}
+
+.combis-stats {
+    display: grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap: 24px;
+    margin-bottom: 36px;
+}
+
+.combi-stat-card {
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    box-shadow: var(--shadow-card);
+    border: 1px solid var(--border);
+}
+
+.combi-stat-card span {
+    font-size: 32px;
+    color: var(--primary);
+}
+
+.combi-stat-card h2 {
+    font-size: 30px;
+    margin-top: 14px;
+}
+
+.combi-stat-card p {
+    color: var(--text-secondary);
+}
+
+.combis-filters {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 26px;
+}
+
+.filter {
+    padding: 10px 16px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: white;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.filter.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+.combis-grid {
+    display: grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap: 24px;
+}
+
+.combi-card {
+    background: white;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+    transition: 0.2s ease;
+    border: 1px solid var(--border);
+}
+
+.combi-card:hover {
+    transform: translateY(-4px);
+}
+
+.combi-img {
+    height: 180px;
+    background: #eee;
+    position: relative;
+}
+
+.status {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    background: #ddd;
+}
+
+.status.disponible {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.status.viaje {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.status.mantenimiento {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.combi-body {
+    padding: 20px;
+}
+
+.combi-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 14px;
+}
+
+.combi-title h3 {
+    font-size: 18px;
+}
+
+.combi-title p {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.patente {
+    font-family: monospace;
+    font-weight: 700;
+}
+
+.combi-info {
+    display: flex;
+    gap: 14px;
+    color: var(--text-secondary);
+    font-size: 13px;
+    margin-bottom: 16px;
+}
+
+.combi-info.error {
+    color: var(--error);
+}
+
+/* ACTIONS */
+.combi-actions {
+    display: grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap: 8px;
+}
+
+.combi-actions button {
+    padding: 10px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    font-size: 13px;
+    background: #f3edf5;
+    font-weight: 600;
+}
+
+.combi-actions button:hover {
+    background: #e7dff0;
+}
+
+.combis-fallas {
+    margin-top: 40px;
+    background: white;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+    border: 1px solid var(--border);
+}
+
+.fallas-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px;
+    border-bottom: 1px solid var(--border);
+}
+
+.fallas-header h2 {
+    font-size: 22px;
+    margin-bottom: 6px;
+}
+
+.fallas-header p {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.fallas-link {
+    background: none;
+    border: none;
+    color: var(--primary);
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.fallas-table-wrapper {
+    overflow-x: auto;
+}
+
+.fallas-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.fallas-table th {
+    text-align: left;
+    padding: 16px 20px;
+    background: #f8f2fa;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.fallas-table td {
+    padding: 16px 20px;
+    border-top: 1px solid #ece7f2;
+    font-size: 14px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.vehiculo-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.descripcion {
+    max-width: 320px;
+    color: var(--text-secondary);
+}
+
+.estado {
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    max-width: 90px;
+}
+
+.estado.pendiente {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.estado.revision {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.estado.critico {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.estado.viaje {
+    background: #ececec;
+    color: #555;
+}
+
+.estado.disponible {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.estado.suspendido {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.acciones {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+.acciones button {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    color: var(--primary);
+    padding: 6px;
+    border-radius: 8px;
+}
+
+.acciones button:hover {
+    background: #f3edf5;
+}
+
+.fallas-footer {
+    padding: 16px;
+    text-align: center;
+    border-top: 1px solid var(--border);
+}
+
+.fallas-footer button {
+    background: none;
+    border: none;
+    color: var(--primary);
+    font-weight: 600;
+    cursor: pointer;
+}

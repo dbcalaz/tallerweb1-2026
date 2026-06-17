@@ -2,6 +2,8 @@ package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.*;
 import com.tallerwebi.dominio.excepcion.ConductorExistente;
+import com.tallerwebi.dominio.excepcion.CuentaNoHabilitadaException;
+import com.tallerwebi.dominio.excepcion.CuentaSuspendidaException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -34,19 +36,21 @@ public class ControladorConductor {
 
     @RequestMapping(path = "/validar-login-conductor", method = RequestMethod.POST)
     public ModelAndView validarLoginConductor(@ModelAttribute("datosLogin") DatosLogin datosLogin, HttpServletRequest request) {
-
-        Conductor conductorEncontrado = servicioConductor.consultarConductor(
-                datosLogin.getEmail(), datosLogin.getPassword()
-        );
-
-        if (conductorEncontrado != null) {
-            request.getSession().setAttribute("conductor", conductorEncontrado);
-            ModelMap model = new ModelMap();
-            model.put("conductor", conductorEncontrado);
-            return new ModelAndView("redirect:/home-conductor", model);
-        } else {
-            ModelMap model = new ModelMap();
+        ModelMap model = new ModelMap();
+        try {
+            Conductor conductorEncontrado =
+                    servicioConductor.consultarConductor(
+                            datosLogin.getEmail(),
+                            datosLogin.getPassword()
+                    );
+            if (conductorEncontrado != null) {
+                request.getSession().setAttribute("conductor", conductorEncontrado);
+                return new ModelAndView("redirect:/home-conductor");
+            }
             model.put("error", "Las credenciales no son correctas");
+            return new ModelAndView("login-conductor", model);
+        } catch (CuentaNoHabilitadaException | CuentaSuspendidaException e) {
+            model.put("error", e.getMessage());
             return new ModelAndView("login-conductor", model);
         }
     }

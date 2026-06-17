@@ -165,7 +165,7 @@
         <label for="combi">Combis disponibles</label>
         <select id="combi" name="idCombi" required>
           <option value="">Seleccionar combi...</option>
-          <option th:each="combi : ${listaCombis}" th:value="${combi.id}" th:text="${combi.marca + ' ' + combi.modelo + ' - ' + combi.patente}"></option>
+          <option th:each="combi : ${combisDisponibles}" th:value="${combi.id}" th:text="${combi.marca + ' ' + combi.modelo + ' - ' + combi.patente}"></option>
         </select>
       </div>
       <div class="driver-modal-actions">
