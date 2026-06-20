@@ -2,6 +2,7 @@ package com.tallerwebi.dominio;
 
 
 
+import com.tallerwebi.presentacion.DatosFiltro;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,18 +35,10 @@ public class ServicioAdministradorImpl implements ServicioAdministrador {
         repositorioAdministrador.updateCombiConductor(idReporte,idCombi);
     }
 
-    @Override
-    public List<Combi> obtenerCombis() {
-        return repositorioAdministrador.getCombis();
-    }
 
     @Override
-
-    public List<Combi> obtenerCombis(String parametro){
-        return repositorioAdministrador.obtenerCombisFiltradas(parametro);
-
-
-
+    public List<Combi> obtenerCombisFiltradas(DatosFiltro datosFiltro){
+        return repositorioAdministrador.getCombisFiltradas(datosFiltro);
 }
 
     @Override

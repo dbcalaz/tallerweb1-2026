@@ -10,8 +10,8 @@ values ('Moron', 'Moreno', '2026-05-30', '14:00', 3800.0, 2);
 insert into Conductor (nombre, apellido, email, telefono, documento, password, licencia, calificacion, ganancia, cuentaHabilitada, disponible, enViaje, suspendido)
 values ('Eduardo', 'Zaens', 'ezaens@mail.com', '1123456789', '12345678', 'asd', 'D2', 3.9, 75000.0, true, true, true, false);
 
-insert into Combi (tipoDeCombi, cantidadDeAsientos, tipoDeTransmision, patente, marca, modelo)
-values ('ESTANDAR', 15, 'Manual', 'AD-542-XQ', 'Mercedes-Benz', 'Sprinter 515');
+insert into Combi (tipoDeCombi, cantidadDeAsientos, tipoDeTransmision, patente, marca, modelo,EstadoDeCombi, kilometros)
+values ('ESTANDAR', 15, 'Manual', 'AD-542-XQ', 'Mercedes-Benz', 'Sprinter 515','EN_VIAJE',1500);
 
 insert into AsignacionCombiConductor (id_conductor, id_combi, combiActiva) values (1, 1, true);
 

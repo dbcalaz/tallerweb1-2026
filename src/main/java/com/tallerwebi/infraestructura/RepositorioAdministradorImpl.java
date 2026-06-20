@@ -1,6 +1,8 @@
 package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.*;
+import com.tallerwebi.presentacion.DatosFiltro;
+import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -71,7 +73,7 @@ public class RepositorioAdministradorImpl implements RepositorioAdministrador {
         sessionFactory.getCurrentSession().update(reporte);
     }
 
-    @Override
+   /* @Override
     public List<Combi> getCombis() {
         return sessionFactory.getCurrentSession()
                 .createCriteria(Combi.class)
@@ -86,7 +88,7 @@ public class RepositorioAdministradorImpl implements RepositorioAdministrador {
                 .createCriteria(Combi.class)
                 .add(Restrictions.eq("estadoDeCombi", estado))
                 .list();
-    }
+    }*/
 
 
 
@@ -97,11 +99,39 @@ public class RepositorioAdministradorImpl implements RepositorioAdministrador {
 
     @Override
     public List<Combi> getCombisDisponibles(){
-
-
         return sessionFactory.getCurrentSession()
                 .createCriteria(Combi.class).add(Restrictions.eq("estadoDeCombi", EstadoDeCombi.DISPONIBLE))
                 .list();
+    }
+
+    @Override
+    public List<Combi> getCombisFiltradas(DatosFiltro datosFiltro) {
+
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Combi.class);
+
+        if (datosFiltro == null) {
+            return criteria.list();
+        }
+
+        // Filtro Exacto (Enum)
+        if (datosFiltro.getEstadoDeCombi() != null) {
+            criteria.add(Restrictions.eq("estadoDeCombi", datosFiltro.getEstadoDeCombi()));
+        }
+
+        // Filtros de Texto (Usamos ilike y % para búsquedas parciales y case-insensitive)
+        if (datosFiltro.getMarca() != null && !datosFiltro.getMarca().trim().isEmpty()) {
+            criteria.add(Restrictions.ilike("marca", "%" + datosFiltro.getMarca() + "%"));
+        }
+
+        if (datosFiltro.getModelo() != null && !datosFiltro.getModelo().trim().isEmpty()) {
+            criteria.add(Restrictions.ilike("modelo", "%" + datosFiltro.getModelo() + "%"));
+        }
+
+        if (datosFiltro.getPatente() != null && !datosFiltro.getPatente().trim().isEmpty()) {
+            criteria.add(Restrictions.ilike("patente", "%" + datosFiltro.getPatente() + "%"));
+        }
+
+        return criteria.list();
     }
 
     public Long getCantidadDeCombis() {

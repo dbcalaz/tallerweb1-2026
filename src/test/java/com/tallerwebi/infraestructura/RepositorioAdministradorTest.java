@@ -3,6 +3,7 @@ package com.tallerwebi.infraestructura;
 import com.tallerwebi.dominio.*;
 import com.tallerwebi.integracion.config.HibernateTestConfig;
 import com.tallerwebi.integracion.config.SpringWebTestConfig;
+import com.tallerwebi.presentacion.DatosFiltro;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.Test;
@@ -62,7 +63,7 @@ public class RepositorioAdministradorTest {
         session().save(combi2);
 
         //Ejecución
-        List<Combi> combis = repositorioAdministrador.getCombis();
+        List<Combi> combis = repositorioAdministrador.getCombisFiltradas(null);
 
         //Validación
         assertThat(combis.size(), equalTo(2));
@@ -188,8 +189,11 @@ public class RepositorioAdministradorTest {
         session().save(combiEnViaje2);
         session().save(combiDisponible);
 
+        DatosFiltro datosFiltro = new DatosFiltro();
+        datosFiltro.setEstadoDeCombi(EstadoDeCombi.EN_VIAJE);
+
         // Ejecución
-        List<Combi> combis = repositorioAdministrador.obtenerCombisFiltradas("EN_VIAJE");
+        List<Combi> combis = repositorioAdministrador.getCombisFiltradas(datosFiltro);
 
         // Validación
         assertThat(combis, notNullValue());
@@ -210,9 +214,11 @@ public class RepositorioAdministradorTest {
 
         session().save(combiMantenimiento);
         session().save(combiEnViaje);
+        DatosFiltro datosFiltro = new DatosFiltro();
+        datosFiltro.setEstadoDeCombi(EstadoDeCombi.EN_MANTENIMIENTO);
 
         // Ejecución
-        List<Combi> combis = repositorioAdministrador.obtenerCombisFiltradas("EN_MANTENIMIENTO");
+        List<Combi> combis = repositorioAdministrador.getCombisFiltradas(datosFiltro);
 
         // Validación
         assertThat(combis, notNullValue());
@@ -232,13 +238,15 @@ public class RepositorioAdministradorTest {
 
         Combi combiMantenimiento = new Combi();
         combiMantenimiento.setEstadoDeCombi(EstadoDeCombi.EN_MANTENIMIENTO);
+        DatosFiltro datosFiltro = new DatosFiltro();
+        datosFiltro.setEstadoDeCombi(EstadoDeCombi.DISPONIBLE);
 
         session().save(combiDisponible1);
         session().save(combiDisponible2);
         session().save(combiMantenimiento);
 
         // Ejecución
-        List<Combi> combis = repositorioAdministrador.obtenerCombisFiltradas("DISPONIBLE");
+        List<Combi> combis = repositorioAdministrador.getCombisFiltradas(datosFiltro);
 
         // Validación
         assertThat(combis, notNullValue());
@@ -265,8 +273,8 @@ public class RepositorioAdministradorTest {
         session().save(combiMantenimiento);
 
         // Ejecución
-        // se usa  el método que trae todo
-        List<Combi> todasLasCombis = repositorioAdministrador.getCombis();
+
+        List<Combi> todasLasCombis = repositorioAdministrador.getCombisFiltradas(null);
 
         // Validación
         assertThat(todasLasCombis, notNullValue());

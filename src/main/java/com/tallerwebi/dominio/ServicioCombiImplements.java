@@ -1,16 +1,12 @@
 package com.tallerwebi.dominio;
 
 
+import com.tallerwebi.dominio.excepcion.*;
 import com.tallerwebi.presentacion.DatosCombi;
-import com.tallerwebi.dominio.excepcion.CombiExistenteException;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.tallerwebi.dominio.excepcion.CantidadDeAsientosInvalidaException;
-import com.tallerwebi.dominio.excepcion.TipoDeCombiInvalidaException;
-import com.tallerwebi.dominio.excepcion.TipoDeTransmisionInvalidaException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.List;
 
 @Service
 @Transactional
@@ -19,12 +15,9 @@ public class ServicioCombiImplements implements ServicioCombi {
 
     @Autowired
     public ServicioCombiImplements(RepositorioCombi repositorioCombi) {
+
         this.repositorioCombi= repositorioCombi;
     }
-
-
-
-
 
     @Override
     public Combi crearCombi(DatosCombi datosCombi) throws BondiWayException {
@@ -44,20 +37,10 @@ public class ServicioCombiImplements implements ServicioCombi {
         if (this.repositorioCombi.buscarPorPatente(datosCombi.getPatente())!=null) {
             throw new CombiExistenteException(datosCombi.getPatente());
         }
-
-        Combi combi = new Combi();
-        combi.setTipoDeCombi(datosCombi.getTipoDeCombi());
-        combi.setCantidadDeAsientos(datosCombi.getCantidadDeAsientos());
-        combi.setTipoDeTransmision(datosCombi.getTipoDeTransmision());
-        combi.setPatente(datosCombi.getPatente());
-        combi.setMarca(datosCombi.getMarca());
-        combi.setModelo(datosCombi.getModelo());
-        combi.setEstadoDeCombi(EstadoDeCombi.DISPONIBLE);
-        combi.setKilometros(datosCombi.getKilometros());
-
+        Combi combi = new Combi(datosCombi);
         this.repositorioCombi.guardar(combi);
 
-return combi;
+        return combi;
     }
 
 

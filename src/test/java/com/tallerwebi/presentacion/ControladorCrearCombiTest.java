@@ -1,6 +1,7 @@
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.*;
+import com.tallerwebi.dominio.excepcion.BondiWayException;
 import com.tallerwebi.dominio.excepcion.CantidadDeAsientosInvalidaException;
 import com.tallerwebi.dominio.excepcion.TipoDeCombiInvalidaException;
 import com.tallerwebi.dominio.excepcion.TipoDeTransmisionInvalidaException;
@@ -42,7 +43,7 @@ public class ControladorCrearCombiTest {
     }
 
     private void thenLaCreacionDeCombiEsExitoso(ModelAndView mv) {
-    assertThat(mv.getViewName(),equalToIgnoringCase("combi-registrada"));
+    assertThat(mv.getViewName(),equalToIgnoringCase("admin/combi-registrada"));
    // assertThat(mv.getModel().get());
 
     }

@@ -1,10 +1,7 @@
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.*;
-import com.tallerwebi.dominio.excepcion.CantidadDeAsientosInvalidaException;
-import com.tallerwebi.dominio.excepcion.CombiExistenteException;
-import com.tallerwebi.dominio.excepcion.TipoDeCombiInvalidaException;
-import com.tallerwebi.dominio.excepcion.TipoDeTransmisionInvalidaException;
+import com.tallerwebi.dominio.excepcion.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -48,7 +45,7 @@ public class ControladorCrearCombi {
            combiGuardada = servicioCombi.crearCombi(datosCombi);
         } catch (BondiWayException ex) {
             modelo.put("error", ex.getMessage());
-            return new ModelAndView("crear-combi", modelo);
+            return new ModelAndView("admin/crear-combi", modelo);
         }
             modelo.put("combi", combiGuardada);
             modelo.put("mensaje", "La creacion fue exitosa");

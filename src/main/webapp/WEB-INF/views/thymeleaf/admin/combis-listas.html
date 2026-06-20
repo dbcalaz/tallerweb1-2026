@@ -6,7 +6,8 @@
   <title>Gestión de Combis</title>
   <link rel="stylesheet" th:href="@{/css/variables.css}">
   <link rel="stylesheet" th:href="@{/css/components.css}">
-  <link rel="stylesheet" th:href="@{/css/panel-administrador.css}">
+  <link rel="stylesheet" th:href="@{/css/admin/panel-administrador.css}">
+  <link rel="stylesheet" th:href="@{/css/admin/combis.css}">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
   <link rel="icon" th:href="@{/imagenes/logo.png}" type="image/x-icon">
@@ -34,32 +35,70 @@
     </div>
 
     <div class="combis-filters">
-
       <a th:href="@{/admin/combis}"
          class="filter"
-         th:classappend="${param.criterio == null} ? 'active'">
+         th:classappend="${filtroActual.estadoDeCombi == null} ? 'active'">
         Todos
       </a>
 
-      <a th:href="@{/admin/combis(criterio='DISPONIBLE')}"
+      <a th:href="@{/admin/combis(estadoDeCombi='DISPONIBLE')}"
          class="filter"
-         th:classappend="${param.criterio != null && param.criterio[0] == 'DISPONIBLE'} ? 'active'">
+         th:classappend="${filtroActual.estadoDeCombi != null && filtroActual.estadoDeCombi.name() == 'DISPONIBLE'} ? 'active'">
         Disponibles
       </a>
 
-      <a th:href="@{/admin/combis(criterio='EN_MANTENIMIENTO')}"
+      <a th:href="@{/admin/combis(estadoDeCombi='EN_MANTENIMIENTO')}"
          class="filter"
-         th:classappend="${param.criterio != null && param.criterio[0] == 'EN_MANTENIMIENTO'} ? 'active'">
+         th:classappend="${filtroActual.estadoDeCombi != null && filtroActual.estadoDeCombi.name() == 'EN_MANTENIMIENTO'} ? 'active'">
         En Mantenimiento
       </a>
 
-      <a th:href="@{/admin/combis(criterio='EN_VIAJE')}"
+      <a th:href="@{/admin/combis(estadoDeCombi='EN_VIAJE')}"
          class="filter"
-         th:classappend="${param.criterio != null && param.criterio[0] == 'EN_VIAJE'} ? 'active'">
-       En Viaje
+         th:classappend="${filtroActual.estadoDeCombi != null && filtroActual.estadoDeCombi.name() == 'EN_VIAJE'} ? 'active'">
+        En Viaje
       </a>
 
+      <button type="button" class="filter" onclick="toggleFiltroAvanzado()" style="cursor: pointer; margin-left: auto;">
+        <span class="material-symbols-outlined" style="font-size: 18px; vertical-align: middle;">search</span> Buscar
+      </button>
     </div>
+
+    <div id="panelFiltros" style="display: none; padding: 1.5rem; background: var(--surface-100); border: 1px solid var(--border-color); border-radius: 8px; margin-bottom: 2rem;">
+      <form th:action="@{/admin/combis}" method="GET" style="display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: flex-end;">
+
+        <div class="driver-modal-field" style="margin: 0; flex: 1; min-width: 150px;">
+          <label for="filtroEstado">Estado Operativo</label>
+          <select id="filtroEstado" name="estadoDeCombi">
+            <option value="">Cualquier estado</option>
+            <option value="DISPONIBLE" th:selected="${filtroActual.estadoDeCombi?.name() == 'DISPONIBLE'}">Disponible</option>
+            <option value="EN_MANTENIMIENTO" th:selected="${filtroActual.estadoDeCombi?.name() == 'EN_MANTENIMIENTO'}">En Mantenimiento</option>
+            <option value="EN_VIAJE" th:selected="${filtroActual.estadoDeCombi?.name() == 'EN_VIAJE'}">En Viaje</option>
+          </select>
+        </div>
+
+        <div class="driver-modal-field" style="margin: 0; flex: 1; min-width: 150px;">
+          <label for="filtroMarca">Marca</label>
+          <input type="text" id="filtroMarca" name="marca" th:value="${filtroActual.marca}" placeholder="Ej: Mercedes-Benz">
+        </div>
+
+        <div class="driver-modal-field" style="margin: 0; flex: 1; min-width: 150px;">
+          <label for="filtroModelo">Modelo</label>
+          <input type="text" id="filtroModelo" name="modelo" th:value="${filtroActual.modelo}" placeholder="Ej: Sprinter">
+        </div>
+
+        <div class="driver-modal-field" style="margin: 0; flex: 1; min-width: 150px;">
+          <label for="filtroPatente">Patente</label>
+          <input type="text" id="filtroPatente" name="patente" th:value="${filtroActual.patente}" placeholder="Ej: AB123CD">
+        </div>
+
+        <div style="display: flex; gap: 1rem;">
+          <button type="submit" class="btn-primary">Aplicar</button>
+          <a th:href="@{/admin/combis}" class="btn-primary" style="background: transparent; color: var(--text-color); border: 1px solid var(--border-color); text-decoration: none;">Limpiar</a>
+        </div>
+      </form>
+    </div>
+
     <div class="combis-grid">
       <div class="combi-card" th:each="combi : ${listaCombis}">
 
@@ -103,6 +142,7 @@
 
       <div th:if="${#lists.isEmpty(listaCombis)}" style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-secondary);">
         <p>No se encontraron combis para el filtro seleccionado.</p>
+        <a th:href="@{/admin/combis}" style="display: inline-block; margin-top: 1rem; color: var(--primary-color); text-decoration: none;">Limpiar filtros</a>
       </div>
     </div>
 
@@ -175,6 +215,7 @@
     </form>
   </div>
 </div>
+
 <div id="modal-editar-estado" class="modal-overlay">
   <div class="driver-modal">
     <div class="driver-modal-icon"><span class="material-symbols-outlined">edit</span></div>
@@ -201,8 +242,29 @@
   </div>
 </div>
 
+<script th:inline="javascript">
+  /* --- LÓGICA DEL FILTRO AVANZADO --- */
+  const panelFiltros = document.getElementById("panelFiltros");
 
-<script>
+  function toggleFiltroAvanzado() {
+    if (panelFiltros.style.display === "none" || panelFiltros.style.display === "") {
+      panelFiltros.style.display = "block";
+    } else {
+      panelFiltros.style.display = "none";
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const tieneMarca = /*[[${filtroActual.marca != null && !filtroActual.marca.isEmpty()}]]*/ false;
+    const tieneModelo = /*[[${filtroActual.modelo != null && !filtroActual.modelo.isEmpty()}]]*/ false;
+    const tienePatente = /*[[${filtroActual.patente != null && !filtroActual.patente.isEmpty()}]]*/ false;
+
+    if (tieneMarca || tieneModelo || tienePatente) {
+      panelFiltros.style.display = "block";
+    }
+  });
+
+  /* --- LÓGICA DE MODALES (INTACTA) --- */
   const botonesAbrir = document.querySelectorAll(".btn-abrir-modal-asignacion");
   const btnCerrar = document.getElementById("btn-cancelar-asignacion");
   const modal = document.getElementById("modal-asignar-combi");
@@ -215,10 +277,12 @@
       });
   });
 
-  btnCerrar.addEventListener("click", () => {
-      modal.classList.remove("active");
-  });
-  // LÓGICA PARA EL MODAL DE EDITAR ESTADO
+  if(btnCerrar) {
+      btnCerrar.addEventListener("click", () => {
+          modal.classList.remove("active");
+      });
+  }
+
   const botonesEditar = document.querySelectorAll(".btn-abrir-modal-editar");
   const modalEditar = document.getElementById("modal-editar-estado");
   const btnCerrarEditar = document.getElementById("btn-cancelar-editar");
@@ -227,23 +291,20 @@
 
   botonesEditar.forEach(boton => {
       boton.addEventListener("click", () => {
-          // 1. Pasamos el ID de la combi al input oculto
           inputIdCombiEditar.value = boton.dataset.combiId;
-
-          // 2. Pre-seleccionamos el estado actual en el select
           const estadoActual = boton.dataset.combiEstado;
           if (estadoActual) {
               selectEstado.value = estadoActual;
           }
-
-          // 3. Mostramos el modal
           modalEditar.classList.add("active");
       });
   });
 
-  btnCerrarEditar.addEventListener("click", () => {
-      modalEditar.classList.remove("active");
-  });
+  if(btnCerrarEditar) {
+      btnCerrarEditar.addEventListener("click", () => {
+          modalEditar.classList.remove("active");
+      });
+  }
 </script>
 </body>
 </html>

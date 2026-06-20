@@ -34,7 +34,7 @@ public class ControladorAdministrador {
 
 
 
-    @RequestMapping("/admin/combis")
+   /* @RequestMapping("/admin/combis")
     public ModelAndView listarCombis(@RequestParam(name = "criterio", required = false) String criterio) {
 
         ModelMap model = new ModelMap();
@@ -47,8 +47,6 @@ public class ControladorAdministrador {
         }
 
 
-
-
         List<Combi> combisDisponibles = servicioAdministrador.obtenerCombisDisponibles();
         Long cantidadCombis = servicioAdministrador.obtenerCantidadCombis();
         List<ReporteFalla> reportes = servicioAdministrador.obtenerFallasDeCombis();
@@ -57,26 +55,44 @@ public class ControladorAdministrador {
         model.put("listaCombis", listado);
         model.put("reportes", reportes);
 
-
         return new ModelAndView("admin/combis-listas", model);
-    }
+    }*/
+   @RequestMapping(value = "/admin/combis", method = RequestMethod.GET)
+   public ModelAndView listarCombis(@ModelAttribute DatosFiltro datosFiltro) {
+
+       ModelMap model = new ModelMap();
+
+       // 1. Buscamos las combis pasándole el DTO completo.
+       // Si no se hizo click en nada, datosFiltro se crea vacío y trae todas.
+       List<Combi> listado = servicioAdministrador.obtenerCombisFiltradas(datosFiltro);
+
+       // 2. Mantenemos el resto de tu lógica intacta
+       List<Combi> combisDisponibles = servicioAdministrador.obtenerCombisDisponibles();
+       Long cantidadCombis = servicioAdministrador.obtenerCantidadCombis();
+       List<ReporteFalla> reportes = servicioAdministrador.obtenerFallasDeCombis();
+
+       model.put("combisDisponibles", combisDisponibles);
+       model.put("cantidadCombis", cantidadCombis);
+       model.put("listaCombis", listado);
+       model.put("reportes", reportes);
+
+       // 3. IMPORTANTE: Mandamos el DTO de vuelta a la vista para que la
+       // botonera sepa qué botón pintar como "activo"
+       model.put("filtroActual", datosFiltro);
+
+       return new ModelAndView("admin/combis-listas", model);
+   }
+
 
     @RequestMapping(path = "/admin/combis/cambiar-estado", method = RequestMethod.POST)
     public ModelAndView cambiarEstadoCombi(@RequestParam("idCombi") Long idCombi,
                                            @RequestParam("nuevoEstado") String nuevoEstado) {
-
-
         EstadoDeCombi estado = EstadoDeCombi.valueOf(nuevoEstado);
-
 
         servicioAdministrador.actualizarEstadoCombi(idCombi, estado);
 
-
         return new ModelAndView("redirect:/admin/combis");
     }
-
-
-
 
 
     @RequestMapping( path = "/nueva-asignacion", method =  RequestMethod.POST)

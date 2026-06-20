@@ -1,5 +1,7 @@
 package com.tallerwebi.dominio;
 
+import com.tallerwebi.presentacion.DatosFiltro;
+
 import java.util.List;
 
 public interface RepositorioAdministrador {
@@ -16,10 +18,9 @@ public interface RepositorioAdministrador {
     void updateCombiConductor(Long idReporte, Long idCombi);
 
     AsignacionCombiConductor buscarAsignacionActiva(Long idConductor);
+    List<Combi> getCombisDisponibles();
 
-    List<Combi> getCombis();
-
-    List<Combi> obtenerCombisFiltradas(String valorDeBusqueda);
+    List<Combi> getCombisFiltradas(DatosFiltro datosFiltro);
 
     void actualizarCombi(Combi combiExiste);
 
@@ -39,5 +40,5 @@ public interface RepositorioAdministrador {
 
     void reactivarConductor(Conductor conductor);
 
-    List<Combi> getCombisDisponibles();
+
 }

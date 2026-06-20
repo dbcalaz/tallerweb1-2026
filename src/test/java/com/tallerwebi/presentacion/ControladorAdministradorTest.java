@@ -1,8 +1,6 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.Combi;
-import com.tallerwebi.dominio.Conductor;
-import com.tallerwebi.dominio.ReporteFalla;
+import com.tallerwebi.dominio.*;
 import com.tallerwebi.dominio.ServicioAdministrador;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -49,8 +47,10 @@ public class ControladorAdministradorTest {
         List<ReporteFalla> reportes = List.of(Mockito.mock(ReporteFalla.class));
 
         when(servicioAdministrador.obtenerFallasDeCombis()).thenReturn(reportes);
+        DatosFiltro datosFiltro = new DatosFiltro();
+        datosFiltro.setEstadoDeCombi(EstadoDeCombi.EN_VIAJE);
 
-        ModelAndView modelAndView = controladorAdministrador.listarCombis("EN_VIAJE");
+        ModelAndView modelAndView = controladorAdministrador.listarCombis(datosFiltro);
 
         assertThat(modelAndView.getModel().get("reportes"), equalTo(reportes));
     }
@@ -125,64 +125,73 @@ public class ControladorAdministradorTest {
     }
 
     //aca test de combis
-
     @Test
     public void queSeObtenganTodasLasCombisConEstadoEN_VIAJE() {
         // Preparación
         List<Combi> combisEnViaje = List.of(Mockito.mock(Combi.class), Mockito.mock(Combi.class));
-        when(servicioAdministrador.obtenerCombis("EN_VIAJE")).thenReturn(combisEnViaje);
+        DatosFiltro datosFiltro = new DatosFiltro();
+        datosFiltro.setEstadoDeCombi(EstadoDeCombi.EN_VIAJE);
+        when(servicioAdministrador.obtenerCombisFiltradas(datosFiltro)).thenReturn(combisEnViaje);
 
         // Ejecución
-        ModelAndView modelAndView = controladorAdministrador.listarCombis("EN_VIAJE");
+        ModelAndView modelAndView = controladorAdministrador.listarCombis(datosFiltro);
 
         // Validación
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("admin/combis-listas"));
         assertThat(modelAndView.getModel().get("listaCombis"), equalTo(combisEnViaje));
-        verify(servicioAdministrador).obtenerCombis("EN_VIAJE");
+        verify(servicioAdministrador).obtenerCombisFiltradas(datosFiltro);
     }
+
 
     @Test
     public void queSeObtenganLasCombisEnMantenimiento() {
         // Preparación
         List<Combi> combisEnMantenimiento = List.of(Mockito.mock(Combi.class));
-        when(servicioAdministrador.obtenerCombis("EN_MANTENIMIENTO")).thenReturn(combisEnMantenimiento);
+        DatosFiltro datosFiltro = new DatosFiltro();
+        datosFiltro.setEstadoDeCombi(EstadoDeCombi.EN_MANTENIMIENTO);
+        when(servicioAdministrador.obtenerCombisFiltradas(datosFiltro)).thenReturn(combisEnMantenimiento);
 
         // Ejecución
-        ModelAndView modelAndView = controladorAdministrador.listarCombis("EN_MANTENIMIENTO");
+        ModelAndView modelAndView = controladorAdministrador.listarCombis(datosFiltro);
 
         // Validación
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("admin/combis-listas"));
         assertThat(modelAndView.getModel().get("listaCombis"), equalTo(combisEnMantenimiento));
-        verify(servicioAdministrador).obtenerCombis("EN_MANTENIMIENTO");
+        verify(servicioAdministrador).obtenerCombisFiltradas(datosFiltro);
     }
+
 
     @Test
     public void queSeObtenganLasCombisDisponibles() {
         // Preparación
         List<Combi> combisDisponibles = List.of(Mockito.mock(Combi.class), Mockito.mock(Combi.class), Mockito.mock(Combi.class));
-        when(servicioAdministrador.obtenerCombis("DISPONIBLE")).thenReturn(combisDisponibles);
+        DatosFiltro datosFiltro = new DatosFiltro();
+        datosFiltro.setEstadoDeCombi(EstadoDeCombi.DISPONIBLE);
+        when(servicioAdministrador.obtenerCombisFiltradas(datosFiltro)).thenReturn(combisDisponibles);
 
         // Ejecución
-        ModelAndView modelAndView = controladorAdministrador.listarCombis("DISPONIBLE");
+        ModelAndView modelAndView = controladorAdministrador.listarCombis(datosFiltro);
 
         // Validación
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("admin/combis-listas"));
         assertThat(modelAndView.getModel().get("listaCombis"), equalTo(combisDisponibles));
-        verify(servicioAdministrador).obtenerCombis("DISPONIBLE");
+        verify(servicioAdministrador).obtenerCombisFiltradas(datosFiltro);
     }
 
     @Test
     public void queSeObtenganTodasLasCombis() {
         // Preparación
         List<Combi> todasLasCombis = List.of(Mockito.mock(Combi.class), Mockito.mock(Combi.class));
-        when(servicioAdministrador.obtenerCombis()).thenReturn(todasLasCombis);
+        DatosFiltro datosFiltro = new DatosFiltro();
+
+        when(servicioAdministrador.obtenerCombisFiltradas(datosFiltro)).thenReturn(todasLasCombis);
 
         // Ejecución
-        ModelAndView modelAndView = controladorAdministrador.listarCombis(null);
+        ModelAndView modelAndView = controladorAdministrador.listarCombis(datosFiltro);
 
         // Validación
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("admin/combis-listas"));
         assertThat(modelAndView.getModel().get("listaCombis"), equalTo(todasLasCombis));
-        verify(servicioAdministrador).obtenerCombis();
+        verify(servicioAdministrador).obtenerCombisFiltradas(datosFiltro);
     }
 }

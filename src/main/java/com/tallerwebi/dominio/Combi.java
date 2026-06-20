@@ -2,6 +2,7 @@ package com.tallerwebi.dominio;
 
 
 
+import com.tallerwebi.presentacion.DatosCombi;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -29,11 +30,20 @@ public class Combi {
     private Integer kilometros;
 
 
-
-
+    public Combi(DatosCombi datos) {
+        this.tipoDeCombi = datos.getTipoDeCombi();
+        this.cantidadDeAsientos = datos.getCantidadDeAsientos();
+        this.tipoDeTransmision = datos.getTipoDeTransmision();
+        this.patente = datos.getPatente();
+        this.marca = datos.getMarca();
+        this.modelo = datos.getModelo();
+        this.kilometros = datos.getKilometros();
+        this.estadoDeCombi = EstadoDeCombi.DISPONIBLE;
+    }
 
     public Combi() {
 
     }
-
 }
+
+
