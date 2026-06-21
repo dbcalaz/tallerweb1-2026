@@ -24,8 +24,6 @@ public class Viaje {
     private Integer asientosDisponibles;
     private String duracion;
     private String tipoServicio;
-
-    private String duracion;
     private String tipoDeViaje;
 
     @Enumerated(EnumType.STRING)
@@ -41,20 +39,4 @@ public class Viaje {
 
     @OneToMany
     private List<Reserva> reservas;
-
-    public String getDuracion() {
-        return duracion;
-    }
-
-    public void setDuracion(String duracion) {
-        this.duracion = duracion;
-    }
-
-    public String getTipoDeViaje() {
-        return tipoDeViaje;
-    }
-
-    public void setTipoDeViaje(String tipoDeViaje) {
-        this.tipoDeViaje = tipoDeViaje;
-    }
 }
