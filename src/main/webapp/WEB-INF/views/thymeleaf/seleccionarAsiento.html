@@ -13,94 +13,93 @@
     <link rel="stylesheet" th:href="@{/css/variables.css}">
     <link rel="stylesheet" th:href="@{/css/components.css}">
     <style>
-        .asiento { width: 55px; height: 55px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: bold; transition: 0.2s;}
-        .asiento:hover { transform: scale(1.05); }
-        .libre { background-color: #28a745; color: white; border: 2px solid #1e7e34; box-shadow: 0 4px 6px rgba(40,167,69,0.1); }
-        .ocupado { background-color: #6c757d; color: white; border: 2px solid #545b62; cursor: not-allowed; opacity: 0.7;}
-        .pasillo { width: 40px; }
-        .seleccionado {
-            background-color: #ffc107 !important;
-            border-color: #d39e00 !important;
-            color: #000 !important;
-            box-shadow: 0 0 12px rgba(255,193,7,0.6) !important;
+        .asiento {
+            width: 55px; height: 55px; border-radius: 12px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: bold; transition: 0.2s; border: 2px solid #ccc;
+            background-color: #ffffff; color: #333; margin: 5px; user-select: none;
+        }
+        .asiento.disponible:hover {
+            background-color: #f0f0f0; border-color: var(--primary, #4f378a);
+        }
+        .asiento.seleccionado {
+            background-color: var(--primary, #4f378a) !important;
+            color: white !important; border-color: var(--primary, #4f378a) !important;
+        }
+        .asiento.ocupado {
+            background-color: #e0e0e0 !important; color: #999 !important;
+            border-color: #d0d0d0 !important; cursor: not-allowed !important;
+        }
+        .distribucion-combi {
+            background: #f8f9fa; border-radius: 24px; padding: 30px;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.05); max-width: 360px; margin: 0 auto;
+        }
+        .cabina-conductor {
+            border-bottom: 2px dashed #ccc; padding-bottom: 15px; margin-bottom: 20px;
+            display: flex; justify-content: space-between; color: #666; font-size: 14px;
         }
     </style>
 </head>
-<body class="bg-light">
+<body style="background-color: var(--background);">
+
 <div th:replace="componentes/nav-bar :: navbar('busqueda')"></div>
 
-<main role="main" class="container" style="margin-top: 140px; margin-bottom: 80px; min-height: 70vh;">
-    <h2 class="text-center mb-4 fw-bold">Selecciona tu(s) asiento(s)</h2>
+<main class="container my-5" style="padding-top: 60px;">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center">
+            <h2 class="fw-bold mb-3">Selecciona tus Asientos</h2>
+            <p class="text-muted mb-4">
+                Elegí los lugares para tu viaje. Debes seleccionar exactamente <span id="max-pasajeros" class="fw-bold text-primary" th:text="${pasajeros}">1</span> asiento(s).
+            </p>
 
-    <p th:if="${error != null}" class="alert alert-danger text-center" th:text="${error}"></p>
+            <div class="distribucion-combi mb-4">
+                <div class="cabina-conductor">
+                    <span><span class="material-symbols-outlined align-middle">airline_seat_recline_normal</span> Conductor</span>
+                    <span>Puerta <span class="material-symbols-outlined align-middle">logout</span></span>
+                </div>
 
-    <div id="feedback" class="text-center mb-3 fw-bold text-primary" style="min-height: 24px; font-size: 1.1rem;"></div>
+                <div class="row row-cols-3 g-2 justify-content-center">
+                    <div th:each="num : ${#numbers.sequence(1, 12)}" class="col d-flex justify-content-center">
+                        <div th:text="${num}"
+                             th:classappend="${#lists.contains(asientosOcupados, num)} ? 'asiento ocupado' : 'asiento disponible'"
+                             th:attr="data-numero=${num}">
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-    <div class="d-flex justify-content-center mt-3">
-        <div class="bg-white p-4 shadow border" style="width: fit-content; border-radius: 16px;">
-            <div class="text-center mb-4 pb-2 border-bottom text-muted fw-bold">FRENTE DEL VEHiCULO (CHOFER)</div>
-            <div class="d-flex mb-3">
-                <div class="asiento ocupado me-2">1</div>
-                <div class="asiento libre me-2" data-asiento="2">2</div>
-                <div class="pasillo"></div>
-                <div class="asiento libre me-2" data-asiento="3">3</div>
-                <div class="asiento ocupado">4</div>
+            <div class="alert alert-info py-2" id="feedback-asientos">
+                Deberás seleccionar <span th:text="${pasajeros}">1</span> asiento(s).
             </div>
-            <div class="d-flex mb-3">
-                <div class="asiento libre me-2" data-asiento="5">5</div>
-                <div class="asiento libre me-2" data-asiento="6">6</div>
-                <div class="pasillo"></div>
-                <div class="asiento ocupado me-2">7</div>
-                <div class="asiento libre" data-asiento="8">8</div>
-            </div>
-            <div class="d-flex">
-                <div class="asiento libre me-2" data-asiento="9">9</div>
-                <div class="asiento ocupado me-2">10</div>
-                <div class="pasillo"></div>
-                <div class="asiento libre me-2" data-asiento="11">11</div>
-                <div class="asiento libre" data-asiento="12">12</div>
-            </div>
+
+            <form id="form-confirmar" th:action="@{/confirmar-asiento}" method="POST">
+                <input type="hidden" name="idViaje" th:value="${idViaje}"/>
+                <input type="hidden" name="pasajeros" th:value="${pasajeros}"/>
+                <input type="hidden" name="asientosSeleccionados" id="asientosSeleccionados" value=""/>
+
+                <button type="submit" class="btn btn-primary w-100 py-3 rounded-3 fw-bold mt-2" style="background-color: var(--primary);">
+                    Confirmar asientos y reservar viaje
+                </button>
+            </form>
         </div>
-    </div>
-
-    <div class="text-center mt-5 mb-5">
-        <p class="text-muted">Hace clic en los asientos verdes para seleccionarlos.</p>
-
-        <form th:action="@{/confirmar-asiento}" method="post" id="form-confirmar">
-            <input type="hidden" name="idViaje" th:value="${idViaje}" />
-            <input type="hidden" name="pasajeros" th:value="${pasajeros}" />
-            <input type="hidden" name="asientosSeleccionados" id="input-asientos" value="" />
-
-            <button type="submit" class="btn text-white btn-lg px-5 mt-2 shadow"
-                    style="background-color: var(--primary, #4f378a); border-radius: 12px; transition: 0.3s; font-weight: 600; padding: 16px 32px; border: none;"
-                    onmouseover="this.style.filter='brightness(1.15)';"
-                    onmouseout="this.style.filter='brightness(1.0)';"
-                    onmousedown="this.style.transform='scale(0.98)';">
-                Confirmar Asiento y Solicitar Viaje
-            </button>
-        </form>
     </div>
 </main>
 
 <script th:inline="javascript">
-
-    const maxPasajeros = [[${pasajeros}]] || 1;
+    const maxPasajeros = /*[[${pasajeros}]]*/ 1;
     let asientosSeleccionados = [];
 
-    const feedback = document.getElementById('feedback');
-    const inputAsientos = document.getElementById('input-asientos');
+    const inputAsientos = document.getElementById('asientosSeleccionados');
+    const feedback = document.getElementById('feedback-asientos');
 
-    feedback.innerText = "Deberás seleccionar " + maxPasajeros + " asiento(s).";
-
-    document.querySelectorAll('.asiento.libre').forEach(asiento => {
+    document.querySelectorAll('.asiento.disponible').forEach(asiento => {
         asiento.addEventListener('click', function() {
-            const numero = this.getAttribute('data-asiento');
+            const numero = parseInt(this.getAttribute('data-numero'));
 
             if (this.classList.contains('seleccionado')) {
                 this.classList.remove('seleccionado');
-                asientosSeleccionados = asientosSeleccionados.filter(asiento => asiento !== numero);
+                asientosSeleccionados = asientosSeleccionados.filter(a => a !== numero);
             } else {
-
                 if (asientosSeleccionados.length < maxPasajeros) {
                     this.classList.add('seleccionado');
                     asientosSeleccionados.push(numero);
@@ -114,13 +113,13 @@
             if (asientosSeleccionados.length > 0) {
                 feedback.innerText = "Has seleccionado los asientos: " + asientosSeleccionados.join(', ');
             } else {
-                feedback.innerText = "Deberas seleccionar " + maxPasajeros + " asiento(s).";
+                feedback.innerText = "Deberás seleccionar " + maxPasajeros + " asiento(s).";
             }
         });
     });
 
     document.getElementById('form-confirmar').addEventListener('submit', function(e) {
-        if(asientosSeleccionados.length !== maxPasajeros) {
+        if (asientosSeleccionados.length !== maxPasajeros) {
             e.preventDefault();
             alert("Debes seleccionar exactamente " + maxPasajeros + " asiento(s) antes de confirmar.");
         }
@@ -128,6 +127,5 @@
 </script>
 
 <div th:replace="componentes/footer :: footer"></div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

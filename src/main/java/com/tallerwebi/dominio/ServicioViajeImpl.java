@@ -1,21 +1,21 @@
 package com.tallerwebi.dominio;
 
+import com.tallerwebi.presentacion.DatosBusqueda;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
 @Service
-@Transactional
+@Transactional // Spring abre una transacción de BD automática para cada método
 public class ServicioViajeImpl implements ServicioViaje {
 
     private RepositorioViaje repositorioViaje;
     private RepositorioReserva repositorioReserva;
 
     @Autowired
-    public ServicioViajeImpl(RepositorioViaje repositorio,  RepositorioReserva repositorioReserva) {
-        this.repositorioViaje = repositorio;
+    public ServicioViajeImpl(RepositorioViaje repositorioViaje, RepositorioReserva repositorioReserva) {
+        this.repositorioViaje = repositorioViaje;
         this.repositorioReserva = repositorioReserva;
     }
 
@@ -25,8 +25,18 @@ public class ServicioViajeImpl implements ServicioViaje {
     }
 
     @Override
+    public List<Viaje> buscarViajes(DatosBusqueda datosBusqueda) {
+        return repositorioViaje.buscarViajes(
+                datosBusqueda.getOrigen(),
+                datosBusqueda.getDestino(),
+                datosBusqueda.getFecha(),
+                datosBusqueda.getPasajeros()
+        );
+    }
+
+    @Override
     public List<Viaje> buscarViajes(String origen, String destino, String fecha) {
-        return repositorioViaje.buscarViajes(origen, destino, fecha);
+        return repositorioViaje.buscarViajes(origen, destino, fecha, 1);
     }
 
     @Override
@@ -36,7 +46,27 @@ public class ServicioViajeImpl implements ServicioViaje {
             viaje.setAsientosDisponibles(viaje.getAsientosDisponibles() - 1);
             repositorioViaje.actualizar(viaje);
         } else {
-            throw new RuntimeException("El viaje no existe o no tiene asientos disponibles.");
+            throw new RuntimeException("El viaje seleccionado no posee asientos disponibles.");
+        }
+    }
+
+    @Override
+    public void reservarAsiento(Long idViaje, Usuario usuarioLogueado) {
+        Viaje viaje = repositorioViaje.buscarPorId(idViaje);
+        if (viaje != null && viaje.getAsientosDisponibles() > 0) {
+            viaje.setAsientosDisponibles(viaje.getAsientosDisponibles() - 1);
+            repositorioViaje.actualizar(viaje);
+        } else {
+            throw new RuntimeException("El viaje seleccionado no posee asientos disponibles.");
+        }
+    }
+
+    @Override
+    public void liberarAsiento(Long idViaje) {
+        Viaje viaje = repositorioViaje.buscarPorId(idViaje);
+        if (viaje != null) {
+            viaje.setAsientosDisponibles(viaje.getAsientosDisponibles() + 1);
+            repositorioViaje.actualizar(viaje);
         }
     }
 
@@ -57,12 +87,24 @@ public class ServicioViajeImpl implements ServicioViaje {
         reserva.setPrecioTotal(viaje.getPrecio());
         reserva.setEstadoReserva(EstadoReserva.CONFIRMADA);
 
-        //descuenta asiento
         viaje.setAsientosDisponibles(viaje.getAsientosDisponibles() - 1);
 
         repositorioViaje.guardarViaje(reserva.getViaje());
         repositorioReserva.guardar(reserva);
-
     }
 
+    @Override
+    public void guardarReserva(Reserva reserva) {
+        repositorioViaje.guardarReserva(reserva);
+    }
+
+    @Override
+    public List<Integer> obtenerAsientosOcupados(Long idViaje) {
+        return repositorioViaje.obtenerAsientosOcupados(idViaje);
+    }
+
+    @Override
+    public void eliminarReserva(Long idReserva) {
+        repositorioViaje.eliminarReserva(idReserva);
+    }
 }
