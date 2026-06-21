@@ -73,25 +73,6 @@ public class RepositorioAdministradorImpl implements RepositorioAdministrador {
         sessionFactory.getCurrentSession().update(reporte);
     }
 
-   /* @Override
-    public List<Combi> getCombis() {
-        return sessionFactory.getCurrentSession()
-                .createCriteria(Combi.class)
-                .list();
-    }
-
-    @Override
-    public List<Combi> obtenerCombisFiltradas(String valorDeBusqueda) {
-        EstadoDeCombi estado = EstadoDeCombi.valueOf(valorDeBusqueda);
-
-        return sessionFactory.getCurrentSession()
-                .createCriteria(Combi.class)
-                .add(Restrictions.eq("estadoDeCombi", estado))
-                .list();
-    }*/
-
-
-
     @Override
     public void actualizarCombi(Combi combiExiste) {
         sessionFactory.getCurrentSession().update(combiExiste);
@@ -151,29 +132,11 @@ public class RepositorioAdministradorImpl implements RepositorioAdministrador {
 
     /* Conductores*/
     @Override
-    public List<Conductor> getConductores() {
+    public List<Conductor> getConductores(Boolean estadoCuenta) {
         return sessionFactory.getCurrentSession()
                 .createCriteria(Conductor.class)
-                .add(Restrictions.eq("cuentaHabilitada", true))
-                //.add(Restrictions.eq("suspendido", false))
+                .add(Restrictions.eq("cuentaHabilitada", estadoCuenta))
                 .list();
-    }
-
-    @Override
-    public List<Conductor> getConductoresPendientes() {
-        return sessionFactory.getCurrentSession()
-                .createCriteria(Conductor.class)
-                .add(Restrictions.eq("cuentaHabilitada",false))
-                .list();
-    }
-
-    @Override
-    public Long getCantidadDeConductoresPendientes() {
-        return (Long) sessionFactory.getCurrentSession()
-                .createCriteria(Conductor.class)
-                .add(Restrictions.eq("cuentaHabilitada",false))
-                .setProjection(Projections.rowCount())
-                .uniqueResult();
     }
 
     @Override

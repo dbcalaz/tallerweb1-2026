@@ -115,9 +115,9 @@ public class ControladorAdministrador {
     public ModelAndView conductores() {
         ModelMap model = new ModelMap();
 
-        List<Conductor> conductores = servicioAdministrador.obtenerConductores();
-        List<Conductor> conductoresPendientes = servicioAdministrador.obtenerConductoresPendientes();
-        Long pendientes = servicioAdministrador.obtenerCantidadDeConductoresPendientes();
+        List<Conductor> conductores = servicioAdministrador.obtenerConductores(true);
+        List<Conductor> conductoresPendientes = servicioAdministrador.obtenerConductores(false);
+        Long pendientes = (long) servicioAdministrador.obtenerConductores(false).size();
         List<Combi> combisDisponibles = servicioAdministrador.obtenerCombisDisponibles();
 
         model.put("conductores", conductores);

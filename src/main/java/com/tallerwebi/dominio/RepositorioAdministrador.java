@@ -11,13 +11,12 @@ public interface RepositorioAdministrador {
 
     Combi buscarCombiPorId(Long idCombi);
 
-    List<Conductor> getConductores();
-
     void guardarAsignacion(AsignacionCombiConductor asignacion);
 
     void updateCombiConductor(Long idReporte, Long idCombi);
 
     AsignacionCombiConductor buscarAsignacionActiva(Long idConductor);
+
     List<Combi> getCombisDisponibles();
 
     List<Combi> getCombisFiltradas(DatosFiltro datosFiltro);
@@ -28,9 +27,7 @@ public interface RepositorioAdministrador {
 
     /* Conductores*/
 
-    List<Conductor> getConductoresPendientes();
-
-    Long getCantidadDeConductoresPendientes();
+    List<Conductor> getConductores(Boolean estadoCuenta);
 
     Conductor buscarConductorPorId(Long idConductor);
 

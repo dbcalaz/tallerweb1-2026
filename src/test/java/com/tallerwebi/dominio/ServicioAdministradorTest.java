@@ -43,13 +43,13 @@ public class ServicioAdministradorTest {
         // Preparación
         List<Conductor> conductores = List.of(new Conductor(), new Conductor());
 
-        when(repositorioAdministrador.getConductores()).thenReturn(conductores);
+        when(repositorioAdministrador.getConductores(true)).thenReturn(conductores);
 
         //Ejecución
-        List<Conductor> resultado = servicioAdministrador.obtenerConductores();
+        List<Conductor> resultado = servicioAdministrador.obtenerConductores(true);
 
         assertEquals(2, resultado.size());
-        verify(repositorioAdministrador, times(1)).getConductores();
+        verify(repositorioAdministrador, times(1)).getConductores(true);
     }
 
     @Test

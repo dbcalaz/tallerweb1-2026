@@ -1,7 +1,5 @@
 package com.tallerwebi.dominio;
 
-
-
 import com.tallerwebi.presentacion.DatosFiltro;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,21 +18,16 @@ public class ServicioAdministradorImpl implements ServicioAdministrador {
         this.repositorioCombi = repositorioCombi;
     }
 
+    /*Combis*/
     @Override
     public List<ReporteFalla> obtenerFallasDeCombis() {
         return repositorioAdministrador.getFallas();
     }
 
     @Override
-    public List<Conductor> obtenerConductores() {
-        return repositorioAdministrador.getConductores();
-    }
-
-    @Override
     public void asignarNuevaCombiAConductor(Long idReporte, Long idCombi) {
         repositorioAdministrador.updateCombiConductor(idReporte,idCombi);
     }
-
 
     @Override
     public List<Combi> obtenerCombisFiltradas(DatosFiltro datosFiltro){
@@ -53,27 +46,20 @@ public class ServicioAdministradorImpl implements ServicioAdministrador {
             combiExiste.setEstadoDeCombi(estado);
             repositorioAdministrador.actualizarCombi(combiExiste);
         }
-
     }
-
 
     public Long obtenerCantidadCombis() {
         return repositorioAdministrador.getCantidadDeCombis();
     }
 
+    /*Conductor*/
     @Override
-    public List<Conductor> obtenerConductoresPendientes() {
-        return repositorioAdministrador.getConductoresPendientes();
-    }
-
-    @Override
-    public Long obtenerCantidadDeConductoresPendientes() {
-        return repositorioAdministrador.getCantidadDeConductoresPendientes();
+    public List<Conductor> obtenerConductores(Boolean estadoCuenta) {
+        return repositorioAdministrador.getConductores(estadoCuenta);
     }
 
     @Override
     public void habilitarConductor(Long idConductor, Long idCombi) {
-
         Conductor conductor = repositorioAdministrador.buscarConductorPorId(idConductor);
 
         if(conductor == null){

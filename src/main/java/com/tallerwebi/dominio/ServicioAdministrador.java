@@ -6,20 +6,19 @@ import java.util.List;
 
 public interface ServicioAdministrador {
 
+    /*Combis*/
     List<ReporteFalla> obtenerFallasDeCombis();
-
-    List<Conductor> obtenerConductores();
 
     void asignarNuevaCombiAConductor(Long idReporte, Long idCombi);
 
     List<Combi> obtenerCombisFiltradas(DatosFiltro datosFiltro);
+
     List <Combi> obtenerCombisDisponibles();
 
     Long obtenerCantidadCombis();
 
-    List<Conductor> obtenerConductoresPendientes();
-
-    Long obtenerCantidadDeConductoresPendientes();
+    /*Conductor*/
+    List<Conductor> obtenerConductores(Boolean estadoCuenta);
 
     void habilitarConductor(Long idConductor, Long idCombi);
 
