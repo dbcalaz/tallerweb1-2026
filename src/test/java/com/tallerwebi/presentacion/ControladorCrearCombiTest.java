@@ -29,50 +29,34 @@ public class ControladorCrearCombiTest {
 
     @Test
     public void siSeIngresaAsientosTipoDeCombiYTransmisionDeFormaCorrectaLaCreacionEsExitosa(){
-
-        //preparacioon
         givenNoExisteUnaCombi();
         DatosCombi datosCombi= new DatosCombi(NUMERO_ASIENTOS,tipoCombi,transmision,patente,marca,modelo,1555);
-        //ejecuto
         ModelAndView mv = whenCreoUnaCombie(datosCombi);
-        //verifico
         thenLaCreacionDeCombiEsExitoso(mv);
-
-
-
     }
 
     private void thenLaCreacionDeCombiEsExitoso(ModelAndView mv) {
-    assertThat(mv.getViewName(),equalToIgnoringCase("admin/combi-registrada"));
-   // assertThat(mv.getModel().get());
-
+        assertThat(mv.getViewName(),equalToIgnoringCase("admin/combi-registrada"));
     }
 
     private ModelAndView whenCreoUnaCombie(DatosCombi datosCombi) {
-       return controladorCrearCombi.crearCombi(datosCombi);
+        return controladorCrearCombi.crearCombi(datosCombi);
     }
 
     @Test
     public void siIngresoErroneamenteAsientosYTransmisionYtipoDeCombiDeFormaCorrectaLaCreacionFalla() throws BondiWayException {
-
-        //preparacioon
         givenNoExisteUnaCombi();
         DatosCombi datosCombi = new DatosCombi(1,tipoCombi,transmision,patente,marca,modelo,1666);
-        //seteo el comportamiento de mi mock de servicioCrearCombi
         doThrow(new CantidadDeAsientosInvalidaException()).when(servicioCombi).crearCombi(datosCombi);
-
-        //ejecuto
         ModelAndView mv = whenCreoUnaCombie(datosCombi);
-        //verifico
         thenLaCreacionDeCombiEsErroneo(mv,"La cantidad de asientos debe estar entre 10 y 20");
-
     }
+
     @Test
     public void siIngresoAsientosYTipoDeCombiCorrectosYTransmisionDeFormaIncorrectaLaCreacionFalla() throws BondiWayException {
         givenNoExisteUnaCombi();
         DatosCombi datosCombi= new DatosCombi(11,tipoCombi,"monual",patente,marca,modelo,1555);
         doThrow(new TipoDeTransmisionInvalidaException()).when(servicioCombi).crearCombi(datosCombi);
-
         ModelAndView mv = whenCreoUnaCombie(datosCombi);
         thenLaCreacionDeCombiEsErroneo(mv,"El tipo de transmision es incorrecta");
     }
@@ -82,21 +66,16 @@ public class ControladorCrearCombiTest {
         givenNoExisteUnaCombi();
         DatosCombi datosCombi= new DatosCombi(11,tipoCombi2,transmision,patente,marca,modelo,1111);
         doThrow(new TipoDeCombiInvalidaException()).when(servicioCombi).crearCombi(datosCombi);
-
         ModelAndView mv = whenCreoUnaCombie(datosCombi);
         thenLaCreacionDeCombiEsErroneo(mv,"El tipo de combi es incorrecta");
     }
 
-
-
-
     private void givenNoExisteUnaCombi() {
     }
 
-
     private void thenLaCreacionDeCombiEsErroneo(ModelAndView mv, String mensaje) {
-        assertThat( mv.getViewName(),equalToIgnoringCase("crear-combi"));
+        // Se aplico correccion: Se actualiza la ruta esperada a admin/crear-combi
+        assertThat( mv.getViewName(),equalToIgnoringCase("admin/crear-combi"));
         assertThat(mv.getModel().get("error").toString(),equalToIgnoringCase(mensaje));
-
     }
 }

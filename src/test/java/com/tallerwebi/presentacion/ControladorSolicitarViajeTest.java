@@ -31,7 +31,6 @@ public class ControladorSolicitarViajeTest {
 
     @BeforeEach
     public void init() {
-        // Creamos simuladores (Mocks) para aislar la prueba del controlador
         this.servicioViajeMock = mock(ServicioViaje.class);
         this.controladorBusqueda = new ControladorBusqueda(this.servicioViajeMock);
 
@@ -39,12 +38,10 @@ public class ControladorSolicitarViajeTest {
         this.sessionMock = mock(HttpSession.class);
         this.usuarioMock = mock(Usuario.class);
 
-        // Encadenamos el comportamiento de la sesión HTTP simulada
         when(this.requestMock.getSession()).thenReturn(this.sessionMock);
         when(this.sessionMock.getAttribute("usuario")).thenReturn(this.usuarioMock);
     }
 
-    // TEST 1: Verifica el camino feliz del buscador
     @Test
     public void siSeIngresaOrigenYDestinoElPedidoEsExitoso() {
         DatosBusqueda datosBusqueda = new DatosBusqueda(origen, destino, "2026-06-15", 1);
@@ -55,7 +52,6 @@ public class ControladorSolicitarViajeTest {
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("listadoViajes"));
     }
 
-    // TEST 2: Comprueba las validaciones obligatorias de inputs vacíos
     @Test
     public void siNoSeIngresaOrigenYDestinoLaSolicitudNoEsExitosa() {
         DatosBusqueda datosBusqueda = new DatosBusqueda("", "", "", null);
@@ -66,7 +62,6 @@ public class ControladorSolicitarViajeTest {
         assertThat(modelAndView.getModel().get("error").toString(), equalToIgnoringCase("Debe ingresar obligatoriamente Origen, Destino, Fecha y cantidad de Pasajeros"));
     }
 
-    // TEST 3: Verifica el registro correcto de las alertas en espera
     @Test
     public void queSePuedaConfirmarUnaSolicitudDeViajeEnEspera() {
         ModelAndView modelAndView = controladorBusqueda.solicitarViajeEnEspera(origen, destino);
@@ -75,24 +70,24 @@ public class ControladorSolicitarViajeTest {
         assertThat(modelAndView.getModel().get("mensaje").toString(), containsString("¡Solicitud registrada!"));
     }
 
-    // TEST 4: Valida la compra múltiple de asientos
     @Test
     public void queSePuedaConfirmarUnAsientoConExitoYRedirijaAViajeEnCurso() {
         Long idViaje = 1L;
         String asientosSeleccionados = "1,2";
-        Integer pasajeros = 2; // Simulamos que el usuario está comprando 2 pasajes
+        Integer pasajeros = 2;
 
-        when(servicioViajeMock.buscarPorId(idViaje)).thenReturn(new Viaje());
+        // Se aplico correccion: Se crea un viaje simulado y se le asigna explícitamente el ID esperado
+        Viaje viajeSimulado = new Viaje();
+        viajeSimulado.setId(idViaje);
+        when(servicioViajeMock.buscarPorId(idViaje)).thenReturn(viajeSimulado);
 
         ModelAndView modelAndView = controladorBusqueda.confirmarAsiento(idViaje, pasajeros, asientosSeleccionados, requestMock);
 
-        // Verificamos que al finalizar la compra nos mande a la pantalla correcta
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/viajeEnCurso"));
 
-        // Verificamos que el método reservarAsiento se haya llamado EXACTAMENTE 2 veces (times(2)) porque eran 2 pasajeros
+        // Se verifica correctamente que se haya llamado con el ID 1L
         verify(servicioViajeMock, times(2)).reservarAsiento(idViaje, usuarioMock);
 
-        // Verificamos que las reservas se guarden en la sesión del usuario
         verify(sessionMock, times(1)).setAttribute(eq("misReservas"), anyList());
     }
 }
