@@ -83,14 +83,14 @@ public class ControladorAdministradorTest {
     public void queSeObtenganCorrectamenteLosConductoresPendientesDeAprobacion() {
         List<Conductor> pendientes = List.of(Mockito.mock(Conductor.class));
 
-        when(servicioAdministrador.obtenerConductoresPendientes()).thenReturn(pendientes);
-        when(servicioAdministrador.obtenerCantidadDeConductoresPendientes()).thenReturn(1L);
+        when(servicioAdministrador.obtenerConductores(false)).thenReturn(pendientes);
+        when(servicioAdministrador.obtenerConductores(false).size()).thenReturn(1);
 
         ModelAndView modelAndView = controladorAdministrador.conductores();
 
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("admin/conductores"));
         assertThat(modelAndView.getModel().get("conductoresPendientes"), equalTo(pendientes));
-        assertThat(modelAndView.getModel().get("pendientes"), equalTo(1L));
+        assertThat(modelAndView.getModel().get("pendientes"), equalTo(1));
     }
 
     @Test
