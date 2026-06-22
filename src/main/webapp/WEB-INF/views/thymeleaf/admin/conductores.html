@@ -83,7 +83,9 @@
                                 </td>
                                 <td>
                                     <div class="acciones">
-                                        <button title="Ver detalle"><span class="material-symbols-outlined">visibility</span></button>
+                                    <button title="Ver detalle" class="btn-abrir-modal-detalle" th:data-conductor-id="${conductor.id}" th:data-conductor-nombre="${conductor.nombre + ' ' + conductor.apellido}" th:data-conductor-licencia="${conductor.licencia}" th:data-conductor-calificacion="${conductor.calificacion}" th:data-conductor-estado="${conductor.suspendido ? 'Suspendido' : (conductor.enViaje ? 'En viaje' : 'Disponible')}" th:data-conductor-telefono="${conductor.telefono}" th:data-conductor-documento="${conductor.documento}" th:data-conductor-email="${conductor.email}">
+                                        <span class="material-symbols-outlined">visibility</span>
+                                    </button>
                                         <form th:action="@{/editar}">
                                             <button title="Editar"><span class="material-symbols-outlined">edit</span></button>
                                         </form>
@@ -136,22 +138,74 @@
             </form>
         </div>
     </div>
+   <div id="modal-detalle" class="modal-overlay">
+    <div class="driver-modal">
+        <div class="driver-modal-icon">
+            <span class="material-symbols-outlined">badge</span>
+        </div>
+        <h2>Detalle conductor</h2>
+
+        <p><strong>Nombre:</strong> <span id="detalle-nombre"></span></p>
+        <p><strong>Licencia:</strong> <span id="detalle-licencia"></span></p>
+        <p><strong>Calificación:</strong> <span id="detalle-calificacion"></span></p>
+        <p><strong>Estado:</strong> <span id="detalle-estado"></span></p>
+        <p><strong>Teléfono:</strong> <span id="detalle-telefono"></span></p>
+        <p><strong>Documento:</strong> <span id="detalle-documento"></span></p>
+        <p><strong>Email:</strong> <span id="detalle-email"></span></p>
+
+        <div class="driver-modal-actions">
+            <button type="button" id="btn-cerrar-detalle" class="btn-primary">Cerrar</button>
+        </div>
+    </div>
+</div>
     <script>
-    const botonesAbrir = document.querySelectorAll(".btn-abrir-modal-asignacion");
-    const btnCerrar = document.getElementById("btn-cancelar-asignacion");
-    const modal = document.getElementById("modal-asignar-combi");
-    const inputConductor = document.getElementById("idConductorSeleccionado");
+        //Modal asignación combi para nuevo conductor
+        const botonesAbrir = document.querySelectorAll(".btn-abrir-modal-asignacion");
+        const btnCerrar = document.getElementById("btn-cancelar-asignacion");
+        const modal = document.getElementById("modal-asignar-combi");
+        const inputConductor = document.getElementById("idConductorSeleccionado");
 
-    botonesAbrir.forEach(boton => {
-        boton.addEventListener("click", () => {
-            inputConductor.value = boton.dataset.conductorId;
-            modal.classList.add("active");
+        botonesAbrir.forEach(boton => {
+            boton.addEventListener("click", () => {
+                inputConductor.value = boton.dataset.conductorId;
+                modal.classList.add("active");
+            });
         });
-    });
 
-    btnCerrar.addEventListener("click", () => {
-        modal.classList.remove("active");
-    });
+        btnCerrar.addEventListener("click", () => {
+            modal.classList.remove("active");
+        });
+
+        //Modal de detalle del conductor
+        const botonesAbrirDetalle = document.querySelectorAll(".btn-abrir-modal-detalle");
+        const btnCerrarDetalle = document.getElementById("btn-cerrar-detalle");
+        const modalDetalle = document.getElementById("modal-detalle");
+
+        const detalleNombre = document.getElementById("detalle-nombre");
+        const detalleLicencia = document.getElementById("detalle-licencia");
+        const detalleCalificacion = document.getElementById("detalle-calificacion");
+        const detalleEstado = document.getElementById("detalle-estado");
+        const detalleDocumento = document.getElementById("detalle-documento");
+        const detalleEmail = document.getElementById("detalle-email");
+        const detalleTelefono = document.getElementById("detalle-telefono");
+
+        botonesAbrirDetalle.forEach(boton => {
+            boton.addEventListener("click", () => {
+                detalleNombre.textContent = boton.dataset.conductorNombre;
+                detalleLicencia.textContent = boton.dataset.conductorLicencia;
+                detalleCalificacion.textContent = boton.dataset.conductorCalificacion;
+                detalleEstado.textContent = boton.dataset.conductorEstado;
+                detalleEmail.textContent = boton.dataset.conductorEmail;
+                detalleTelefono.textContent = boton.dataset.conductorTelefono;
+                detalleDocumento.textContent = boton.dataset.conductorDocumento;
+
+                modalDetalle.classList.add("active");
+            });
+        });
+
+        btnCerrarDetalle.addEventListener("click", () => {
+            modalDetalle.classList.remove("active");
+        });
     </script>
     </body>
     </html>
