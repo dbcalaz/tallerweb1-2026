@@ -32,31 +32,6 @@ public class ControladorAdministrador {
         return new ModelAndView("redirect:/admin/combis");
     }
 
-
-
-   /* @RequestMapping("/admin/combis")
-    public ModelAndView listarCombis(@RequestParam(name = "criterio", required = false) String criterio) {
-
-        ModelMap model = new ModelMap();
-        List<Combi> listado;
-
-        if (criterio != null && !criterio.isEmpty()) {
-            listado = servicioAdministrador.obtenerCombis(criterio);
-        } else {
-            listado = servicioAdministrador.obtenerCombis();
-        }
-
-
-        List<Combi> combisDisponibles = servicioAdministrador.obtenerCombisDisponibles();
-        Long cantidadCombis = servicioAdministrador.obtenerCantidadCombis();
-        List<ReporteFalla> reportes = servicioAdministrador.obtenerFallasDeCombis();
-        model.put("combisDisponibles", combisDisponibles);
-        model.put("cantidadCombis", cantidadCombis);
-        model.put("listaCombis", listado);
-        model.put("reportes", reportes);
-
-        return new ModelAndView("admin/combis-listas", model);
-    }*/
    @RequestMapping(value = "/admin/combis", method = RequestMethod.GET)
    public ModelAndView listarCombis(@ModelAttribute DatosFiltro datosFiltro) {
 
