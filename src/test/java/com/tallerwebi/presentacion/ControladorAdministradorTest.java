@@ -85,17 +85,13 @@ public class ControladorAdministradorTest {
 
         when(servicioAdministrador.obtenerConductores(false,null)).thenReturn(pendientes);
 
-        // LINEA ORIGINAL CON ERROR: (WrongTypeOfReturnValue)
-        // when(servicioAdministrador.obtenerConductores(false,null).size()).thenReturn(1);
-
-        // CORRECCIoN: La lista de "pendientes" ya tiene tamaño 1 porque le pasamos 1 mock.
-        // Mockito no admite encadenar llamadas simuladas como .size() de esta manera.
-
         ModelAndView modelAndView = controladorAdministrador.conductores();
 
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("admin/conductores"));
         assertThat(modelAndView.getModel().get("conductoresPendientes"), equalTo(pendientes));
-        assertThat(modelAndView.getModel().get("pendientes"), equalTo(1));
+
+        // CORRECCIÓN: Comparamos el valor convirtiéndolo a String para evitar conflictos entre Integer (1) y Long (1L)
+        assertThat(String.valueOf(modelAndView.getModel().get("pendientes")), equalTo("1"));
     }
 
     @Test
