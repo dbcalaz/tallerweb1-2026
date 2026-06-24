@@ -27,9 +27,16 @@ public class ControladorConductor {
     }
 
     @RequestMapping(path = "/login-conductor")
-    public ModelAndView loginConductor() {
+    public ModelAndView loginConductor(HttpServletRequest request) {
         ModelMap model = new ModelMap();
         model.put("datosLogin", new DatosLogin());
+
+        String error = (String) request.getSession().getAttribute("errorLoginConductor");
+        if (error != null) {
+            model.put("error", error);
+            request.getSession().removeAttribute("errorLoginConductor");
+        }
+
         return new ModelAndView("login-conductor", model);
     }
 
@@ -92,7 +99,7 @@ public class ControladorConductor {
         Conductor conductorBuscado = obtenerConductorActivo(request);
 
         if (conductorBuscado == null) {
-            return redirigirLoginConSesionCerrada();
+            return redirigirLoginConSesionCerrada(request);
         }
 
         Conductor conductor = servicioConductor.buscarPorId(conductorBuscado.getId());
@@ -118,6 +125,19 @@ public class ControladorConductor {
         model.put("viajeEnCurso", viajeEnCurso);
         model.put("tieneViajeAsignado", tieneViajeAsignado);
 
+        String error = (String) request.getSession().getAttribute("errorConductor");
+        String mensaje = (String) request.getSession().getAttribute("mensajeConductor");
+
+        if (error != null) {
+            model.put("error", error);
+            request.getSession().removeAttribute("errorConductor");
+        }
+
+        if (mensaje != null) {
+            model.put("mensaje", mensaje);
+            request.getSession().removeAttribute("mensajeConductor");
+        }
+
         return new ModelAndView("home-conductor", model);
     }
 
@@ -127,15 +147,17 @@ public class ControladorConductor {
         Conductor conductor = obtenerConductorActivo(request);
 
         if (conductor == null) {
-            return redirigirLoginConSesionCerrada();
+            return redirigirLoginConSesionCerrada(request);
         }
 
         try {
             servicioConductor.aceptarViaje(idViaje, conductor.getId());
-            return new ModelAndView("redirect:/home-conductor");
+            request.getSession().setAttribute("mensajeConductor", "Viaje aceptado correctamente.");
         } catch (Exception e) {
-            return redirigirHomeConError(request, e.getMessage());
+            request.getSession().setAttribute("errorConductor", e.getMessage());
         }
+
+        return new ModelAndView("redirect:/home-conductor");
     }
 
     @RequestMapping(path = "/conductor/empezar-viaje", method = RequestMethod.POST)
@@ -144,15 +166,17 @@ public class ControladorConductor {
         Conductor conductor = obtenerConductorActivo(request);
 
         if (conductor == null) {
-            return redirigirLoginConSesionCerrada();
+            return redirigirLoginConSesionCerrada(request);
         }
 
         try {
             servicioConductor.iniciarViaje(idViaje, conductor.getId());
-            return new ModelAndView("redirect:/home-conductor");
+            request.getSession().setAttribute("mensajeConductor", "Viaje iniciado correctamente.");
         } catch (Exception e) {
-            return redirigirHomeConError(request, e.getMessage());
+            request.getSession().setAttribute("errorConductor", e.getMessage());
         }
+
+        return new ModelAndView("redirect:/home-conductor");
     }
 
     @RequestMapping(path = "/conductor/finalizar-viaje", method = RequestMethod.POST)
@@ -161,15 +185,17 @@ public class ControladorConductor {
         Conductor conductor = obtenerConductorActivo(request);
 
         if (conductor == null) {
-            return redirigirLoginConSesionCerrada();
+            return redirigirLoginConSesionCerrada(request);
         }
 
         try {
             servicioConductor.finalizarViaje(idViaje, conductor.getId());
-            return new ModelAndView("redirect:/home-conductor");
+            request.getSession().setAttribute("mensajeConductor", "Viaje finalizado correctamente.");
         } catch (Exception e) {
-            return redirigirHomeConError(request, e.getMessage());
+            request.getSession().setAttribute("errorConductor", e.getMessage());
         }
+
+        return new ModelAndView("redirect:/home-conductor");
     }
 
     @RequestMapping(path = "/reportar-falla", method = RequestMethod.POST)
@@ -178,7 +204,7 @@ public class ControladorConductor {
         Conductor conductor = obtenerConductorActivo(request);
 
         if (conductor == null) {
-            return redirigirLoginConSesionCerrada();
+            return redirigirLoginConSesionCerrada(request);
         }
 
         try {
@@ -188,45 +214,11 @@ public class ControladorConductor {
             reporteFalla.setCombi(combi);
 
             servicioConductor.registrarFalla(reporteFalla);
-            return new ModelAndView("redirect:/home-conductor");
-
+            request.getSession().setAttribute("mensajeConductor", "La falla se reportó correctamente.");
         } catch (Exception e) {
-            return redirigirHomeConError(request, "La falla no se pudo registrar correctamente");
+            request.getSession().setAttribute("errorConductor", "La falla no se pudo registrar correctamente");
         }
-    }
-
-    private ModelAndView redirigirHomeConError(HttpServletRequest request, String mensajeError) {
-        Conductor conductorSession = (Conductor) request.getSession().getAttribute("conductor");
-
-        if (conductorSession == null) {
-            return redirigirLoginConSesionCerrada();
-        }
-
-        Conductor conductor = servicioConductor.buscarPorId(conductorSession.getId());
-        request.getSession().setAttribute("conductor", conductor);
-
-        Combi combi = servicioConductor.buscarCombiActivePorIdConductor(conductor.getId());
-
-        List<Viaje> viajesDisponibles = servicioConductor.obtenerViajesDisponibles();
-        List<Viaje> viajesAsignados = servicioConductor.obtenerViajesDelConductorPorEstado(conductor.getId(), EstadoDeViaje.ASIGNADO);
-        List<Viaje> viajesFinalizados = servicioConductor.obtenerViajesDelConductorPorEstado(conductor.getId(), EstadoDeViaje.FINALIZADO);
-        Viaje viajeEnCurso = servicioConductor.obtenerViajeEnCursoDelConductor(conductor.getId());
-
-        boolean tieneViajeAsignado = viajesAsignados != null && !viajesAsignados.isEmpty();
-
-        ModelMap model = new ModelMap();
-        model.put("error", mensajeError);
-        model.put("conductor", conductor);
-        model.put("combi", combi);
-        model.put("reporteFalla", new ReporteFalla());
-
-        model.put("viajesDisponibles", viajesDisponibles);
-        model.put("viajesAsignados", viajesAsignados);
-        model.put("viajesFinalizados", viajesFinalizados);
-        model.put("viajeEnCurso", viajeEnCurso);
-        model.put("tieneViajeAsignado", tieneViajeAsignado);
-
-        return new ModelAndView("home-conductor", model);
+        return new ModelAndView("redirect:/home-conductor");
     }
 
     private Conductor obtenerConductorActivo(HttpServletRequest request) {
@@ -238,13 +230,7 @@ public class ControladorConductor {
 
         Conductor conductorActualizado = servicioConductor.buscarPorId(conductorSession.getId());
 
-        if (conductorActualizado == null) {
-            request.getSession().invalidate();
-            return null;
-        }
-
-        if (conductorActualizado.isSuspendido()) {
-            request.getSession().invalidate();
+        if (conductorActualizado == null || conductorActualizado.isSuspendido()) {
             return null;
         }
 
@@ -252,10 +238,14 @@ public class ControladorConductor {
         return conductorActualizado;
     }
 
-    private ModelAndView redirigirLoginConSesionCerrada() {
-        ModelMap model = new ModelMap();
-        model.put("error", "Tu cuenta fue suspendida. Contactate con un administrador.");
-        model.put("datosLogin", new DatosLogin());
-        return new ModelAndView("login-conductor", model);
+    private ModelAndView redirigirLoginConSesionCerrada(HttpServletRequest request) {
+        request.getSession().invalidate();
+
+        request.getSession(true).setAttribute(
+                "errorLoginConductor",
+                "Tu cuenta fue suspendida. Contactate con un administrador."
+        );
+
+        return new ModelAndView("redirect:/login-conductor");
     }
 }

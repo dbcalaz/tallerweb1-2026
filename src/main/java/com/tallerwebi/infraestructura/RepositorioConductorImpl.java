@@ -54,8 +54,6 @@ public class RepositorioConductorImpl implements RepositorioConductor {
                 .createCriteria(Viaje.class)
                 .createAlias("conductor", "c")
                 .add(Restrictions.eq("c.id", idConductor))
-                .addOrder(Order.asc("fecha"))
-                .addOrder(Order.asc("horario"))
                 .list();
     }
 
@@ -66,8 +64,6 @@ public class RepositorioConductorImpl implements RepositorioConductor {
                 .createAlias("conductor", "c")
                 .add(Restrictions.eq("c.id", idConductor))
                 .add(Restrictions.eq("estadoDeViaje", estado))
-                .addOrder(Order.asc("fecha"))
-                .addOrder(Order.asc("horario"))
                 .list();
     }
 
@@ -77,8 +73,6 @@ public class RepositorioConductorImpl implements RepositorioConductor {
                 .createCriteria(Viaje.class)
                 .add(Restrictions.eq("estadoDeViaje", EstadoDeViaje.DISPONIBLE))
                 .add(Restrictions.isNull("conductor"))
-                .addOrder(Order.asc("fecha"))
-                .addOrder(Order.asc("horario"))
                 .list();
     }
 

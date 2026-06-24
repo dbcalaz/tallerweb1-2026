@@ -131,12 +131,43 @@ public class RepositorioAdministradorImpl implements RepositorioAdministrador {
     }
 
     /* Conductores*/
-    @Override
+    /*@Override
     public List<Conductor> getConductores(Boolean estadoCuenta) {
         return sessionFactory.getCurrentSession()
                 .createCriteria(Conductor.class)
                 .add(Restrictions.eq("cuentaHabilitada", estadoCuenta))
                 .list();
+    }*/
+
+    @Override
+    public List<Conductor> getConductores(Boolean cuentaHabilitada, String estado) {
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Conductor.class);
+
+        if (cuentaHabilitada != null) {
+            criteria.add(Restrictions.eq("cuentaHabilitada", cuentaHabilitada));
+        }
+
+        if (estado != null && !estado.isEmpty() && !estado.equalsIgnoreCase("todos")) {
+            switch (estado.toLowerCase()) {
+                case "disponible":
+                    criteria.add(Restrictions.eq("disponible", true));
+                    break;
+
+                case "en_viaje":
+                    criteria.add(Restrictions.eq("enViaje", true));
+                    break;
+
+                case "suspendido":
+                    criteria.add(Restrictions.eq("suspendido", true));
+                    break;
+
+                case "suspension_pendiente":
+                    criteria.add(Restrictions.eq("suspensionPendiente", true));
+                    break;
+            }
+        }
+
+        return criteria.list();
     }
 
     @Override

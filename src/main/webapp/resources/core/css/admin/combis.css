@@ -292,11 +292,6 @@
     color: #b91c1c;
 }
 
-.estado.suspension-pendiente {
-    background: #dbeafe;
-    color: #1d4ed8;
-}
-
 .acciones {
     display: flex;
     justify-content: center;

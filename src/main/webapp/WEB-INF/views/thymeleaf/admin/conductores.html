@@ -77,10 +77,8 @@
                                 <td><span class="licencia" th:text="${conductor.licencia}"></span></td>
                                 <td><div class="calificacion"><span class="material-symbols-outlined">star</span><strong th:text="${conductor.calificacion}"></strong></div></td>
                                 <td>
-
-<div th:class="${'estado ' + (conductor.suspendido ? 'suspendido' : (conductor.disponible ? 'disponible' : (conductor.suspensionPendiente ? 'suspension-pendiente' : 'viaje')))}"
-        th:text="${conductor.suspendido ? 'Suspendido' : (conductor.disponible ? 'Disponible' : (conductor.suspensionPendiente ? 'Suspensión pendiente' : 'En viaje'))}">
-</div>
+                                    <div th:class="${'estado ' + (conductor.suspendido ? 'suspendido' : (conductor.disponible ? 'disponible' : (conductor.suspensionPendiente ? 'revision' : 'viaje')))}" th:text="${conductor.suspendido ? 'Suspendido' : (conductor.disponible ? 'Disponible' : (conductor.suspensionPendiente ? 'Suspensión pendiente' : 'En viaje'))}">
+                                    </div>
                                 </td>
                                 <td>
                                     <div class="acciones">

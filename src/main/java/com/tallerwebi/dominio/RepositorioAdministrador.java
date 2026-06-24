@@ -27,7 +27,9 @@ public interface RepositorioAdministrador {
 
     /* Conductores*/
 
-    List<Conductor> getConductores(Boolean estadoCuenta);
+    //List<Conductor> getConductores(Boolean estadoCuenta);
+
+    List<Conductor> getConductores(Boolean cuentaHabilitada, String estado);
 
     Conductor buscarConductorPorId(Long idConductor);
 

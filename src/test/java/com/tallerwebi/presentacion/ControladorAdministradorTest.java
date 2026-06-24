@@ -71,7 +71,7 @@ public class ControladorAdministradorTest {
     public void queSeObtenganCorrectamenteLosConductores() {
         List<Conductor> conductores = List.of(Mockito.mock(Conductor.class));
 
-        when(servicioAdministrador.obtenerConductores(true)).thenReturn(conductores);
+        when(servicioAdministrador.obtenerConductores(true,null)).thenReturn(conductores);
 
         ModelAndView modelAndView = controladorAdministrador.conductores();
 
@@ -83,8 +83,8 @@ public class ControladorAdministradorTest {
     public void queSeObtenganCorrectamenteLosConductoresPendientesDeAprobacion() {
         List<Conductor> pendientes = List.of(Mockito.mock(Conductor.class));
 
-        when(servicioAdministrador.obtenerConductores(false)).thenReturn(pendientes);
-        when(servicioAdministrador.obtenerConductores(false).size()).thenReturn(1);
+        when(servicioAdministrador.obtenerConductores(false,null)).thenReturn(pendientes);
+        when(servicioAdministrador.obtenerConductores(false,null).size()).thenReturn(1);
 
         ModelAndView modelAndView = controladorAdministrador.conductores();
 

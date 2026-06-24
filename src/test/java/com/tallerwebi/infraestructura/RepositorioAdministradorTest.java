@@ -100,7 +100,7 @@ public class RepositorioAdministradorTest {
         session().save(habilitado);
 
         //Ejecución
-        List<Conductor> conductores = repositorioAdministrador.getConductores(false);
+        List<Conductor> conductores = repositorioAdministrador.getConductores(false,null);
 
         //Validación
         assertThat(conductores.size(), equalTo(1));

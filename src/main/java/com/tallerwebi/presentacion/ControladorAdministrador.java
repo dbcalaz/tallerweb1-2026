@@ -90,15 +90,16 @@ public class ControladorAdministrador {
     public ModelAndView conductores() {
         ModelMap model = new ModelMap();
 
-        List<Conductor> conductores = servicioAdministrador.obtenerConductores(true);
-        List<Conductor> conductoresPendientes = servicioAdministrador.obtenerConductores(false);
-        Long pendientes = (long) servicioAdministrador.obtenerConductores(false).size();
+        List<Conductor> conductores = servicioAdministrador.obtenerConductores(true, null);
+        List<Conductor> conductoresPendientes = servicioAdministrador.obtenerConductores(false, null);
+        Long pendientes = (long) servicioAdministrador.obtenerConductores(false, null).size();
         List<Combi> combisDisponibles = servicioAdministrador.obtenerCombisDisponibles();
 
         model.put("conductores", conductores);
         model.put("conductoresPendientes", conductoresPendientes);
         model.put("pendientes", pendientes);
         model.put("combisDisponibles", combisDisponibles);
+
         return new ModelAndView("admin/conductores", model);
     }
 

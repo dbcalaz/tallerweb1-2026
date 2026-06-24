@@ -18,7 +18,7 @@ public interface ServicioAdministrador {
     Long obtenerCantidadCombis();
 
     /*Conductor*/
-    List<Conductor> obtenerConductores(Boolean estadoCuenta);
+    List<Conductor> obtenerConductores(Boolean estadoCuenta, String estado);
 
     void habilitarConductor(Long idConductor, Long idCombi);
 

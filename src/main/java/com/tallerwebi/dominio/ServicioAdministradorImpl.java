@@ -54,8 +54,8 @@ public class ServicioAdministradorImpl implements ServicioAdministrador {
 
     /*Conductor*/
     @Override
-    public List<Conductor> obtenerConductores(Boolean estadoCuenta) {
-        return repositorioAdministrador.getConductores(estadoCuenta);
+    public List<Conductor> obtenerConductores(Boolean estadoCuenta, String estado) {
+        return repositorioAdministrador.getConductores(estadoCuenta, estado);
     }
 
     @Override
