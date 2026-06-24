@@ -29,5 +29,5 @@ public class Conductor {
     private boolean disponible;
     private boolean enViaje;
     private boolean suspendido;
-
+    private boolean suspensionPendiente;
 }

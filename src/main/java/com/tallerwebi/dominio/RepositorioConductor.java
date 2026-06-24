@@ -6,15 +6,25 @@ public interface RepositorioConductor {
 
     Conductor buscarConductor(String email, String password);
 
+    Conductor buscarPorId(Long idConductor);
+
     void guardarConductor(Conductor conductor);
 
-    List<Viaje> obtenerViajesPorConductor(Long idConductor);
+    List<Viaje> obtenerViajesDelConductor(Long idConductor);
 
-    List<Viaje> obtenerViajesPendientesPorConductor(Long idConductor);
+    List<Viaje> obtenerViajesDelConductorPorEstado(Long idConductor, EstadoDeViaje estado);
 
-    List<Viaje> obtenerViajesFinalizadosPorConductor(Long idConductor);
+    List<Viaje> obtenerViajesDisponiblesParaConductor();
 
-    Combi obtenerCombiActivaPorIdConductor(Long id);
+    Viaje buscarViajePorId(Long idViaje);
+
+    Viaje obtenerViajeEnCursoDelConductor(Long idConductor);
+
+    void guardarViaje(Viaje viaje);
+
+    Combi obtenerCombiActivaPorIdConductor(Long idConductor);
 
     void guardarFalla(ReporteFalla reporteFalla);
+
+    void actualizarConductor(Conductor conductor);
 }

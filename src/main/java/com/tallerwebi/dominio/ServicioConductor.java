@@ -8,19 +8,28 @@ import java.util.List;
 
 public interface ServicioConductor {
 
-    Conductor consultarConductor(String email, String password) throws CuentaNoHabilitadaException, CuentaSuspendidaException;
+    Conductor consultarConductor(String email, String password)
+            throws CuentaNoHabilitadaException, CuentaSuspendidaException;
 
     void registrarConductor(Conductor conductor) throws ConductorExistente;
 
+    Conductor buscarPorId(Long idConductor);
+
     List<Viaje> obtenerViajesDelConductor(Long idConductor);
 
-    //Todos los viajes con estado = PENDIENTE
-    List<Viaje> obtenerViajesPendientesDelConductor(Long idConductor);
+    List<Viaje> obtenerViajesDelConductorPorEstado(Long idConductor, EstadoDeViaje estado);
 
-    //Todos los viajes con estado = FINALIZADO
-    List<Viaje> obtenerViajesFinalizadosDelConductor(Long idConductor);
+    List<Viaje> obtenerViajesDisponibles();
 
-    Combi buscarCombiActivePorIdConductor(Long id);
+    Viaje obtenerViajeEnCursoDelConductor(Long idConductor);
+
+    Combi buscarCombiActivePorIdConductor(Long idConductor);
+
+    void aceptarViaje(Long idViaje, Long idConductor);
+
+    void iniciarViaje(Long idViaje, Long idConductor);
+
+    void finalizarViaje(Long idViaje, Long idConductor);
 
     void registrarFalla(ReporteFalla reporteFalla);
 }

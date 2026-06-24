@@ -15,12 +15,25 @@
 <body>
 <div class="driver-layout">
     <header class="driver-navbar">
-        <div class="driver-navbar-left"><h1 class="driver-logo">BondiWay</h1><span class="driver-navbar-divider"></span><span class="driver-navbar-subtitle">Panel del conductor</span></div>
+        <div class="driver-navbar-left">
+            <h1 class="driver-logo">BondiWay</h1>
+            <span class="driver-navbar-divider"></span>
+            <span class="driver-navbar-subtitle">Panel del conductor</span>
+        </div>
         <div class="driver-navbar-right">
-            <div class="driver-status-pill"><span class="driver-status-dot"></span><span>En línea</span></div>
+            <div class="driver-status-pill">
+                <span class="driver-status-dot"></span>
+                <span>En línea</span>
+            </div>
             <div class="driver-profile">
-                <div class="driver-profile-info"><span class="driver-profile-name" th:text="${conductor.nombre}"></span></div>
-                <a th:href="@{/login-conductor}"><button class="driver-logout-btn"><span class="material-symbols-outlined">logout</span></button></a>
+                <div class="driver-profile-info">
+                    <span class="driver-profile-name" th:text="${conductor.nombre}"></span>
+                </div>
+                <a th:href="@{/login-conductor}">
+                    <button class="driver-logout-btn" type="button">
+                        <span class="material-symbols-outlined">logout</span>
+                    </button>
+                </a>
             </div>
         </div>
     </header>
@@ -35,8 +48,20 @@
                 <p class="driver-subtitle">Listo para tus rutas de hoy.</p>
             </div>
             <div class="driver-hero-stats">
-                <article class="driver-stat-card"><span class="material-symbols-outlined">stars</span><div><p>Calificación</p><h3 th:text="${conductor.calificacion}"></h3></div></article>
-                <article class="driver-stat-card driver-stat-card-income"><span class="material-symbols-outlined">payments</span><div><p>Ganancias hoy</p><h3 th:text="'$ ' + ${conductor.ganancia}"></h3></div></article>
+                <article class="driver-stat-card">
+                    <span class="material-symbols-outlined">stars</span>
+                    <div>
+                        <p>Calificación</p>
+                        <h3 th:text="${conductor.calificacion}"></h3>
+                    </div>
+                </article>
+                <article class="driver-stat-card driver-stat-card-income">
+                    <span class="material-symbols-outlined">payments</span>
+                    <div>
+                        <p>Ganancias hoy</p>
+                        <h3 th:text="'$ ' + ${conductor.ganancia}"></h3>
+                    </div>
+                </article>
             </div>
         </section>
 
@@ -45,71 +70,183 @@
                 <div class="driver-card-badge">Vehículo asignado</div>
                 <h3 th:text="${combi.marca + ' ' + combi.modelo}"></h3>
                 <div class="driver-vehicle-info">
-                    <span><span class="material-symbols-outlined">badge</span><span th:text="${combi.patente}"></span></span>
-                    <span><span class="material-symbols-outlined">event_seat</span><span th:text="${combi.cantidadDeAsientos} + ' asientos'"></span></span>
-                    <span><span class="material-symbols-outlined">distance</span><span th:text="${combi.tipoDeTransmision}"></span></span>
+                    <span>
+                        <span class="material-symbols-outlined">badge</span>
+                        <span th:text="${combi.patente}"></span>
+                    </span>
+                    <span>
+                        <span class="material-symbols-outlined">event_seat</span>
+                        <span th:text="${combi.cantidadDeAsientos} + ' asientos'"></span>
+                    </span>
+                    <span>
+                        <span class="material-symbols-outlined">distance</span>
+                        <span th:text="${combi.tipoDeTransmision}"></span>
+                    </span>
                 </div>
                 <div class="driver-vehicle-actions">
-                    <!--<button class="driver-primary-btn"><span class="material-symbols-outlined">fact_check</span> Revisión diaria</button>-->
-                    <button id="btn-reportar-falla" class="driver-primary-btn"><span class="material-symbols-outlined">warning</span> Reportar falla</button>
+                    <button id="btn-reportar-falla" class="driver-primary-btn" type="button">
+                        <span class="material-symbols-outlined">warning</span>
+                        Reportar falla
+                    </button>
                 </div>
             </article>
+
             <article class="driver-card driver-status-card">
-                <div><h3>Estado operativo</h3><p>Tu visibilidad para nuevas asignaciones.</p></div>
-                <button class="driver-toggle-btn"><span class="material-symbols-outlined">radio_button_checked</span> ESTÁS EN LÍNEA</button>
-                <small>Última conexión: hace 4 min</small>
+
+                <!-- VIAJE EN CURSO -->
+                <div th:if="${viajeEnCurso != null}">
+                    <div>
+                        <h3>Viaje en curso</h3>
+                        <p>Actualmente estás realizando este viaje.</p>
+                    </div>
+
+                    <div class="driver-history-list" style="margin-top: 16px;">
+                        <div class="driver-history-item">
+                            <div>
+                                <strong th:text="${viajeEnCurso.origen + ' - ' + viajeEnCurso.destino}"></strong>
+                                <p th:text="${viajeEnCurso.fecha + ' - ' + viajeEnCurso.horario}"></p>
+                            </div>
+                            <span th:text="${viajeEnCurso.tipoDeViaje}"></span>
+                        </div>
+                    </div>
+
+                    <form th:action="@{/conductor/finalizar-viaje}" method="post" style="margin-top: 16px;">
+                        <input type="hidden" name="idViaje" th:value="${viajeEnCurso.id}">
+                        <button class="driver-primary-btn" type="submit">
+                            <span class="material-symbols-outlined">flag</span>
+                            Finalizar viaje
+                        </button>
+                    </form>
+                </div>
+
+                <!-- VIAJE ASIGNADO -->
+                <div th:if="${viajeEnCurso == null and tieneViajeAsignado}">
+                    <div>
+                        <h3>Viaje asignado</h3>
+                        <p>Ya aceptaste un viaje. Cuando estés listo, podés iniciarlo.</p>
+                    </div>
+
+                    <div class="driver-history-list" style="margin-top: 16px;">
+                        <div class="driver-history-item" th:each="viaje : ${viajesAsignados}">
+                            <div>
+                                <strong th:text="${viaje.origen + ' - ' + viaje.destino}"></strong>
+                                <p th:text="${viaje.fecha + ' - ' + viaje.horario}"></p>
+                            </div>
+                            <span th:text="${viaje.tipoDeViaje}"></span>
+                        </div>
+                    </div>
+
+                    <form th:each="viaje : ${viajesAsignados}" th:action="@{/conductor/empezar-viaje}" method="post">
+                        <input type="hidden" name="idViaje" th:value="${viaje.id}">
+                        <button class="driver-primary-btn" type="submit">
+                            <span class="material-symbols-outlined">play_arrow</span>
+                            Empezar viaje
+                        </button>
+                    </form>
+                </div>
+
+                <!-- SIN VIAJES -->
+                <div th:if="${viajeEnCurso == null and !tieneViajeAsignado}">
+                    <div>
+                        <h3>Estado operativo</h3>
+                        <p>Tu visibilidad para nuevas asignaciones.</p>
+                    </div>
+                    <button class="driver-toggle-btn" type="button">
+                        <span class="material-symbols-outlined">radio_button_checked</span>
+                        ESTÁS EN LÍNEA
+                    </button>
+                    <small>Sin viajes asignados actualmente</small>
+                </div>
             </article>
         </section>
 
-        <section class="driver-section">
-            <div class="driver-section-header"><h3>Viajes disponibles</h3><a href="#">Ver mapa de demanda</a></div>
-            <div class="driver-trips-grid">
-                <article class="driver-trip-card">
-                    <div class="driver-trip-top"><span class="driver-tag">EXPRESS</span><h4>$60.000</h4></div>
-                    <div class="driver-trip-route">
-                        <div><span class="material-symbols-outlined">location_on</span><p>ORIGEN</p><strong>Terminal Central</strong></div>
-                        <div><span class="material-symbols-outlined">near_me</span><p>DESTINO</p><strong>Parque Industrial Norte</strong></div>
-                    </div>
-                    <div class="driver-trip-actions"><button class="driver-primary-btn">Aceptar</button><button class="driver-icon-btn"><span class="material-symbols-outlined">info</span></button></div>
-                </article>
-                <article class="driver-trip-card">
-                    <div class="driver-trip-top"><span class="driver-tag driver-tag-gold">CORPORATIVO</span><h4>$75.000</h4></div>
-                    <div class="driver-trip-route">
-                        <div><span class="material-symbols-outlined">location_on</span><p>ORIGEN</p><strong>Sede Tech Solutions</strong></div>
-                        <div><span class="material-symbols-outlined">near_me</span><p>DESTINO</p><strong>Aeropuerto Intl. B2</strong></div>
-                    </div>
-                    <div class="driver-trip-actions"><button class="driver-primary-btn">Aceptar</button><button class="driver-icon-btn"><span class="material-symbols-outlined">info</span></button></div>
-                </article>
-                <article class="driver-trip-card">
-                    <div class="driver-trip-top"><span class="driver-tag">REGULAR</span><h4>$40.000</h4></div>
-                    <div class="driver-trip-route">
-                        <div><span class="material-symbols-outlined">location_on</span><p>ORIGEN</p><strong>Barrio San Martín</strong></div>
-                        <div><span class="material-symbols-outlined">near_me</span><p>DESTINO</p><strong>Centro Cívico</strong></div>
-                    </div>
-                    <div class="driver-trip-actions"><button class="driver-primary-btn">Aceptar</button><button class="driver-icon-btn"><span class="material-symbols-outlined">info</span></button></div>
-                </article>
+    <section class="driver-section">
+    <div class="driver-section-header">
+        <h3>Viajes disponibles</h3>
+        <!-- <a href="#">Ver mapa de demanda</a>-->
+    </div>
+
+    <div class="driver-trips-grid" th:if="${viajesDisponibles != null and !viajesDisponibles.isEmpty()}">
+
+        <article class="driver-trip-card" th:each="viaje : ${viajesDisponibles}">
+            <div class="driver-trip-top">
+                <span class="driver-tag" th:text="${viaje.tipoDeViaje != null ? viaje.tipoDeViaje : 'VIAJE'}">
+                    VIAJE
+                </span>
+                <h4 th:text="'$' + ${viaje.precio}">$0</h4>
             </div>
-        </section>
+
+            <div class="driver-trip-route">
+                <div>
+                    <span class="material-symbols-outlined">location_on</span>
+                    <p>ORIGEN</p>
+                    <strong th:text="${viaje.origen}">Origen</strong>
+                </div>
+
+                <div>
+                    <span class="material-symbols-outlined">near_me</span>
+                    <p>DESTINO</p>
+                    <strong th:text="${viaje.destino}">Destino</strong>
+                </div>
+            </div>
+
+            <div class="driver-trip-actions">
+                <form th:action="@{/conductor/aceptar-viaje}" method="post">
+                    <input type="hidden" name="idViaje" th:value="${viaje.id}">
+                    <button class="driver-primary-btn" type="submit">Aceptar</button>
+                </form>
+
+                <button class="driver-icon-btn" type="button" th:title="'Fecha: ' + ${viaje.fecha} + ' | Horario: ' + ${viaje.horario} + ' | Duración: ' + ${viaje.duracion}">
+                    <span class="material-symbols-outlined">info</span>
+                </button>
+            </div>
+        </article>
+    </div>
+
+    <div class="driver-empty-state" th:if="${viajesDisponibles == null or viajesDisponibles.isEmpty()}">
+        <p>No hay viajes disponibles para aceptar en este momento.</p>
+    </div>
+</section>
+
 
         <section class="driver-bottom-grid">
             <article class="driver-card">
                 <h3 class="driver-card-title">Próximas salidas</h3>
-                <div class="driver-schedule-list" th:each="viaje : ${viajesPendientes}">
-                    <div class="driver-schedule-item">
+
+                <div class="driver-schedule-list" th:if="${viajesAsignados != null and !viajesAsignados.isEmpty()}">
+                    <div class="driver-schedule-item" th:each="viaje : ${viajesAsignados}">
                         <div class="driver-time" th:text="${viaje.horario}"></div>
-                        <p class="driver-time-status">Puntual</p>
-                        <div><strong th:text="${viaje.origen + ' - ' + viaje.destino}"></strong><p>12 pasajeros confirmados</p></div>
+                        <p class="driver-time-status">Asignado</p>
+                        <div>
+                            <strong th:text="${viaje.origen + ' - ' + viaje.destino}"></strong>
+                            <p th:text="${viaje.fecha}"></p>
+                        </div>
                         <span class="material-symbols-outlined">arrow_forward_ios</span>
                     </div>
                 </div>
+
+                <div th:if="${viajesAsignados == null or viajesAsignados.isEmpty()}">
+                    <p>No tenés próximas salidas.</p>
+                </div>
             </article>
+
             <article class="driver-card">
-                <div class="driver-section-header driver-history-header"><h3>Historial reciente</h3><a href="#">Ver todo</a></div>
-                <div class="driver-history-list">
+                <div class="driver-section-header driver-history-header">
+                    <h3>Historial reciente</h3>
+                </div>
+
+                <div class="driver-history-list" th:if="${viajesFinalizados != null and !viajesFinalizados.isEmpty()}">
                     <div class="driver-history-item" th:each="viaje : ${viajesFinalizados}">
-                        <div><strong th:text="${viaje.origen + ' - ' + viaje.destino}"></strong><p th:text="${viaje.horario}"></p></div>
+                        <div>
+                            <strong th:text="${viaje.origen + ' - ' + viaje.destino}"></strong>
+                            <p th:text="${viaje.fecha + ' - ' + viaje.horario}"></p>
+                        </div>
                         <span th:text="'$' + ${viaje.precio}"></span>
                     </div>
+                </div>
+
+                <div th:if="${viajesFinalizados == null or viajesFinalizados.isEmpty()}">
+                    <p>Todavía no hay viajes finalizados para mostrar.</p>
                 </div>
             </article>
         </section>
@@ -118,16 +255,25 @@
 
 <footer>
     <p>© 2024 Bondiy. Inteligencia en Movimiento.</p>
-    <div><a href="#">Centro de Ayuda</a><a href="#">Regulaciones</a><a href="#">Privacidad</a><a href="#">Soporte 24/7</a></div>
+    <div>
+        <a href="#">Centro de Ayuda</a>
+        <a href="#">Regulaciones</a>
+        <a href="#">Privacidad</a>
+        <a href="#">Soporte 24/7</a>
+    </div>
 </footer>
 
 <div id="modal-falla" class="modal-overlay">
     <div class="driver-modal">
-        <div class="driver-modal-icon"><span class="material-symbols-outlined">warning</span></div>
+        <div class="driver-modal-icon">
+            <span class="material-symbols-outlined">warning</span>
+        </div>
         <h2>Reportar falla</h2>
         <p class="driver-modal-description">Describí el problema detectado en el vehículo.</p>
         <form th:action="@{/reportar-falla}" method="post" th:object="${reporteFalla}">
-            <div class="driver-modal-field"><textarea th:field="*{descripcion}" id="motivos" name="motivos" rows="6" placeholder="Describí la falla encontrada..." required></textarea></div>
+            <div class="driver-modal-field">
+                <textarea th:field="*{descripcion}" id="motivos" name="motivos" rows="6" placeholder="Describí la falla encontrada..." required></textarea>
+            </div>
             <div class="driver-modal-actions">
                 <button type="button" id="btn-cancelar-falla" class="driver-secondary-btn">Cancelar</button>
                 <button type="submit" class="driver-primary-btn">Enviar reporte</button>
@@ -146,10 +292,15 @@ document.addEventListener("DOMContentLoaded", () => {
         console.error("No se encontraron elementos del modal");
         return;
     }
+
     btnAbrirModal.addEventListener("click", () => modal.classList.add("active"));
     btnCerrarModal.addEventListener("click", () => modal.classList.remove("active"));
-    modal.addEventListener("click", (e) => { if (e.target === modal) modal.classList.remove("active"); });
-    document.addEventListener("keydown", (e) => { if (e.key === "Escape") modal.classList.remove("active"); });
+    modal.addEventListener("click", (e) => {
+        if (e.target === modal) modal.classList.remove("active");
+    });
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") modal.classList.remove("active");
+    });
 });
 </script>
 </body>

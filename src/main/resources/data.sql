@@ -4,13 +4,13 @@ insert into Usuario(email, password, rol, activo, nombre, apellido, telefono) va
 insert into Usuario(email, password, rol, activo) values('admin@mail.com', 'admin', 'ADMIN', true);
 
 -- 2. Inserción de Conductores
-insert into Conductor (nombre, apellido, email, telefono, documento, password, licencia, calificacion, ganancia, cuentaHabilitada, disponible, enViaje, suspendido)
-values ('Eduardo', 'Zaens', 'ezaens@mail.com', '1123456789', '12345678', 'asd', 'D2', 3.9, 75000.0, true, true, true, false);
+insert into Conductor (nombre, apellido, email, telefono, documento, password, licencia, calificacion, ganancia, cuentaHabilitada, disponible, enViaje, suspendido, suspensionPendiente)
+values ('Eduardo', 'Zaens', 'ezaens@mail.com', '1123456789', '12345678', 'asd', 'D2', 3.9, 75000.0, true, true, false, false, false);
 
-INSERT INTO Conductor (nombre, apellido, email, telefono, documento, licencia, calificacion, ganancia, cuentaHabilitada, disponible, enViaje, suspendido)
-VALUES ('María', 'Sosa', 'msosa@mail.com', '1134567890', '23456789', 'D1', 4.7, 92000.0, true,true, true, false),
-       ('Carlos', 'Ruiz', 'cruiz@mail.com', '1145678901', '34567890', 'D2', 4.3, 81000.0, true, true, false, false),
-       ('Lucía', 'Fernández', 'lfernandez@mail.com', '1156789012', '45678901', 'D1', 4.9, 98000.0, true, false, false, true);
+INSERT INTO Conductor (nombre, apellido, email, telefono, documento, licencia, calificacion, ganancia, cuentaHabilitada, disponible, enViaje, suspendido, suspensionPendiente)
+VALUES ('María', 'Sosa', 'msosa@mail.com', '1134567890', '23456789', 'D1', 4.7, 92000.0, true,true, true, false, false),
+       ('Carlos', 'Ruiz', 'cruiz@mail.com', '1145678901', '34567890', 'D2', 4.3, 81000.0, true, true, false, false, false),
+       ('Lucía', 'Fernández', 'lfernandez@mail.com', '1156789012', '45678901', 'D1', 4.9, 98000.0, true, false, false, true, false);
 
 -- 3. Inserción de Combis
 insert into Combi (tipoDeCombi, cantidadDeAsientos, tipoDeTransmision, patente, marca, modelo,EstadoDeCombi, kilometros)
@@ -52,3 +52,31 @@ insert into Reserva (id_usuario, id_viaje, estadoReserva) values (2, 3, 'FINALIZ
 insert into Reserva (id_usuario, id_viaje, estadoReserva) values (2, 4, 'FINALIZADA');
 insert into Reserva (id_usuario, id_viaje, estadoReserva) values (2, 6, 'FINALIZADA');
 insert into Reserva (id_usuario, id_viaje, estadoReserva) values (2, 5, 'CONFIRMADA');
+
+/*insert into Viaje
+(origen, destino, fecha, horario, precio, asientosDisponibles, duracion, tipoDeViaje, estadoDeViaje, id_combi, id_conductor)
+values
+('Haedo', 'Caballito', '2026-06-25', '12:30', 5300.0, 2, '45 min', 'Común', 'EN_CURSO', 1, 1);*/
+
+-- DISPONIBLES
+insert into Viaje
+(origen, destino, fecha, horario, precio, asientosDisponibles, duracion, tipoDeViaje, estadoDeViaje, id_combi, id_conductor)
+values
+('Moron', 'Liniers', '2026-06-25', '08:00', 4200.0, 4, '40 min', 'Común', 'DISPONIBLE', 1, null);
+
+insert into Viaje
+(origen, destino, fecha, horario, precio, asientosDisponibles, duracion, tipoDeViaje, estadoDeViaje, id_combi, id_conductor)
+values
+('Castelar', 'Once', '2026-06-25', '09:30', 5100.0, 3, '55 min', 'Ejecutivo', 'DISPONIBLE', 1, null);
+
+-- ASIGNADO AL CONDUCTOR 1
+insert into Viaje
+(origen, destino, fecha, horario, precio, asientosDisponibles, duracion, tipoDeViaje, estadoDeViaje, id_combi, id_conductor)
+values
+('Moron', 'San Justo', '2026-06-25', '11:00', 3900.0, 2, '35 min', 'Común', 'ASIGNADO', 1, 1);
+
+-- FINALIZADO DEL CONDUCTOR 1
+insert into Viaje
+(origen, destino, fecha, horario, precio, asientosDisponibles, duracion, tipoDeViaje, estadoDeViaje, id_combi, id_conductor)
+values
+('Ramos Mejía', 'Moreno', '2026-06-20', '18:15', 4700.0, 1, '50 min', 'Común', 'FINALIZADO', 1, 1);

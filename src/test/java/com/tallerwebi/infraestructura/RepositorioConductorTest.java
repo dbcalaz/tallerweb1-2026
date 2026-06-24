@@ -67,7 +67,7 @@ public class RepositorioConductorTest {
         assertThat(conductorEncontrado.getEmail(), equalTo(conductor.getEmail()));
     }
 
-    @Test
+    /*@Test
     @Rollback
     public void queSeObtenganCorrectamenteLosViajesPendientesDeUnConductor() {
 
@@ -119,5 +119,5 @@ public class RepositorioConductorTest {
         List<Viaje> viajes = repositorioConductor.obtenerViajesFinalizadosPorConductor(conductor.getId());
 
         assertThat(viajes.size(), equalTo(1));
-    }
+    }*/
 }

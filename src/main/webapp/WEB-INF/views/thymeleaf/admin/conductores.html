@@ -77,18 +77,18 @@
                                 <td><span class="licencia" th:text="${conductor.licencia}"></span></td>
                                 <td><div class="calificacion"><span class="material-symbols-outlined">star</span><strong th:text="${conductor.calificacion}"></strong></div></td>
                                 <td>
-                                    <div th:class="'estado ' + (${conductor.suspendido} ? 'suspendido' : (${conductor.enViaje} ? 'viaje' : 'disponible'))" th:text="${conductor.suspendido} ? 'Suspendido' : (${conductor.enViaje} ? 'En viaje' : 'Disponible')">
 
-                                    </div>
+<div th:class="${'estado ' + (conductor.suspendido ? 'suspendido' : (conductor.disponible ? 'disponible' : (conductor.suspensionPendiente ? 'suspension-pendiente' : 'viaje')))}"
+        th:text="${conductor.suspendido ? 'Suspendido' : (conductor.disponible ? 'Disponible' : (conductor.suspensionPendiente ? 'Suspensión pendiente' : 'En viaje'))}">
+</div>
                                 </td>
                                 <td>
                                     <div class="acciones">
                                     <button title="Ver detalle" class="btn-abrir-modal-detalle" th:data-conductor-id="${conductor.id}" th:data-conductor-nombre="${conductor.nombre + ' ' + conductor.apellido}" th:data-conductor-licencia="${conductor.licencia}" th:data-conductor-calificacion="${conductor.calificacion}" th:data-conductor-estado="${conductor.suspendido ? 'Suspendido' : (conductor.enViaje ? 'En viaje' : 'Disponible')}" th:data-conductor-telefono="${conductor.telefono}" th:data-conductor-documento="${conductor.documento}" th:data-conductor-email="${conductor.email}">
                                         <span class="material-symbols-outlined">visibility</span>
                                     </button>
-                                        <form th:action="@{/editar}">
-                                            <button title="Editar"><span class="material-symbols-outlined">edit</span></button>
-                                        </form>
+                                        <!--<button title="Editar" class="btn-abrir-modal-editar"><span class="material-symbols-outlined">edit</span></button>-->
+
                                         <div th:if="${!conductor.suspendido}">
                                             <form th:action="@{/suspender}" th:method="POST">
                                                 <input type="hidden" th:value="${conductor.id}" name="idConductor">

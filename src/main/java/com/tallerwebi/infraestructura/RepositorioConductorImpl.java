@@ -2,6 +2,7 @@ package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.*;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
@@ -11,7 +12,7 @@ import java.util.List;
 @Repository
 public class RepositorioConductorImpl implements RepositorioConductor {
 
-    private SessionFactory sessionFactory;
+    private final SessionFactory sessionFactory;
 
     public RepositorioConductorImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
@@ -19,7 +20,6 @@ public class RepositorioConductorImpl implements RepositorioConductor {
 
     @Override
     public Conductor buscarConductor(String email, String password) {
-
         return (Conductor) sessionFactory.getCurrentSession()
                 .createCriteria(Conductor.class)
                 .add(Restrictions.eq("email", email))
@@ -28,56 +28,97 @@ public class RepositorioConductorImpl implements RepositorioConductor {
     }
 
     @Override
+    public Conductor buscarPorId(Long idConductor) {
+        return (Conductor) sessionFactory.getCurrentSession()
+                .createCriteria(Conductor.class)
+                .add(Restrictions.eq("id", idConductor))
+                .uniqueResult();
+    }
+
+    //Para conductores que se registran
+    @Override
     public void guardarConductor(Conductor conductor) {
         conductor.setCuentaHabilitada(false);
         sessionFactory.getCurrentSession().save(conductor);
     }
 
-    //Con todos los estados de viajes (pendientes, en curso, finalizados.)
+    //Para conductores ya registrados
     @Override
-    public List<Viaje> obtenerViajesPorConductor(Long idConductor){
-        return (List<Viaje>) sessionFactory.getCurrentSession()
-                .createCriteria(Viaje.class)
-                .createAlias("conductor", "c")
-                .add(Restrictions.eq("c.id",idConductor))
-                .list();
+    public void actualizarConductor(Conductor conductor) {
+        sessionFactory.getCurrentSession().saveOrUpdate(conductor);
     }
 
-    //Sólo viajes con estado PENDIENTE
     @Override
-    public List<Viaje> obtenerViajesPendientesPorConductor(Long idConductor){
+    public List<Viaje> obtenerViajesDelConductor(Long idConductor) {
         return (List<Viaje>) sessionFactory.getCurrentSession()
                 .createCriteria(Viaje.class)
                 .createAlias("conductor", "c")
-                .add(Restrictions.eq("c.id",idConductor))
-                .add(Restrictions.eq("estadoDeViaje", EstadoDeViaje.PENDIENTE))
-                .list();
-    }
-
-    //Sólo viajes con estado FINALIZADO
-    @Override
-    public List<Viaje> obtenerViajesFinalizadosPorConductor(Long idConductor){
-        return (List<Viaje>) sessionFactory.getCurrentSession()
-                .createCriteria(Viaje.class)
-                .createAlias("conductor", "c")
-                .add(Restrictions.eq("c.id",idConductor))
-                .add(Restrictions.eq("estadoDeViaje", EstadoDeViaje.FINALIZADO))
+                .add(Restrictions.eq("c.id", idConductor))
+                .addOrder(Order.asc("fecha"))
+                .addOrder(Order.asc("horario"))
                 .list();
     }
 
     @Override
-    public Combi obtenerCombiActivaPorIdConductor(Long id) {
+    public List<Viaje> obtenerViajesDelConductorPorEstado(Long idConductor, EstadoDeViaje estado) {
+        return (List<Viaje>) sessionFactory.getCurrentSession()
+                .createCriteria(Viaje.class)
+                .createAlias("conductor", "c")
+                .add(Restrictions.eq("c.id", idConductor))
+                .add(Restrictions.eq("estadoDeViaje", estado))
+                .addOrder(Order.asc("fecha"))
+                .addOrder(Order.asc("horario"))
+                .list();
+    }
+
+    @Override
+    public List<Viaje> obtenerViajesDisponiblesParaConductor() {
+        return (List<Viaje>) sessionFactory.getCurrentSession()
+                .createCriteria(Viaje.class)
+                .add(Restrictions.eq("estadoDeViaje", EstadoDeViaje.DISPONIBLE))
+                .add(Restrictions.isNull("conductor"))
+                .addOrder(Order.asc("fecha"))
+                .addOrder(Order.asc("horario"))
+                .list();
+    }
+
+    @Override
+    public Viaje buscarViajePorId(Long idViaje) {
+        return (Viaje) sessionFactory.getCurrentSession()
+                .createCriteria(Viaje.class)
+                .add(Restrictions.eq("id", idViaje))
+                .uniqueResult();
+    }
+
+    @Override
+    public Viaje obtenerViajeEnCursoDelConductor(Long idConductor) {
+        return (Viaje) sessionFactory.getCurrentSession()
+                .createCriteria(Viaje.class)
+                .createAlias("conductor", "c")
+                .add(Restrictions.eq("c.id", idConductor))
+                .add(Restrictions.eq("estadoDeViaje", EstadoDeViaje.EN_CURSO))
+                .uniqueResult();
+    }
+
+    @Override
+    public void guardarViaje(Viaje viaje) {
+        sessionFactory.getCurrentSession().saveOrUpdate(viaje);
+    }
+
+    @Override
+    public Combi obtenerCombiActivaPorIdConductor(Long idConductor) {
         AsignacionCombiConductor asignacion =
-                (AsignacionCombiConductor) sessionFactory
-                        .getCurrentSession()
+                (AsignacionCombiConductor) sessionFactory.getCurrentSession()
                         .createCriteria(AsignacionCombiConductor.class)
-                        .add(Restrictions.eq("conductor.id", id))
+                        .createAlias("conductor", "c")
+                        .add(Restrictions.eq("c.id", idConductor))
                         .add(Restrictions.eq("combiActiva", true))
                         .uniqueResult();
 
         if (asignacion == null) {
             return null;
         }
+
         return asignacion.getCombi();
     }
 
@@ -86,5 +127,5 @@ public class RepositorioConductorImpl implements RepositorioConductor {
         reporteFalla.setFechaCreacionReporte(new Date());
         sessionFactory.getCurrentSession().save(reporteFalla);
     }
-}
 
+}
