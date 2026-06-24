@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@Transactional // Spring abre una transacción de BD automática para cada método
+@Transactional
 public class ServicioViajeImpl implements ServicioViaje {
 
     private RepositorioViaje repositorioViaje;
@@ -27,27 +27,16 @@ public class ServicioViajeImpl implements ServicioViaje {
     @Override
     public List<Viaje> buscarViajes(DatosBusqueda datosBusqueda) {
         return repositorioViaje.buscarViajes(
-                datosBusqueda.getOrigen(),
-                datosBusqueda.getDestino(),
+                datosBusqueda.getIdOrigen(),
+                datosBusqueda.getIdDestino(),
                 datosBusqueda.getFecha(),
                 datosBusqueda.getPasajeros()
         );
     }
 
     @Override
-    public List<Viaje> buscarViajes(String origen, String destino, String fecha) {
-        return repositorioViaje.buscarViajes(origen, destino, fecha, 1);
-    }
-
-    @Override
-    public void reservarAsiento(Long idViaje, Usuario usuarioLogueado, String asientosSeleccionados) {
-        Viaje viaje = repositorioViaje.buscarPorId(idViaje);
-        if (viaje != null && viaje.getAsientosDisponibles() > 0) {
-            viaje.setAsientosDisponibles(viaje.getAsientosDisponibles() - 1);
-            repositorioViaje.actualizar(viaje);
-        } else {
-            throw new RuntimeException("El viaje seleccionado no posee asientos disponibles.");
-        }
+    public List<Parada> obtenerTodasLasParadas() {
+        return repositorioViaje.obtenerTodasLasParadas();
     }
 
     @Override
@@ -76,24 +65,6 @@ public class ServicioViajeImpl implements ServicioViaje {
     }
 
     @Override
-    public void crearReserva(Long idViaje, Usuario usuario, String asiento) {
-        Viaje viaje = repositorioViaje.buscarPorId(idViaje);
-        if(viaje == null) throw new RuntimeException("El viaje no existe");
-
-        Reserva reserva = new Reserva();
-        reserva.setViaje(viaje);
-        reserva.setUsuario(usuario);
-        reserva.setAsientos(asiento != null ? asiento : "No especificados");
-        reserva.setPrecioTotal(viaje.getPrecio());
-        reserva.setEstadoReserva(EstadoReserva.CONFIRMADA);
-
-        viaje.setAsientosDisponibles(viaje.getAsientosDisponibles() - 1);
-
-        repositorioViaje.guardarViaje(reserva.getViaje());
-        repositorioReserva.guardar(reserva);
-    }
-
-    @Override
     public void guardarReserva(Reserva reserva) {
         repositorioViaje.guardarReserva(reserva);
     }
@@ -106,5 +77,27 @@ public class ServicioViajeImpl implements ServicioViaje {
     @Override
     public void eliminarReserva(Long idReserva) {
         repositorioViaje.eliminarReserva(idReserva);
+    }
+
+    // Se aplica una logica de sobre una regla para verificar un viaje dentro de las 24 horas"
+    @Override
+    public void verificarViajes24Horas(Long idViaje) {
+        Viaje viaje = repositorioViaje.buscarPorId(idViaje);
+
+        if (viaje != null) {
+            // Se calcula cual es el cupo minimo para que asi la combi pueda salir (puse de ejemplo 30%)
+            int capacidadTotal = viaje.getCombi().getCantidadDeAsientos();
+            int cupoMinimo = (int) (capacidadTotal * 0.30);
+
+            // Calculamos a cuantos asientos se ocuparon realmente
+            int asientosOcupados = capacidadTotal - viaje.getAsientosDisponibles();
+
+            // Con esto se verifica en caso de la siguiente situacion: a este viaje le falta el conductor o no llegó al cupo mínimo de gente?
+            if (viaje.getConductor() == null || asientosOcupados < cupoMinimo) {
+                // Si llega a pasar, el viaje se cancela de forma automatica.
+                viaje.setEstadoDeViaje(EstadoDeViaje.CANCELADO);
+                repositorioViaje.actualizar(viaje);
+            }
+        }
     }
 }

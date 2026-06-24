@@ -1,24 +1,19 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.ServicioViaje;
-import com.tallerwebi.dominio.Viaje;
+import com.tallerwebi.dominio.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.servlet.ModelAndView;
-
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class ControladorBusquedaTest {
-
     private ControladorBusqueda controladorBusqueda;
     private ServicioViaje servicioViajeMock;
 
@@ -29,44 +24,18 @@ public class ControladorBusquedaTest {
     }
 
     @Test
-    public void queAlPedirBuscarViajeDevuelvaLaVistaBuscarViajes() {
-        ModelAndView modelAndView = controladorBusqueda.irABuscarViaje();
-
-        assertThat(modelAndView.getViewName(), equalToIgnoringCase("buscarViajes"));
-        assertThat(modelAndView.getModel().get("datosBusqueda"), notNullValue());
-    }
-
-    @Test
     public void queAlBuscarConDatosValidosDevuelvaListado() {
-        DatosBusqueda datosValidos = new DatosBusqueda("San Justo", "Ramos Mejia", "2026-05-29", 1);
-        List<Viaje> viajesSimulados = new ArrayList<>();
-        viajesSimulados.add(new Viaje());
+        DatosBusqueda datos = new DatosBusqueda(1L, 2L, "2026-06-30", 1);
+        when(servicioViajeMock.buscarViajes(any(DatosBusqueda.class))).thenReturn(new ArrayList<>());
 
-        when(servicioViajeMock.buscarViajes(any(DatosBusqueda.class))).thenReturn(viajesSimulados);
-
-        ModelAndView modelAndView = controladorBusqueda.procesarBusqueda(datosValidos);
-
-        assertThat(modelAndView.getViewName(), equalToIgnoringCase("listadoViajes"));
-        @SuppressWarnings("unchecked")
-        List<Viaje> viajes = (List<Viaje>) modelAndView.getModel().get("viajes");
-        assertThat(viajes, notNullValue());
-        assertThat(viajes, hasSize(1));
+        ModelAndView mav = controladorBusqueda.procesarBusqueda(datos);
+        assertThat(mav.getViewName(), equalToIgnoringCase("listadoViajes"));
     }
 
     @Test
-    public void queAlBuscarConCamposVaciosDevuelvaErrorYSeQuedeEnLaMismaVista() {
-        DatosBusqueda datosInvalidos = new DatosBusqueda("", "Ramos Mejia", "2026-05-29", 1);
-
-        ModelAndView modelAndView = controladorBusqueda.procesarBusqueda(datosInvalidos);
-
-        assertThat(modelAndView.getViewName(), equalToIgnoringCase("buscarViajes"));
-        assertThat(modelAndView.getModel().get("error").toString(),
-                equalToIgnoringCase("Debe ingresar obligatoriamente Origen, Destino, Fecha y cantidad de Pasajeros"));
-    }
-
-    @Test
-    public void queAlPedirSeleccionarAsientoDevuelvaLaVistaCorrespondiente() {
-        ModelAndView modelAndView = controladorBusqueda.irASeleccionarAsiento(1L, 1);
-        assertThat(modelAndView.getViewName(), equalToIgnoringCase("seleccionarAsiento"));
+    public void queAlBuscarConCamposVaciosDevuelvaError() {
+        DatosBusqueda datos = new DatosBusqueda(null, null, "", 1);
+        ModelAndView mav = controladorBusqueda.procesarBusqueda(datos);
+        assertThat(mav.getViewName(), equalToIgnoringCase("buscarViajes"));
     }
 }

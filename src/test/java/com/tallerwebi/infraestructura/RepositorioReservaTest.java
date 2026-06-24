@@ -47,40 +47,37 @@ public class RepositorioReservaTest {
         Usuario usuario = new Usuario();
         session().save(usuario);
 
-        Viaje viaje1 = new Viaje();
-        session().save(viaje1);
+        Viaje viaje1 = new Viaje(); session().save(viaje1);
+        Viaje viaje2 = new Viaje(); session().save(viaje2);
+        Viaje viaje3 = new Viaje(); session().save(viaje3);
+        Viaje viaje4 = new Viaje(); session().save(viaje4);
 
-        Viaje viaje2 = new Viaje();
-        session().save(viaje2);
-
-        Viaje viaje3 = new Viaje();
-        session().save(viaje3);
-
-        Viaje viaje4 = new Viaje();
-        session().save(viaje4);
-
-        Reserva reserva1 = new Reserva(viaje1,"3",4.500);
+        // CORRECCIÓN: Instanciamos vacío y seteamos las propiedades una por una
+        Reserva reserva1 = new Reserva();
+        reserva1.setPrecioTotal(4.500);
         reserva1.setUsuario(usuario);
         reserva1.setViaje(viaje1);
         session().save(reserva1);
 
-        Reserva reserva2 = new Reserva(viaje2,"1",5.500);
+        Reserva reserva2 = new Reserva();
+        reserva2.setPrecioTotal(5.500);
         reserva2.setUsuario(usuario);
         reserva2.setViaje(viaje2);
         session().save(reserva2);
 
-        Reserva reserva3 = new Reserva(viaje3,"4",2.500);
+        Reserva reserva3 = new Reserva();
+        reserva3.setPrecioTotal(2.500);
         reserva3.setUsuario(usuario);
         reserva3.setViaje(viaje3);
         session().save(reserva3);
 
-        Reserva reserva4 = new Reserva(viaje4,"2",9.500);
+        Reserva reserva4 = new Reserva();
+        reserva4.setPrecioTotal(9.500);
         reserva4.setUsuario(usuario);
         reserva4.setViaje(viaje4);
         session().save(reserva4);
 
         session().flush();
-
 
         List<Reserva> reservas = repositorioReserva.buscarUltimasReservasPorUsuario(usuario.getId());
 
@@ -90,8 +87,6 @@ public class RepositorioReservaTest {
         assertThat(reservas.get(1).getId(), equalTo(reserva3.getId()));
         assertThat(reservas.get(2).getId(), equalTo(reserva2.getId()));
         assertThat(reservas.get(3).getId(), equalTo(reserva1.getId()));
-
-
     }
 
     @Test
@@ -108,32 +103,32 @@ public class RepositorioReservaTest {
         conductor2.setNombre("La Conductor 2");
         session().save(conductor2);
 
-        Viaje viaje1 = new Viaje();
-        viaje1.setConductor(conductor1);
-        session().save(viaje1);
-        Viaje viaje2 = new Viaje();
-        viaje2.setConductor(conductor2);
-        session().save(viaje2);
-        Viaje viaje3 = new Viaje();
-        viaje3.setConductor(conductor2);
-        session().save(viaje3);
-        Viaje viaje4 = new Viaje();
-        viaje4.setConductor(conductor2);
-        session().save(viaje4);
+        Viaje viaje1 = new Viaje(); viaje1.setConductor(conductor1); session().save(viaje1);
+        Viaje viaje2 = new Viaje(); viaje2.setConductor(conductor2); session().save(viaje2);
+        Viaje viaje3 = new Viaje(); viaje3.setConductor(conductor2); session().save(viaje3);
+        Viaje viaje4 = new Viaje(); viaje4.setConductor(conductor2); session().save(viaje4);
 
-        Reserva reserva1 = new Reserva(viaje1,"1",5.500);
+        // CORRECCIÓN: Hacemos lo mismo para el segundo test
+        Reserva reserva1 = new Reserva();
+        reserva1.setPrecioTotal(5.500);
         reserva1.setUsuario(usuario);
         reserva1.setViaje(viaje1);
         session().save(reserva1);
-        Reserva reserva2 = new Reserva(viaje2,"2",3.500);
+
+        Reserva reserva2 = new Reserva();
+        reserva2.setPrecioTotal(3.500);
         reserva2.setUsuario(usuario);
         reserva2.setViaje(viaje2);
         session().save(reserva2);
-        Reserva reserva3 = new Reserva(viaje3,"3",7.500);
+
+        Reserva reserva3 = new Reserva();
+        reserva3.setPrecioTotal(7.500);
         reserva3.setUsuario(usuario);
         reserva3.setViaje(viaje3);
         session().save(reserva3);
-        Reserva reserva4 = new Reserva(viaje4,"5",4.500);
+
+        Reserva reserva4 = new Reserva();
+        reserva4.setPrecioTotal(4.500);
         reserva4.setUsuario(usuario);
         reserva4.setViaje(viaje4);
         session().save(reserva4);
@@ -142,8 +137,4 @@ public class RepositorioReservaTest {
 
         assertEquals(conductor2.getId(),favorito.getId());
     }
-
-
-
-
 }

@@ -2,7 +2,6 @@ package com.tallerwebi.dominio;
 
 import lombok.Getter;
 import lombok.Setter;
-
 import javax.persistence.*;
 import java.util.List;
 
@@ -10,13 +9,18 @@ import java.util.List;
 @Setter
 @Entity
 public class Viaje {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String origen;
-    private String destino;
+    @ManyToOne
+    @JoinColumn(name = "id_origen")
+    private Parada origen;
+
+    @ManyToOne
+    @JoinColumn(name = "id_destino")
+    private Parada destino;
+
     private String fecha;
     private String horario;
     private Double precio;
@@ -37,6 +41,6 @@ public class Viaje {
     @JoinColumn(name = "id_conductor")
     private Conductor conductor;
 
-    @OneToMany
+    @OneToMany(mappedBy = "viaje")
     private List<Reserva> reservas;
 }

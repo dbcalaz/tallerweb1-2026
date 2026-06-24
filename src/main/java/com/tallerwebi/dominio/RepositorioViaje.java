@@ -4,13 +4,18 @@ import java.util.List;
 
 public interface RepositorioViaje {
     void guardarViaje(Viaje viaje);
-    List<Viaje> buscarViajes(String origen, String destino, String fecha, Integer pasajeros);
+
+    // Ahora busca por ID relacional, no por texto
+    List<Viaje> buscarViajes(Long idOrigen, Long idDestino, String fecha, Integer pasajeros);
+
+    // Para cargar los lugares en el desplegable
+    List<Parada> obtenerTodasLasParadas();
+
     Viaje buscarPorId(Long id);
     void actualizar(Viaje viaje);
 
     Long contarViajesPorUsuario(long idUsuario);
     Long contarViajesCanceladosPorUsuario(long idUsuario);
-
     List<Viaje> buscarUltimosViajesDelUsuario(Long idUsuario);
 
     void guardarReserva(Reserva reserva);

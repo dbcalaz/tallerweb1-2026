@@ -2,23 +2,21 @@ package com.tallerwebi.dominio;
 
 import lombok.Getter;
 import lombok.Setter;
-
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
 @Entity
 public class Reserva {
-
-        public Reserva() {}
-
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long id;
 
         @ManyToOne
         @JoinColumn(name="id_usuario")
-        private Usuario usuario;
+        private Usuario usuario; // Seria el dueño de la cuenta que va a comprar el/los pasaje/s
 
         @ManyToOne
         @JoinColumn(name="id_viaje")
@@ -27,18 +25,11 @@ public class Reserva {
         @Enumerated(EnumType.STRING)
         private EstadoReserva estadoReserva;
 
-        private String asientos;
         private Double precioTotal;
 
-        @Column(name = "numero_asiento")
-        private Integer numeroAsiento;
+        // Se agrega una relacion de: 1 reserva tiene muchos pasajeros
+        @OneToMany(mappedBy = "reserva", cascade = CascadeType.ALL)
+        private List<Pasajero> pasajeros = new ArrayList<>();
 
-        public Reserva(Viaje viaje, String asientos, Double precioTotal) {
-                this.viaje = viaje;
-                this.asientos = asientos;
-                this.precioTotal = precioTotal;
-        }
-
-        public Integer getNumeroAsiento() { return numeroAsiento; }
-        public void setNumeroAsiento(Integer numeroAsiento) { this.numeroAsiento = numeroAsiento; }
+        public Reserva() {}
 }

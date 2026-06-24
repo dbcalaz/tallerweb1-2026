@@ -1,29 +1,25 @@
 package com.tallerwebi.presentacion;
 
 public class DatosBusqueda {
-    private String origen;
-    private String destino;
+    private Long idOrigen;
+    private Long idDestino;
     private String fecha;
     private Integer pasajeros;
 
     public DatosBusqueda() {}
-
-    public DatosBusqueda(String origen, String destino, String fecha, Integer pasajeros) {
-        this.origen = origen;
-        this.destino = destino;
+    public DatosBusqueda(Long idOrigen, Long idDestino, String fecha, Integer pasajeros) {
+        this.idOrigen = idOrigen;
+        this.idDestino = idDestino;
         this.fecha = fecha;
         this.pasajeros = pasajeros;
     }
-
-    public String getOrigen() { return origen; }
-    public void setOrigen(String origen) { this.origen = origen; }
-
-    public String getDestino() { return destino; }
-    public void setDestino(String destino) { this.destino = destino; }
-
+    // Getters y Setters
+    public Long getIdOrigen() { return idOrigen; }
+    public void setIdOrigen(Long idOrigen) { this.idOrigen = idOrigen; }
+    public Long getIdDestino() { return idDestino; }
+    public void setIdDestino(Long idDestino) { this.idDestino = idDestino; }
     public String getFecha() { return fecha; }
     public void setFecha(String fecha) { this.fecha = fecha; }
-
     public Integer getPasajeros() { return pasajeros; }
     public void setPasajeros(Integer pasajeros) { this.pasajeros = pasajeros; }
 }
