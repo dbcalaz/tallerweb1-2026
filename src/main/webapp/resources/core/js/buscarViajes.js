@@ -1,3 +1,4 @@
+/* eslint-disable indent, quotes */
 document.addEventListener("DOMContentLoaded", function() {
     function enlazar(visibleId, ocultoId) {
         const inputVisible = document.getElementById(visibleId);
