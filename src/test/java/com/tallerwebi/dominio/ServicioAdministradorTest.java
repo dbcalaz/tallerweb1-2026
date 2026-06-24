@@ -16,12 +16,14 @@ public class ServicioAdministradorTest {
     private ServicioAdministrador servicioAdministrador;
     private RepositorioAdministrador repositorioAdministrador;
     private RepositorioCombi repositorioCombi;
+    private RepositorioViaje repositorioViaje;
 
     @BeforeEach
     void init() {
         repositorioAdministrador = Mockito.mock(RepositorioAdministrador.class);
         repositorioCombi = Mockito.mock(RepositorioCombi.class);
-        servicioAdministrador = new ServicioAdministradorImpl(repositorioAdministrador, repositorioCombi);
+        repositorioViaje= Mockito.mock(RepositorioViaje.class);
+        servicioAdministrador = new ServicioAdministradorImpl(repositorioAdministrador, repositorioCombi,repositorioViaje);
     }
 
     @Test

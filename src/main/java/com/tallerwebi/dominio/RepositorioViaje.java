@@ -11,4 +11,7 @@ public interface RepositorioViaje {
     Long contarViajesPorUsuario(long idUsuario);
     Long contarViajesCanceladosPorUsuario(long idUsuario);
 
+    List<Parada> obtenerParadasPorIds(List<Long> idsParadasIntermedias);
+
+    List<Parada> getParadasDisponibles();
 }

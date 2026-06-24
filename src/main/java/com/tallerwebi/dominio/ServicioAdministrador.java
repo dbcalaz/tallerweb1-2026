@@ -1,5 +1,7 @@
 package com.tallerwebi.dominio;
 
+import com.tallerwebi.dominio.excepcion.BondiWayException;
+import com.tallerwebi.presentacion.DatosCrearViaje;
 import com.tallerwebi.presentacion.DatosFiltro;
 
 import java.util.List;
@@ -30,4 +32,5 @@ public interface ServicioAdministrador {
     void actualizarEstadoCombi(Long idCombi, EstadoDeCombi estado);
 
 
+    void guardarViaje(DatosCrearViaje datosCrearViaje) throws BondiWayException;
 }

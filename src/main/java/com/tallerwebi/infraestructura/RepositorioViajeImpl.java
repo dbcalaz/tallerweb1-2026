@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.expression.spel.ast.Projection;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.hibernate.criterion.Restrictions.eq;
@@ -64,6 +65,26 @@ public class RepositorioViajeImpl implements RepositorioViaje {
                 .add(eq("estadoReserva", EstadoReserva.CANCELADA))
                 .setProjection(Projections.rowCount())
                 .uniqueResult();
+    }
+
+    @Override
+    public List<Parada> obtenerParadasPorIds(List<Long> idsParadasIntermedias) {
+
+        // 1. Validación de seguridad fundamental
+        if (idsParadasIntermedias == null || idsParadasIntermedias.isEmpty()) {
+            return new ArrayList<>(); // Si no mandaron paradas, devolvemos una lista vacía
+        }
+
+        // 2. Consulta con Criteria
+        return sessionFactory.getCurrentSession()
+                .createCriteria(Parada.class)
+                .add(Restrictions.in("id", idsParadasIntermedias)) // Buscamos en la propiedad "id"
+                .list();
+    }
+
+    @Override
+    public List<Parada> getParadasDisponibles() {
+        return sessionFactory.getCurrentSession().createCriteria(Parada.class).list();
     }
 
 

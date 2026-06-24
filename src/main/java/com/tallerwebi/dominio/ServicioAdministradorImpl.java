@@ -2,6 +2,11 @@ package com.tallerwebi.dominio;
 
 
 
+import com.tallerwebi.dominio.excepcion.BondiWayException;
+import com.tallerwebi.dominio.excepcion.ValorDeDistanciaYKmNoPermitido;
+import com.tallerwebi.dominio.excepcion.ValorDeHoraYFechaDestinoIncompleta;
+import com.tallerwebi.dominio.excepcion.ValorDeViajeIncompleto;
+import com.tallerwebi.presentacion.DatosCrearViaje;
 import com.tallerwebi.presentacion.DatosFiltro;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,10 +19,12 @@ public class ServicioAdministradorImpl implements ServicioAdministrador {
 
     RepositorioAdministrador repositorioAdministrador;
     RepositorioCombi repositorioCombi;
+    RepositorioViaje repositorioViaje;
 
-    public ServicioAdministradorImpl(RepositorioAdministrador repositorioAdministrador, RepositorioCombi repositorioCombi) {
+    public ServicioAdministradorImpl(RepositorioAdministrador repositorioAdministrador, RepositorioCombi repositorioCombi,RepositorioViaje repositorioViaje) {
         this.repositorioAdministrador = repositorioAdministrador;
         this.repositorioCombi = repositorioCombi;
+        this.repositorioViaje= repositorioViaje;
     }
 
     @Override
@@ -54,6 +61,24 @@ public class ServicioAdministradorImpl implements ServicioAdministrador {
             repositorioAdministrador.actualizarCombi(combiExiste);
         }
 
+    }
+
+    public void guardarViaje(DatosCrearViaje datos) throws BondiWayException {
+        if(datos.getValorPorKm()<=0 || datos.getDistancia() <=0 ){
+            throw new ValorDeDistanciaYKmNoPermitido();
+        }
+        if(datos.getOrigen().isEmpty() ||  datos.getDestino().isEmpty()){
+            throw new ValorDeViajeIncompleto();
+        }
+        if(datos.getHorario().isEmpty() || datos.getFecha().isEmpty()){
+            throw new ValorDeHoraYFechaDestinoIncompleta();
+        }
+        Combi combi = repositorioAdministrador.buscarCombiPorId(datos.getIdCombi());
+        Conductor conductor = repositorioAdministrador.buscarConductorPorId(datos.getIdConductor());
+        List<Parada> paradasElegidas = repositorioViaje.obtenerParadasPorIds(datos.getIdsParadasIntermedias());
+        Viaje nuevoViaje = new Viaje(datos,conductor, combi,paradasElegidas);
+
+        repositorioViaje.guardarViaje(nuevoViaje);
     }
 
 

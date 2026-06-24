@@ -65,4 +65,9 @@ public class ServicioViajeImpl implements ServicioViaje {
 
     }
 
+    @Override
+    public List<Parada> obtenerTodasLasParadas() {
+        return repositorioViaje.getParadasDisponibles();
+    }
+
 }

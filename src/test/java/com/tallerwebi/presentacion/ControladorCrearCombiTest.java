@@ -95,7 +95,7 @@ public class ControladorCrearCombiTest {
 
 
     private void thenLaCreacionDeCombiEsErroneo(ModelAndView mv, String mensaje) {
-        assertThat( mv.getViewName(),equalToIgnoringCase("crear-combi"));
+        assertThat( mv.getViewName(),equalToIgnoringCase("admin/crear-combi"));
         assertThat(mv.getModel().get("error").toString(),equalToIgnoringCase(mensaje));
 
     }

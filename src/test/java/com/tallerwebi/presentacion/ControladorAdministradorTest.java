@@ -19,13 +19,16 @@ public class ControladorAdministradorTest {
 
     private ControladorAdministrador controladorAdministrador;
     private ServicioAdministrador servicioAdministrador;
+    private ServicioViaje servicioViaje;
 
     @BeforeEach
     public void init() {
 
         servicioAdministrador = Mockito.mock(ServicioAdministrador.class);
+        servicioViaje = Mockito.mock(ServicioViaje.class);
 
-        controladorAdministrador = new ControladorAdministrador(servicioAdministrador);
+
+        controladorAdministrador = new ControladorAdministrador(servicioAdministrador,servicioViaje);
     }
 
    /* @Test

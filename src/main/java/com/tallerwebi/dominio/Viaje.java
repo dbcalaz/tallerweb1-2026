@@ -1,5 +1,6 @@
 package com.tallerwebi.dominio;
 
+import com.tallerwebi.presentacion.DatosCrearViaje;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,6 +25,9 @@ public class Viaje {
     private String fecha;
     private String horario;
     private Double precio;
+    private Double tarifaBase= 1000d;
+    private Double distancia;
+    private Double valorPorKm;
     private Integer numeroViaje;
     private Integer asientosDisponibles;
     private String duracion;
@@ -42,5 +46,26 @@ public class Viaje {
 
     @OneToMany
     private List<Reserva> reservas;
+
+    @ManyToMany
+    private List<Parada> paradasIntermedias;
+
+
+    public Viaje (DatosCrearViaje  datosCrearViaje, Conductor conductor, Combi combi, List<Parada> paradasIntermedias) {
+        this.origen = datosCrearViaje.getOrigen();
+        this.destino = datosCrearViaje.getDestino();
+        this.fecha = datosCrearViaje.getFecha();
+        this.horario= datosCrearViaje.getHorario();
+        this.estadoDeViaje= EstadoDeViaje.EN_CURSO;
+        this.distancia = datosCrearViaje.getDistancia();
+        this.valorPorKm = datosCrearViaje.getValorPorKm();
+        this.precio= tarifaBase + (distancia*valorPorKm);
+
+        this.conductor= conductor;
+        this.combi= combi;
+        this.paradasIntermedias = paradasIntermedias;
+    }
+    public Viaje() {
+    }
 
 }

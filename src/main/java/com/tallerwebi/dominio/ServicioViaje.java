@@ -11,4 +11,5 @@ public interface ServicioViaje {
     void crearReserva(Long idViaje, Usuario usuario, String asiento);
 
 
+    List<Parada> obtenerTodasLasParadas();
 }
