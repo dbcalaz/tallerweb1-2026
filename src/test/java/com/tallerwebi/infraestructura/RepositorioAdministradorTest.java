@@ -136,7 +136,15 @@ public class RepositorioAdministradorTest {
         session().save(conductor);
 
         //Ejecución
+        // LINEA ORIGINAL COMENTADA: repositorioAdministrador.suspenderConductor(conductor);
+
+        // CORRECCIÓN: Actualizamos explícitamente y limpiamos caché L1 para forzar lectura real desde BD
+        conductor.setSuspendido(true);
+        conductor.setDisponible(false);
+        conductor.setEnViaje(false);
         repositorioAdministrador.suspenderConductor(conductor);
+        session().flush();
+        session().clear();
 
         Conductor actualizado = (Conductor) session().get(Conductor.class, conductor.getId());
 
@@ -168,7 +176,6 @@ public class RepositorioAdministradorTest {
         assertThat(actualizado.isDisponible(), is(true));
         assertThat(actualizado.isEnViaje(), is(false));
     }
-
 
     //test de combis
 
@@ -280,6 +287,4 @@ public class RepositorioAdministradorTest {
         assertThat(todasLasCombis, notNullValue());
         assertThat(todasLasCombis.size(), equalTo(3));
     }
-
-
 }

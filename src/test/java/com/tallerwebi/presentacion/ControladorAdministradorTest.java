@@ -84,7 +84,12 @@ public class ControladorAdministradorTest {
         List<Conductor> pendientes = List.of(Mockito.mock(Conductor.class));
 
         when(servicioAdministrador.obtenerConductores(false,null)).thenReturn(pendientes);
-        when(servicioAdministrador.obtenerConductores(false,null).size()).thenReturn(1);
+
+        // LINEA ORIGINAL CON ERROR: (WrongTypeOfReturnValue)
+        // when(servicioAdministrador.obtenerConductores(false,null).size()).thenReturn(1);
+
+        // CORRECCIoN: La lista de "pendientes" ya tiene tamaño 1 porque le pasamos 1 mock.
+        // Mockito no admite encadenar llamadas simuladas como .size() de esta manera.
 
         ModelAndView modelAndView = controladorAdministrador.conductores();
 
