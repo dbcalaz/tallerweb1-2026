@@ -3,7 +3,6 @@ package com.tallerwebi.infraestructura;
 import com.tallerwebi.dominio.*;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import java.util.List;
@@ -25,15 +24,28 @@ public class RepositorioViajeImpl implements RepositorioViaje {
         sessionFactory.getCurrentSession().save(viaje);
     }
 
+    // NOTA URGENTE: SOLUCION MOMENTANEA (SE TIENE QUE QUITAR PARA ANTES DEL SPRINT 5) SOBRE LOS RESULTADOS QUE APARECEN DUPLICADOS
+    @Override
+    public List<Viaje> buscarViajes(Long idOrigen, Long idDestino, String fecha, Integer pasajeros) {
+        String hql = "SELECT DISTINCT v FROM Viaje v " +
+                "WHERE v.origen.id = :idOrigen " +
+                "AND v.destino.id = :idDestino " +
+                "AND v.fecha = :fecha " +
+                "AND v.asientosDisponibles >= :pasajeros";
+
+        return sessionFactory.getCurrentSession()
+                .createQuery(hql, Viaje.class)
+                .setParameter("idOrigen", idOrigen)
+                .setParameter("idDestino", idDestino)
+                .setParameter("fecha", fecha)
+                .setParameter("pasajeros", pasajeros)
+                .getResultList();
+    }
+
     @Override
     @SuppressWarnings("unchecked")
-    public List<Viaje> buscarViajes(String origen, String destino, String fecha, Integer pasajeros) {
-        return sessionFactory.getCurrentSession().createCriteria(Viaje.class)
-                .add(Restrictions.eq("origen", origen))
-                .add(Restrictions.eq("destino", destino))
-                .add(Restrictions.eq("fecha", fecha))
-                .add(Restrictions.ge("asientosDisponibles", pasajeros))
-                .list();
+    public List<Parada> obtenerTodasLasParadas() {
+        return sessionFactory.getCurrentSession().createCriteria(Parada.class).list();
     }
 
     @Override
@@ -85,7 +97,7 @@ public class RepositorioViajeImpl implements RepositorioViaje {
     @Override
     @SuppressWarnings("unchecked")
     public List<Integer> obtenerAsientosOcupados(Long idViaje) {
-        String hql = "SELECT r.numeroAsiento FROM Reserva r WHERE r.viaje.id = :idViaje AND r.numeroAsiento IS NOT NULL";
+        String hql = "SELECT p.numeroAsiento FROM Pasajero p WHERE p.reserva.viaje.id = :idViaje AND p.numeroAsiento IS NOT NULL";
         return sessionFactory.getCurrentSession()
                 .createQuery(hql, Integer.class)
                 .setParameter("idViaje", idViaje)
@@ -94,9 +106,9 @@ public class RepositorioViajeImpl implements RepositorioViaje {
 
     @Override
     public void eliminarReserva(Long idReserva) {
-        sessionFactory.getCurrentSession()
-                .createQuery("DELETE FROM Reserva WHERE id = :idReserva")
-                .setParameter("idReserva", idReserva)
-                .executeUpdate();
+        Reserva reserva = sessionFactory.getCurrentSession().get(Reserva.class, idReserva);
+        if (reserva != null) {
+            sessionFactory.getCurrentSession().delete(reserva);
+        }
     }
 }

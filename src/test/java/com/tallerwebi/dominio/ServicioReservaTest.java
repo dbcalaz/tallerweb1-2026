@@ -49,18 +49,25 @@ public class ServicioReservaTest {
         Viaje viaje4 = new Viaje();
         viaje4.setConductor(conductor1);
 
-        Reserva reserva1 = new Reserva(viaje1,"3",2.500);
+        // CORRECCIÓN: Usamos el constructor vacío y seteamos los valores
+        Reserva reserva1 = new Reserva();
         reserva1.setViaje(viaje1);
-        Reserva reserva2 = new Reserva(viaje2,"2",5.500);
-        reserva2.setViaje(viaje2);
-        Reserva reserva3 = new Reserva(viaje3,"5",6.500);
-        reserva3.setViaje(viaje3);
-        Reserva reserva4 = new Reserva(viaje4,"6",4.500);
-        reserva4.setViaje(viaje4);
-
+        reserva1.setPrecioTotal(2.500);
         reserva1.setUsuario(usuario);
+
+        Reserva reserva2 = new Reserva();
+        reserva2.setViaje(viaje2);
+        reserva2.setPrecioTotal(5.500);
         reserva2.setUsuario(usuario);
+
+        Reserva reserva3 = new Reserva();
+        reserva3.setViaje(viaje3);
+        reserva3.setPrecioTotal(6.500);
         reserva3.setUsuario(usuario);
+
+        Reserva reserva4 = new Reserva();
+        reserva4.setViaje(viaje4);
+        reserva4.setPrecioTotal(4.500);
         reserva4.setUsuario(usuario);
 
         List<Reserva> reservas = new ArrayList<>();

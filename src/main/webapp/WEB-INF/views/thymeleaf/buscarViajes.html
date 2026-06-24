@@ -24,57 +24,58 @@
     </section>
 
     <section class="create-trip-layout" style="display: flex; justify-content: center;">
-        <article class="trip-form-card" style="width: 100%; max-width: 650px; min-height: auto; padding: 28px; padding-bottom: 40px;">
+        <article class="trip-form-card" style="width: 100%; max-width: 650px; padding: 28px; background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); height: auto !important; min-height: auto !important; max-height: none !important;">
             <form th:action="@{/procesar-busqueda}" method="POST" th:object="${datosBusqueda}" class="trip-form">
 
                 <div class="form-row two-columns-layout">
                     <div class="form-group">
-                        <label for="origen">ORIGEN</label>
+                        <label>ORIGEN</label>
                         <div class="field-wrapper">
                             <span class="material-symbols-outlined">location_on</span>
-                            <input th:field="*{origen}" id="origen" type="text" placeholder="¿Desde dónde sales?" required>
+                            <input id="origenTexto" type="text" list="listaParadas" placeholder="¿Desde dónde sales?" autocomplete="off" required>
+                            <input type="hidden" th:field="*{idOrigen}" id="idOrigenOculto">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="destino">DESTINO</label>
+                        <label>DESTINO</label>
                         <div class="field-wrapper">
                             <span class="material-symbols-outlined">near_me</span>
-                            <input th:field="*{destino}" id="destino" type="text" placeholder="¿A dónde vas?" required>
+                            <input id="destinoTexto" type="text" list="listaParadas" placeholder="¿A dónde vas?" autocomplete="off" required>
+                            <input type="hidden" th:field="*{idDestino}" id="idDestinoOculto">
                         </div>
                     </div>
                 </div>
 
+                <datalist id="listaParadas">
+                    <option th:each="parada : ${paradas}" th:value="${parada.nombre}" th:data-id="${parada.id}"></option>
+                </datalist>
+
                 <div class="form-row two-columns-layout">
                     <div class="form-group">
-                        <label for="fecha">FECHA DEL VIAJE</label>
+                        <label>FECHA DEL VIAJE</label>
                         <div class="field-wrapper">
                             <span class="material-symbols-outlined">calendar_today</span>
-                            <input th:field="*{fecha}" id="fecha" type="date">
+                            <input th:field="*{fecha}" id="fecha" type="date" required>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="pasajeros">PASAJEROS</label>
+                        <label>PASAJEROS</label>
                         <div class="field-wrapper">
                             <span class="material-symbols-outlined">group</span>
-                            <select th:field="*{pasajeros}" id="pasajeros" style="width:100%; border:none; outline:none; background:transparent; font-family: inherit; font-size: inherit; cursor: pointer;">
+                            <select th:field="*{pasajeros}" style="width:100%; border:none; background:transparent; font-family: inherit; font-size: inherit; cursor: pointer;">
                                 <option value="1">1 Pasajero</option>
                                 <option value="2">2 Pasajeros</option>
                                 <option value="3">3 Pasajeros</option>
-                                <option value="4">4 Pasajeros</option>
                             </select>
-                            <span class="material-symbols-outlined select-arrow">expand_more</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="form-actions" style="margin-top: 20px;">
-                    <button type="submit" class="btn-primary create-btn" style="width: 100%; justify-content: center; gap: 8px;">
-                        <span class="material-symbols-outlined">search</span>
-                        Buscar Viajes
-                    </button>
+                    <button type="submit" class="btn-primary create-btn" style="width: 100%; justify-content: center;">Buscar Viajes</button>
                 </div>
 
-                <p th:if="${error != null}" class="error-message" style="color: #dc3545; margin-top: 15px; font-weight: 600;" th:text="${error}"></p>
+                <p th:if="${error != null}" style="color: red; margin-top: 15px; font-weight: 600;" th:text="${error}"></p>
             </form>
         </article>
     </section>
@@ -83,5 +84,7 @@
 <div style="position: fixed; bottom: 0; left: 0; width: 100%; z-index: 1000;">
     <div th:replace="componentes/footer :: footer"></div>
 </div>
+
+<script th:src="@{/js/buscarViajes.js}"></script>
 </body>
 </html>

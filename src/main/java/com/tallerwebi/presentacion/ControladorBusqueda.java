@@ -1,16 +1,11 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.EstadoReserva;
-import com.tallerwebi.dominio.Reserva;
-import com.tallerwebi.dominio.ServicioViaje;
-import com.tallerwebi.dominio.Usuario;
-import com.tallerwebi.dominio.Viaje;
+import com.tallerwebi.dominio.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +24,7 @@ public class ControladorBusqueda {
     public ModelAndView irABuscarViaje() {
         ModelMap modelo = new ModelMap();
         modelo.put("datosBusqueda", new DatosBusqueda());
+        modelo.put("paradas", servicioViaje.obtenerTodasLasParadas());
         return new ModelAndView("buscarViajes", modelo);
     }
 
@@ -36,64 +32,85 @@ public class ControladorBusqueda {
     public ModelAndView procesarBusqueda(@ModelAttribute("datosBusqueda") DatosBusqueda datosBusqueda) {
         ModelMap modelo = new ModelMap();
 
-        if (esBusquedaInvalida(datosBusqueda)) {
-            modelo.put("error", "Debe ingresar obligatoriamente Origen, Destino, Fecha y cantidad de Pasajeros");
+        if (datosBusqueda.getIdOrigen() == null || datosBusqueda.getIdDestino() == null || datosBusqueda.getFecha().isEmpty()) {
+            modelo.put("error", "Debe ingresar Origen, Destino, Fecha y Pasajeros");
+            modelo.put("paradas", servicioViaje.obtenerTodasLasParadas());
             return new ModelAndView("buscarViajes", modelo);
         }
 
         List<Viaje> viajesEncontrados = servicioViaje.buscarViajes(datosBusqueda);
-
         modelo.put("viajes", viajesEncontrados);
-        modelo.put("origen", datosBusqueda.getOrigen());
-        modelo.put("destino", datosBusqueda.getDestino());
         modelo.put("pasajeros", datosBusqueda.getPasajeros());
         modelo.put("sinResultados", viajesEncontrados.isEmpty());
-
         return new ModelAndView("listadoViajes", modelo);
     }
 
+    // ==========================================================
+    // NOTA URGENTE en SOLICITAR ESPERA (Si el comentario sigue es porque aun no se soluciono): Unificarlo con mis compañeros con la parte administrador.
+    // ==========================================================
     @RequestMapping(path = "/solicitar-espera", method = RequestMethod.POST)
-    public ModelAndView solicitarViajeEnEspera(@RequestParam("origen") String origen, @RequestParam("destino") String destino) {
+    public ModelAndView solicitarViajeEnEspera() {
         ModelMap modelo = new ModelMap();
-        modelo.put("mensaje", "¡Solicitud registrada! Quedas a la espera de que un conductor acepte tu ruta de " + origen + " a " + destino);
+        modelo.put("mensaje", "¡Solicitud registrada! Quedas en lista de espera para esta ruta.");
         return new ModelAndView("home", modelo);
     }
 
     @RequestMapping(path = "/seleccionar-asiento", method = RequestMethod.GET)
-    public ModelAndView irASeleccionarAsiento(@RequestParam("idViaje") Long idViaje,
-                                              @RequestParam(value = "pasajeros", defaultValue = "1") Integer pasajeros) {
+    public ModelAndView irASeleccionarAsiento(@RequestParam("idViaje") Long idViaje, @RequestParam("pasajeros") Integer pasajeros) {
         ModelMap modelo = new ModelMap();
+        Viaje viaje = servicioViaje.buscarPorId(idViaje);
         modelo.put("idViaje", idViaje);
         modelo.put("pasajeros", pasajeros);
+        modelo.put("cantidadAsientos", viaje.getCombi().getCantidadDeAsientos());
         modelo.put("asientosOcupados", servicioViaje.obtenerAsientosOcupados(idViaje));
         return new ModelAndView("seleccionarAsiento", modelo);
     }
 
     @RequestMapping(path = "/confirmar-asiento", method = RequestMethod.POST)
     public ModelAndView confirmarAsiento(@RequestParam("idViaje") Long idViaje,
-                                         @RequestParam(value = "pasajeros", defaultValue = "1") Integer pasajeros,
-                                         @RequestParam(value = "asientosSeleccionados", required = false) String asientosSeleccionados,
+                                         @RequestParam("pasajerosCount") Integer pasajerosCount,
+                                         @RequestParam("asientosSeleccionados") String asientosSeleccionados,
+                                         @RequestParam("nombres") List<String> nombres,
+                                         @RequestParam("apellidos") List<String> apellidos,
+                                         @RequestParam("dnis") List<String> dnis,
+                                         @RequestParam("emails") List<String> emails,
                                          HttpServletRequest request) {
 
         Usuario usuarioLogueado = (Usuario) request.getSession().getAttribute("usuario");
-        if (usuarioLogueado == null) {
-            return new ModelAndView("redirect:/login");
-        }
+        if (usuarioLogueado == null) return new ModelAndView("redirect:/login");
 
         try {
-            Viaje viajeConfirmado = servicioViaje.buscarPorId(idViaje);
+            Viaje viaje = servicioViaje.buscarPorId(idViaje);
+            String[] arrayAsientos = asientosSeleccionados.split(",");
+            Reserva reserva = new Reserva();
+            reserva.setUsuario(usuarioLogueado);
+            reserva.setViaje(viaje);
+            reserva.setEstadoReserva(EstadoReserva.CONFIRMADA);
+            reserva.setPrecioTotal(viaje.getPrecio() * pasajerosCount);
+
+            for (int i = 0; i < pasajerosCount; i++) {
+                Pasajero p = new Pasajero();
+                p.setNombre(nombres.get(i));
+                p.setApellido(apellidos.get(i));
+                p.setDni(dnis.get(i));
+                p.setEmail(emails.get(i));
+                p.setNumeroAsiento(Integer.parseInt(arrayAsientos[i]));
+                p.setReserva(reserva);
+
+                reserva.getPasajeros().add(p);
+                servicioViaje.reservarAsiento(idViaje, usuarioLogueado);
+            }
+
+            servicioViaje.guardarReserva(reserva);
+
             List<Reserva> misReservas = obtenerReservasDeSesion(request);
-
-            registrarNuevasReservas(pasajeros, asientosSeleccionados, usuarioLogueado, viajeConfirmado, misReservas);
-
+            misReservas.add(reserva);
             request.getSession().setAttribute("misReservas", misReservas);
+
             return new ModelAndView("redirect:/viajeEnCurso");
 
         } catch (Exception e) {
-            ModelMap modelo = new ModelMap();
-            modelo.put("error", "Ocurrió un error: " + e.getMessage());
-            modelo.put("idViaje", idViaje);
-            return new ModelAndView("seleccionarAsiento", modelo);
+            return new ModelAndView("redirect:/buscar-viaje");
         }
     }
 
@@ -119,55 +136,22 @@ public class ControladorBusqueda {
 
         if (reservaACancelar != null) {
             misReservas.remove(reservaACancelar);
-            servicioViaje.liberarAsiento(idViaje);
+            int cantidadPasajeros = reservaACancelar.getPasajeros().size();
+            for (int i = 0; i < cantidadPasajeros; i++) {
+                servicioViaje.liberarAsiento(idViaje);
+            }
 
             if (reservaACancelar.getId() != null) {
                 servicioViaje.eliminarReserva(reservaACancelar.getId());
             }
-
             request.getSession().setAttribute("misReservas", misReservas);
         }
-
         return new ModelAndView("redirect:/viajeEnCurso");
-    }
-
-    @RequestMapping(path = "/inicio-exito", method = RequestMethod.GET)
-    public ModelAndView volverAlInicioConExito() {
-        ModelMap modelo = new ModelMap();
-        modelo.put("mensaje", "¡Tu viaje ha sido confirmado exitosamente!");
-        return new ModelAndView("home", modelo);
-    }
-
-    private boolean esBusquedaInvalida(DatosBusqueda datos) {
-        return datos.getOrigen() == null || datos.getOrigen().trim().isEmpty() ||
-                datos.getDestino() == null || datos.getDestino().trim().isEmpty() ||
-                datos.getFecha() == null || datos.getFecha().trim().isEmpty() ||
-                datos.getPasajeros() == null;
     }
 
     @SuppressWarnings("unchecked")
     private List<Reserva> obtenerReservasDeSesion(HttpServletRequest request) {
         List<Reserva> reservas = (List<Reserva>) request.getSession().getAttribute("misReservas");
         return (reservas != null) ? reservas : new ArrayList<>();
-    }
-
-    private void registrarNuevasReservas(Integer pasajeros, String asientosSeleccionados, Usuario usuario, Viaje viaje, List<Reserva> misReservas) {
-        String[] asientosArray = (asientosSeleccionados != null && !asientosSeleccionados.isEmpty())
-                ? asientosSeleccionados.split(",") : new String[0];
-
-        for (int i = 0; i < pasajeros; i++) {
-            servicioViaje.reservarAsiento(viaje.getId(), usuario);
-
-            Reserva nuevaReserva = new Reserva();
-            nuevaReserva.setUsuario(usuario);
-            nuevaReserva.setViaje(viaje);
-            nuevaReserva.setEstadoReserva(EstadoReserva.CONFIRMADA);
-
-            if (i < asientosArray.length) {
-                nuevaReserva.setNumeroAsiento(Integer.parseInt(asientosArray[i].trim()));
-            }
-            servicioViaje.guardarReserva(nuevaReserva);
-            misReservas.add(nuevaReserva);
-        }
     }
 }

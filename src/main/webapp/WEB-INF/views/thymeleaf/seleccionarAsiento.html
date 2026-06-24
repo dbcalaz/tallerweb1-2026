@@ -14,10 +14,10 @@
     <link rel="stylesheet" th:href="@{/css/components.css}">
     <style>
         .asiento {
-            width: 55px; height: 55px; border-radius: 12px; cursor: pointer;
+            width: 45px; height: 45px; border-radius: 10px; cursor: pointer;
             display: flex; align-items: center; justify-content: center;
             font-weight: bold; transition: 0.2s; border: 2px solid #ccc;
-            background-color: #ffffff; color: #333; margin: 5px; user-select: none;
+            background-color: #ffffff; color: #333; user-select: none;
         }
         .asiento.disponible:hover {
             background-color: #f0f0f0; border-color: var(--primary, #4f378a);
@@ -31,12 +31,23 @@
             border-color: #d0d0d0 !important; cursor: not-allowed !important;
         }
         .distribucion-combi {
-            background: #f8f9fa; border-radius: 24px; padding: 30px;
-            box-shadow: inset 0 2px 10px rgba(0,0,0,0.05); max-width: 360px; margin: 0 auto;
+            background: #f8f9fa; border-radius: 24px; padding: 20px;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.05); max-width: 320px; margin: 0 auto;
         }
         .cabina-conductor {
-            border-bottom: 2px dashed #ccc; padding-bottom: 15px; margin-bottom: 20px;
+            border-bottom: 2px dashed #ccc; padding-bottom: 12px; margin-bottom: 15px;
             display: flex; justify-content: space-between; color: #666; font-size: 14px;
+        }
+        /* Nueva grilla: 2 columnas de asientos (Izq / Der) y un pasillo en el medio */
+        .fila-asientos {
+            display: flex;
+            justify-content: center;
+            gap: 25px; /* Simula el espacio del pasillo */
+            margin-bottom: 8px;
+        }
+        .lado-asientos {
+            display: flex;
+            gap: 8px;
         }
     </style>
 </head>
@@ -46,38 +57,86 @@
 
 <main class="container my-5" style="padding-top: 60px;">
     <div class="row justify-content-center">
-        <div class="col-md-6 text-center">
-            <h2 class="fw-bold mb-3">Selecciona tus Asientos</h2>
-            <p class="text-muted mb-4">
+        <div class="col-md-10">
+            <h2 class="fw-bold mb-3 text-center">Selecciona tus Asientos</h2>
+            <p class="text-muted mb-4 text-center">
                 Elegí los lugares para tu viaje. Debes seleccionar exactamente <span id="max-pasajeros" class="fw-bold text-primary" th:text="${pasajeros}">1</span> asiento(s).
             </p>
 
-            <div class="distribucion-combi mb-4">
-                <div class="cabina-conductor">
-                    <span><span class="material-symbols-outlined align-middle">airline_seat_recline_normal</span> Conductor</span>
-                    <span>Puerta <span class="material-symbols-outlined align-middle">logout</span></span>
-                </div>
+            <form id="form-confirmar" th:action="@{/confirmar-asiento}" method="POST">
+                <input type="hidden" name="idViaje" th:value="${idViaje}"/>
+                <input type="hidden" name="pasajerosCount" th:value="${pasajeros}"/>
+                <input type="hidden" name="asientosSeleccionados" id="asientosSeleccionados" value=""/>
 
-                <div class="row row-cols-3 g-2 justify-content-center">
-                    <div th:each="num : ${#numbers.sequence(1, 12)}" class="col d-flex justify-content-center">
-                        <div th:text="${num}"
-                             th:classappend="${#lists.contains(asientosOcupados, num)} ? 'asiento ocupado' : 'asiento disponible'"
-                             th:attr="data-numero=${num}">
+                <div class="row g-4">
+
+                    <div class="col-md-6">
+                        <div class="text-start mb-4 p-4 border rounded-4 bg-white shadow-sm">
+                            <h5 class="fw-bold mb-3" style="color: var(--primary);"><span class="material-symbols-outlined align-middle me-1">person</span> Datos de los pasajeros</h5>
+
+                            <div th:each="i : ${#numbers.sequence(1, pasajeros)}" class="p-3 mb-3 border rounded-3 bg-light">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h6 class="fw-bold text-secondary mb-0">Pasajero <span th:text="${i}"></span></h6>
+                                    <span class="badge bg-primary px-3 py-2" style="background-color: #4f378a !important;">
+                                        Asiento asignado: <span class="fw-bolder" th:id="'asiento-elegido-' + ${i}">Aún no elegido</span>
+                                    </span>
+                                </div>
+                                <div class="row g-2">
+                                    <div class="col-md-6">
+                                        <label class="form-label text-muted small">Nombre</label>
+                                        <input type="text" class="form-control form-control-sm" name="nombres" placeholder="Ej: Juan" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label text-muted small">Apellido</label>
+                                        <input type="text" class="form-control form-control-sm" name="apellidos" placeholder="Ej: Pérez" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label text-muted small">DNI</label>
+                                        <input type="text" class="form-control form-control-sm" name="dnis" placeholder="Ej: 38444555" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label text-muted small">Email</label>
+                                        <input type="email" class="form-control form-control-sm" name="emails" placeholder="Ej: juan@mail.com" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="distribucion-combi mb-4">
+                            <div class="cabina-conductor px-3">
+                                <span><span class="material-symbols-outlined align-middle">airline_seat_recline_normal</span> Cabina</span>
+                                <span>Puerta <span class="material-symbols-outlined align-middle">logout</span></span>
+                            </div>
+
+                            <div class="d-flex flex-column align-items-center">
+                                <div th:each="fila : ${#numbers.sequence(0, 5)}" class="fila-asientos">
+                                    <div class="lado-asientos">
+                                        <div th:with="numIzq=${(fila * 2) + 1}"
+                                             th:text="${numIzq}"
+                                             th:classappend="${#lists.contains(asientosOcupados, numIzq)} ? 'asiento ocupado' : 'asiento disponible'"
+                                             th:attr="data-numero=${numIzq}">
+                                        </div>
+                                    </div>
+                                    <div class="lado-asientos">
+                                        <div th:with="numDer=${(fila * 2) + 2}"
+                                             th:text="${numDer}"
+                                             th:classappend="${#lists.contains(asientosOcupados, numDer)} ? 'asiento ocupado' : 'asiento disponible'"
+                                             th:attr="data-numero=${numDer}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="alert alert-info py-2 mb-4 text-center" id="feedback-asientos">
+                            Deberás seleccionar <span th:text="${pasajeros}">1</span> asiento(s).
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="alert alert-info py-2" id="feedback-asientos">
-                Deberás seleccionar <span th:text="${pasajeros}">1</span> asiento(s).
-            </div>
-
-            <form id="form-confirmar" th:action="@{/confirmar-asiento}" method="POST">
-                <input type="hidden" name="idViaje" th:value="${idViaje}"/>
-                <input type="hidden" name="pasajeros" th:value="${pasajeros}"/>
-                <input type="hidden" name="asientosSeleccionados" id="asientosSeleccionados" value=""/>
-
-                <button type="submit" class="btn btn-primary w-100 py-3 rounded-3 fw-bold mt-2" style="background-color: var(--primary);">
+                <button type="submit" class="btn btn-primary w-100 py-3 rounded-3 fw-bold mt-2 shadow" style="background-color: var(--primary);">
                     Confirmar asientos y reservar viaje
                 </button>
             </form>
@@ -85,46 +144,7 @@
     </div>
 </main>
 
-<script th:inline="javascript">
-    const maxPasajeros = /*[[${pasajeros}]]*/ 1;
-    let asientosSeleccionados = [];
-
-    const inputAsientos = document.getElementById('asientosSeleccionados');
-    const feedback = document.getElementById('feedback-asientos');
-
-    document.querySelectorAll('.asiento.disponible').forEach(asiento => {
-        asiento.addEventListener('click', function() {
-            const numero = parseInt(this.getAttribute('data-numero'));
-
-            if (this.classList.contains('seleccionado')) {
-                this.classList.remove('seleccionado');
-                asientosSeleccionados = asientosSeleccionados.filter(a => a !== numero);
-            } else {
-                if (asientosSeleccionados.length < maxPasajeros) {
-                    this.classList.add('seleccionado');
-                    asientosSeleccionados.push(numero);
-                } else {
-                    alert("Solo puedes seleccionar " + maxPasajeros + " asiento(s) porque fue la cantidad de pasajeros que buscaste.");
-                }
-            }
-
-            inputAsientos.value = asientosSeleccionados.join(',');
-
-            if (asientosSeleccionados.length > 0) {
-                feedback.innerText = "Has seleccionado los asientos: " + asientosSeleccionados.join(', ');
-            } else {
-                feedback.innerText = "Deberás seleccionar " + maxPasajeros + " asiento(s).";
-            }
-        });
-    });
-
-    document.getElementById('form-confirmar').addEventListener('submit', function(e) {
-        if (asientosSeleccionados.length !== maxPasajeros) {
-            e.preventDefault();
-            alert("Debes seleccionar exactamente " + maxPasajeros + " asiento(s) antes de confirmar.");
-        }
-    });
-</script>
+<script th:src="@{/js/seleccionarAsiento.js}"></script>
 
 <div th:replace="componentes/footer :: footer"></div>
 </body>
