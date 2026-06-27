@@ -56,7 +56,7 @@ public class RepositorioConductorImpl implements RepositorioConductor {
                 .createAlias("v.paradas", "vp")
                 .createAlias("vp.parada", "p")
                 .add(Restrictions.eq("c.id", idConductor))
-                .addOrder(Order.asc("vp.orden")) // ✅ AGREGADO
+                .addOrder(Order.asc("vp.orden"))
                 .list();
     }
 
@@ -81,7 +81,7 @@ public class RepositorioConductorImpl implements RepositorioConductor {
                 .createAlias("vp.parada", "p")
                 .add(Restrictions.eq("v.estadoDeViaje", EstadoDeViaje.DISPONIBLE))
                 .add(Restrictions.isNull("v.conductor"))
-                .addOrder(Order.asc("vp.orden")) // ✅ AGREGADO
+                .addOrder(Order.asc("vp.orden"))
                 .list();
     }
 

@@ -129,7 +129,7 @@
                                             th:classappend="${
                                             viaje.estadoDeViaje.name() == 'DISPONIBLE' ? ' success' :
                                             viaje.estadoDeViaje.name() == 'FINALIZADO' ? ' neutral' :
-                                            viaje.estadoDeViaje.name() == 'PENDIENTE' ? ' info' :
+                                            viaje.estadoDeViaje.name() == 'EN_CURSO' ? ' en-curso' :
                                             viaje.estadoDeViaje.name() == 'ASIGNADO' ? 'info' :
                                             ''
                                           }">
@@ -248,17 +248,17 @@
                 <div class="row">
                     <div>
                         <label>Fecha</label>
-                        <input type="date" th:field="*{fecha}">
+                        <input type="date" th:field="*{fecha}" required>
                     </div>
                     <div>
                         <label>Hora de salida</label>
-                        <input type="time" th:field="*{horario}">
+                        <input type="time" th:field="*{horario}" required>
                     </div>
                 </div>
                 <div class="row">
                     <div>
                         <label>Tipo de viaje</label>
-                        <select th:field="*{tipoDeViaje}">
+                        <select th:field="*{tipoDeViaje}" required>
                             <option value="">Seleccione el tipo de viaje</option>
                             <option th:each="tipo : ${tiposDeViaje}"
                                     th:value="${tipo.name()}"
@@ -268,12 +268,12 @@
                     </div>
                     <div>
                         <label>Tarifa base</label>
-                        <input type="number" placeholder="0.00" th:field="*{precio}">
+                        <input type="number" placeholder="0.00" th:field="*{precio}" required>
                     </div>
                 </div>
                 <div>
                     <label>Parada de origen</label>
-                    <select th:field="*{origenId}">
+                    <select th:field="*{origenId}" required>
                         <option value="">Seleccione una parada</option>
                         <option th:each="parada : ${paradas}"
                                 th:value="${parada.id}"
@@ -305,7 +305,7 @@
                 </template>
                 <div>
                     <label>Destino</label>
-                    <select th:field="*{destinoId}">
+                    <select th:field="*{destinoId}" required>
                         <option value="">Seleccione una parada</option>
                         <option th:each="parada : ${paradas}"
                                 th:value="${parada.id}"

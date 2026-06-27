@@ -92,14 +92,11 @@
             </article>
 
             <article class="driver-card driver-status-card">
-
-                <!-- VIAJE EN CURSO -->
                 <div th:if="${viajeEnCurso != null}">
                     <div>
                         <h3>Viaje en curso</h3>
                         <p>Actualmente estás realizando este viaje.</p>
                     </div>
-
                     <div class="driver-history-list" style="margin-top: 16px;">
                         <div class="driver-history-item">
                             <div>
@@ -109,7 +106,6 @@
                             <span th:text="${viajeEnCurso.tipoDeViaje}"></span>
                         </div>
                     </div>
-
                     <form th:action="@{/conductor/finalizar-viaje}" method="post" style="margin-top: 16px;">
                         <input type="hidden" name="idViaje" th:value="${viajeEnCurso.id}">
                         <button class="driver-primary-btn" type="submit">
@@ -118,14 +114,11 @@
                         </button>
                     </form>
                 </div>
-
-                <!-- VIAJE ASIGNADO -->
                 <div th:if="${viajeEnCurso == null and tieneViajeAsignado}">
                     <div>
                         <h3>Viaje asignado</h3>
                         <p>Ya aceptaste un viaje. Cuando estés listo, podés iniciarlo.</p>
                     </div>
-
                     <div class="driver-history-list" style="margin-top: 16px;">
                         <div class="driver-history-item" th:each="viaje : ${viajesAsignados}">
                             <div>
@@ -135,7 +128,6 @@
                             <span th:text="${viaje.tipoDeViaje}"></span>
                         </div>
                     </div>
-
                     <form th:each="viaje : ${viajesAsignados}" th:action="@{/conductor/empezar-viaje}" method="post">
                         <input type="hidden" name="idViaje" th:value="${viaje.id}">
                         <button class="driver-primary-btn" type="submit">
@@ -144,8 +136,6 @@
                         </button>
                     </form>
                 </div>
-
-                <!-- SIN VIAJES -->
                 <div th:if="${viajeEnCurso == null and !tieneViajeAsignado}">
                     <div>
                         <h3>Estado operativo</h3>
@@ -159,15 +149,12 @@
                 </div>
             </article>
         </section>
-
     <section class="driver-section">
     <div class="driver-section-header">
         <h3>Viajes disponibles</h3>
         <!-- <a href="#">Ver mapa de demanda</a>-->
     </div>
-
     <div class="driver-trips-grid" th:if="${viajesDisponibles != null and !viajesDisponibles.isEmpty()}">
-
         <article class="driver-trip-card" th:each="viaje : ${viajesDisponibles}">
             <div class="driver-trip-top">
                 <span class="driver-tag" th:text="${viaje.tipoDeViaje != null ? viaje.tipoDeViaje : 'VIAJE'}">
@@ -175,40 +162,33 @@
                 </span>
                 <h4 th:text="'$' + ${viaje.precio}">$0</h4>
             </div>
-
             <div class="driver-trip-route">
                 <div>
                     <span class="material-symbols-outlined">location_on</span>
                     <p>ORIGEN</p>
                     <strong th:text="${viaje.origen}">Origen</strong>
                 </div>
-
                 <div>
                     <span class="material-symbols-outlined">near_me</span>
                     <p>DESTINO</p>
                     <strong th:text="${viaje.destino}">Destino</strong>
                 </div>
             </div>
-
             <div class="driver-trip-actions">
                 <form th:action="@{/conductor/aceptar-viaje}" method="post">
                     <input type="hidden" name="idViaje" th:value="${viaje.id}">
                     <button class="driver-primary-btn" type="submit">Aceptar</button>
                 </form>
-
                 <button class="driver-icon-btn" type="button" th:title="'Fecha: ' + ${viaje.fecha} + ' | Horario: ' + ${viaje.horario} + ' | Duración: ' + ${viaje.duracion}">
                     <span class="material-symbols-outlined">info</span>
                 </button>
             </div>
         </article>
     </div>
-
     <div class="driver-empty-state" th:if="${viajesDisponibles == null or viajesDisponibles.isEmpty()}">
         <p>No hay viajes disponibles para aceptar en este momento.</p>
     </div>
 </section>
-
-
         <section class="driver-bottom-grid">
             <article class="driver-card">
                 <h3 class="driver-card-title">Próximas salidas</h3>
@@ -252,7 +232,6 @@
         </section>
     </main>
 </div>
-
 <footer>
     <p>© 2024 Bondiy. Inteligencia en Movimiento.</p>
     <div>
@@ -262,7 +241,6 @@
         <a href="#">Soporte 24/7</a>
     </div>
 </footer>
-
 <div id="modal-falla" class="modal-overlay">
     <div class="driver-modal">
         <div class="driver-modal-icon">

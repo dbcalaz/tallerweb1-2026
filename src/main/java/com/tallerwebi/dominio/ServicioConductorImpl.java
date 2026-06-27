@@ -122,7 +122,11 @@ public class ServicioConductorImpl implements ServicioConductor {
             throw new IllegalStateException("El viaje ya tiene un conductor asignado");
         }
 
+        Combi combi = repositorioConductor.obtenerCombiActivaPorIdConductor(conductor.getId());
+
         viaje.setConductor(conductor);
+        viaje.setCombi(combi);
+        viaje.setAsientosDisponibles(combi.getCantidadDeAsientos());
         viaje.setEstadoDeViaje(EstadoDeViaje.ASIGNADO);
 
         repositorioConductor.guardarViaje(viaje);
@@ -186,13 +190,13 @@ public class ServicioConductorImpl implements ServicioConductor {
 
         viaje.setEstadoDeViaje(EstadoDeViaje.FINALIZADO);
 
+        conductor.setEnViaje(false);
+
         if (conductor.isSuspensionPendiente()) {
-            conductor.setEnViaje(false);
             conductor.setDisponible(false);
             conductor.setSuspendido(true);
             conductor.setSuspensionPendiente(false);
         } else {
-            conductor.setEnViaje(false);
             conductor.setDisponible(true);
         }
 

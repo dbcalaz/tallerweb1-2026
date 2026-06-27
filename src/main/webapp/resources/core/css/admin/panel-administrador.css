@@ -212,6 +212,11 @@
     color: #555;
 }
 
+.en-curso {
+    background: #ffe2ae;
+    color: #a56a00;
+}
+
 .action-btn {
     border: none;
     background: none;
