@@ -1,8 +1,10 @@
 package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.*;
+import com.tallerwebi.presentacion.DatosCrearViaje;
 import com.tallerwebi.presentacion.DatosFiltro;
 import org.hibernate.Criteria;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -131,14 +133,6 @@ public class RepositorioAdministradorImpl implements RepositorioAdministrador {
     }
 
     /* Conductores*/
-    /*@Override
-    public List<Conductor> getConductores(Boolean estadoCuenta) {
-        return sessionFactory.getCurrentSession()
-                .createCriteria(Conductor.class)
-                .add(Restrictions.eq("cuentaHabilitada", estadoCuenta))
-                .list();
-    }*/
-
     @Override
     public List<Conductor> getConductores(Boolean cuentaHabilitada, String estado) {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Conductor.class);
@@ -205,9 +199,63 @@ public class RepositorioAdministradorImpl implements RepositorioAdministrador {
         sessionFactory.getCurrentSession().update(conductor);
     }
 
+    /*Viajes*/
+    @Override
+    public List<Parada> getParadas(){
+        return  sessionFactory.getCurrentSession().createCriteria(Parada.class)
+                .list();
+    }
 
+    @Override
+    public void insertNuevoViaje(Viaje viaje, DatosCrearViaje datos) {
+        Session session = sessionFactory.getCurrentSession();
 
+        session.save(viaje);
+        int orden = 1;
 
+        Parada origen = session.get(Parada.class, datos.getOrigenId());
+
+        ViajeParada vpOrigen = new ViajeParada();
+        vpOrigen.setViaje(viaje);
+        vpOrigen.setParada(origen);
+        vpOrigen.setOrden(orden++);
+
+        session.save(vpOrigen);
+
+        if (datos.getParadasIntermedias() != null) {
+
+            for (Long idParada : datos.getParadasIntermedias()) {
+
+                Parada parada = session.get(Parada.class, idParada);
+
+                ViajeParada vp = new ViajeParada();
+                vp.setViaje(viaje);
+                vp.setParada(parada);
+                vp.setOrden(orden++);
+
+                session.save(vp);
+            }
+        }
+
+        Parada destino = session.get(Parada.class, datos.getDestinoId());
+
+        ViajeParada vpDestino = new ViajeParada();
+        vpDestino.setViaje(viaje);
+        vpDestino.setParada(destino);
+        vpDestino.setOrden(orden);
+
+        session.save(vpDestino);
+    }
+
+    @Override
+    public List<Viaje> getViajes() {
+        return sessionFactory.getCurrentSession()
+                .createCriteria(Viaje.class, "v")
+                .createAlias("paradas", "p")
+                .createAlias("p.parada", "parada")
+                .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
+                .list();
+    }
 
 
 }

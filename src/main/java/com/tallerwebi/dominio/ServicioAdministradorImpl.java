@@ -1,5 +1,7 @@
 package com.tallerwebi.dominio;
 
+import com.tallerwebi.dominio.excepcion.ViajeException;
+import com.tallerwebi.presentacion.DatosCrearViaje;
 import com.tallerwebi.presentacion.DatosFiltro;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -110,6 +112,66 @@ public class ServicioAdministradorImpl implements ServicioAdministrador {
         repositorioAdministrador.reactivarConductor(conductor);
     }
 
+    /*Viajes*/
+    @Override
+    public List<Parada> obtenerParadas() {
+        return repositorioAdministrador.getParadas();
+    }
 
+    @Override
+    public List<Viaje> obtenerViajes() {
+        return repositorioAdministrador.getViajes();
+    }
+
+    @Override
+    @Transactional
+    public void crearNuevoViaje(DatosCrearViaje datos) {
+
+        if (datos == null) {
+            throw new ViajeException("No se recibieron los datos del viaje.");
+        }
+
+        if (datos.getFecha() == null) {
+            throw new ViajeException("Debe seleccionar una fecha.");
+        }
+
+        if (datos.getHorario() == null) {
+            throw new ViajeException("Debe seleccionar un horario.");
+        }
+
+        if (datos.getTipoDeViaje() == null) {
+            throw new ViajeException("Debe seleccionar un tipo de viaje.");
+        }
+
+        if (datos.getPrecio() == null || datos.getPrecio() <= 0) {
+            throw new ViajeException("Debe ingresar un precio válido.");
+        }
+
+        if (datos.getOrigenId() == null) {
+            throw new ViajeException("Debe seleccionar una parada de origen.");
+        }
+
+        if (datos.getDestinoId() == null) {
+            throw new ViajeException("Debe seleccionar una parada de destino.");
+        }
+
+        if (datos.getOrigenId().equals(datos.getDestinoId())) {
+            throw new ViajeException("La parada de origen y destino no pueden ser iguales.");
+        }
+
+        Viaje viaje = new Viaje();
+
+        viaje.setFecha(datos.getFecha());
+        viaje.setHorario(datos.getHorario());
+        viaje.setPrecio(datos.getPrecio());
+
+        viaje.setTipoDeViaje(datos.getTipoDeViaje());
+        viaje.setEstadoDeViaje(EstadoDeViaje.DISPONIBLE);
+
+        viaje.setCombi(null);
+        viaje.setConductor(null);
+
+        repositorioAdministrador.insertNuevoViaje(viaje, datos);
+    }
 
 }

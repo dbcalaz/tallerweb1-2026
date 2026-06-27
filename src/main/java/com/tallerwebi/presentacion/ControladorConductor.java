@@ -118,7 +118,6 @@ public class ControladorConductor {
         model.put("conductor", conductor);
         model.put("combi", combi);
         model.put("reporteFalla", new ReporteFalla());
-
         model.put("viajesDisponibles", viajesDisponibles);
         model.put("viajesAsignados", viajesAsignados);
         model.put("viajesFinalizados", viajesFinalizados);
@@ -137,7 +136,6 @@ public class ControladorConductor {
             model.put("mensaje", mensaje);
             request.getSession().removeAttribute("mensajeConductor");
         }
-
         return new ModelAndView("home-conductor", model);
     }
 

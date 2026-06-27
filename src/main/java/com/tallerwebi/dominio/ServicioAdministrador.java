@@ -1,5 +1,6 @@
 package com.tallerwebi.dominio;
 
+import com.tallerwebi.presentacion.DatosCrearViaje;
 import com.tallerwebi.presentacion.DatosFiltro;
 
 import java.util.List;
@@ -28,5 +29,10 @@ public interface ServicioAdministrador {
 
     void actualizarEstadoCombi(Long idCombi, EstadoDeCombi estado);
 
+    /*Viajes*/
+    List<Parada> obtenerParadas();
 
+    void crearNuevoViaje(DatosCrearViaje datos);
+
+    List<Viaje> obtenerViajes();
 }

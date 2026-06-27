@@ -14,6 +14,7 @@ import static org.hamcrest.Matchers.equalToIgnoringCase;
 import static org.mockito.Mockito.*;
 
 public class ControladorBusquedaTest {
+
     private ControladorBusqueda controladorBusqueda;
     private ServicioViaje servicioViajeMock;
 
