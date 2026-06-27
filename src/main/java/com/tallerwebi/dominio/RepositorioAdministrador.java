@@ -1,5 +1,6 @@
 package com.tallerwebi.dominio;
 
+import com.tallerwebi.presentacion.DatosCrearViaje;
 import com.tallerwebi.presentacion.DatosFiltro;
 
 import java.util.List;
@@ -27,8 +28,6 @@ public interface RepositorioAdministrador {
 
     /* Conductores*/
 
-    //List<Conductor> getConductores(Boolean estadoCuenta);
-
     List<Conductor> getConductores(Boolean cuentaHabilitada, String estado);
 
     Conductor buscarConductorPorId(Long idConductor);
@@ -39,5 +38,10 @@ public interface RepositorioAdministrador {
 
     void reactivarConductor(Conductor conductor);
 
+    /*Viajes*/
+    List<Parada> getParadas();
 
+    void insertNuevoViaje(Viaje viaje, DatosCrearViaje datos);
+
+    List<Viaje> getViajes();
 }

@@ -51,28 +51,37 @@ public class RepositorioConductorImpl implements RepositorioConductor {
     @Override
     public List<Viaje> obtenerViajesDelConductor(Long idConductor) {
         return (List<Viaje>) sessionFactory.getCurrentSession()
-                .createCriteria(Viaje.class)
-                .createAlias("conductor", "c")
+                .createCriteria(Viaje.class, "v")
+                .createAlias("v.conductor", "c")
+                .createAlias("v.paradas", "vp")
+                .createAlias("vp.parada", "p")
                 .add(Restrictions.eq("c.id", idConductor))
+                .addOrder(Order.asc("vp.orden")) // ✅ AGREGADO
                 .list();
     }
 
     @Override
     public List<Viaje> obtenerViajesDelConductorPorEstado(Long idConductor, EstadoDeViaje estado) {
         return (List<Viaje>) sessionFactory.getCurrentSession()
-                .createCriteria(Viaje.class)
-                .createAlias("conductor", "c")
+                .createCriteria(Viaje.class, "v")
+                .createAlias("v.conductor", "c")
+                .createAlias("v.paradas", "vp")
+                .createAlias("vp.parada", "p")
                 .add(Restrictions.eq("c.id", idConductor))
-                .add(Restrictions.eq("estadoDeViaje", estado))
+                .add(Restrictions.eq("v.estadoDeViaje", estado))
+                .addOrder(Order.asc("vp.orden")) // ✅ AGREGADO
                 .list();
     }
 
     @Override
     public List<Viaje> obtenerViajesDisponiblesParaConductor() {
         return (List<Viaje>) sessionFactory.getCurrentSession()
-                .createCriteria(Viaje.class)
-                .add(Restrictions.eq("estadoDeViaje", EstadoDeViaje.DISPONIBLE))
-                .add(Restrictions.isNull("conductor"))
+                .createCriteria(Viaje.class, "v")
+                .createAlias("v.paradas", "vp")
+                .createAlias("vp.parada", "p")
+                .add(Restrictions.eq("v.estadoDeViaje", EstadoDeViaje.DISPONIBLE))
+                .add(Restrictions.isNull("v.conductor"))
+                .addOrder(Order.asc("vp.orden")) // ✅ AGREGADO
                 .list();
     }
 
@@ -87,10 +96,12 @@ public class RepositorioConductorImpl implements RepositorioConductor {
     @Override
     public Viaje obtenerViajeEnCursoDelConductor(Long idConductor) {
         return (Viaje) sessionFactory.getCurrentSession()
-                .createCriteria(Viaje.class)
-                .createAlias("conductor", "c")
+                .createCriteria(Viaje.class, "v")
+                .createAlias("v.conductor", "c")
+                .createAlias("v.paradas", "vp")
+                .createAlias("vp.parada", "p")
                 .add(Restrictions.eq("c.id", idConductor))
-                .add(Restrictions.eq("estadoDeViaje", EstadoDeViaje.EN_CURSO))
+                .add(Restrictions.eq("v.estadoDeViaje", EstadoDeViaje.EN_CURSO))
                 .uniqueResult();
     }
 

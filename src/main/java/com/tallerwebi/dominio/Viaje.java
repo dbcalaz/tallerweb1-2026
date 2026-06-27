@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @Getter
@@ -15,16 +17,19 @@ public class Viaje {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String origen;
-    private String destino;
-    private String fecha;
-    private String horario;
+    @OneToMany(mappedBy = "viaje", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OrderBy("orden ASC")
+    private List<ViajeParada> paradas;
+    private LocalDate fecha;
+    private LocalTime horario;
     private Double precio;
     private Integer numeroViaje;
     private Integer asientosDisponibles;
     private String duracion;
-    private String tipoServicio;
-    private String tipoDeViaje;
+    //private String tipoServicio;
+
+    @Enumerated(EnumType.STRING)
+    private TipoDeViaje tipoDeViaje;
 
     @Enumerated(EnumType.STRING)
     private EstadoDeViaje estadoDeViaje;
@@ -39,4 +44,14 @@ public class Viaje {
 
     @OneToMany
     private List<Reserva> reservas;
+
+    public String getOrigen() {
+        if (paradas == null || paradas.isEmpty()) return null;
+        return paradas.get(0).getParada().getNombre();
+    }
+
+    public String getDestino() {
+        if (paradas == null || paradas.isEmpty()) return null;
+        return paradas.get(paradas.size() - 1).getParada().getNombre();
+    }
 }

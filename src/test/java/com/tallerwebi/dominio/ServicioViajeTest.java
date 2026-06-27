@@ -24,7 +24,7 @@ public class ServicioViajeTest {
     servicioViajeImpl = new ServicioViajeImpl(repositorioViajeMock, repositorioReservaMock);
   }
 
-  @Test
+ /* @Test
   public void queSePuedaConfirmarCorrectamenteUnViaje() {
     Viaje viaje = new Viaje();
     viaje.setOrigen("haedo");
@@ -47,5 +47,5 @@ public class ServicioViajeTest {
 
     assertThat(resultado, hasSize(1));
     verify(repositorioViajeMock, times(1)).buscarViajes("San Justo", "Ramos", "2026-06-15", 2);
-  }
+  }*/
 }

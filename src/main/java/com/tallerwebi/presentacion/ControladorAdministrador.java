@@ -1,15 +1,13 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.Combi;
-import com.tallerwebi.dominio.Conductor;
-import com.tallerwebi.dominio.EstadoDeCombi;
-import com.tallerwebi.dominio.ReporteFalla;
-import com.tallerwebi.dominio.ServicioAdministrador;
+import com.tallerwebi.dominio.*;
+import com.tallerwebi.dominio.excepcion.ViajeException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -57,7 +55,6 @@ public class ControladorAdministrador {
 
        return new ModelAndView("admin/combis-listas", model);
    }
-
 
     @RequestMapping(path = "/admin/combis/cambiar-estado", method = RequestMethod.POST)
     public ModelAndView cambiarEstadoCombi(@RequestParam("idCombi") Long idCombi,
@@ -123,8 +120,41 @@ public class ControladorAdministrador {
 
     /* Viajes*/
     @GetMapping("/viajes")
-    public ModelAndView viajes() {
-        return new ModelAndView("admin/viajes");
+    public ModelAndView viajes() { return new ModelAndView("redirect:/admin/viajes");}
+
+    @RequestMapping( path = "/admin/viajes")
+    public ModelAndView vistaViajes() {
+        ModelMap model = new ModelMap();
+
+        List<Parada> paradas = servicioAdministrador.obtenerParadas();
+        List<Viaje> viajes = servicioAdministrador.obtenerViajes();
+
+        model.put("datosCrearViaje", new DatosCrearViaje());
+        model.put("paradas", paradas);
+        model.put("tiposDeViaje", TipoDeViaje.values());
+        model.put("viajes", viajes);
+
+        return new ModelAndView("admin/viajes", model);
+    }
+
+    @RequestMapping(path = "/crear-viaje", method = RequestMethod.POST)
+    public ModelAndView crearNuevoViaje(
+            @ModelAttribute("datosCrearViaje") DatosCrearViaje datos) {
+
+        try {
+            servicioAdministrador.crearNuevoViaje(datos);
+            return new ModelAndView("redirect:/admin/viajes");
+
+        } catch (ViajeException e) {
+
+            ModelMap model = new ModelMap();
+            model.put("error", e.getMessage());
+            model.put("datosCrearViaje", datos);
+            model.put("paradas", servicioAdministrador.obtenerParadas());
+            model.put("tiposDeViaje", TipoDeViaje.values());
+
+            return new ModelAndView("admin/viajes", model);
+        }
     }
 
 

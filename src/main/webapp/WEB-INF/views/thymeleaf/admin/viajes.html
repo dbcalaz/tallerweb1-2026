@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,14 +22,14 @@
                 <p>Supervisa y coordina la logística en tiempo real.</p>
             </div>
             <div class="admin-actions">
-                <button class="primary-btn">
+                <button class="primary-btn" id="open-modal">
                     <span class="material-symbols-outlined">add_road</span>
                     Programar viaje
                 </button>
             </div>
         </header>
         <section class="page">
-            <div class="section">
+            <!--<div class="section">
                 <div class="grid-3">
                     <div class="card">
                         <div class="card-header">
@@ -82,26 +82,24 @@
                         </div>
                         <div class="driver-modal-field">
                             <label>Conductor</label>
-                            <input type="text"
-                                    placeholder="Buscar conductor">
+                            <input type="text" placeholder="Buscar conductor">
                         </div>
                         <button class="btn-secondary">
                             Filtrar
                         </button>
                     </div>
                 </div>
-            </div>
+            </div>-->
             <div class="section">
                 <div class="admin-table-card">
                     <div class="table-header">
                         <h3>Viajes registrados</h3>
-                        <div class="table-search">
+                        <!--<div class="table-search">
                             <span class="material-symbols-outlined">
                                 search
                             </span>
-                            <input type="text"
-                                    placeholder="Buscar viaje">
-                        </div>
+                            <input type="text" placeholder="Buscar viaje">
+                        </div>-->
                     </div>
                     <div class="table-wrapper">
                         <table>
@@ -117,15 +115,24 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td>Terminal Central</td>
-                                <td>Aeropuerto</td>
-                                <td>12/10/2026 08:30</td>
-                                <td>Ricardo Mendoza</td>
-                                <td>Mercedes O500</td>
+                            <tr th:each="viaje : ${viajes}">
+                                <td th:text="${viaje.paradas[0].parada.nombre}"></td>
+                                <td th:text="${viaje.paradas[viaje.paradas.size() - 1].parada.nombre}"></td>
+                                <td th:text="${viaje.fecha + ' ' + viaje.horario}"></td>
+                                <td th:if="${viaje.conductor != null}" th:text="${viaje.conductor.nombre}"></td>
+                                <td th:if="${viaje.conductor == null}">Sin asignar</td>
+                                <td th:if="${viaje.combi != null}" th:text="${viaje.combi.marca}"></td>
+                                <td th:if="${viaje.combi == null}">Sin asignar</td>
                                 <td>
-                                    <span class="status info">
-                                        En curso
+                                    <span class="status"
+                                            th:text="${viaje.estadoDeViaje}"
+                                            th:classappend="${
+                                            viaje.estadoDeViaje.name() == 'DISPONIBLE' ? ' success' :
+                                            viaje.estadoDeViaje.name() == 'FINALIZADO' ? ' neutral' :
+                                            viaje.estadoDeViaje.name() == 'PENDIENTE' ? ' info' :
+                                            viaje.estadoDeViaje.name() == 'ASIGNADO' ? 'info' :
+                                            ''
+                                          }">
                                     </span>
                                 </td>
                                 <td>
@@ -148,7 +155,7 @@
                                     </div>
                                 </td>
                             </tr>
-                            <tr>
+                            <!--<tr>
                                 <td>Plaza Mayo</td>
                                 <td>San Telmo</td>
                                 <td>12/10/2026 14:15</td>
@@ -199,11 +206,11 @@
                                         </button>
                                     </div>
                                 </td>
-                            </tr>
+                            </tr>-->
                             </tbody>
                         </table>
                     </div>
-                    <div class="pagination">
+                    <!--<div class="pagination">
                         <span>
                             Mostrando 1 a 3 de 128 viajes
                         </span>
@@ -214,11 +221,155 @@
                             <button>3</button>
                             <button>›</button>
                         </div>
-                    </div>
+                    </div>-->
                 </div>
             </div>
         </section>
     </main>
 </div>
+<!-- MODAL PROGRAMAR VIAJE -->
+<div id="schedule-trip-modal" class="modal-overlay hidden">
+    <div class="modal">
+
+        <div class="modal-header">
+            <div class="modal-title">
+                <span class="material-symbols-outlined">add_road</span>
+                <h3>Programar Nuevo Viaje</h3>
+            </div>
+            <button type="button" class="modal-close" id="close-modal-x">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form id="trip-form"
+                    method="POST"
+                    th:action="@{/crear-viaje}"
+                    th:object="${datosCrearViaje}">
+                <div class="row">
+                    <div>
+                        <label>Fecha</label>
+                        <input type="date" th:field="*{fecha}">
+                    </div>
+                    <div>
+                        <label>Hora de salida</label>
+                        <input type="time" th:field="*{horario}">
+                    </div>
+                </div>
+                <div class="row">
+                    <div>
+                        <label>Tipo de viaje</label>
+                        <select th:field="*{tipoDeViaje}">
+                            <option value="">Seleccione el tipo de viaje</option>
+                            <option th:each="tipo : ${tiposDeViaje}"
+                                    th:value="${tipo.name()}"
+                                    th:text="${tipo.descripcion}">
+                            </option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Tarifa base</label>
+                        <input type="number" placeholder="0.00" th:field="*{precio}">
+                    </div>
+                </div>
+                <div>
+                    <label>Parada de origen</label>
+                    <select th:field="*{origenId}">
+                        <option value="">Seleccione una parada</option>
+                        <option th:each="parada : ${paradas}"
+                                th:value="${parada.id}"
+                                th:text="${parada.nombre}">
+                        </option>
+                    </select>
+                </div>
+                <div class="stops-header">
+                    <label>Paradas intermedias</label>
+                    <button type="button" id="add-stop" class="btn-link">
+                        <span class="material-symbols-outlined">add</span>
+                        Agregar parada
+                    </button>
+                </div>
+                <div id="stops-container"></div>
+                <template id="template-stop">
+                    <div class="stop-item">
+                        <select name="paradasIntermedias">
+                            <option value="">Seleccione una parada</option>
+                            <option th:each="parada : ${paradas}"
+                                    th:value="${parada.id}"
+                                    th:text="${parada.nombre}">
+                            </option>
+                        </select>
+                        <button type="button" class="remove-stop">
+                            <span class="material-symbols-outlined">delete</span>
+                        </button>
+                    </div>
+                </template>
+                <div>
+                    <label>Destino</label>
+                    <select th:field="*{destinoId}">
+                        <option value="">Seleccione una parada</option>
+                        <option th:each="parada : ${paradas}"
+                                th:value="${parada.id}"
+                                th:text="${parada.nombre}">
+                        </option>
+                    </select>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+             <button type="submit" form="trip-form" class="btn-primary">
+                Programar viaje
+            </button>
+            <button type="button" class="btn-secondary" id="cancel-modal">
+                Cancelar
+            </button>
+        </div>
+    </div>
+</div>
+<script>
+const modal = document.getElementById("schedule-trip-modal");
+const openBtn = document.getElementById("open-modal");
+const closeX = document.getElementById("close-modal-x");
+const cancelBtn = document.getElementById("cancel-modal");
+
+openBtn.addEventListener("click", () => {
+    modal.classList.remove("hidden");
+});
+
+closeX.addEventListener("click", () => {
+    modal.classList.add("hidden");
+});
+
+cancelBtn.addEventListener("click", () => {
+    modal.classList.add("hidden");
+});
+
+modal.addEventListener("click", (e) => {
+    if (e.target === modal) {
+        modal.classList.add("hidden");
+    }
+});
+
+document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+        modal.classList.add("hidden");
+    }
+});
+
+const stopsContainer = document.getElementById("stops-container");
+const addStopBtn = document.getElementById("add-stop");
+const templateStop = document.getElementById("template-stop");
+
+addStopBtn.addEventListener("click", () => {
+
+    const stop = templateStop.content.cloneNode(true);
+
+    stop.querySelector(".remove-stop").addEventListener("click", function () {
+        this.closest(".stop-item").remove();
+    });
+
+    stopsContainer.appendChild(stop);
+
+});
+</script>
 </body>
 </html>

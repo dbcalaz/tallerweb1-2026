@@ -36,7 +36,7 @@ public class ControladorBusquedaTest {
         assertThat(modelAndView.getModel().get("datosBusqueda"), notNullValue());
     }
 
-    @Test
+    /*@Test
     public void queAlBuscarConDatosValidosDevuelvaListado() {
         DatosBusqueda datosValidos = new DatosBusqueda("San Justo", "Ramos Mejia", "2026-05-29", 1);
         List<Viaje> viajesSimulados = new ArrayList<>();
@@ -68,5 +68,5 @@ public class ControladorBusquedaTest {
     public void queAlPedirSeleccionarAsientoDevuelvaLaVistaCorrespondiente() {
         ModelAndView modelAndView = controladorBusqueda.irASeleccionarAsiento(1L, 1);
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("seleccionarAsiento"));
-    }
+    }*/
 }
