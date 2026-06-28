@@ -38,6 +38,13 @@ public class ControladorConductor {
             request.getSession().removeAttribute("errorLoginConductor");
         }
 
+        String mensaje = (String) request.getSession().getAttribute("mensajeLoginConductor");
+
+        if (mensaje != null) {
+            model.put("mensaje", mensaje);
+            request.getSession().removeAttribute("mensajeLoginConductor");
+        }
+
         return new ModelAndView("login-conductor", model);
     }
 
@@ -240,13 +247,19 @@ public class ControladorConductor {
     }
 
     private ModelAndView redirigirLoginConSesionCerrada(HttpServletRequest request) {
-        request.getSession().invalidate();
 
+        String mensaje = (String) request.getSession().getAttribute("mensajeConductor");
+        request.getSession().invalidate();
         request.getSession(true).setAttribute(
                 "errorLoginConductor",
                 "Tu cuenta fue suspendida. Contactate con un administrador."
         );
-
+        if (mensaje != null) {
+            request.getSession().setAttribute(
+                    "mensajeLoginConductor",
+                    mensaje
+            );
+        }
         return new ModelAndView("redirect:/login-conductor");
     }
 }
