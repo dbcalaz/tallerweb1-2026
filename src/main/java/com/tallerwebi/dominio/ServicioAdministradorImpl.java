@@ -87,6 +87,7 @@ public class ServicioAdministradorImpl implements ServicioAdministrador {
         }
 
         conductor.setCuentaHabilitada(true);
+        conductor.setEstadoConductor(EstadoConductor.DISPONIBLE);
         repositorioAdministrador.actualizarConductor(conductor);
 
         AsignacionCombiConductor asignacion = new AsignacionCombiConductor();

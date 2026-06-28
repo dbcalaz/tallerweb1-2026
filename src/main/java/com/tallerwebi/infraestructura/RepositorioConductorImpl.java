@@ -1,6 +1,7 @@
 package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.*;
+import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -55,7 +56,8 @@ public class RepositorioConductorImpl implements RepositorioConductor {
                 .createAlias("vp.parada", "p")
                 .add(Restrictions.eq("c.id", idConductor))
                 .add(Restrictions.eq("v.estadoDeViaje", estado))
-                .addOrder(Order.asc("vp.orden")) // ✅ AGREGADO
+                .addOrder(Order.asc("vp.orden"))
+                .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
                 .list();
     }
 
@@ -68,6 +70,7 @@ public class RepositorioConductorImpl implements RepositorioConductor {
                 .add(Restrictions.eq("v.estadoDeViaje", EstadoDeViaje.DISPONIBLE))
                 .add(Restrictions.isNull("v.conductor"))
                 .addOrder(Order.asc("vp.orden"))
+                .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
                 .list();
     }
 
@@ -88,6 +91,7 @@ public class RepositorioConductorImpl implements RepositorioConductor {
                 .createAlias("vp.parada", "p")
                 .add(Restrictions.eq("c.id", idConductor))
                 .add(Restrictions.eq("v.estadoDeViaje", EstadoDeViaje.EN_CURSO))
+                .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
                 .uniqueResult();
     }
 
