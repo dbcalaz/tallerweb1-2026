@@ -25,4 +25,6 @@ public interface RepositorioConductor {
     void guardarFalla(ReporteFalla reporteFalla);
 
     void actualizarConductor(Conductor conductor);
+
+    void actualizarEstadoCombi(Combi combiEnViaje);
 }

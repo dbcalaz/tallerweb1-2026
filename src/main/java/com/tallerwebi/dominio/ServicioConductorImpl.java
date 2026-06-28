@@ -143,21 +143,25 @@ public class ServicioConductorImpl implements ServicioConductor {
             throw new IllegalArgumentException("No existe el conductor");
         }
 
+        Combi combiEnViaje = repositorioConductor.obtenerCombiActivaPorIdConductor(conductor.getId());
+
         if (viaje.getEstadoDeViaje() != EstadoDeViaje.ASIGNADO) {
             throw new IllegalStateException("Solo se puede iniciar un viaje asignado");
         }
 
-        Viaje viajeEnCurso = repositorioConductor.obtenerViajeEnCursoDelConductor(idConductor);
+        Viaje viajeEnCurso = repositorioConductor.obtenerViajeEnCursoDelConductor(conductor.getId());
+
         if (viajeEnCurso != null && !viajeEnCurso.getId().equals(idViaje)) {
             throw new IllegalStateException("Ya tenés otro viaje en curso");
         }
 
         conductor.setEstadoConductor(EstadoConductor.EN_VIAJE);
-
         viaje.setEstadoDeViaje(EstadoDeViaje.EN_CURSO);
+        combiEnViaje.setEstadoDeCombi(EstadoDeCombi.EN_VIAJE);
 
         repositorioConductor.actualizarConductor(conductor);
         repositorioConductor.guardarViaje(viaje);
+        repositorioConductor.actualizarEstadoCombi(combiEnViaje);
     }
 
     @Override
@@ -177,11 +181,14 @@ public class ServicioConductorImpl implements ServicioConductor {
             throw new IllegalArgumentException("No existe el conductor");
         }
 
+        Combi combiEnViaje = repositorioConductor.obtenerCombiActivaPorIdConductor(conductor.getId());
+
         if (viaje.getEstadoDeViaje() != EstadoDeViaje.EN_CURSO) {
             throw new IllegalStateException("Solo se puede finalizar un viaje en curso");
         }
 
         viaje.setEstadoDeViaje(EstadoDeViaje.FINALIZADO);
+        combiEnViaje.setEstadoDeCombi(EstadoDeCombi.DISPONIBLE);
 
         if (conductor.getEstadoConductor().equals(EstadoConductor.SUSPENSION_PENDIENTE)) {
             conductor.setEstadoConductor(EstadoConductor.SUSPENDIDO);
@@ -191,6 +198,7 @@ public class ServicioConductorImpl implements ServicioConductor {
 
         repositorioConductor.actualizarConductor(conductor);
         repositorioConductor.guardarViaje(viaje);
+        repositorioConductor.actualizarEstadoCombi(combiEnViaje);
     }
 
     @Override
@@ -211,7 +219,11 @@ public class ServicioConductorImpl implements ServicioConductor {
             throw new IllegalArgumentException("La descripción de la falla es obligatoria");
         }
 
+        Combi combiConFalla = reporteFalla.getCombi();
+        combiConFalla.setEstadoDeCombi(EstadoDeCombi.EN_MANTENIMIENTO);
+
         repositorioConductor.guardarFalla(reporteFalla);
+        repositorioConductor.actualizarEstadoCombi(combiConFalla);
     }
 
     private void validarIdConductor(Long idConductor) {

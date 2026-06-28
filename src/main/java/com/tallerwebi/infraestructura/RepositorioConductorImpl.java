@@ -114,6 +114,11 @@ public class RepositorioConductorImpl implements RepositorioConductor {
     }
 
     @Override
+    public void actualizarEstadoCombi(Combi combiEnViaje) {
+        sessionFactory.getCurrentSession().saveOrUpdate(combiEnViaje);
+    }
+
+    @Override
     public void guardarFalla(ReporteFalla reporteFalla) {
         sessionFactory.getCurrentSession().save(reporteFalla);
     }

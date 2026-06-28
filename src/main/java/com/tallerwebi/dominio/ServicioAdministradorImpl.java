@@ -29,8 +29,13 @@ public class ServicioAdministradorImpl implements ServicioAdministrador {
     @Override
     public void resolverFalla(Long idReporte) {
         ReporteFalla reporte = repositorioAdministrador.getReporteFallePorIdReporte(idReporte);
+        Combi combi = reporte.getCombi();
+
         reporte.setEstadoReporte(EstadoReporteFalla.RESUELTO);
+        combi.setEstadoDeCombi(EstadoDeCombi.DISPONIBLE);
+
         repositorioAdministrador.updateFalla(reporte);
+        repositorioAdministrador.actualizarCombi(combi);
     }
 
     @Override

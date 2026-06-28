@@ -59,12 +59,12 @@
         En Viaje
       </a>
 
-      <button type="button" class="filter" onclick="toggleFiltroAvanzado()">
+      <!--<button type="button" class="filter" onclick="toggleFiltroAvanzado()">
         <span class="material-symbols-outlined" style="font-size: 18px; vertical-align: middle;">search</span> Buscar
-      </button>
+      </button>-->
     </div>
 
-    <div id="panelFiltros">
+    <!--<div id="panelFiltros">
       <form th:action="@{/admin/combis}" method="GET" style="display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: flex-end;">
 
         <div class="driver-modal-field" style="margin: 0; flex: 1; min-width: 150px;">
@@ -97,7 +97,7 @@
           <a th:href="@{/admin/combis}" class="btn-primary">Limpiar</a>
         </div>
       </form>
-    </div>
+    </div>-->
 
     <div class="combis-grid">
       <div class="combi-card" th:each="combi : ${listaCombis}">
@@ -127,7 +127,7 @@
                 <i class="material-symbols-outlined">distance</i><span th:text="${combi.kilometros}">42</span> km
             </span>
           </div>
-          <div class="combi-actions">
+          <!--<div class="combi-actions">
             <button>Detalle</button>
             <button type="button"
                     class="btn-abrir-modal-editar"
@@ -136,7 +136,7 @@
               Editar
             </button>
             <button>Asignar</button>
-          </div>
+          </div>-->
         </div>
       </div>
 
@@ -150,7 +150,7 @@
       <div class="fallas-header">
         <div>
           <h2>Fallas reportadas</h2>
-          <p>Alertas enviadas por choferes en tiempo real.</p>
+          <p>Alertas enviadas por conductores en tiempo real.</p>
         </div>
         <!--<button class="fallas-link">Ver historial completo <span class="material-symbols-outlined">arrow_forward</span></button>-->
       </div>
@@ -169,7 +169,6 @@
           <tr th:each="reporte : ${reportes}">
             <td>
               <div class="vehiculo-cell">
-                <div class="avatar">MB</div>
                 <div>
                   <p th:text="${reporte.combi.marca + ' ' + reporte.combi.modelo}"></p>
                   <span th:text="${reporte.conductor.nombre + ' ' + reporte.conductor.apellido}"></span>
@@ -192,7 +191,7 @@
           </tbody>
         </table>
       </div>
-      <div class="fallas-footer"><button>Cargar más registros</button></div>
+      <!--<div class="fallas-footer"><button>Cargar más registros</button></div>-->
     </section>
   </main>
 </div>

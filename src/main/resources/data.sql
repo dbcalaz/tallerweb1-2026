@@ -14,15 +14,15 @@ VALUES ('María', 'Sosa', 'msosa@mail.com', '1134567890', '23456789', 'D1', 4.7,
 
 -- 3. Inserción de Combis
 insert into Combi (tipoDeCombi, cantidadDeAsientos, tipoDeTransmision, patente, marca, modelo,EstadoDeCombi, kilometros)
-values ('ESTANDAR', 15, 'Manual', 'AD-542-XQ', 'Mercedes-Benz', 'Sprinter 515','EN_VIAJE',1500);
+values ('ESTANDAR', 15, 'Manual', 'AD-542-XQ', 'Mercedes-Benz', 'Sprinter 515','DISPONIBLE',1500);
 
 insert into Combi (tipoDeCombi, cantidadDeAsientos, tipoDeTransmision, patente, marca, modelo,EstadoDeCombi, kilometros) values
 ('TURISTICA', 19, 'Automatica', 'AE-781-LM', 'Ford', 'Transit Minibus','DISPONIBLE',1500),
 ('ESTANDAR', 12, 'Manual', 'AF-234-RT', 'Renault', 'Master L2H2','DISPONIBLE',30000),
-('TURISTICA', 20, 'Automatica', 'AG-908-KP', 'Iveco', 'Daily Minibus','DISPONIBLE',2000),
+('TURISTICA', 20, 'Automatica', 'AG-908-KP', 'Iveco', 'Daily Minibus','EN_MANTENIMIENTO',2000),
 ('ESTANDAR', 15, 'Manual', 'AH-456-ND', 'Volkswagen', 'Crafter','EN_VIAJE',150),
 ('TURISTICA', 17, 'Automatica', 'AI-123-ZX', 'Peugeot', 'Boxer Premium','EN_MANTENIMIENTO',100),
-('TURISTICA', 21, 'Automatica', 'AJ-654-WQ', 'Mercedes-Benz', 'Sprinter 517 Turismo','EN_MANTENIMIENTO',10000),
+('TURISTICA', 21, 'Automatica', 'AJ-654-WQ', 'Mercedes-Benz', 'Sprinter 517 Turismo','DISPONIBLE',10000),
 ('ESTANDAR', 14, 'Manual', 'AK-332-UV', 'Toyota', 'Hiace','DISPONIBLE',21500);
 
 -- 4. Asignaciones y Reportes de fallas
@@ -36,9 +36,9 @@ values ('Morón', 'Ramos Mejía', '2026-06-01', '08:00', 2500.0, 1001, 2, 'PENDI
        ('Castelar', 'Ituzaingó', '2026-05-18', '14:15', 1900.0, 1004, 0, 'FINALIZADO', 1, 1);*/
 
 insert into ReporteFalla (descripcion, estadoReporte, conductor_id, combi_id, fechaCreacionReporte, fechaResueltoReporte) values
-('Falla en el motor, pérdida de potencia en subida', 'PENDIENTE', 1, 1, '2026-06-01', NULL),
+('Falla en el motor, pérdida de potencia en subida', 'PENDIENTE', 2, 6, '2026-06-01', NULL),
 ('Luz de aceite encendida intermitente', 'RESUELTO', 1, 1, '2026-06-02', '2026-06-27'),
-('Ruido en tren delantero al girar', 'PENDIENTE', 1, 1, '2026-06-03', NULL);
+('Ruido en tren delantero al girar', 'PENDIENTE', 4, 4, '2026-06-03', NULL);
 /* 5. Inserción de Viajes extra
 insert into Viaje (origen, destino, fecha, horario, precio, asientosDisponibles, duracion, tipoDeViaje, estadoDeViaje, id_combi, id_conductor)
 values ('San Justo', 'Ramos Mejia', '2026-06-29', '10:30', 4500.0, 4, '45 min', 'Expreso', 'PENDIENTE', 1, 1),
