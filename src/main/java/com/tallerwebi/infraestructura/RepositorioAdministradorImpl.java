@@ -81,10 +81,17 @@ public class RepositorioAdministradorImpl implements RepositorioAdministrador {
     }
 
     @Override
-    public List<Combi> getCombisDisponibles(){
-        return sessionFactory.getCurrentSession()
-                .createCriteria(Combi.class).add(Restrictions.eq("estadoDeCombi", EstadoDeCombi.DISPONIBLE))
-                .list();
+    public List<Combi> getCombisPorEstado(EstadoDeCombi estado) {
+        if (estado == null) {
+            return sessionFactory.getCurrentSession()
+                    .createCriteria(Combi.class)
+                    .list();
+        } else {
+            return sessionFactory.getCurrentSession()
+                    .createCriteria(Combi.class)
+                    .add(Restrictions.eq("estadoDeCombi",estado))
+                    .list();
+        }
     }
 
     @Override
@@ -115,13 +122,6 @@ public class RepositorioAdministradorImpl implements RepositorioAdministrador {
         }
 
         return criteria.list();
-    }
-
-    public Long getCantidadDeCombis() {
-        return (Long) sessionFactory.getCurrentSession()
-                .createCriteria(Combi.class)
-                .setProjection(Projections.rowCount())
-                .uniqueResult();
     }
 
     @Override
@@ -201,8 +201,8 @@ public class RepositorioAdministradorImpl implements RepositorioAdministrador {
 
     /*Viajes*/
     @Override
-    public List<Parada> getParadas(){
-        return  sessionFactory.getCurrentSession().createCriteria(Parada.class)
+    public List<Parada> getParadas() {
+        return sessionFactory.getCurrentSession().createCriteria(Parada.class)
                 .list();
     }
 
@@ -256,6 +256,4 @@ public class RepositorioAdministradorImpl implements RepositorioAdministrador {
                 .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
                 .list();
     }
-
-
 }

@@ -14,9 +14,7 @@ public interface ServicioAdministrador {
 
     List<Combi> obtenerCombisFiltradas(DatosFiltro datosFiltro);
 
-    List <Combi> obtenerCombisDisponibles();
-
-    Long obtenerCantidadCombis();
+    List<Combi> obtenerCombisPorEstado(EstadoDeCombi estado);
 
     /*Conductor*/
     List<Conductor> obtenerConductores(Boolean estadoCuenta, String estado);
@@ -35,4 +33,5 @@ public interface ServicioAdministrador {
     void crearNuevoViaje(DatosCrearViaje datos);
 
     List<Viaje> obtenerViajes();
+
 }

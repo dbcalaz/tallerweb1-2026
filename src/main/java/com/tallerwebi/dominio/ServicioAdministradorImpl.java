@@ -28,30 +28,26 @@ public class ServicioAdministradorImpl implements ServicioAdministrador {
 
     @Override
     public void asignarNuevaCombiAConductor(Long idReporte, Long idCombi) {
-        repositorioAdministrador.updateCombiConductor(idReporte,idCombi);
+        repositorioAdministrador.updateCombiConductor(idReporte, idCombi);
     }
 
     @Override
-    public List<Combi> obtenerCombisFiltradas(DatosFiltro datosFiltro){
+    public List<Combi> obtenerCombisFiltradas(DatosFiltro datosFiltro) {
         return repositorioAdministrador.getCombisFiltradas(datosFiltro);
-}
+    }
 
     @Override
-    public List<Combi> obtenerCombisDisponibles() {
-        return repositorioAdministrador.getCombisDisponibles();
+    public List<Combi> obtenerCombisPorEstado(EstadoDeCombi estado) {
+        return repositorioAdministrador.getCombisPorEstado(estado);
     }
 
     @Override
     public void actualizarEstadoCombi(Long idCombi, EstadoDeCombi estado) {
-        Combi combiExiste= repositorioCombi.buscarPorId(idCombi);
-        if(combiExiste!=null){
+        Combi combiExiste = repositorioCombi.buscarPorId(idCombi);
+        if (combiExiste != null) {
             combiExiste.setEstadoDeCombi(estado);
             repositorioAdministrador.actualizarCombi(combiExiste);
         }
-    }
-
-    public Long obtenerCantidadCombis() {
-        return repositorioAdministrador.getCantidadDeCombis();
     }
 
     /*Conductor*/
@@ -64,17 +60,17 @@ public class ServicioAdministradorImpl implements ServicioAdministrador {
     public void habilitarConductor(Long idConductor, Long idCombi) {
         Conductor conductor = repositorioAdministrador.buscarConductorPorId(idConductor);
 
-        if(conductor == null){
+        if (conductor == null) {
             throw new RuntimeException("No existe el conductor seleccionado");
         }
 
         Combi combi = repositorioAdministrador.buscarCombiPorId(idCombi);
 
-        if(combi == null){
+        if (combi == null) {
             throw new RuntimeException("No existe la combi seleccionada");
         }
 
-        if(conductor.isCuentaHabilitada()){
+        if (conductor.isCuentaHabilitada()) {
             throw new RuntimeException("El conductor ya fue habilitado");
         }
 
@@ -94,7 +90,7 @@ public class ServicioAdministradorImpl implements ServicioAdministrador {
     public void suspenderConductor(Long idConductor) {
         Conductor conductor = repositorioAdministrador.buscarConductorPorId(idConductor);
 
-        if(conductor == null){
+        if (conductor == null) {
             throw new RuntimeException("No existe el conductor seleccionado");
         }
 
@@ -105,7 +101,7 @@ public class ServicioAdministradorImpl implements ServicioAdministrador {
     public void reactivarConductor(Long idConductor) {
         Conductor conductor = repositorioAdministrador.buscarConductorPorId(idConductor);
 
-        if(conductor == null){
+        if (conductor == null) {
             throw new RuntimeException("No existe el conductor seleccionado");
         }
 

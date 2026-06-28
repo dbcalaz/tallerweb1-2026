@@ -71,23 +71,6 @@ public class RepositorioAdministradorTest {
 
     @Test
     @Rollback
-    public void queSeObtengaCorrectamenteLaCantidadDeCombis() {
-        //Preparación
-        Combi combi1 = new Combi();
-        Combi combi2 = new Combi();
-
-        session().save(combi1);
-        session().save(combi2);
-
-        //Ejecución
-        Long cantidad = repositorioAdministrador.getCantidadDeCombis();
-
-        //Validación
-        assertThat(cantidad, equalTo(2L));
-    }
-
-    @Test
-    @Rollback
     public void queSeObtenganLosConductoresPendientes() {
         //Preparación
         Conductor pendiente = new Conductor();

@@ -35,22 +35,19 @@ public class ControladorAdministrador {
 
        ModelMap model = new ModelMap();
 
-       // 1. Buscamos las combis pasándole el DTO completo.
-       // Si no se hizo click en nada, datosFiltro se crea vacío y trae todas.
        List<Combi> listado = servicioAdministrador.obtenerCombisFiltradas(datosFiltro);
-
-       // 2. Mantenemos el resto de tu lógica intacta
-       List<Combi> combisDisponibles = servicioAdministrador.obtenerCombisDisponibles();
-       Long cantidadCombis = servicioAdministrador.obtenerCantidadCombis();
+       List<Combi> combisDisponibles = servicioAdministrador.obtenerCombisPorEstado(EstadoDeCombi.DISPONIBLE);
+       List<Combi> combisEnMantenimiento = servicioAdministrador.obtenerCombisPorEstado(EstadoDeCombi.EN_MANTENIMIENTO);
+       List<Combi> combisEnViaje = servicioAdministrador.obtenerCombisPorEstado(EstadoDeCombi.EN_VIAJE);
+       Long cantidadCombis = (long) (combisDisponibles.size() + combisEnMantenimiento.size() + combisEnViaje.size());
        List<ReporteFalla> reportes = servicioAdministrador.obtenerFallasDeCombis();
 
        model.put("combisDisponibles", combisDisponibles);
+       model.put("combisEnMantenimiento", combisEnMantenimiento);
+       model.put("combisEnViaje", combisEnViaje);
        model.put("cantidadCombis", cantidadCombis);
        model.put("listaCombis", listado);
        model.put("reportes", reportes);
-
-       // 3. IMPORTANTE: Mandamos el DTO de vuelta a la vista para que la
-       // botonera sepa qué botón pintar como "activo"
        model.put("filtroActual", datosFiltro);
 
        return new ModelAndView("admin/combis-listas", model);
@@ -89,8 +86,8 @@ public class ControladorAdministrador {
 
         List<Conductor> conductores = servicioAdministrador.obtenerConductores(true, null);
         List<Conductor> conductoresPendientes = servicioAdministrador.obtenerConductores(false, null);
-        Long pendientes = (long) servicioAdministrador.obtenerConductores(false, null).size();
-        List<Combi> combisDisponibles = servicioAdministrador.obtenerCombisDisponibles();
+        List<Combi> combisDisponibles = servicioAdministrador.obtenerCombisPorEstado(EstadoDeCombi.DISPONIBLE);
+        Long pendientes = (long) conductoresPendientes.size();
 
         model.put("conductores", conductores);
         model.put("conductoresPendientes", conductoresPendientes);

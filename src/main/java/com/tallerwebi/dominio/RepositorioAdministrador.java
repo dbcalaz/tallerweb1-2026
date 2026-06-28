@@ -18,13 +18,11 @@ public interface RepositorioAdministrador {
 
     AsignacionCombiConductor buscarAsignacionActiva(Long idConductor);
 
-    List<Combi> getCombisDisponibles();
+    List<Combi> getCombisPorEstado(EstadoDeCombi estado);
 
     List<Combi> getCombisFiltradas(DatosFiltro datosFiltro);
 
     void actualizarCombi(Combi combiExiste);
-
-    Long getCantidadDeCombis();
 
     /* Conductores*/
 
@@ -44,4 +42,5 @@ public interface RepositorioAdministrador {
     void insertNuevoViaje(Viaje viaje, DatosCrearViaje datos);
 
     List<Viaje> getViajes();
+
 }
