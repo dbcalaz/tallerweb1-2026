@@ -103,6 +103,7 @@
       <div class="combi-card" th:each="combi : ${listaCombis}">
 
         <div class="combi-img">
+            <img th:src="@{/imagenes/sprinter-515.jpg}" alt="Mercedes Sprinter 515" class="combi-image">
           <span th:if="${combi.estadoDeCombi != null and combi.estadoDeCombi.name() == 'DISPONIBLE'}" class="status disponible">Disponible</span>
           <span th:if="${combi.estadoDeCombi != null and combi.estadoDeCombi.name() == 'EN_MANTENIMIENTO'}" class="status mantenimiento">En mantenimiento</span>
           <span th:if="${combi.estadoDeCombi != null and combi.estadoDeCombi.name() == 'EN_VIAJE'}" class="status viaje">En viaje</span>

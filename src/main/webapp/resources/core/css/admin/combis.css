@@ -325,3 +325,16 @@
     font-weight: 600;
     cursor: pointer;
 }
+.combi-img {
+    position: relative;
+    height: 190px;
+    overflow: hidden;
+    border-radius: 16px 16px 0 0;
+}
+
+.combi-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
