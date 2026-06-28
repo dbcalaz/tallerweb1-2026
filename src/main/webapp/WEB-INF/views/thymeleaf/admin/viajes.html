@@ -105,20 +105,20 @@
                         <table>
                             <thead>
                             <tr>
+                                <th>Fecha</th>
                                 <th>Origen</th>
                                 <th>Destino</th>
-                                <th>Fecha</th>
                                 <th>Conductor</th>
                                 <th>Vehículo</th>
                                 <th>Estado</th>
-                                <th>Acciones</th>
+                                <!--<th>Acciones</th>-->
                             </tr>
                             </thead>
                             <tbody>
                             <tr th:each="viaje : ${viajes}">
+                                <td th:text="${viaje.fecha + ' ' + viaje.horario}"></td>
                                 <td th:text="${viaje.paradas[0].parada.nombre}"></td>
                                 <td th:text="${viaje.paradas[viaje.paradas.size() - 1].parada.nombre}"></td>
-                                <td th:text="${viaje.fecha + ' ' + viaje.horario}"></td>
                                 <td th:if="${viaje.conductor != null}" th:text="${viaje.conductor.nombre}"></td>
                                 <td th:if="${viaje.conductor == null}">Sin asignar</td>
                                 <td th:if="${viaje.combi != null}" th:text="${viaje.combi.marca}"></td>
@@ -135,7 +135,7 @@
                                           }">
                                     </span>
                                 </td>
-                                <td>
+                                <!--<td>
                                     <div class="acciones-fila">
                                         <button class="action-btn">
                                             <span class="material-symbols-outlined">
@@ -153,60 +153,8 @@
                                             </span>
                                         </button>
                                     </div>
-                                </td>
+                                </td>-->
                             </tr>
-                            <!--<tr>
-                                <td>Plaza Mayo</td>
-                                <td>San Telmo</td>
-                                <td>12/10/2026 14:15</td>
-                                <td>Sofía Alarcón</td>
-                                <td>Volvo B11R</td>
-                                <td>
-                                    <span class="status neutral">
-                                        Programado
-                                    </span>
-                                </td>
-                                <td>
-                                    <div class="acciones-fila">
-                                        <button class="action-btn">
-                                            <span class="material-symbols-outlined">
-                                                edit_calendar
-                                            </span>
-                                        </button>
-                                        <button class="action-btn">
-                                            <span class="material-symbols-outlined">
-                                                person_edit
-                                            </span>
-                                        </button>
-                                        <button class="action-btn">
-                                            <span class="material-symbols-outlined">
-                                                cancel
-                                            </span>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Barrio Norte</td>
-                                <td>Retiro</td>
-                                <td>11/10/2026 22:00</td>
-                                <td>Carlos Pérez</td>
-                                <td>Scania K440</td>
-                                <td>
-                                    <span class="status success">
-                                        Finalizado
-                                    </span>
-                                </td>
-                                <td>
-                                    <div class="acciones-fila">
-                                        <button class="action-btn">
-                                            <span class="material-symbols-outlined">
-                                                description
-                                            </span>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>-->
                             </tbody>
                         </table>
                     </div>

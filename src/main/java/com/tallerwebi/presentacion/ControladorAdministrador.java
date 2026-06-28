@@ -74,6 +74,13 @@ public class ControladorAdministrador {
         return new ModelAndView("redirect:/admin/combis");
     }
 
+    @RequestMapping(path = "/resolver-falla", method = RequestMethod.POST)
+    public ModelAndView resolverFalla(@RequestParam("idReporte") Long idReporte){
+
+        servicioAdministrador.resolverFalla(idReporte);
+        return new ModelAndView("redirect:/admin/combis");
+    }
+
     //Conductores
     @GetMapping("/conductores")
     public ModelAndView vistaConductores() {

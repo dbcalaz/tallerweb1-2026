@@ -16,6 +16,8 @@ public interface ServicioAdministrador {
 
     List<Combi> obtenerCombisPorEstado(EstadoDeCombi estado);
 
+    void resolverFalla(Long idReporte);
+
     /*Conductor*/
     List<Conductor> obtenerConductores(Boolean estadoCuenta, String estado);
 

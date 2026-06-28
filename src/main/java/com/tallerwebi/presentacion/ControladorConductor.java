@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -210,6 +211,8 @@ public class ControladorConductor {
 
             reporteFalla.setConductor(conductor);
             reporteFalla.setCombi(combi);
+            reporteFalla.setEstadoReporte(EstadoReporteFalla.PENDIENTE);
+            reporteFalla.setFechaCreacionReporte(LocalDate.now());
 
             servicioConductor.registrarFalla(reporteFalla);
             request.getSession().setAttribute("mensajeConductor", "La falla se reportó correctamente.");

@@ -5,8 +5,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
-
-import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -117,7 +115,6 @@ public class RepositorioConductorImpl implements RepositorioConductor {
 
     @Override
     public void guardarFalla(ReporteFalla reporteFalla) {
-        reporteFalla.setFechaCreacionReporte(new Date());
         sessionFactory.getCurrentSession().save(reporteFalla);
     }
 

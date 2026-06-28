@@ -27,6 +27,13 @@ public class ServicioAdministradorImpl implements ServicioAdministrador {
     }
 
     @Override
+    public void resolverFalla(Long idReporte) {
+        ReporteFalla reporte = repositorioAdministrador.getReporteFallePorIdReporte(idReporte);
+        reporte.setEstadoReporte(EstadoReporteFalla.RESUELTO);
+        repositorioAdministrador.updateFalla(reporte);
+    }
+
+    @Override
     public void asignarNuevaCombiAConductor(Long idReporte, Long idCombi) {
         repositorioAdministrador.updateCombiConductor(idReporte, idCombi);
     }

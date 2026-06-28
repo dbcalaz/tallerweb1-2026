@@ -152,7 +152,7 @@
           <h2>Fallas reportadas</h2>
           <p>Alertas enviadas por choferes en tiempo real.</p>
         </div>
-        <button class="fallas-link">Ver historial completo <span class="material-symbols-outlined">arrow_forward</span></button>
+        <!--<button class="fallas-link">Ver historial completo <span class="material-symbols-outlined">arrow_forward</span></button>-->
       </div>
       <div class="fallas-table-wrapper">
         <table class="fallas-table">
@@ -178,11 +178,15 @@
             </td>
             <td th:text="${reporte.fechaCreacionReporte}"></td>
             <td class="descripcion" th:text="${reporte.descripcion}"></td>
-            <td><span class="estado pendiente">Pendiente</span></td>
+            <td><span th:class="${'estado ' + (reporte.estadoReporte.name() == 'PENDIENTE' ? 'pendiente' : 'revision')}" th:text="${reporte.estadoReporte.name() == 'PENDIENTE' ? 'Pendiente' : 'Resuelto'}"></span></td>
             <td class="acciones">
-              <button title="Resuelta"><span class="material-symbols-outlined">check_circle</span></button>
-              <button title="Mantenimiento"><span class="material-symbols-outlined">build_circle</span></button>
-              <button type="button" class="btn-abrir-modal-asignacion" th:data-reporte-id="${reporte.id}" title="Asignar nueva combi"><span class="material-symbols-outlined">visibility</span></button>
+                <div th:if="${reporte.estadoReporte.name() == 'PENDIENTE'}">
+                    <form th:action="@{/resolver-falla}" th:method="POST">
+                        <input type="hidden" th:value="${reporte.id}" name="idReporte">
+                        <button title="Resolver"><span class="material-symbols-outlined">check_circle</span></button>
+                    </form>
+                </div>
+              <button type="button" class="btn-abrir-modal-asignacion" th:data-reporte-id="${reporte.id}" title="Asignar nueva combi"><span class="material-symbols-outlined">build_circle</span></button>
             </td>
           </tr>
           </tbody>

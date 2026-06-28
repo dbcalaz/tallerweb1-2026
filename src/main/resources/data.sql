@@ -35,10 +35,10 @@ values ('Morón', 'Ramos Mejía', '2026-06-01', '08:00', 2500.0, 1001, 2, 'PENDI
        ('Haedo', 'Moreno', '2026-05-20', '18:00', 2800.0, 1003, 0, 'FINALIZADO', 1, 1),
        ('Castelar', 'Ituzaingó', '2026-05-18', '14:15', 1900.0, 1004, 0, 'FINALIZADO', 1, 1);*/
 
-INSERT INTO ReporteFalla (descripcion, resuelta, conductor_id, combi_id, fechaCreacionReporte, fechaRealizadoReporte) VALUES
-                                                                                                                          ('Falla en el motor, pérdida de potencia en subida', false, 1, 1, '2026-06-01', NULL),
-                                                                                                                          ('Luz de aceite encendida intermitente', false, 1, 1, '2026-06-02', NULL),
-                                                                                                                          ('Ruido en tren delantero al girar', false, 1, 1, '2026-06-03', NULL);
+insert into ReporteFalla (descripcion, estadoReporte, conductor_id, combi_id, fechaCreacionReporte, fechaResueltoReporte) values
+('Falla en el motor, pérdida de potencia en subida', 'PENDIENTE', 1, 1, '2026-06-01', NULL),
+('Luz de aceite encendida intermitente', 'RESUELTO', 1, 1, '2026-06-02', '2026-06-27'),
+('Ruido en tren delantero al girar', 'PENDIENTE', 1, 1, '2026-06-03', NULL);
 /* 5. Inserción de Viajes extra
 insert into Viaje (origen, destino, fecha, horario, precio, asientosDisponibles, duracion, tipoDeViaje, estadoDeViaje, id_combi, id_conductor)
 values ('San Justo', 'Ramos Mejia', '2026-06-29', '10:30', 4500.0, 4, '45 min', 'Expreso', 'PENDIENTE', 1, 1),

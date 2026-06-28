@@ -6,11 +6,10 @@ import com.tallerwebi.presentacion.DatosFiltro;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -28,6 +27,28 @@ public class RepositorioAdministradorImpl implements RepositorioAdministrador {
         return sessionFactory.getCurrentSession()
                 .createCriteria(ReporteFalla.class)
                 .list();
+    }
+
+    @Override
+    public ReporteFalla getReporteFallePorIdCombi(Long idCombi) {
+        return (ReporteFalla) sessionFactory.getCurrentSession()
+                .createCriteria(ReporteFalla.class)
+                .createAlias("combi","c")
+                .add(Restrictions.eq("c.id",idCombi))
+                .uniqueResult();
+    }
+
+    @Override
+    public ReporteFalla getReporteFallePorIdReporte(Long idReporte) {
+        return (ReporteFalla) sessionFactory.getCurrentSession()
+                .createCriteria(ReporteFalla.class)
+                .add(Restrictions.eq("id",idReporte))
+                .uniqueResult();
+    }
+
+    @Override
+    public void updateFalla(ReporteFalla reporte) {
+        sessionFactory.getCurrentSession().update(reporte);
     }
 
     @Override
@@ -71,7 +92,7 @@ public class RepositorioAdministradorImpl implements RepositorioAdministrador {
         nuevaAsignacion.setCombiActiva(true);
         sessionFactory.getCurrentSession().save(nuevaAsignacion);
 
-        reporte.setFechaCreacionReporte(new Date());
+        reporte.setFechaCreacionReporte(LocalDate.now());
         sessionFactory.getCurrentSession().update(reporte);
     }
 

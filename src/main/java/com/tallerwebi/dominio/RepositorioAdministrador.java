@@ -10,6 +10,10 @@ public interface RepositorioAdministrador {
     /*Combis*/
     List<ReporteFalla> getFallas();
 
+    ReporteFalla getReporteFallePorIdCombi(Long idCombi);
+
+    ReporteFalla getReporteFallePorIdReporte(Long idReporte);
+
     Combi buscarCombiPorId(Long idCombi);
 
     void guardarAsignacion(AsignacionCombiConductor asignacion);
@@ -43,4 +47,5 @@ public interface RepositorioAdministrador {
 
     List<Viaje> getViajes();
 
+    void updateFalla(ReporteFalla reporte);
 }
