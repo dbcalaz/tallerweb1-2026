@@ -49,18 +49,6 @@ public class RepositorioConductorImpl implements RepositorioConductor {
     }
 
     @Override
-    public List<Viaje> obtenerViajesDelConductor(Long idConductor) {
-        return (List<Viaje>) sessionFactory.getCurrentSession()
-                .createCriteria(Viaje.class, "v")
-                .createAlias("v.conductor", "c")
-                .createAlias("v.paradas", "vp")
-                .createAlias("vp.parada", "p")
-                .add(Restrictions.eq("c.id", idConductor))
-                .addOrder(Order.asc("vp.orden"))
-                .list();
-    }
-
-    @Override
     public List<Viaje> obtenerViajesDelConductorPorEstado(Long idConductor, EstadoDeViaje estado) {
         return (List<Viaje>) sessionFactory.getCurrentSession()
                 .createCriteria(Viaje.class, "v")

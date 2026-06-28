@@ -60,7 +60,6 @@ public class ServicioAdministradorTest {
 
         Conductor conductor = new Conductor();
         conductor.setCuentaHabilitada(false);
-        conductor.setSuspendido(false);
 
         Combi combi = new Combi();
 

@@ -15,8 +15,6 @@ public interface ServicioConductor {
 
     Conductor buscarPorId(Long idConductor);
 
-    List<Viaje> obtenerViajesDelConductor(Long idConductor);
-
     List<Viaje> obtenerViajesDelConductorPorEstado(Long idConductor, EstadoDeViaje estado);
 
     List<Viaje> obtenerViajesDisponibles();

@@ -28,7 +28,7 @@ public class ServicioConductorImpl implements ServicioConductor {
             throw new CuentaNoHabilitadaException("La cuenta no esta habilitada por un administrador.");
         }
 
-        if (conductor != null && conductor.isSuspendido()) {
+        if (conductor != null && conductor.getEstadoConductor().equals(EstadoConductor.SUSPENDIDO)) {
             throw new CuentaSuspendidaException("Su cuenta se encuentra suspendida.");
         }
 
@@ -51,12 +51,6 @@ public class ServicioConductorImpl implements ServicioConductor {
     public Conductor buscarPorId(Long idConductor) {
         validarIdConductor(idConductor);
         return repositorioConductor.buscarPorId(idConductor);
-    }
-
-    @Override
-    public List<Viaje> obtenerViajesDelConductor(Long idConductor) {
-        validarIdConductor(idConductor);
-        return repositorioConductor.obtenerViajesDelConductor(idConductor);
     }
 
     @Override
@@ -158,8 +152,7 @@ public class ServicioConductorImpl implements ServicioConductor {
             throw new IllegalStateException("Ya tenés otro viaje en curso");
         }
 
-        conductor.setEnViaje(true);
-        conductor.setDisponible(false);
+        conductor.setEstadoConductor(EstadoConductor.EN_VIAJE);
 
         viaje.setEstadoDeViaje(EstadoDeViaje.EN_CURSO);
 
@@ -190,14 +183,10 @@ public class ServicioConductorImpl implements ServicioConductor {
 
         viaje.setEstadoDeViaje(EstadoDeViaje.FINALIZADO);
 
-        conductor.setEnViaje(false);
-
-        if (conductor.isSuspensionPendiente()) {
-            conductor.setDisponible(false);
-            conductor.setSuspendido(true);
-            conductor.setSuspensionPendiente(false);
+        if (conductor.getEstadoConductor().equals(EstadoConductor.SUSPENSION_PENDIENTE)) {
+            conductor.setEstadoConductor(EstadoConductor.SUSPENDIDO);
         } else {
-            conductor.setDisponible(true);
+            conductor.setEstadoConductor(EstadoConductor.DISPONIBLE);
         }
 
         repositorioConductor.actualizarConductor(conductor);

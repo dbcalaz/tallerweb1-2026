@@ -179,23 +179,17 @@ public class RepositorioAdministradorImpl implements RepositorioAdministrador {
 
     @Override
     public void suspenderConductor(Conductor conductor) {
-        if (conductor.isEnViaje()) {
-            conductor.setSuspensionPendiente(true);
+        if (conductor.getEstadoConductor().equals(EstadoConductor.EN_VIAJE)) {
+            conductor.setEstadoConductor(EstadoConductor.SUSPENSION_PENDIENTE);
         } else {
-            conductor.setSuspendido(true);
-            conductor.setDisponible(false);
-            conductor.setEnViaje(false);
-            conductor.setSuspensionPendiente(false);
+            conductor.setEstadoConductor(EstadoConductor.SUSPENDIDO);
         }
         sessionFactory.getCurrentSession().update(conductor);
     }
 
     @Override
     public void reactivarConductor(Conductor conductor) {
-        conductor.setSuspendido(false);
-        conductor.setSuspensionPendiente(false);
-        conductor.setEnViaje(false);
-        conductor.setDisponible(true);
+        conductor.setEstadoConductor(EstadoConductor.DISPONIBLE);
         sessionFactory.getCurrentSession().update(conductor);
     }
 

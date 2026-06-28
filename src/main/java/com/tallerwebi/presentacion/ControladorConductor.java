@@ -228,7 +228,7 @@ public class ControladorConductor {
 
         Conductor conductorActualizado = servicioConductor.buscarPorId(conductorSession.getId());
 
-        if (conductorActualizado == null || conductorActualizado.isSuspendido()) {
+        if (conductorActualizado == null || conductorActualizado.getEstadoConductor().equals(EstadoConductor.SUSPENDIDO)) {
             return null;
         }
 

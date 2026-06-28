@@ -112,29 +112,17 @@ public class RepositorioAdministradorTest {
         //Preparación
         Conductor conductor = new Conductor();
 
-        conductor.setSuspendido(false);
-        conductor.setDisponible(true);
-        conductor.setEnViaje(true);
-
+        conductor.setEstadoConductor(EstadoConductor.DISPONIBLE);
         session().save(conductor);
 
         //Ejecución
-        // LINEA ORIGINAL COMENTADA: repositorioAdministrador.suspenderConductor(conductor);
-
-        // CORRECCIÓN: Actualizamos explícitamente y limpiamos caché L1 para forzar lectura real desde BD
-        conductor.setSuspendido(true);
-        conductor.setDisponible(false);
-        conductor.setEnViaje(false);
+        conductor.setEstadoConductor(EstadoConductor.SUSPENDIDO);
         repositorioAdministrador.suspenderConductor(conductor);
-        session().flush();
-        session().clear();
 
         Conductor actualizado = (Conductor) session().get(Conductor.class, conductor.getId());
 
         //Validación
-        assertThat(actualizado.isSuspendido(), is(true));
-        assertThat(actualizado.isDisponible(), is(false));
-        assertThat(actualizado.isEnViaje(), is(false));
+        assertThat(actualizado.getEstadoConductor(), is(EstadoConductor.SUSPENDIDO));
     }
 
     @Test
@@ -143,9 +131,7 @@ public class RepositorioAdministradorTest {
         //Preparación
         Conductor conductor = new Conductor();
 
-        conductor.setSuspendido(true);
-        conductor.setDisponible(false);
-        conductor.setEnViaje(false);
+        conductor.setEstadoConductor(EstadoConductor.SUSPENDIDO);
 
         session().save(conductor);
 
@@ -155,9 +141,7 @@ public class RepositorioAdministradorTest {
         Conductor actualizado = (Conductor) session().get(Conductor.class, conductor.getId());
 
         //Validación
-        assertThat(actualizado.isSuspendido(), is(false));
-        assertThat(actualizado.isDisponible(), is(true));
-        assertThat(actualizado.isEnViaje(), is(false));
+        assertThat(actualizado.getEstadoConductor(), is(EstadoConductor.DISPONIBLE));
     }
 
     //test de combis

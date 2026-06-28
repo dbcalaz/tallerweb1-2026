@@ -77,23 +77,27 @@
                                 <td><span class="licencia" th:text="${conductor.licencia}"></span></td>
                                 <td><div class="calificacion"><span class="material-symbols-outlined">star</span><strong th:text="${conductor.calificacion}"></strong></div></td>
                                 <td>
-                                    <div th:class="${'estado ' + (conductor.suspendido ? 'suspendido' : (conductor.disponible ? 'disponible' : (conductor.suspensionPendiente ? 'revision' : 'viaje')))}" th:text="${conductor.suspendido ? 'Suspendido' : (conductor.disponible ? 'Disponible' : (conductor.suspensionPendiente ? 'Suspensión pendiente' : 'En viaje'))}">
-                                    </div>
-                                </td>
+    <div
+            th:class="${'estado ' + (conductor.estadoConductor.name() == 'SUSPENDIDO' ? 'suspendido' : (conductor.estadoConductor.name() == 'DISPONIBLE' ? 'disponible' : (conductor.estadoConductor.name() == 'SUSPENSION_PENDIENTE' ? 'revision' : 'viaje')))}"
+            th:text="${conductor.estadoConductor.name() == 'SUSPENDIDO' ? 'Suspendido' : (conductor.estadoConductor.name() == 'DISPONIBLE' ? 'Disponible' : (conductor.estadoConductor.name() == 'SUSPENSION_PENDIENTE' ? 'Suspensión pendiente' : 'En viaje'))}">
+    </div>
+</td>
                                 <td>
                                     <div class="acciones">
-                                    <button title="Ver detalle" class="btn-abrir-modal-detalle" th:data-conductor-id="${conductor.id}" th:data-conductor-nombre="${conductor.nombre + ' ' + conductor.apellido}" th:data-conductor-licencia="${conductor.licencia}" th:data-conductor-calificacion="${conductor.calificacion}" th:data-conductor-estado="${conductor.suspendido ? 'Suspendido' : (conductor.enViaje ? 'En viaje' : 'Disponible')}" th:data-conductor-telefono="${conductor.telefono}" th:data-conductor-documento="${conductor.documento}" th:data-conductor-email="${conductor.email}">
+                                        <button title="Ver detalle" class="btn-abrir-modal-detalle" th:data-conductor-id="${conductor.id}" th:data-conductor-nombre="${conductor.nombre + ' ' + conductor.apellido}" th:data-conductor-licencia="${conductor.licencia}" th:data-conductor-calificacion="${conductor.calificacion}"
+                                                th:data-conductor-telefono="${conductor.telefono}" th:data-conductor-documento="${conductor.documento}" th:data-conductor-email="${conductor.email}"
+                                                th:data-conductor-estado="${conductor.estadoConductor.name() == 'SUSPENDIDO' ? 'Suspendido' : (conductor.estadoConductor.name() == 'EN_VIAJE' ? 'En viaje' : (conductor.estadoConductor.name() == 'SUSPENSION_PENDIENTE' ? 'Suspensión pendiente' : 'Disponible'))}">
                                         <span class="material-symbols-outlined">visibility</span>
                                     </button>
                                         <!--<button title="Editar" class="btn-abrir-modal-editar"><span class="material-symbols-outlined">edit</span></button>-->
 
-                                        <div th:if="${!conductor.suspendido}">
+                                        <div th:if="${conductor.estadoConductor.name() != 'SUSPENDIDO'}">
                                             <form th:action="@{/suspender}" th:method="POST">
                                                 <input type="hidden" th:value="${conductor.id}" name="idConductor">
                                                 <button title="Suspender"><span class="material-symbols-outlined">block</span></button>
                                             </form>
                                         </div>
-                                        <div th:if="${conductor.suspendido}">
+                                        <div th:if="${conductor.estadoConductor.name() == 'SUSPENDIDO'}">
                                             <form th:action="@{/reactivar}" th:method="POST">
                                                 <input type="hidden" th:value="${conductor.id}" name="idConductor">
                                                  <button title="Reactivar"><span class="material-symbols-outlined">check</span></button>
