@@ -24,7 +24,7 @@ public class Conductor {
     @Enumerated(EnumType.STRING)
     private TipoDeLicencia licencia;
     private float calificacion;
-    private float ganancia;
+    private Double ganancia;
     private boolean cuentaHabilitada;
     @Enumerated(EnumType.STRING)
     private EstadoConductor estadoConductor;

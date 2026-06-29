@@ -6,6 +6,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -42,8 +43,8 @@ public class Viaje {
     @JoinColumn(name = "id_conductor")
     private Conductor conductor;
 
-    @OneToMany
-    private List<Reserva> reservas;
+    @OneToMany(mappedBy = "viaje", cascade = CascadeType.ALL)
+    private List<Reserva> reservas = new ArrayList<>();
 
     public String getOrigen() {
         if (paradas == null || paradas.isEmpty()) return null;
@@ -53,5 +54,17 @@ public class Viaje {
     public String getDestino() {
         if (paradas == null || paradas.isEmpty()) return null;
         return paradas.get(paradas.size() - 1).getParada().getNombre();
+    }
+
+    public Double getRecaudacionTotal() {
+        if (reservas == null) {
+            return 0.0;
+        }
+        Double total = 0.0;
+
+        for (Reserva reserva : reservas) {
+            total += reserva.getPrecioTotal();
+        }
+        return total;
     }
 }

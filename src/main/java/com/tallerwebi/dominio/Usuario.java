@@ -4,16 +4,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
 @Entity
 public class Usuario {
-
-    @OneToMany
-    private List<Reserva> reservas;
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,11 +19,13 @@ public class Usuario {
     private String nombre;
     private String apellido;
     private String telefono;
-
     private String email;
     private String password;
     private String rol;
     private Boolean activo = false;
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    private List<Reserva> reservas = new ArrayList<>();
 
     public void activar() {
         activo = true;

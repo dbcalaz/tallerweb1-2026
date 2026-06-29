@@ -188,12 +188,23 @@ public class ServicioConductorImpl implements ServicioConductor {
         }
 
         viaje.setEstadoDeViaje(EstadoDeViaje.FINALIZADO);
+
+        // ganancias del conductor
+        Double recaudacion = viaje.getRecaudacionTotal();
+        Double gananciaConductor = recaudacion * 0.75;
+        conductor.setGanancia(conductor.getGanancia() + gananciaConductor);
+
         combiEnViaje.setEstadoDeCombi(EstadoDeCombi.DISPONIBLE);
 
         if (conductor.getEstadoConductor().equals(EstadoConductor.SUSPENSION_PENDIENTE)) {
             conductor.setEstadoConductor(EstadoConductor.SUSPENDIDO);
         } else {
             conductor.setEstadoConductor(EstadoConductor.DISPONIBLE);
+        }
+
+        //Actualizo el estado de las reservas de CONFIRMADA a FINALIZADA, asociadas a este viaje
+        for (Reserva reserva : viaje.getReservas()) {
+            reserva.setEstadoReserva(EstadoReserva.FINALIZADA);
         }
 
         repositorioConductor.actualizarConductor(conductor);
