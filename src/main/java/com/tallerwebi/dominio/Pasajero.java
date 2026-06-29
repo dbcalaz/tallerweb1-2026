@@ -2,6 +2,7 @@ package com.tallerwebi.dominio;
 
 import lombok.Getter;
 import lombok.Setter;
+
 import javax.persistence.*;
 
 @Getter
@@ -17,6 +18,10 @@ public class Pasajero {
     private String dni;
     private String email;
     private Integer numeroAsiento;
+
+    @ManyToOne
+    @JoinColumn(name = "id_usuario", nullable = true)
+    private Usuario usuario;
 
     @ManyToOne
     @JoinColumn(name = "id_reserva")

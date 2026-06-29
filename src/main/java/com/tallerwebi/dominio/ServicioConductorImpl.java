@@ -194,6 +194,10 @@ public class ServicioConductorImpl implements ServicioConductor {
         Double gananciaConductor = recaudacion * 0.75;
         conductor.setGanancia(conductor.getGanancia() + gananciaConductor);
 
+        /* ganancias de la empresa
+        Double gananciaEmpresa = recaudacion * 0.25;
+        empresa.setGanancia(empresa.getGanancia() + gananciaEmpresa); // acá tengo la duda, claramente la entidad empresa no existe y no se si deberia existir*/
+
         combiEnViaje.setEstadoDeCombi(EstadoDeCombi.DISPONIBLE);
 
         if (conductor.getEstadoConductor().equals(EstadoConductor.SUSPENSION_PENDIENTE)) {

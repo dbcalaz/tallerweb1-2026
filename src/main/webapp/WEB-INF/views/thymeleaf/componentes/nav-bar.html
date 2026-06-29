@@ -8,12 +8,10 @@
         </a>
         <nav class="navbar">
             <a th:href="@{/home}" th:classappend="${activePage == 'home' ? ' active' : ''}">Inicio</a>
-            <a th:href="@{/viajeEnCurso}" th:classappend="${activePage == 'viaje' ? ' active' : ''}">Mis viajes</a>
+            <a th:href="@{/viajeEnCurso}" th:classappend="${activePage == 'viaje' ? ' active' : ''}">Viaje en curso</a>
             <a th:href="@{/buscar-viaje}" th:classappend="${activePage == 'busqueda' ? ' active' : ''}">Buscar Viaje</a>
-<!--            <a href="#">Historial</a>-->
         </nav>
         <div class="topbar-actions">
-           <!-- <a th:href="solicitarViaje"><button class="create-trip-btn">Solicitar Viaje</button></a>-->
             <div class="profile-menu">
                 <button class="profile-btn">
             <span class="material-symbols-outlined">

@@ -4,6 +4,7 @@ import com.tallerwebi.presentacion.DatosBusqueda;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 @Service
@@ -26,12 +27,7 @@ public class ServicioViajeImpl implements ServicioViaje {
 
     @Override
     public List<Viaje> buscarViajes(DatosBusqueda datosBusqueda) {
-        return repositorioViaje.buscarViajes(
-                datosBusqueda.getIdOrigen(),
-                datosBusqueda.getIdDestino(),
-                datosBusqueda.getFecha(),
-                datosBusqueda.getPasajeros()
-        );
+        return repositorioViaje.buscarViajes(datosBusqueda.getIdOrigen(), datosBusqueda.getIdDestino(), datosBusqueda.getFecha(), datosBusqueda.getPasajeros());
     }
 
     @Override
@@ -99,5 +95,13 @@ public class ServicioViajeImpl implements ServicioViaje {
                 repositorioViaje.actualizar(viaje);
             }
         }
+    }
+
+    //este metodo tiene que ser llamado por el metodo que crea la reserva
+    public double calcularPrecio(Reserva reserva) {
+        Viaje viaje = reserva.getViaje();
+        int totalTramos = viaje.getParadas().size() - 1;
+        int tramosDelPasajero = reserva.getParadaDestino().getOrden() - reserva.getParadaOrigen().getOrden();
+        return (viaje.getPrecio() / totalTramos) * tramosDelPasajero;
     }
 }

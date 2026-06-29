@@ -20,212 +20,142 @@
 <body>
 <div th:replace="componentes/nav-bar :: navbar('home')"></div>
 <main class="page-container">
-
-    <!-- PERFIL -->
     <div class="perfil-card">
-
         <div class="perfil-avatar">
-            <img th:src="@{/imagenes/avatarDefault.webp}"
-                 alt="Foto de perfil">
+            <img th:src="@{/imagenes/avatarDefault.webp}" alt="Foto de perfil">
         </div>
-
         <div class="perfil-info">
-
             <h1 th:text="${usuario.nombre}"></h1>
-
             <h2 th:text="${usuario.apellido}"></h2>
-
             <p th:text="${usuario.email}"></p>
-
             <div class="perfil-botones">
-
                 <button class="btn-primary">
                     Editar Perfil
                 </button>
-
                 <button class="btn-secundary">
                     Configuración
                 </button>
-
             </div>
-
         </div>
-
     </div>
 
-    <!-- ESTADÍSTICAS -->
     <section class="estadisticas-grid">
-
         <div class="feature-card">
         <span class="material-symbols-outlined feature-icon">
             route
         </span>
-
             <h3 class="feature-title">
                 Viajes Realizados
             </h3>
-
             <p class="feature-description" th:text="${viajesRealizados}">
             0
             </p>
         </div>
-
         <div class="feature-card">
         <span class="material-symbols-outlined feature-icon">
             cancel
         </span>
-
             <h3 class="feature-title">
                 Viajes Cancelados
             </h3>
-
             <p class="feature-description" th:text="${viajesCancelados}">
-
             </p>
         </div>
-
-        <div class="feature-card">
+        <!--<div class="feature-card">
         <span class="material-symbols-outlined feature-icon">
             star
         </span>
-
             <h3 class="feature-title">
                 Puntuación
             </h3>
-
             <p class="feature-description">
                 4.9
             </p>
         </div>
-
         <div class="feature-card">
         <span class="material-symbols-outlined feature-icon">
             person
         </span>
-
             <h3 class="feature-title">
                 Conductor Favorito
             </h3>
-
-
             <p>
                 <span class="feature-description" th:text="${favorito}"></span>
             </p>
-
-        </div>
-
+        </div>-->
     </section>
-
-
-    <!--HISTORIAL-->
-
     <section class="historial-section">
-
         <div class="section-header">
             <div>
                 <h2>Historial de Viajes</h2>
                 <p>Tus últimas reservas realizadas</p>
             </div>
         </div>
-
-        <!-- Si NO hay reservas -->
         <section th:if="${#lists.isEmpty(reservas)}" class="empty-state">
-
             <div class="empty-state-icon">
         <span class="material-symbols-outlined">
             travel_explore
         </span>
             </div>
-
             <h2>Tu aventura todavía no comenzó</h2>
-
             <p>
                 Todavía no realizaste ningún viaje.
             </p>
-
             <p class="empty-state-secondary">
                 Reservá tu primer viaje y comenzá a construir tu historial
                 dentro de BondiWay.
             </p>
-
             <a th:href="@{/buscar-viaje}" class="empty-state-btn">
                 Buscar viajes
             </a>
-
         </section>
-        <!-- Si hay reservas -->
         <div class="trips-history-list"
              th:unless="${#lists.isEmpty(reservas)}">
-
-
             <article class="trip-card"
                      th:each="reserva : ${reservas}">
-
                 <div class="trip-top">
-
                     <div>
                     <span class="trip-date"
                           th:text="${reserva.estadoReserva}">
                     </span>
-
                         <h3 th:text="${reserva.viaje.origen}">
                         </h3>
                     </div>
-
                 </div>
-
                 <div class="trip-info">
-
                     <div class="trip-info-item">
                     <span class="material-symbols-outlined">
                         location_on
                     </span>
-
                         <p>
                             Destino:
                             <span th:text="${reserva.viaje.destino}">
                         </span>
                         </p>
                     </div>
-
                     <div class="trip-info-item">
                     <span class="material-symbols-outlined">
                         directions_bus
                     </span>
-
                         <p th:text="${reserva.estadoReserva}">
                         </p>
                     </div>
-
                 </div>
-
                 <div class="trip-footer">
-
                     <div>
                     <span class="price-label">
                         Precio
                     </span>
-
-                        <h4 th:text="'$' + ${reserva.viaje.precio}">
+                        <h4 th:text="'$' + ${reserva.precioTotal}">
                         </h4>
                     </div>
-
-                    <button class="details-btn">
-                        <a th:href="@{/detalle-viaje/{id}(id=${reserva.id})}"> Ver detalle</a>
-
-                    </button>
-
+                    <a th:href="@{/detalle-viaje/{id}(id=${reserva.id})}">
+                        <button class="details-btn">Ver detalle</button>
+                    </a>
                 </div>
-
             </article>
-
         </div>
-
-
     </section>
-
-
-
 </main>
 <div th:replace="componentes/footer :: footer"></div>
 </body>

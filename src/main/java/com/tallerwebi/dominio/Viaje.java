@@ -27,7 +27,6 @@ public class Viaje {
     private Integer numeroViaje;
     private Integer asientosDisponibles;
     private String duracion;
-    //private String tipoServicio;
 
     @Enumerated(EnumType.STRING)
     private TipoDeViaje tipoDeViaje;
