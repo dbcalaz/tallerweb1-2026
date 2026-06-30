@@ -3,10 +3,7 @@ package com.tallerwebi.dominio;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Getter
 @Setter
@@ -18,11 +15,16 @@ public class Puntuacion {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "id_usuario")
     private Usuario usuario;
 
     @ManyToOne
+    @JoinColumn(name = "id_reserva")
     private Reserva reserva;
 
-    private Integer puntos;
+    @ManyToOne
+    @JoinColumn(name = "id_conductor")
+    private Conductor conductor;
 
+    private Integer puntos;
 }

@@ -6,4 +6,8 @@ public interface RepositorioPuntuacion {
 
 
     boolean existePuntuacioPorUsuarioYReserva(Long idUsuario, Long idReserva);
+
+    void guardar(Puntuacion puntuacion);
+
+    Double obtenerPromedioPorConductor(Long id);
 }

@@ -62,6 +62,7 @@ public class ServicioViajeImpl implements ServicioViaje {
 
     @Override
     public void guardarReserva(Reserva reserva) {
+        calcularPrecio(reserva);
         repositorioViaje.guardarReserva(reserva);
     }
 
@@ -104,4 +105,5 @@ public class ServicioViajeImpl implements ServicioViaje {
         int tramosDelPasajero = reserva.getParadaDestino().getOrden() - reserva.getParadaOrigen().getOrden();
         return (viaje.getPrecio() / totalTramos) * tramosDelPasajero;
     }
+
 }
