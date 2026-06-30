@@ -20,7 +20,8 @@ public class DatabaseInitializationConfig {
   public DataSourceInitializer dataSourceInitializer() {
     ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
     populator.addScript(new ClassPathResource("data.sql"));
-   // populator.setContinueOnError(true);
+    populator.setSqlScriptEncoding("UTF-8"); //Se agrego linea para forzar el utf-8 del sql
+    // populator.setContinueOnError(true);
     DataSourceInitializer initializer = new DataSourceInitializer();
     initializer.setDataSource(dataSource);
     initializer.setDatabasePopulator(populator);
