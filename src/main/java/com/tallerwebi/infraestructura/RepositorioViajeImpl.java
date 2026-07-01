@@ -25,6 +25,9 @@ public class RepositorioViajeImpl implements RepositorioViaje {
         sessionFactory.getCurrentSession().save(viaje);
     }
 
+    // ------------------------
+    //NOTA IMPORTANTE  ----------->  REEMPLAZAR TODAS LAS CONSULTAS POR CRITERIA
+    // ------------------------
     @Override
     public List<Viaje> buscarViajes(Long idOrigen, Long idDestino, String fecha, Integer pasajeros) {
         String hql = "SELECT DISTINCT v FROM Viaje v " +
