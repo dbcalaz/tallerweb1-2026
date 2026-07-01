@@ -2,6 +2,8 @@
 insert into Usuario(email, password, rol, activo) values('test@unlam.edu.ar', 'test', 'CLIENTE', true);
 insert into Usuario(email, password, rol, activo, nombre, apellido, telefono) values('j@j', '123', 'CLIENTE', true, 'Juan', 'Bringa', '1122334455');
 insert into Usuario(email, password, rol, activo) values('admin@mail.com', 'admin', 'ADMIN', true);
+insert into Usuario(email, password, rol, activo) values('usuario1@gmail.com', '1234qwer', 'CLIENTE', true);
+insert into Usuario(email, password, rol, activo) values('usuario2@gmail.com', 'qwerasdf', 'CLIENTE', true);
 
 -- 2. Inserción de Conductores
 insert into Conductor (nombre, apellido, email, telefono, documento, password, licencia, calificacion, ganancia, cuentaHabilitada, estadoConductor)

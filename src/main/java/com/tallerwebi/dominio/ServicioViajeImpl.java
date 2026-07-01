@@ -62,7 +62,8 @@ public class ServicioViajeImpl implements ServicioViaje {
 
     @Override
     public void guardarReserva(Reserva reserva) {
-        calcularPrecio(reserva);
+        // calcularPrecio(reserva);
+
         repositorioViaje.guardarReserva(reserva);
     }
 
@@ -76,7 +77,7 @@ public class ServicioViajeImpl implements ServicioViaje {
         repositorioViaje.eliminarReserva(idReserva);
     }
 
-    // Se aplica una logica de sobre una regla para verificar un viaje dentro de las 24 horas"
+    // Se aplica una logica de sobre una regla para verificar un viaje dentro de las 24 horas
     @Override
     public void verificarViajes24Horas(Long idViaje) {
         Viaje viaje = repositorioViaje.buscarPorId(idViaje);
@@ -98,7 +99,7 @@ public class ServicioViajeImpl implements ServicioViaje {
         }
     }
 
-    //este metodo tiene que ser llamado por el metodo que crea la reserva
+    // Este metodo tiene que ser llamado por el metodo que crea la reserva
     public double calcularPrecio(Reserva reserva) {
         Viaje viaje = reserva.getViaje();
         int totalTramos = viaje.getParadas().size() - 1;
@@ -106,4 +107,20 @@ public class ServicioViajeImpl implements ServicioViaje {
         return (viaje.getPrecio() / totalTramos) * tramosDelPasajero;
     }
 
+    @Override
+    public List<Reserva> buscarReservasPorUsuario(Long idUsuario) {
+        List<Reserva> misReservas = repositorioViaje.buscarReservasPorUsuario(idUsuario);
+
+        for (Reserva reserva : misReservas) {
+            org.hibernate.Hibernate.initialize(reserva.getPasajeros());
+            org.hibernate.Hibernate.initialize(reserva.getViaje());
+
+            if (reserva.getViaje() != null) {
+                org.hibernate.Hibernate.initialize(reserva.getViaje().getParadas());
+                org.hibernate.Hibernate.initialize(reserva.getViaje().getCombi());
+            }
+        }
+
+        return misReservas;
+    }
 }

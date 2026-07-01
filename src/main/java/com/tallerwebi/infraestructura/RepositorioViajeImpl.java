@@ -6,6 +6,7 @@ import org.hibernate.criterion.Projections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import java.util.List;
+import java.time.LocalDate;
 
 import static org.hibernate.criterion.Restrictions.eq;
 
@@ -24,20 +25,24 @@ public class RepositorioViajeImpl implements RepositorioViaje {
         sessionFactory.getCurrentSession().save(viaje);
     }
 
-    // NOTA URGENTE: SOLUCION MOMENTANEA (SE TIENE QUE QUITAR PARA ANTES DEL SPRINT 5) SOBRE LOS RESULTADOS QUE APARECEN DUPLICADOS
     @Override
     public List<Viaje> buscarViajes(Long idOrigen, Long idDestino, String fecha, Integer pasajeros) {
         String hql = "SELECT DISTINCT v FROM Viaje v " +
-                "WHERE v.origen.id = :idOrigen " +
-                "AND v.destino.id = :idDestino " +
+                "JOIN v.paradas vpOrigen " +
+                "JOIN v.paradas vpDestino " +
+                "WHERE vpOrigen.parada.id = :idOrigen " +
+                "AND vpDestino.parada.id = :idDestino " +
+                "AND vpOrigen.orden < vpDestino.orden " +
                 "AND v.fecha = :fecha " +
                 "AND v.asientosDisponibles >= :pasajeros";
+
+        LocalDate fechaLocalDate = LocalDate.parse(fecha);
 
         return sessionFactory.getCurrentSession()
                 .createQuery(hql, Viaje.class)
                 .setParameter("idOrigen", idOrigen)
                 .setParameter("idDestino", idDestino)
-                .setParameter("fecha", fecha)
+                .setParameter("fecha", fechaLocalDate)
                 .setParameter("pasajeros", pasajeros)
                 .getResultList();
     }
@@ -110,5 +115,20 @@ public class RepositorioViajeImpl implements RepositorioViaje {
         if (reserva != null) {
             sessionFactory.getCurrentSession().delete(reserva);
         }
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<Reserva> buscarReservasPorUsuario(Long idUsuario) {
+        String hql = "SELECT DISTINCT r FROM Reserva r " +
+                "LEFT JOIN FETCH r.pasajeros " +
+                "WHERE r.usuario.id = :idUsuario " +
+                "AND r.estadoReserva = :estado";
+
+        return sessionFactory.getCurrentSession()
+                .createQuery(hql, Reserva.class)
+                .setParameter("idUsuario", idUsuario)
+                .setParameter("estado", EstadoReserva.CONFIRMADA)
+                .getResultList();
     }
 }

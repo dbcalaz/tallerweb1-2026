@@ -7,7 +7,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -45,9 +44,6 @@ public class ControladorBusqueda {
         return new ModelAndView("listadoViajes", modelo);
     }
 
-    // ==========================================================
-    // NOTA URGENTE en SOLICITAR ESPERA (Si el comentario sigue es porque aun no se soluciono): Unificarlo con mis compañeros con la parte administrador.
-    // ==========================================================
     @RequestMapping(path = "/solicitar-espera", method = RequestMethod.POST)
     public ModelAndView solicitarViajeEnEspera() {
         ModelMap modelo = new ModelMap();
@@ -88,6 +84,8 @@ public class ControladorBusqueda {
             reserva.setEstadoReserva(EstadoReserva.CONFIRMADA);
             reserva.setPrecioTotal(viaje.getPrecio() * pasajerosCount);
 
+            reserva.setPasajeros(new java.util.ArrayList<>());
+
             for (int i = 0; i < pasajerosCount; i++) {
                 Pasajero p = new Pasajero();
                 p.setNombre(nombres.get(i));
@@ -103,13 +101,11 @@ public class ControladorBusqueda {
 
             servicioViaje.guardarReserva(reserva);
 
-            List<Reserva> misReservas = obtenerReservasDeSesion(request);
-            misReservas.add(reserva);
-            request.getSession().setAttribute("misReservas", misReservas);
-
             return new ModelAndView("redirect:/viajeEnCurso");
 
         } catch (Exception e) {
+            System.err.println("ERROR AL GUARDAR RESERVA: ");
+            e.printStackTrace();
             return new ModelAndView("redirect:/buscar-viaje");
         }
     }
@@ -117,7 +113,10 @@ public class ControladorBusqueda {
     @RequestMapping(path = "/viajeEnCurso", method = RequestMethod.GET)
     public ModelAndView verMisViajes(HttpServletRequest request) {
         ModelMap modelo = new ModelMap();
-        List<Reserva> misReservas = obtenerReservasDeSesion(request);
+        Usuario usuarioLogueado = (Usuario) request.getSession().getAttribute("usuario");
+        if (usuarioLogueado == null) return new ModelAndView("redirect:/login");
+
+        List<Reserva> misReservas = servicioViaje.buscarReservasPorUsuario(usuarioLogueado.getId());
 
         modelo.put("misReservas", misReservas);
         modelo.put("sinViajes", misReservas.isEmpty());
@@ -127,7 +126,9 @@ public class ControladorBusqueda {
 
     @RequestMapping(path = "/cancelar-viaje", method = RequestMethod.POST)
     public ModelAndView cancelarViaje(@RequestParam("idViaje") Long idViaje, HttpServletRequest request) {
-        List<Reserva> misReservas = obtenerReservasDeSesion(request);
+        Usuario usuarioLogueado = (Usuario) request.getSession().getAttribute("usuario");
+        if (usuarioLogueado == null) return new ModelAndView("redirect:/login");
+        List<Reserva> misReservas = servicioViaje.buscarReservasPorUsuario(usuarioLogueado.getId());
 
         Reserva reservaACancelar = misReservas.stream()
                 .filter(reserva -> reserva.getViaje().getId().equals(idViaje))
@@ -135,7 +136,6 @@ public class ControladorBusqueda {
                 .orElse(null);
 
         if (reservaACancelar != null) {
-            misReservas.remove(reservaACancelar);
             int cantidadPasajeros = reservaACancelar.getPasajeros().size();
             for (int i = 0; i < cantidadPasajeros; i++) {
                 servicioViaje.liberarAsiento(idViaje);
@@ -144,14 +144,7 @@ public class ControladorBusqueda {
             if (reservaACancelar.getId() != null) {
                 servicioViaje.eliminarReserva(reservaACancelar.getId());
             }
-            request.getSession().setAttribute("misReservas", misReservas);
         }
         return new ModelAndView("redirect:/viajeEnCurso");
-    }
-
-    @SuppressWarnings("unchecked")
-    private List<Reserva> obtenerReservasDeSesion(HttpServletRequest request) {
-        List<Reserva> reservas = (List<Reserva>) request.getSession().getAttribute("misReservas");
-        return (reservas != null) ? reservas : new ArrayList<>();
     }
 }

@@ -19,4 +19,6 @@ public interface ServicioViaje {
     void guardarReserva(Reserva reserva);
     List<Integer> obtenerAsientosOcupados(Long idViaje);
     void eliminarReserva(Long idReserva);
+
+    List<Reserva> buscarReservasPorUsuario(Long idUsuario);
 }

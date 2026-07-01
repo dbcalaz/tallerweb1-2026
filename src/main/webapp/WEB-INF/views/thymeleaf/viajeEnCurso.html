@@ -20,80 +20,42 @@
     <div class="row mb-4">
         <div class="col-12 text-center">
             <h2 class="fw-bold" style="color: var(--text-color);">Mis Viajes en Curso</h2>
-            <p class="text-muted">Aquí podés ver los viajes que tenés reservados y sus pasajeros.</p>
         </div>
     </div>
 
-    <div th:if="${sinViajes}" class="text-center py-5">
-        <span class="material-symbols-outlined text-muted" style="font-size: 64px;">directions_bus</span>
-        <h4 class="mt-3 text-muted">Aún no tenés ningún viaje en curso.</h4>
-        <a th:href="@{/buscar-viaje}" class="btn btn-primary mt-3 px-4 py-2 fw-bold" style="background-color: var(--primary);">Buscar mi primer viaje</a>
+    <div th:if="${sinViajes}" class="text-center mt-5">
+        <p>No tienes viajes reservados actualmente.</p>
+        <a th:href="@{/buscar-viaje}" class="btn btn-primary">Buscar Viajes</a>
     </div>
 
-    <div th:if="${!sinViajes}" class="row justify-content-center">
-        <div class="col-lg-8">
-            <div th:each="reserva : ${misReservas}" class="card shadow-sm border-0 mb-4 rounded-4" style="overflow: hidden;">
-                <div class="card-header bg-white border-bottom-0 pt-4 pb-0 px-4">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <span class="badge bg-success text-white px-3 py-2 rounded-pill">
-                            <span class="material-symbols-outlined align-middle" style="font-size: 16px;">check_circle</span> Confirmado
-                        </span>
-                        <h5 class="fw-bold mb-0 text-success">$<span th:text="${reserva.precioTotal}"></span></h5>
-                    </div>
-                </div>
+    <div th:unless="${sinViajes}" class="row justify-content-center">
+        <div class="col-md-8" th:each="reserva : ${misReservas}">
+            <div class="card mb-3 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold">Viaje Programado</h5>
 
-                <div class="card-body p-4">
-                    <div class="row align-items-center mb-4">
-                        <div class="col-md-5 text-center text-md-end">
-                            <h5 class="fw-bold mb-0 text-primary" th:text="${reserva.viaje.origen.nombre}"></h5>
-                        </div>
-                        <div class="col-md-2 text-center my-2 my-md-0">
-                            <span class="material-symbols-outlined text-muted fs-3">arrow_forward</span>
-                        </div>
-                        <div class="col-md-5 text-center text-md-start">
-                            <h5 class="fw-bold mb-0 text-primary" th:text="${reserva.viaje.destino.nombre}"></h5>
-                        </div>
-                    </div>
+                    <p><strong>Origen:</strong> <span th:text="${reserva.viaje.origen}"></span></p>
+                    <p><strong>Destino:</strong> <span th:text="${reserva.viaje.destino}"></span></p>
+                    <p><strong>Fecha:</strong> <span th:text="${reserva.viaje.fecha}"></span></p>
+                    <p><strong>Precio Total:</strong> $<span th:text="${reserva.precioTotal}"></span></p>
 
-                    <div class="row bg-light rounded-3 p-3 mb-4">
-                        <div class="col-6 col-md-3 text-center mb-3 mb-md-0">
-                            <span class="material-symbols-outlined text-muted d-block mb-1">calendar_month</span>
-                            <small class="fw-bold d-block" th:text="${reserva.viaje.fecha}"></small>
-                        </div>
-                        <div class="col-6 col-md-3 text-center mb-3 mb-md-0">
-                            <span class="material-symbols-outlined text-muted d-block mb-1">schedule</span>
-                            <small class="fw-bold d-block" th:text="${reserva.viaje.horario}"></small>
-                        </div>
-                        <div class="col-6 col-md-3 text-center">
-                            <span class="material-symbols-outlined text-muted d-block mb-1">directions_bus</span>
-                            <small class="fw-bold d-block" th:text="${reserva.viaje.combi.patente}"></small>
-                        </div>
-                        <div class="col-6 col-md-3 text-center">
-                            <span class="material-symbols-outlined text-muted d-block mb-1">group</span>
-                            <small class="fw-bold d-block"><span th:text="${#lists.size(reserva.pasajeros)}"></span> Pasajeros</small>
-                        </div>
-                    </div>
-
-                    <div class="mb-4">
-                        <h6 class="fw-bold border-bottom pb-2 mb-3">Detalle de los Pasajeros</h6>
-                        <div class="d-flex flex-column gap-2">
-                            <div th:each="pasajero : ${reserva.pasajeros}" class="d-flex justify-content-between align-items-center bg-white border p-2 rounded-2">
-                                <div>
-                                    <span class="material-symbols-outlined align-middle text-muted me-2" style="font-size: 20px;">person</span>
-                                    <span class="fw-semibold" th:text="${pasajero.nombre} + ' ' + ${pasajero.apellido}"></span>
-                                    <small class="text-muted ms-2 d-none d-sm-inline" th:text="'DNI: ' + ${pasajero.dni}"></small>
-                                </div>
-                                <span class="badge bg-secondary rounded-pill px-3">
-                                    Asiento <span th:text="${pasajero.numeroAsiento}"></span>
-                                </span>
+                    <h6 class="mt-3">Pasajeros confirmados:</h6>
+                    <div class="list-group">
+                        <div th:each="pasajero : ${reserva.pasajeros}" class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <span th:text="${pasajero.nombre + ' ' + pasajero.apellido}"></span>
+                                <small class="text-muted ms-2" th:text="'DNI: ' + ${pasajero.dni}"></small>
                             </div>
+                            <span class="badge bg-secondary rounded-pill px-3">
+                                Asiento <span th:text="${pasajero.numeroAsiento}"></span>
+                            </span>
                         </div>
                     </div>
 
                     <div class="text-end mt-2">
                         <form th:action="@{/cancelar-viaje}" method="POST" class="d-inline">
                             <input type="hidden" name="idViaje" th:value="${reserva.viaje.id}"/>
-                            <button type="submit" class="btn btn-outline-danger fw-bold rounded-pill px-4" onclick="return confirm('¿Estás seguro de que querés cancelar este viaje y liberar los asientos?');">
+                            <button type="submit" class="btn btn-outline-danger fw-bold rounded-pill px-4" onclick="return confirm('¿Estás seguro de que querés cancelar este viaje?');">
                                 <span class="material-symbols-outlined align-middle me-1" style="font-size: 18px;">cancel</span> Cancelar Reserva
                             </button>
                         </form>
