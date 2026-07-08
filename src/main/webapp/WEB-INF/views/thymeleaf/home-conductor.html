@@ -60,7 +60,7 @@
                     <span class="material-symbols-outlined">payments</span>
                     <div>
                         <p>Ganancias hoy</p>
-                        <h3 th:text="'$ ' + ${conductor.ganancia}"></h3>
+                        <h3 th:text="'$ ' + ${conductor.ganancia == null ? 0 : conductor.ganancia}"></h3>
                     </div>
                 </article>
             </div>

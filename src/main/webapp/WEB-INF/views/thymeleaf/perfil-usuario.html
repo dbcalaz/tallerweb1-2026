@@ -25,8 +25,7 @@
             <img th:src="@{/imagenes/avatarDefault.webp}" alt="Foto de perfil">
         </div>
         <div class="perfil-info">
-            <h1 th:text="${usuario.nombre}"></h1>
-            <h2 th:text="${usuario.apellido}"></h2>
+            <h1 th:text="${usuario.nombre + ' ' + usuario.apellido}"></h1>
             <p th:text="${usuario.email}"></p>
             <div class="perfil-botones">
                 <button class="btn-primary">
@@ -110,13 +109,13 @@
             </a>
         </section>
         <div class="trips-history-list"
-             th:unless="${#lists.isEmpty(reservas)}">
+                th:unless="${#lists.isEmpty(reservas)}">
             <article class="trip-card"
-                     th:each="reserva : ${reservas}">
+                    th:each="reserva : ${reservas}">
                 <div class="trip-top">
                     <div>
                     <span class="trip-date"
-                          th:text="${reserva.estadoReserva}">
+                            th:text="${reserva.estadoReserva}">
                     </span>
                         <h3 th:text="${reserva.viaje.origen}">
                         </h3>

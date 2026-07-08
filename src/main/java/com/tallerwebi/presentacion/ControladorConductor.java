@@ -230,6 +230,7 @@ public class ControladorConductor {
     }
 
     private Conductor obtenerConductorActivo(HttpServletRequest request) {
+
         Conductor conductorSession = (Conductor) request.getSession().getAttribute("conductor");
 
         if (conductorSession == null) {
@@ -238,7 +239,12 @@ public class ControladorConductor {
 
         Conductor conductorActualizado = servicioConductor.buscarPorId(conductorSession.getId());
 
-        if (conductorActualizado == null || conductorActualizado.getEstadoConductor().equals(EstadoConductor.SUSPENDIDO)) {
+        if (conductorActualizado == null) {
+            return null;
+        }
+
+        if (conductorActualizado.getEstadoConductor() == EstadoConductor.SUSPENDIDO) {
+            request.getSession().setAttribute("conductorSuspendido", true);
             return null;
         }
 
@@ -248,18 +254,25 @@ public class ControladorConductor {
 
     private ModelAndView redirigirLoginConSesionCerrada(HttpServletRequest request) {
 
+        Boolean suspendido = (Boolean) request.getSession().getAttribute("conductorSuspendido");
         String mensaje = (String) request.getSession().getAttribute("mensajeConductor");
+
         request.getSession().invalidate();
-        request.getSession(true).setAttribute(
-                "errorLoginConductor",
-                "Tu cuenta fue suspendida. Contactate con un administrador."
-        );
+
+        if (Boolean.TRUE.equals(suspendido)) {
+            request.getSession(true).setAttribute(
+                    "errorLoginConductor",
+                    "Tu cuenta fue suspendida. Contactate con un administrador."
+            );
+        }
+
         if (mensaje != null) {
             request.getSession().setAttribute(
                     "mensajeLoginConductor",
                     mensaje
             );
         }
+
         return new ModelAndView("redirect:/login-conductor");
     }
 }

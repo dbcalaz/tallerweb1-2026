@@ -1,5 +1,5 @@
 -- 1. Inserción de Usuarios base
-insert into Usuario(email, password, rol, activo) values('test@unlam.edu.ar', 'test', 'CLIENTE', true);
+insert into Usuario(email, password, rol, activo, nombre, apellido) values('test@unlam.edu.ar', 'test', 'CLIENTE', true, 'Pedro', 'Sanchez');
 insert into Usuario(email, password, rol, activo, nombre, apellido, telefono) values('j@j', '123', 'CLIENTE', true, 'Juan', 'Bringa', '1122334455');
 insert into Usuario(email, password, rol, activo) values('admin@mail.com', 'admin', 'ADMIN', true);
 insert into Usuario(email, password, rol, activo) values('usuario1@gmail.com', '1234qwer', 'CLIENTE', true);
