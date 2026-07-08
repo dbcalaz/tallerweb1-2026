@@ -165,6 +165,13 @@ public class ServicioConductorImpl implements ServicioConductor {
     }
 
     @Override
+    public void actualizarRecaudacionEmpleado(Viaje viaje, Conductor conductor){
+        Double recaudacion = viaje.getRecaudacionTotal();
+        Double gananciaConductor = recaudacion * 0.75;
+        conductor.setGanancia(conductor.getGanancia() + gananciaConductor);
+    }
+
+    @Override
     public void finalizarViaje(Long idViaje, Long idConductor) {
         validarIdViaje(idViaje);
         validarIdConductor(idConductor);
@@ -190,13 +197,7 @@ public class ServicioConductorImpl implements ServicioConductor {
         viaje.setEstadoDeViaje(EstadoDeViaje.FINALIZADO);
 
         // ganancias del conductor
-        Double recaudacion = viaje.getRecaudacionTotal();
-        Double gananciaConductor = recaudacion * 0.75;
-        conductor.setGanancia(conductor.getGanancia() + gananciaConductor);
-
-        /* ganancias de la empresa
-        Double gananciaEmpresa = recaudacion * 0.25;
-        empresa.setGanancia(empresa.getGanancia() + gananciaEmpresa); // acá tengo la duda, claramente la entidad empresa no existe y no se si deberia existir*/
+        actualizarRecaudacionEmpleado(viaje, conductor);
 
         combiEnViaje.setEstadoDeCombi(EstadoDeCombi.DISPONIBLE);
 

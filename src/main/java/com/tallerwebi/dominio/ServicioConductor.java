@@ -27,6 +27,8 @@ public interface ServicioConductor {
 
     void iniciarViaje(Long idViaje, Long idConductor);
 
+    void actualizarRecaudacionEmpleado(Viaje viaje, Conductor conductor);
+
     void finalizarViaje(Long idViaje, Long idConductor);
 
     void registrarFalla(ReporteFalla reporteFalla);
