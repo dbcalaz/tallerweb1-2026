@@ -8,6 +8,7 @@
     --text-secondary: #6b7280;
     --text-display: 42px;
     --text-hero: 30px;
+    --text-headline-lg: 32px;
     --text-title: 24px;
     --text-subtitle: 18px;
     --text-body: 15px;
@@ -29,6 +30,22 @@
     --radius-lg: 18px;
     --radius-md: 14px;
     --font-main: 'Inter', sans-serif;
+
+    /* Badges de estado de reserva */
+    --status-success-bg: #dcfce7;
+    --status-success-text: #166534;
+    --status-info-bg: rgba(79, 55, 138, 0.10);
+    --status-info-text: var(--primary);
+    --status-error-bg: #fee2e2;
+    --status-error-text: #991b1b;
+    --status-neutral-bg: #ece6f2;
+    --status-neutral-text: var(--text-secondary);
+
+    /* Íconos de estadísticas (perfil) */
+    --stat-primary-bg: rgba(79, 55, 138, 0.12);
+    --stat-error-bg: #fee2e2;
+    --stat-gold-bg: #fdf1cf;
+    --stat-gold-text: #92640c;
 
     /*Conductor*/
     --driver-background: #2f2b36;

@@ -45,7 +45,7 @@
 
         <section class="driver-hero">
             <div>
-                <h2 class="driver-title" th:text="'¡Hola de nuevo, ' + ${conductor.nombre} + '!'"></h2>
+                <h2 class="driver-title" th:text="'¡Hola, ' + ${conductor.nombre} + '!'"></h2>
                 <p class="driver-subtitle">Listo para tus rutas de hoy.</p>
             </div>
             <div class="driver-hero-stats">
@@ -153,7 +153,6 @@
     <section class="driver-section">
     <div class="driver-section-header">
         <h3>Viajes disponibles</h3>
-        <!-- <a href="#">Ver mapa de demanda</a>-->
     </div>
     <div class="driver-trips-grid" th:if="${viajesDisponibles != null and !viajesDisponibles.isEmpty()}">
         <article class="driver-trip-card" th:each="viaje : ${viajesDisponibles}">

@@ -14,15 +14,16 @@
 
     <link rel="stylesheet" th:href="@{/css/variables.css}">
     <link rel="stylesheet" th:href="@{/css/components.css}">
-    <link rel="stylesheet" th:href="@{/css/home.css}">
     <link rel="stylesheet" th:href="@{/css/perfilUsuario.css}">
 </head>
 <body>
 <div th:replace="componentes/nav-bar :: navbar('home')"></div>
 <main class="page-container">
-    <div class="perfil-card">
+
+    <!-- Encabezado de perfil -->
+    <div class="perfil-header">
         <div class="perfil-avatar">
-            <img th:src="@{/imagenes/avatarDefault.webp}" alt="Foto de perfil">
+            <img th:src="@{/imagenes/maria.jpg}" alt="Foto de perfil">
         </div>
         <div class="perfil-info">
             <h1 th:text="${usuario.nombre + ' ' + usuario.apellido}"></h1>
@@ -31,29 +32,30 @@
                 <button class="btn-primary">
                     Editar Perfil
                 </button>
-                <button class="btn-secundary">
+                <!--<button class="btn-secundary">
                     Configuración
-                </button>
+                </button>-->
             </div>
         </div>
     </div>
 
+    <!-- Estadísticas -->
     <section class="estadisticas-grid">
         <div class="feature-card">
-        <span class="material-symbols-outlined feature-icon">
-            route
-        </span>
+            <span class="material-symbols-outlined feature-icon">
+                route
+            </span>
             <h3 class="feature-title">
                 Viajes Realizados
             </h3>
             <p class="feature-description" th:text="${viajesRealizados}">
-            0
+                0
             </p>
         </div>
         <div class="feature-card">
-        <span class="material-symbols-outlined feature-icon">
-            cancel
-        </span>
+            <span class="material-symbols-outlined feature-icon">
+                cancel
+            </span>
             <h3 class="feature-title">
                 Viajes Cancelados
             </h3>
@@ -83,18 +85,20 @@
             </p>
         </div>-->
     </section>
+
+    <!-- Historial de viajes -->
     <section class="historial-section">
         <div class="section-header">
             <div>
                 <h2>Historial de Viajes</h2>
-                <p>Tus últimas reservas realizadas</p>
             </div>
         </div>
+
         <section th:if="${#lists.isEmpty(reservas)}" class="empty-state">
             <div class="empty-state-icon">
-        <span class="material-symbols-outlined">
-            travel_explore
-        </span>
+                <span class="material-symbols-outlined">
+                    travel_explore
+                </span>
             </div>
             <h2>Tu aventura todavía no comenzó</h2>
             <p>
@@ -108,49 +112,61 @@
                 Buscar viajes
             </a>
         </section>
+
         <div class="trips-history-list"
                 th:unless="${#lists.isEmpty(reservas)}">
-            <article class="trip-card"
-                    th:each="reserva : ${reservas}">
-                <div class="trip-top">
-                    <div>
-                    <span class="trip-date"
-                            th:text="${reserva.estadoReserva}">
-                    </span>
-                        <h3 th:text="${reserva.viaje.origen}">
-                        </h3>
-                    </div>
-                </div>
-                <div class="trip-info">
-                    <div class="trip-info-item">
-                    <span class="material-symbols-outlined">
-                        location_on
-                    </span>
-                        <p>
-                            Destino:
-                            <span th:text="${reserva.viaje.destino}">
+            <article class="reserva-card"
+                    th:each="reserva : ${reservas}"
+                    th:with="estadoClase=${reserva.estadoReserva.name() == 'EN_CURSO'} ? 'status-en-curso' : (${reserva.estadoReserva.name() == 'CONFIRMADA'} ? 'status-confirmada' : (${reserva.estadoReserva.name() == 'CANCELADA'} ? 'status-cancelada' : 'status-finalizada')),
+                              puedeCancelarse=${reserva.estadoReserva.name() == 'EN_CURSO' or reserva.estadoReserva.name() == 'CONFIRMADA'}">
+
+                <div class="reserva-main">
+                    <div class="reserva-top">
+                        <span th:class="'status-badge ' + ${estadoClase}"
+                                th:text="${reserva.estadoReserva}">
                         </span>
-                        </p>
+                        <span class="reserva-date">Fecha no disponible</span>
                     </div>
-                    <div class="trip-info-item">
-                    <span class="material-symbols-outlined">
-                        directions_bus
-                    </span>
-                        <p th:text="${reserva.estadoReserva}">
-                        </p>
+                    <div class="reserva-info">
+                        <div class="reserva-info-item">
+                            <span class="material-symbols-outlined">
+                                location_on
+                            </span>
+                            <div>
+                                <small>Origen</small>
+                                <p th:text="${reserva.viaje.origen}"></p>
+                            </div>
+                        </div>
+                        <div class="reserva-info-item">
+                            <span class="material-symbols-outlined">
+                                flag
+                            </span>
+                            <div>
+                                <small>Destino</small>
+                                <p th:text="${reserva.viaje.destino}"></p>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="trip-footer">
+
+                <div class="reserva-divider"></div>
+
+                <div class="reserva-stats">
                     <div>
-                    <span class="price-label">
-                        Precio
-                    </span>
-                        <h4 th:text="'$' + ${reserva.precioTotal}">
-                        </h4>
+                        <small>Precio</small>
+                        <strong th:text="'$' + ${reserva.precioTotal}"></strong>
                     </div>
+                </div>
+
+                <div class="reserva-actions">
                     <a th:href="@{/detalle-viaje/{id}(id=${reserva.id})}">
                         <button class="details-btn">Ver detalle</button>
                     </a>
+                    <button th:if="${puedeCancelarse}"
+                            class="btn-cancel"
+                            th:attr="data-reserva-id=${reserva.id}">
+                        Cancelar
+                    </button>
                 </div>
             </article>
         </div>

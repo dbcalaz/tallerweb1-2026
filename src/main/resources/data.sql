@@ -1,5 +1,5 @@
 -- 1. Inserción de Usuarios base
-insert into Usuario(email, password, rol, activo, nombre, apellido) values('test@unlam.edu.ar', 'test', 'CLIENTE', true, 'Pedro', 'Sanchez');
+insert into Usuario(email, password, rol, activo, nombre, apellido) values('test@unlam.edu.ar', 'test', 'CLIENTE', true, 'María', 'Sanchez');
 insert into Usuario(email, password, rol, activo, nombre, apellido, telefono) values('j@j', '123', 'CLIENTE', true, 'Juan', 'Bringa', '1122334455');
 insert into Usuario(email, password, rol, activo) values('admin@mail.com', 'admin', 'ADMIN', true);
 insert into Usuario(email, password, rol, activo) values('usuario1@gmail.com', '1234qwer', 'CLIENTE', true);
@@ -50,7 +50,7 @@ insert into Parada (nombre, direccion) values
 
 insert into Viaje (fecha, horario, precio, numeroViaje, asientosDisponibles, duracion, tipoDeViaje, estadoDeViaje, id_combi, id_conductor) values
 ('2026-05-20', '18:00', 2800.0, 1003, 0, '40 min', 'COMUN', 'FINALIZADO', 1, 1),
-('2026-05-18', '14:15', 1900.0, 1004, 0, '35 min', 'COMUN', 'FINALIZADO', 1, 1),
+('2026-05-18', '14:15', 1900.0, 1004, 0, '35 min', 'COMUN', 'FINALIZADO', 2, 2),
 ('2026-06-25', '08:00', 4200.0, 1005, 4, '40 min', 'COMUN', 'DISPONIBLE', null, null),
 ('2026-06-25', '09:30', 5100.0, 1006, 3, '55 min', 'EJECUTIVO', 'DISPONIBLE', null, null),
 ('2026-06-25', '11:00', 3900.0, 1007, 2, '35 min', 'COMUN', 'ASIGNADO', 1, 1),
@@ -131,3 +131,5 @@ INSERT INTO Pasajero (nombre, apellido, dni, email, numeroAsiento, id_reserva) V
 ('Juan', 'Bringa', '35666777', 'juan@mail.com', 6, 2), ('María', 'Sosa', '33444555', 'maria@mail.com', 7, 2),
 ('Carlos', 'Pérez', '32111999', 'carlos@mail.com', 8, 2), ('Ana', 'Romero', '39999111', 'ana@mail.com', 9, 2),
 ('Sofía', 'Martínez', '41777111', 'sofia@mail.com', 10, 2);
+
+INSERT INTO Reserva (id_usuario, id_viaje, estadoReserva, precioTotal) VALUES (1, 6, 'CANCELADA', 4560), (1, 2, 'FINALIZADA', 6000);

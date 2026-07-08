@@ -377,6 +377,66 @@ body {
     text-align: center;
 }
 
+/* Badges de estado de reserva (usados en historial de viajes) */
+.status-badge{
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: var(--text-small);
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.status-en-curso{
+    background: var(--status-success-bg);
+    color: var(--status-success-text);
+}
+
+.status-confirmada{
+    background: var(--status-info-bg);
+    color: var(--status-info-text);
+}
+
+.status-cancelada{
+    background: var(--status-error-bg);
+    color: var(--status-error-text);
+}
+
+.status-finalizada{
+    background: var(--status-neutral-bg);
+    color: var(--status-neutral-text);
+}
+
+/* Botón "Ver detalle" (acción neutra) */
+.details-btn {
+    border: none;
+    background: var(--status-neutral-bg);
+    color: var(--text);
+    padding: 14px 20px;
+    border-radius: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+/* Botón "Cancelar" (acción destructiva) */
+.btn-cancel {
+    border: 1px solid var(--error);
+    background: transparent;
+    color: var(--error);
+    padding: 14px 20px;
+    border-radius: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: 0.2s ease;
+}
+
+.btn-cancel:hover {
+    background: var(--status-error-bg);
+}
+
 @media (max-width: 640px) {
     .two-columns {
         grid-template-columns: 1fr;
