@@ -187,6 +187,7 @@ body{
 .driver-stat-card h3{
     font-size:28px;
     font-weight:700;
+    color:var(--driver-text);
 }
 
 .driver-stat-card-income{
@@ -200,6 +201,11 @@ body{
 
 .driver-stat-card-income p{
     color:rgba(255,255,255,0.7);
+}
+
+/* Fiel a Stitch: el valor de "Ganancias hoy" es dorado, no blanco */
+.driver-stat-card-income h3{
+    color:#ffdf93;
 }
 
 .driver-grid{
@@ -234,21 +240,6 @@ body{
                     rgba(15,15,18,0.92),
                     rgba(26,24,31,0.96)
             );
-}
-
-.driver-vehicle-card::after{
-    content:"";
-    position:absolute;
-    right:-40px;
-    bottom:-20px;
-    width:420px;
-    height:260px;
-    background-image:url("https://lh3.googleusercontent.com/aida-public/AB6AXuAlbLQmsCdBHcGTZEdF2VkA7Ip6C6KOHp1YVLjwWOr1wS-QXqUZDXCo7JbAwQVOa9_QsFyPLi-rVdgL-4NeOoZB3FGb-Y_uOysxETUgc5OJGXODrpLqypB0IClI8L0fZbOqCcdXWLiRKLF8ZxSwWd7jWtIaHvyNIirlsPRhfSWHsS1vbbI5YaddqodfZNuN4BnzXHNL8_-6u4JyQ4vaiaS71SdqYXH2NJv-6sadB4OVTX6txom3vIUiB4gKGf069yoVXcBiuaoHPzo");
-    background-repeat:no-repeat;
-    background-position:center;
-    background-size:contain;
-    opacity:0.34;
-    pointer-events:none;
 }
 
 .driver-card-badge{
@@ -313,6 +304,10 @@ body{
     border-radius:999px;
     transition:0.2s ease;
     box-shadow:var(--driver-button-shadow);
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
 }
 
 .driver-primary-btn:hover{
@@ -357,8 +352,48 @@ body{
     line-height:1.5;
 }
 
+/* ===== Panel derecho: mismo "cuadrito" para los 3 estados
+   (Estás en línea / Viaje asignado / Viaje en curso).
+   Solo cambia el contenido de arriba; el botón es idéntico
+   en los 3 casos (fondo oscuro, letra lila). ===== */
+.driver-status-route{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    margin-top:24px;
+}
+
+.driver-status-route-item{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-weight:700;
+}
+
+.driver-status-route-item .material-symbols-outlined{
+    font-size:18px;
+    opacity:0.75;
+}
+
+.driver-status-meta{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-top:16px;
+    padding-top:16px;
+    border-top:1px solid rgba(255,255,255,0.14);
+    font-size:14px;
+    opacity:0.9;
+}
+
+.driver-status-meta .material-symbols-outlined{
+    font-size:18px;
+}
+
+/* Botón único para los 3 estados del panel derecho */
 .driver-toggle-btn{
     margin-top:28px;
+    width:100%;
     border:none;
     border-radius:24px;
     background: var(--driver-background);
@@ -379,12 +414,20 @@ body{
 }
 
 .driver-status-card small{
+    display:block;
     margin-top:18px;
     opacity:0.72;
 }
 
 .driver-section{
     margin-top:8px;
+}
+
+/* Sección deshabilitada visualmente cuando hay un viaje en curso
+   (igual que Stitch: opacity-30 + pointer-events:none) */
+.driver-section-disabled{
+    opacity:0.3;
+    pointer-events:none;
 }
 
 .driver-section-header{
@@ -469,14 +512,22 @@ body{
     font-size:16px;
 }
 
+/* El botón "Aceptar" está dentro de un <form>, que es el hijo real del
+   flex container. Antes el flex:1 estaba puesto en el <button> (adentro
+   del form) y no tenía ningún efecto sobre el ancho. */
 .driver-trip-actions{
     margin-top:28px;
     display:flex;
     gap:14px;
 }
 
-.driver-trip-actions .driver-primary-btn{
+.driver-trip-actions form{
     flex:1;
+    display:flex;
+}
+
+.driver-trip-actions .driver-primary-btn{
+    width:100%;
     border-radius:18px;
 }
 
@@ -520,11 +571,35 @@ body{
     margin-top: 8px;
 }
 
+/* Antes .driver-time y .driver-time-status estaban sueltos como
+   hermanos del flex row, sin agrupar ni centrar (esta clase ya
+   existía en el CSS pero nunca se usaba en el HTML). */
+.driver-time-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 70px;
+}
+
 .driver-time{
-    min-width:74px;
     font-size:28px;
     font-weight:800;
     color:var(--driver-primary);
+}
+
+.driver-time-status {
+    margin-top: 4px;
+    font-size: var(--text-small);
+    color: var(--driver-primary);
+    font-weight: 600;
+}
+
+.driver-time-status.pending {
+    color: var(--driver-text-muted);
+}
+
+.driver-schedule-info{
+    flex:1;
 }
 
 .driver-schedule-item p{
@@ -563,27 +638,22 @@ body{
     font-size:14px;
 }
 
-.driver-history-item span{
+.driver-history-meta{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-end;
+    gap:4px;
+}
+
+.driver-history-meta span{
     color:var(--driver-primary);
     font-weight:700;
     font-size:18px;
 }
-.driver-time-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-width: 70px;
-}
 
-.driver-time-status {
-    margin-top: 4px;
-    font-size: var(--text-small);
-    color: var(--driver-primary);
-    font-weight: 600;
-}
-
-.driver-time-status.pending {
-    color: var(--driver-text-muted);
+.driver-history-meta small{
+    color:var(--driver-text-muted);
+    font-size:12px;
 }
 
 footer{
@@ -714,6 +784,67 @@ footer a:hover{
     gap: 12px;
 }
 
+.driver-vehicle-card {
+    min-height: 340px;
+    background: linear-gradient(135deg, rgba(15,15,18,0.92), rgba(26,24,31,0.96));
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--driver-shadow);
+}
+
+.driver-vehicle-card::after {
+    display: none !important;
+}
+
+.driver-vehicle-img-wrapper {
+    position: absolute;
+    right: -20px;
+    bottom: -20px;
+    width: 50%;
+    height: 85%;
+    pointer-events: none;
+    mix-blend-mode: lighten;
+    z-index: 1;
+}
+
+.driver-vehicle-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    opacity: 0.30;
+    filter: brightness(1.1) contrast(1.25);
+    transition: opacity 0.2s ease;
+}
+
+.driver-vehicle-card.group:hover .driver-vehicle-img {
+    opacity: 0.50;
+}
+
+.driver-history-meta .driver-history-rating {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 4px;
+    margin-top: 4px;
+    width: 100%;
+}
+
+.driver-history-meta .driver-history-rating .rating-icon {
+    font-size: 14px;
+    line-height: 1;
+    display: inline-block;
+    color: #ffdf93;
+    font-variation-settings: 'FILL' 1, 'wght' 700, 'GRAD' 0, 'opsz' 24;
+}
+
+.driver-history-meta .driver-history-rating .rating-value {
+    font-size: 12px;
+    line-height: 1;
+    font-weight: 600;
+    color: #ffdf93;
+    display: inline-block;
+}
+
 @media (max-width:1100px){
     .driver-grid{
         grid-template-columns:1fr;
@@ -767,6 +898,35 @@ footer a:hover{
         width:100%;
     }
 
+    .driver-vehicle-card {
+        min-height: 340px;
+        background: border-box linear-gradient(135deg, rgba(15, 15, 18, 0.92), rgba(26, 24, 31, 0.96));
+        position: relative;
+        overflow: hidden;
+        box-shadow: var(--driver-shadow);
+    }
+
+    .driver-vehicle-card::after {
+        content: "";
+        position: absolute;
+        right: -20px;
+        bottom: -20px;
+        width: 50%;
+        height: 100%;
+        background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAlbLQmsCdBHcGTZEdF2VkA7Ip6C6KOHp1YVLjwWOr1wS-QXqUZDXCo7JbAwQVOa9_QsFyPLi-rVdgL-4NeOoZB3FGb-Y_uOysxETUgc5OJGXODrpLqypB0IClI8L0fZbOqCcdXWLiRKLF8ZxSwWd7jWtIaHvyNIirlsPRhfSWHsS1vbbI5YaddqodfZNuN4BnzXHNL8_-6u4JyQ4vaiaS71SdqYXH2NJv-6sadB4OVTX6txom3vIUiB4gKGf069yoVXcBiuaoHPzo");
+        background-repeat: no-repeat;
+        background-position: bottom right;
+        background-size: contain;
+        opacity: 0.30;
+        mix-blend-mode: lighten;
+        pointer-events: none;
+        transition: opacity 0.2s ease;
+    }
+
+    .driver-vehicle-card:hover::after {
+        opacity: 0.50;
+    }
+
     .driver-vehicle-card h3{
         font-size:28px;
     }
@@ -785,4 +945,5 @@ footer a:hover{
         flex-direction:column;
         align-items:flex-start;
     }
+
 }

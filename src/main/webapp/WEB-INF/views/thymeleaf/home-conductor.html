@@ -67,30 +67,34 @@
         </section>
 
         <section class="driver-grid">
-            <article class="driver-card driver-vehicle-card">
-                <div class="driver-card-badge">Vehículo asignado</div>
-                <h3 th:text="${combi.marca + ' ' + combi.modelo}"></h3>
-                <div class="driver-vehicle-info">
-                    <span>
-                        <span class="material-symbols-outlined">badge</span>
-                        <span th:text="${combi.patente}"></span>
-                    </span>
-                    <span>
-                        <span class="material-symbols-outlined">event_seat</span>
-                        <span th:text="${combi.cantidadDeAsientos} + ' asientos'"></span>
-                    </span>
-                    <span>
-                        <span class="material-symbols-outlined">distance</span>
-                        <span th:text="${combi.tipoDeTransmision}"></span>
-                    </span>
-                </div>
-                <div class="driver-vehicle-actions">
-                    <button id="btn-reportar-falla" class="driver-primary-btn" type="button">
-                        <span class="material-symbols-outlined">warning</span>
-                        Reportar falla
-                    </button>
-                </div>
-            </article>
+            <article class="driver-card driver-vehicle-card group">
+    <div class="driver-card-badge">Vehículo asignado</div>
+    <h3 th:text="${combi.marca + ' ' + combi.modelo}"></h3>
+    <div class="driver-vehicle-info">
+        <span>
+            <span class="material-symbols-outlined">badge</span>
+            <span th:text="${combi.patente}"></span>
+        </span>
+        <span>
+            <span class="material-symbols-outlined">event_seat</span>
+            <span th:text="${combi.cantidadDeAsientos} + ' asientos'"></span>
+        </span>
+        <span>
+            <span class="material-symbols-outlined">distance</span>
+            <span th:text="${combi.tipoDeTransmision}"></span>
+        </span>
+    </div>
+    <div class="driver-vehicle-actions">
+        <button id="btn-reportar-falla" class="driver-primary-btn" type="button">
+            <span class="material-symbols-outlined">warning</span>
+            Reportar falla
+        </button>
+    </div>
+
+    <div class="driver-vehicle-img-wrapper">
+        <img class="driver-vehicle-img" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAlbLQmsCdBHcGTZEdF2VkA7Ip6C6KOHp1YVLjwWOr1wS-QXqUZDXCo7JbAwQVOa9_QsFyPLi-rVdgL-4NeOoZB3FGb-Y_uOysxETUgc5OJGXODrpLqypB0IClI8L0fZbOqCcdXWLiRKLF8ZxSwWd7jWtIaHvyNIirlsPRhfSWHsS1vbbI5YaddqodfZNuN4BnzXHNL8_-6u4JyQ4vaiaS71SdqYXH2NJv-6sadB4OVTX6txom3vIUiB4gKGf069yoVXcBiuaoHPzo" alt="Combi">
+    </div>
+</article>
 
             <article class="driver-card driver-status-card">
                 <div th:if="${viajeEnCurso != null}">
@@ -98,18 +102,23 @@
                         <h3>Viaje en curso</h3>
                         <p>Actualmente estás realizando este viaje.</p>
                     </div>
-                    <div class="driver-history-list" style="margin-top: 16px;">
-                        <div class="driver-history-item">
-                            <div>
-                                <strong th:text="${viajeEnCurso.origen + ' - ' + viajeEnCurso.destino}"></strong>
-                                <p th:text="${viajeEnCurso.fecha + ' - ' + viajeEnCurso.horario}"></p>
-                            </div>
-                            <span th:text="${viajeEnCurso.tipoDeViaje}"></span>
+                    <div class="driver-status-route">
+                        <div class="driver-status-route-item">
+                            <span class="material-symbols-outlined">location_on</span>
+                            <span th:text="${viajeEnCurso.origen}"></span>
+                        </div>
+                        <div class="driver-status-route-item">
+                            <span class="material-symbols-outlined">near_me</span>
+                            <span th:text="${viajeEnCurso.destino}"></span>
                         </div>
                     </div>
-                    <form th:action="@{/conductor/finalizar-viaje}" method="post" style="margin-top: 16px;">
+                    <div class="driver-status-meta">
+                        <span class="material-symbols-outlined">group</span>
+                        <span>Pasajeros no disponibles</span>
+                    </div>
+                    <form th:action="@{/conductor/finalizar-viaje}" method="post">
                         <input type="hidden" name="idViaje" th:value="${viajeEnCurso.id}">
-                        <button class="driver-primary-btn" type="submit">
+                        <button class="driver-toggle-btn" type="submit">
                             <span class="material-symbols-outlined">flag</span>
                             Finalizar viaje
                         </button>
@@ -120,18 +129,23 @@
                         <h3>Viaje asignado</h3>
                         <p>Ya aceptaste un viaje. Cuando estés listo, podés iniciarlo.</p>
                     </div>
-                    <div class="driver-history-list" style="margin-top: 16px;">
-                        <div class="driver-history-item" th:each="viaje : ${viajesAsignados}">
-                            <div>
-                                <strong th:text="${viaje.origen + ' - ' + viaje.destino}"></strong>
-                                <p th:text="${viaje.fecha + ' - ' + viaje.horario}"></p>
-                            </div>
-                            <span th:text="${viaje.tipoDeViaje}"></span>
+                    <div class="driver-status-route" th:each="viaje : ${viajesAsignados}">
+                        <div class="driver-status-route-item">
+                            <span class="material-symbols-outlined">location_on</span>
+                            <span th:text="${viaje.origen}"></span>
                         </div>
+                        <div class="driver-status-route-item">
+                            <span class="material-symbols-outlined">near_me</span>
+                            <span th:text="${viaje.destino}"></span>
+                        </div>
+                    </div>
+                    <div class="driver-status-meta">
+                        <span class="material-symbols-outlined">group</span>
+                        <span>Pasajeros no disponibles</span>
                     </div>
                     <form th:each="viaje : ${viajesAsignados}" th:action="@{/conductor/empezar-viaje}" method="post">
                         <input type="hidden" name="idViaje" th:value="${viaje.id}">
-                        <button class="driver-primary-btn" type="submit">
+                        <button class="driver-toggle-btn" type="submit">
                             <span class="material-symbols-outlined">play_arrow</span>
                             Empezar viaje
                         </button>
@@ -150,54 +164,55 @@
                 </div>
             </article>
         </section>
-    <section class="driver-section">
-    <div class="driver-section-header">
-        <h3>Viajes disponibles</h3>
-    </div>
-    <div class="driver-trips-grid" th:if="${viajesDisponibles != null and !viajesDisponibles.isEmpty()}">
-        <article class="driver-trip-card" th:each="viaje : ${viajesDisponibles}">
-            <div class="driver-trip-top">
-                <span class="driver-tag" th:text="${viaje.tipoDeViaje != null ? viaje.tipoDeViaje : 'VIAJE'}">
-                    VIAJE
-                </span>
-                <h4 th:text="'$' + ${viaje.precio}">$0</h4>
+
+        <section class="driver-section" th:classappend="${viajeEnCurso != null} ? 'driver-section-disabled'">
+            <div class="driver-section-header">
+                <h3>Viajes disponibles</h3>
             </div>
-            <div class="driver-trip-route">
-                <div>
-                    <span class="material-symbols-outlined">location_on</span>
-                    <p>ORIGEN</p>
-                    <strong th:text="${viaje.origen}">Origen</strong>
-                </div>
-                <div>
-                    <span class="material-symbols-outlined">near_me</span>
-                    <p>DESTINO</p>
-                    <strong th:text="${viaje.destino}">Destino</strong>
-                </div>
+            <div class="driver-trips-grid" th:if="${viajesDisponibles != null and !viajesDisponibles.isEmpty()}">
+                <article class="driver-trip-card" th:each="viaje : ${viajesDisponibles}">
+                    <div class="driver-trip-top">
+                        <span class="driver-tag" th:text="${viaje.tipoDeViaje != null ? viaje.tipoDeViaje : 'VIAJE'}">
+                            VIAJE
+                        </span>
+                        <h4 th:text="'$' + ${viaje.precio}">$0</h4>
+                    </div>
+                    <div class="driver-trip-route">
+                        <div>
+                            <span class="material-symbols-outlined">location_on</span>
+                            <p>ORIGEN</p>
+                            <strong th:text="${viaje.origen}">Origen</strong>
+                        </div>
+                        <div>
+                            <span class="material-symbols-outlined">near_me</span>
+                            <p>DESTINO</p>
+                            <strong th:text="${viaje.destino}">Destino</strong>
+                        </div>
+                    </div>
+                    <div class="driver-trip-actions">
+                        <form th:action="@{/conductor/aceptar-viaje}" method="post">
+                            <input type="hidden" name="idViaje" th:value="${viaje.id}">
+                            <button class="driver-primary-btn" type="submit">Aceptar</button>
+                        </form>
+                    </div>
+                </article>
             </div>
-            <div class="driver-trip-actions">
-                <form th:action="@{/conductor/aceptar-viaje}" method="post">
-                    <input type="hidden" name="idViaje" th:value="${viaje.id}">
-                    <button class="driver-primary-btn" type="submit">Aceptar</button>
-                </form>
-                <button class="driver-icon-btn" type="button" th:title="'Fecha: ' + ${viaje.fecha} + ' | Horario: ' + ${viaje.horario} + ' | Duración: ' + ${viaje.duracion}">
-                    <span class="material-symbols-outlined">info</span>
-                </button>
+            <div class="driver-empty-state" th:if="${viajesDisponibles == null or viajesDisponibles.isEmpty()}">
+                <p>No hay viajes disponibles para aceptar en este momento.</p>
             </div>
-        </article>
-    </div>
-    <div class="driver-empty-state" th:if="${viajesDisponibles == null or viajesDisponibles.isEmpty()}">
-        <p>No hay viajes disponibles para aceptar en este momento.</p>
-    </div>
-</section>
+        </section>
+
         <section class="driver-bottom-grid">
             <article class="driver-card">
                 <h3 class="driver-card-title">Próximas salidas</h3>
 
                 <div class="driver-schedule-list" th:if="${viajesAsignados != null and !viajesAsignados.isEmpty()}">
                     <div class="driver-schedule-item" th:each="viaje : ${viajesAsignados}">
-                        <div class="driver-time" th:text="${viaje.horario}"></div>
-                        <p class="driver-time-status">Asignado</p>
-                        <div>
+                        <div class="driver-time-wrapper">
+                            <div class="driver-time" th:text="${viaje.horario}"></div>
+                            <p class="driver-time-status">Asignado</p>
+                        </div>
+                        <div class="driver-schedule-info">
                             <strong th:text="${viaje.origen + ' - ' + viaje.destino}"></strong>
                             <p th:text="${viaje.fecha}"></p>
                         </div>
@@ -221,7 +236,13 @@
                             <strong th:text="${viaje.origen + ' - ' + viaje.destino}"></strong>
                             <p th:text="${viaje.fecha + ' - ' + viaje.horario}"></p>
                         </div>
-                        <span th:text="'$' + ${viaje.precio}"></span>
+                        <div class="driver-history-meta">
+                            <span th:text="'$' + ${viaje.precio}">$0</span>
+                            <div class="driver-history-rating">
+                                <span class="material-symbols-outlined rating-icon">star</span>
+                                <span class="rating-value">0.0</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
