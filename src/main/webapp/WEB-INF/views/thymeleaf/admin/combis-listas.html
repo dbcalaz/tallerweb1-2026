@@ -28,120 +28,131 @@
     </div>
 
     <div class="combis-stats">
-      <div class="combi-stat-card"><span class="material-symbols-outlined">directions_bus</span><h2 th:text="${cantidadCombis}"></h2><p>Total Flota</p></div>
-      <div class="combi-stat-card"><span class="material-symbols-outlined">check_circle</span><h2 th:text="${combisDisponibles.size()}"></h2><p>Disponibles</p></div>
-      <div class="combi-stat-card"><span class="material-symbols-outlined">build</span><h2 th:text="${combisEnMantenimiento.size()}"></h2><p>Mantenimiento</p></div>
-      <div class="combi-stat-card"><span class="material-symbols-outlined">near_me</span><h2 th:text="${combisEnViaje.size()}"></h2><p>En viaje</p></div>
+      <div class="combi-stat-card">
+        <div class="stat-card-header">
+          <div class="stat-icon-badge primary-badge">
+            <span class="material-symbols-outlined">directions_bus</span>
+          </div>
+        </div>
+        <div class="stat-card-body">
+          <p class="stat-label">Total Flota</p>
+          <h2 th:text="${cantidadCombis}"></h2>
+        </div>
+      </div>
+      <div class="combi-stat-card">
+        <div class="stat-card-header">
+          <div class="stat-icon-badge success-badge">
+            <span class="material-symbols-outlined">check_circle</span>
+          </div>
+        </div>
+        <div class="stat-card-body">
+          <p class="stat-label">Disponibles</p>
+          <h2 th:text="${combisDisponibles.size()}"></h2>
+        </div>
+      </div>
+      <div class="combi-stat-card">
+        <div class="stat-card-header">
+          <div class="stat-icon-badge warning-badge">
+            <span class="material-symbols-outlined">build</span>
+          </div>
+        </div>
+        <div class="stat-card-body">
+          <p class="stat-label">Mantenimiento</p>
+          <h2 th:text="${combisEnMantenimiento.size()}"></h2>
+        </div>
+      </div>
+      <div class="combi-stat-card">
+        <div class="stat-card-header">
+          <div class="stat-icon-badge info-badge">
+            <span class="material-symbols-outlined">near_me</span>
+          </div>
+        </div>
+        <div class="stat-card-body">
+          <p class="stat-label">En viaje</p>
+          <h2 th:text="${combisEnViaje.size()}"></h2>
+        </div>
+      </div>
     </div>
+    <div class="flota-section-header">
+      <h3 class="flota-titulo">Flota de Vehículos</h3>
 
-    <div class="combis-filters">
-      <a th:href="@{/admin/combis}"
-         class="filter"
-         th:classappend="${filtroActual.estadoDeCombi == null} ? 'active'">
-        Todos
-      </a>
+      <div class="combis-filters">
+        <a th:href="@{/admin/combis}"
+                class="filter"
+                th:classappend="${filtroActual.estadoDeCombi == null} ? 'active'">
+          Todos
+        </a>
 
-      <a th:href="@{/admin/combis(estadoDeCombi='DISPONIBLE')}"
-         class="filter"
-         th:classappend="${filtroActual.estadoDeCombi != null && filtroActual.estadoDeCombi.name() == 'DISPONIBLE'} ? 'active'">
-        Disponibles
-      </a>
+        <a th:href="@{/admin/combis(estadoDeCombi='DISPONIBLE')}"
+                class="filter"
+                th:classappend="${filtroActual.estadoDeCombi != null && filtroActual.estadoDeCombi.name() == 'DISPONIBLE'} ? 'active'">
+          Disponibles
+        </a>
 
-      <a th:href="@{/admin/combis(estadoDeCombi='EN_MANTENIMIENTO')}"
-         class="filter"
-         th:classappend="${filtroActual.estadoDeCombi != null && filtroActual.estadoDeCombi.name() == 'EN_MANTENIMIENTO'} ? 'active'">
-        En Mantenimiento
-      </a>
+        <a th:href="@{/admin/combis(estadoDeCombi='EN_MANTENIMIENTO')}"
+                class="filter"
+                th:classappend="${filtroActual.estadoDeCombi != null && filtroActual.estadoDeCombi.name() == 'EN_MANTENIMIENTO'} ? 'active'">
+          En Mantenimiento
+        </a>
 
-      <a th:href="@{/admin/combis(estadoDeCombi='EN_VIAJE')}"
-         class="filter"
-         th:classappend="${filtroActual.estadoDeCombi != null && filtroActual.estadoDeCombi.name() == 'EN_VIAJE'} ? 'active'">
-        En Viaje
-      </a>
-
-      <!--<button type="button" class="filter" onclick="toggleFiltroAvanzado()">
-        <span class="material-symbols-outlined" style="font-size: 18px; vertical-align: middle;">search</span> Buscar
-      </button>-->
+        <a th:href="@{/admin/combis(estadoDeCombi='EN_VIAJE')}"
+                class="filter"
+                th:classappend="${filtroActual.estadoDeCombi != null && filtroActual.estadoDeCombi.name() == 'EN_VIAJE'} ? 'active'">
+          En Viaje
+        </a>
+      </div>
     </div>
-
-    <!--<div id="panelFiltros">
-      <form th:action="@{/admin/combis}" method="GET" style="display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: flex-end;">
-
-        <div class="driver-modal-field" style="margin: 0; flex: 1; min-width: 150px;">
-          <label for="filtroEstado">Estado Operativo</label>
-          <select id="filtroEstado" name="estadoDeCombi">
-            <option value="">Cualquier estado</option>
-            <option value="DISPONIBLE" th:selected="${filtroActual.estadoDeCombi?.name() == 'DISPONIBLE'}">Disponible</option>
-            <option value="EN_MANTENIMIENTO" th:selected="${filtroActual.estadoDeCombi?.name() == 'EN_MANTENIMIENTO'}">En Mantenimiento</option>
-            <option value="EN_VIAJE" th:selected="${filtroActual.estadoDeCombi?.name() == 'EN_VIAJE'}">En Viaje</option>
-          </select>
-        </div>
-
-        <div class="driver-modal-field" style="margin: 0; flex: 1; min-width: 150px;">
-          <label for="filtroMarca">Marca</label>
-          <input type="text" id="filtroMarca" name="marca" th:value="${filtroActual.marca}" placeholder="Ej: Mercedes-Benz">
-        </div>
-
-        <div class="driver-modal-field" style="margin: 0; flex: 1; min-width: 150px;">
-          <label for="filtroModelo">Modelo</label>
-          <input type="text" id="filtroModelo" name="modelo" th:value="${filtroActual.modelo}" placeholder="Ej: Sprinter">
-        </div>
-
-        <div class="driver-modal-field" style="margin: 0; flex: 1; min-width: 150px;">
-          <label for="filtroPatente">Patente</label>
-          <input type="text" id="filtroPatente" name="patente" th:value="${filtroActual.patente}" placeholder="Ej: AB123CD">
-        </div>
-
-        <div style="display: flex; gap: 1rem;">
-          <button type="submit" class="btn-primary">Aplicar</button>
-          <a th:href="@{/admin/combis}" class="btn-primary">Limpiar</a>
-        </div>
-      </form>
-    </div>-->
-
     <div class="combis-grid">
       <div class="combi-card" th:each="combi : ${listaCombis}">
-
-        <div class="combi-img">
-            <img th:src="@{/imagenes/sprinter-515.jpg}" alt="Mercedes Sprinter 515" class="combi-image">
+        <div class="combi-img" th:classappend="${combi.estadoDeCombi != null and combi.estadoDeCombi.name() == 'EN_MANTENIMIENTO'} ? 'img-mantenimiento'">
+          <img th:src="@{/imagenes/sprinter-515.jpg}" alt="Mercedes Sprinter" class="combi-image">
           <span th:if="${combi.estadoDeCombi != null and combi.estadoDeCombi.name() == 'DISPONIBLE'}" class="status disponible">Disponible</span>
-          <span th:if="${combi.estadoDeCombi != null and combi.estadoDeCombi.name() == 'EN_MANTENIMIENTO'}" class="status mantenimiento">En mantenimiento</span>
           <span th:if="${combi.estadoDeCombi != null and combi.estadoDeCombi.name() == 'EN_VIAJE'}" class="status viaje">En viaje</span>
+          <div th:if="${combi.estadoDeCombi != null and combi.estadoDeCombi.name() == 'EN_MANTENIMIENTO'}" class="mantenimiento-overlay">
+            <span class="status mantenimiento-central">En mantenimiento</span>
+          </div>
         </div>
-
         <div class="combi-body">
           <div class="combi-title">
             <div>
-              <h3 th:text="${combi.marca}">Marca</h3>
-              <p><span th:text="${combi.modelo}">Modelo</span></p>
+              <h4 th:text="${combi.marca}">Marca</h4>
+              <p class="combi-subtext"><span th:text="${combi.modelo}">Modelo</span> • 2023</p>
             </div>
-            <span class="patente" th:text="${combi.patente}">Patente</span>
+            <div class="patente-badge">
+              <span class="patente" th:text="${combi.patente}">Patente</span>
+            </div>
           </div>
-
           <div class="combi-info" th:classappend="${combi.estadoDeCombi != null and combi.estadoDeCombi.name() == 'EN_MANTENIMIENTO'} ? 'error'">
-            <span><i class="material-symbols-outlined">airline_seat_recline_normal</i><span th:text="${combi.cantidadDeAsientos}">19</span> asientos</span>
+            <div class="info-item">
+              <span class="material-symbols-outlined">airline_seat_recline_normal</span>
+              <span><span th:text="${combi.cantidadDeAsientos}">19</span> asientos</span>
+            </div>
 
-            <span th:if="${combi.estadoDeCombi != null and combi.estadoDeCombi.name() == 'EN_MANTENIMIENTO'}">
-                <i class="material-symbols-outlined">warning</i>Falla técnica
-            </span>
-            <span th:unless="${combi.estadoDeCombi != null and combi.estadoDeCombi.name() == 'EN_MANTENIMIENTO'}">
-                <i class="material-symbols-outlined">distance</i><span th:text="${combi.kilometros}">42</span> km
-            </span>
+            <div class="info-item">
+              <th:block th:if="${combi.estadoDeCombi != null and combi.estadoDeCombi.name() == 'EN_MANTENIMIENTO'}">
+                <span class="material-symbols-outlined text-danger">warning</span>
+                <span class="text-danger-font">Falla técnica</span>
+              </th:block>
+              <th:block th:unless="${combi.estadoDeCombi != null and combi.estadoDeCombi.name() == 'EN_MANTENIMIENTO'}">
+                <span class="material-symbols-outlined">distance</span>
+                <span><span th:text="${combi.kilometros}">42</span> km</span>
+              </th:block>
+            </div>
           </div>
-          <!--<div class="combi-actions">
-            <button>Detalle</button>
+          <div class="combi-actions">
+            <button type="button" class="btn-action-detail">Detalle</button>
             <button type="button"
-                    class="btn-abrir-modal-editar"
+                    class="btn-action-edit btn-abrir-modal-editar"
                     th:data-combi-id="${combi.id}"
                     th:data-combi-estado="${combi.estadoDeCombi != null ? combi.estadoDeCombi.name() : ''}">
               Editar
             </button>
-            <button>Asignar</button>
-          </div>-->
+            <button type="button" class="btn-action-assign">Asignar</button>
+          </div>
         </div>
       </div>
 
-      <div th:if="${#lists.isEmpty(listaCombis)}" style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-secondary);">
+      <div th:if="${#lists.isEmpty(listaCombis)}" class="grid-vacio-alerta">
         <p>No se encontraron combis para el filtro seleccionado.</p>
         <a th:href="@{/admin/combis}">Limpiar filtros</a>
       </div>
@@ -153,7 +164,6 @@
           <h2>Fallas reportadas</h2>
           <p>Alertas enviadas por conductores en tiempo real.</p>
         </div>
-        <!--<button class="fallas-link">Ver historial completo <span class="material-symbols-outlined">arrow_forward</span></button>-->
       </div>
       <div class="fallas-table-wrapper">
         <table class="fallas-table">
