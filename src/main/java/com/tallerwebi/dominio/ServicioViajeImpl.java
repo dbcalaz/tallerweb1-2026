@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -102,9 +103,28 @@ public class ServicioViajeImpl implements ServicioViaje {
     // Este metodo tiene que ser llamado por el metodo que crea la reserva
     public double calcularPrecio(Reserva reserva) {
         Viaje viaje = reserva.getViaje();
+
         int totalTramos = viaje.getParadas().size() - 1;
-        int tramosDelPasajero = reserva.getParadaDestino().getOrden() - reserva.getParadaOrigen().getOrden();
-        return (viaje.getPrecio() / totalTramos) * tramosDelPasajero;
+
+        if (totalTramos <= 0) {
+            return viaje.getPrecio();
+        }
+
+        int tramosDelPasajero =
+                reserva.getParadaDestino().getOrden() -
+                        reserva.getParadaOrigen().getOrden();
+
+        double precioPorTramo = viaje.getPrecio() / (double) totalTramos;
+
+        return precioPorTramo * tramosDelPasajero;
+    }
+
+    // Este metodo calcula el horario de las paradas intermedias. Es para los usuarios que hacen menos recorrido.
+    public LocalTime calcularHorarioParada(Viaje viaje, ViajeParada viajeParada) {
+
+        int minutosEstimados = viajeParada.getOrden() * 15;
+
+        return viaje.getHorario().plusMinutes(minutosEstimados);
     }
 
     @Override

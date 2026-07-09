@@ -242,3 +242,333 @@
 .btn-link .material-symbols-outlined {
     font-size: 20px;
 }
+
+/* =========================
+   AJUSTES VIAJES DENTRO DEL PANEL ADMIN
+   ========================= */
+
+
+/*
+    El admin-content ya deja el espacio del sidebar.
+    No se toca porque lo usan conductores/combis.
+*/
+
+
+/* =========================
+   FILTROS VIAJES
+========================= */
+
+.filtros-viajes {
+
+    width: 100%;
+
+    display: flex;
+
+    gap: 20px;
+
+    align-items: flex-end;
+
+    flex-wrap: wrap;
+
+}
+
+
+/*
+    Evita que driver-modal-field
+    quede limitado por estilos del panel administrador
+*/
+
+.filtros-viajes .driver-modal-field {
+
+    flex: 1;
+
+    min-width: 220px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+
+}
+
+
+
+.filtros-viajes .driver-modal-field label {
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    color: var(--text-secondary);
+
+}
+
+
+
+.filtros-viajes .driver-modal-field input,
+.filtros-viajes .driver-modal-field select {
+
+    width: 100%;
+
+    padding: 14px 16px;
+
+    border-radius: var(--radius-md);
+
+    border: 1px solid var(--border);
+
+    background: var(--surface-soft);
+
+    font-size: 15px;
+
+    outline: none;
+
+}
+
+
+
+.filtros-viajes .driver-modal-field input:focus,
+.filtros-viajes .driver-modal-field select:focus {
+
+    border-color: var(--primary);
+
+    box-shadow: 0 0 0 4px rgba(79,55,138,.12);
+
+}
+
+
+
+/*
+    Botón filtro
+*/
+
+.filtros-viajes .btn-secondary {
+
+    height: 48px;
+
+    white-space: nowrap;
+
+}
+
+
+
+/* =========================
+   CONTENEDOR CARD FILTRO
+========================= */
+
+
+/*
+    Evita que card del panel administrador
+    aplique restricciones distintas
+*/
+
+.section > .card:has(.filtros-viajes) {
+
+    width: 100%;
+
+}
+
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+
+@media(max-width:1200px){
+
+
+    .filtros-viajes {
+
+        flex-wrap: wrap;
+
+    }
+
+
+    .filtros-viajes .driver-modal-field {
+
+        flex: 1 1 calc(50% - 20px);
+
+    }
+
+
+    .filtros-viajes .btn-secondary {
+
+        flex: 1 1 100%;
+
+    }
+
+
+}
+
+
+
+@media(max-width:992px){
+
+
+    .filtros-viajes .driver-modal-field {
+
+        flex: 1 1 100%;
+
+    }
+
+
+}
+
+
+
+@media(max-width:768px){
+
+
+    .filtros-viajes {
+
+        flex-direction: column;
+
+        align-items: stretch;
+
+        gap: 16px;
+
+    }
+
+
+    .filtros-viajes .driver-modal-field {
+
+        width: 100%;
+
+    }
+
+
+    .filtros-viajes .btn-secondary {
+
+        width: 100%;
+
+    }
+
+
+}
+
+/* =========================
+   FIX LAYOUT VIAJES
+========================= */
+
+
+/*
+    Anula solamente el max-width del panel
+    para viajes
+*/
+
+.admin-content .page {
+
+    max-width: none;
+
+    width: 100%;
+
+    margin: 0;
+
+}
+
+
+/*
+    Sección viajes ocupa todo el ancho
+*/
+
+.admin-content .page .section {
+
+    width: 100%;
+
+}
+
+
+/*
+    Card del filtro
+*/
+
+.admin-content .page .section .card {
+
+    width: 100%;
+
+}
+
+
+
+/* =========================
+   FILTROS
+========================= */
+
+.filtros-viajes {
+
+    width:100%;
+
+    display:flex;
+
+    gap:20px;
+
+    align-items:flex-end;
+
+}
+
+
+.filtros-viajes .driver-modal-field {
+
+    flex:1;
+
+}
+
+
+.filtros-viajes .btn-secondary {
+
+    height:48px;
+
+    padding:0 28px;
+
+    white-space:nowrap;
+
+}
+
+
+
+
+@media(max-width:992px){
+
+
+    .filtros-viajes {
+
+        flex-wrap:wrap;
+
+    }
+
+
+    .filtros-viajes .driver-modal-field {
+
+        flex:1 1 calc(50% - 20px);
+
+    }
+
+
+}
+
+
+
+@media(max-width:768px){
+
+
+    .filtros-viajes {
+
+        flex-direction:column;
+
+        align-items:stretch;
+
+    }
+
+
+    .filtros-viajes .driver-modal-field {
+
+        width:100%;
+    }
+
+
+    .filtros-viajes .btn-secondary {
+        width:100%;
+
+    }
+}
