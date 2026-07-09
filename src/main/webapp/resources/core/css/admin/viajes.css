@@ -1,6 +1,3 @@
-/* ==========================================================================
-   1. VARIABLES Y CONFIGURACIONES GENERALES DE LA PÁGINA
-   ========================================================================== */
 .admin-content .page {
     max-width: none;
     width: 100%;
@@ -31,7 +28,6 @@
     font-weight: 600;
 }
 
-/* Cabecera general de la sección */
 .admin-header {
     display: flex;
     justify-content: space-between;
@@ -39,10 +35,6 @@
     margin-bottom: 36px;
 }
 
-
-/* ==========================================================================
-   2. BARRA DE FILTROS (VIAJES REGISTRADOS)
-   ========================================================================== */
 .card-filtros-container {
     background: #ffffff;
     border: 1px solid #cac4d2;
@@ -133,7 +125,6 @@
     font-size: 18px !important;
 }
 
-/* Selectores de .filtros-viajes preservados y limpios */
 .filtros-viajes {
     width: 100%;
     display: flex;
@@ -183,10 +174,6 @@
     white-space: nowrap;
 }
 
-
-/* ==========================================================================
-   3. TABLA DE GESTIÓN DE VIAJES
-   ========================================================================== */
 .admin-table-card {
     background: #ffffff;
     border-radius: 24px;
@@ -245,7 +232,6 @@
     text-align: right !important;
 }
 
-/* Elementos internos de las celdas */
 .viaje-ruta {
     display: flex;
     flex-direction: column;
@@ -334,7 +320,6 @@
     margin-top: 2px;
 }
 
-/* Status pills */
 .status-pill {
     display: inline-flex;
     align-items: center;
@@ -374,13 +359,17 @@
     color: #22005d;
 }
 
+.status-pill.cancelado {
+    background-color: #ffd0cc;
+    color: red;
+}
+
 @keyframes pulseAnimation {
     0% { opacity: 0.6; }
     50% { opacity: 1; }
     100% { opacity: 0.6; }
 }
 
-/* Acciones en la fila de la tabla */
 .acciones-fila {
     display: flex;
     justify-content: flex-end;
@@ -409,10 +398,6 @@
     font-size: 18px !important;
 }
 
-
-/* ==========================================================================
-   4. BOTONES PRINCIPALES NATIVOS DE STITCH
-   ========================================================================== */
 .primary-btn-stitch {
     background-color: #644da1;
     color: #ffffff;
@@ -436,10 +421,6 @@
     transform: scale(0.98);
 }
 
-
-/* ==========================================================================
-   5. MODAL DE PROGRAMAR VIAJE (DISEÑO PREDOMINANTE DEFINITIVO)
-   ========================================================================== */
 .modal-overlay {
     position: fixed;
     inset: 0;
@@ -468,14 +449,13 @@
     flex-direction: column;
 }
 
-/* Cabecera del Modal */
 .modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 24px 28px;
     border-bottom: 1px solid var(--border);
-    background: #fdf8ff; /* Fondo claro Stitch */
+    background: #fdf8ff;
 }
 
 .modal-title {
@@ -491,14 +471,14 @@
     width: 40px;
     height: 40px;
     border-radius: 12px;
-    background-color: #e9ddff; /* Caja violeta claro */
+    background-color: #e9ddff;
     color: #22005d;
 }
 
 .modal-title h3 {
     font-family: 'Inter', sans-serif;
     font-size: 22px;
-    font-weight: 700; /* Peso robusto idéntico a Conductor */
+    font-weight: 700;
     color: #1c1b20;
     margin: 0;
 }
@@ -518,7 +498,6 @@
     color: var(--primary);
 }
 
-/* Cuerpo e inputs */
 .modal-body {
     padding: 28px;
 }
@@ -532,7 +511,7 @@
     margin-bottom: 8px;
     font-size: 14px;
     font-weight: 600;
-    color: #644da1; /* Violeta Stitch */
+    color: #644da1;
     font-family: 'Inter', sans-serif;
 }
 
@@ -556,7 +535,6 @@
     box-shadow: 0 0 0 4px rgba(79, 55, 138, .12);
 }
 
-/* Configuración de Grilla Original de Inputs */
 .row {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -564,7 +542,6 @@
     margin-bottom: 20px;
 }
 
-/* COMPONENTE DE SELECCIÓN NUMÉRICA SIN FLECHAS CONTROLADO */
 .modal input[type="number"]::-webkit-outer-spin-button,
 .modal input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none;
@@ -575,12 +552,11 @@
     -moz-appearance: textfield;
 }
 
-/* Paradas Intermedias Dinámicas */
 .stops-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 24px; /* Separación con el input de arriba */
+    margin-top: 24px;
     margin-bottom: 14px;
 }
 
@@ -635,7 +611,6 @@
     justify-content: center;
 }
 
-/* Pie de página del modal (Footer con fondo Stitch) */
 .modal-footer {
     display: flex;
     justify-content: flex-end;
@@ -679,12 +654,6 @@
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
 }
 
-
-/* ==========================================================================
-   6. SECCIÓN UNIFICADA DE MEDIA QUERIES (RESPONSIVE COMPLETAMENTE AGRUPADO)
-   ========================================================================== */
-
-/* Pantallas Medianas (Hasta 1200px) */
 @media (max-width: 1200px) {
     .filtros-viajes {
         flex-wrap: wrap;
@@ -697,14 +666,12 @@
     }
 }
 
-/* Pantallas de Tablets (Hasta 992px) */
 @media (max-width: 992px) {
     .filtros-viajes .driver-modal-field {
         flex: 1 1 100%;
     }
 }
 
-/* Pantallas Celulares (Hasta 768px) */
 @media (max-width: 768px) {
     .row {
         grid-template-columns: 1fr;

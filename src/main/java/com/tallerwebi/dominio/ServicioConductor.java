@@ -32,4 +32,6 @@ public interface ServicioConductor {
     void finalizarViaje(Long idViaje, Long idConductor);
 
     void registrarFalla(ReporteFalla reporteFalla);
+
+    void canelarViaje(Long idViaje, Long idConductor);
 }

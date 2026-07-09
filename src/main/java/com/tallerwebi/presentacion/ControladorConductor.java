@@ -185,6 +185,24 @@ public class ControladorConductor {
         return new ModelAndView("redirect:/home-conductor");
     }
 
+    @RequestMapping(path = "/conductor/cancelar-viaje", method = RequestMethod.POST)
+    public ModelAndView cancelarViaje(@RequestParam("idViaje") Long idViaje,
+                                     HttpServletRequest request) {
+        Conductor conductor = obtenerConductorActivo(request);
+
+        if (conductor == null) {
+            return redirigirLoginConSesionCerrada(request);
+        }
+
+        try {
+            servicioConductor.canelarViaje(idViaje, conductor.getId());
+            request.getSession().setAttribute("mensajeConductor", "Viaje cancelado correctamente.");
+        } catch (Exception e) {
+            request.getSession().setAttribute("errorConductor", e.getMessage());
+        }
+        return new ModelAndView("redirect:/home-conductor");
+    }
+
     @RequestMapping(path = "/conductor/finalizar-viaje", method = RequestMethod.POST)
     public ModelAndView finalizarViaje(@RequestParam("idViaje") Long idViaje,
                                        HttpServletRequest request) {

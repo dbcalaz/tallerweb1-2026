@@ -143,13 +143,24 @@
                         <span class="material-symbols-outlined">group</span>
                         <span>Pasajeros no disponibles</span>
                     </div>
-                    <form th:each="viaje : ${viajesAsignados}" th:action="@{/conductor/empezar-viaje}" method="post">
-                        <input type="hidden" name="idViaje" th:value="${viaje.id}">
-                        <button class="driver-toggle-btn" type="submit">
-                            <span class="material-symbols-outlined">play_arrow</span>
-                            Empezar viaje
-                        </button>
-                    </form>
+                    <div th:each="viaje : ${viajesAsignados}">
+
+    <form th:action="@{/conductor/empezar-viaje}" method="post">
+        <input type="hidden" name="idViaje" th:value="${viaje.id}">
+        <button class="driver-toggle-btn" type="submit">
+            <span class="material-symbols-outlined">play_arrow</span>
+            Empezar viaje
+        </button>
+    </form>
+
+    <form th:action="@{/conductor/cancelar-viaje}" method="post">
+        <input type="hidden" name="idViaje" th:value="${viaje.id}">
+        <button type="submit" class="link-button">
+            Cancelar viaje
+        </button>
+    </form>
+
+</div>
                 </div>
                 <div th:if="${viajeEnCurso == null and !tieneViajeAsignado}">
                     <div>

@@ -165,6 +165,39 @@ public class ServicioConductorImpl implements ServicioConductor {
     }
 
     @Override
+    public void canelarViaje(Long idViaje, Long idConductor) {
+        validarIdViaje(idViaje);
+        validarIdConductor(idConductor);
+
+        Viaje viaje = repositorioConductor.buscarViajePorId(idViaje);
+        if (viaje == null) {
+            throw new IllegalArgumentException("No existe el viaje");
+        }
+
+        validarTitularidadDelViaje(viaje, idConductor);
+
+        Conductor conductor = repositorioConductor.buscarPorId(idConductor);
+        if (conductor == null) {
+            throw new IllegalArgumentException("No existe el conductor");
+        }
+
+        Combi combiEnViaje = repositorioConductor.obtenerCombiActivaPorIdConductor(conductor.getId());
+
+        viaje.setEstadoDeViaje(EstadoDeViaje.CANCELADO);
+        combiEnViaje.setEstadoDeCombi(EstadoDeCombi.DISPONIBLE);
+        conductor.setEstadoConductor(EstadoConductor.DISPONIBLE);
+
+        //Actualizo el estado de las reservas de CONFIRMADA a CANCELADAS_POR_CONDUCTOR, asociadas a este viaje
+        for (Reserva reserva : viaje.getReservas()) {
+            reserva.setEstadoReserva(EstadoReserva.CANCELADA_POR_CONDUCTOR);
+        }
+
+        repositorioConductor.actualizarConductor(conductor);
+        repositorioConductor.guardarViaje(viaje);
+        repositorioConductor.actualizarEstadoCombi(combiEnViaje);
+    }
+
+    @Override
     public void actualizarRecaudacionEmpleado(Viaje viaje, Conductor conductor){
         Double recaudacion = viaje.getRecaudacionTotal();
         Double gananciaConductor = recaudacion * 0.75;
