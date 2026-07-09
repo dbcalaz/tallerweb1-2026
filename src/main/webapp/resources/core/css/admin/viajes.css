@@ -1,20 +1,22 @@
-.filtros-viajes {
-    display: flex;
-    gap: 20px;
-    align-items: flex-end;
-    flex-wrap: wrap;
+/* ==========================================================================
+   1. VARIABLES Y CONFIGURACIONES GENERALES DE LA PÁGINA
+   ========================================================================== */
+.admin-content .page {
+    max-width: none;
+    width: 100%;
+    margin: 0;
 }
 
-.filtros-viajes > * {
-    flex: 1;
-    min-width: 220px;
+.admin-content .page .section {
+    width: 100%;
 }
 
-.acciones-fila {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
+.admin-content .page .section .card {
+    width: 100%;
+}
+
+.section > .card:has(.filtros-viajes) {
+    width: 100%;
 }
 
 .card h3 {
@@ -29,21 +31,415 @@
     font-weight: 600;
 }
 
-.modal-overlay.hidden {
-    display: none;
-}
-
-.modal-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.5);
+/* Cabecera general de la sección */
+.admin-header {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 36px;
 }
 
 
+/* ==========================================================================
+   2. BARRA DE FILTROS (VIAJES REGISTRADOS)
+   ========================================================================== */
+.card-filtros-container {
+    background: #ffffff;
+    border: 1px solid #cac4d2;
+    border-radius: 24px;
+    padding: 24px;
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.filtros-viajes-layout {
+    display: flex;
+    gap: 16px;
+    align-items: flex-end;
+    width: 100%;
+}
+
+.filtro-field {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.filtro-field label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #494551;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.filtros-viajes-layout input[type="date"],
+.filtros-viajes-layout select {
+    width: 100%;
+    height: 40px;
+    padding: 0 14px;
+    background-color: #f7f2fa;
+    border: 1px solid #cac4d2;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #1c1b20;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.input-with-icon {
+    position: relative;
+    width: 100%;
+}
+
+.input-with-icon input[type="date"] {
+    padding-left: 36px;
+}
+
+.input-icon {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    color: #494551;
+    font-size: 20px !important;
+}
+
+.btn-filtrar-compacto {
+    flex: 0 0 auto;
+    height: 40px;
+    padding: 0 20px;
+    background-color: #ebe6ee;
+    color: #494551;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+    transition: background-color 0.2s;
+}
+
+.btn-filtrar-compacto:hover {
+    background-color: #cac4d2;
+    color: #1c1b20;
+}
+
+.btn-filtrar-compacto span {
+    font-size: 18px !important;
+}
+
+/* Selectores de .filtros-viajes preservados y limpios */
+.filtros-viajes {
+    width: 100%;
+    display: flex;
+    gap: 20px;
+    align-items: flex-end;
+    flex-wrap: wrap;
+}
+
+.filtros-viajes > * {
+    flex: 1;
+    min-width: 220px;
+}
+
+.filtros-viajes .driver-modal-field {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.filtros-viajes .driver-modal-field label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.filtros-viajes .driver-modal-field input,
+.filtros-viajes .driver-modal-field select {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    background: var(--surface-soft);
+    font-size: 15px;
+    outline: none;
+}
+
+.filtros-viajes .driver-modal-field input:focus,
+.filtros-viajes .driver-modal-field select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(79, 55, 138, .12);
+}
+
+.filtros-viajes .btn-secondary {
+    height: 48px;
+    padding: 0 28px;
+    white-space: nowrap;
+}
+
+
+/* ==========================================================================
+   3. TABLA DE GESTIÓN DE VIAJES
+   ========================================================================== */
+.admin-table-card {
+    background: #ffffff;
+    border-radius: 24px;
+    border: 1px solid #cac4d2;
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    margin-top: 24px;
+}
+
+.table-header {
+    padding: 24px;
+    border-bottom: 1px solid #cac4d2;
+}
+
+.table-header h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1c1b20;
+    margin: 0;
+}
+
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.viajes-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.viajes-table th {
+    padding: 16px 24px;
+    background: #f8f2fa;
+    font-size: 11px;
+    font-weight: 700;
+    color: #494551;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border-bottom: 1px solid #cac4d2;
+}
+
+.viajes-table td {
+    padding: 16px 24px;
+    border-bottom: 1px solid #ebe6ee;
+    vertical-align: middle;
+}
+
+.viajes-table tbody tr:hover {
+    background-color: #f1ecf4;
+    transition: background-color 0.2s ease;
+}
+
+.text-right {
+    text-align: right !important;
+}
+
+/* Elementos internos de las celdas */
+.viaje-ruta {
+    display: flex;
+    flex-direction: column;
+}
+
+.ruta-origen {
+    font-weight: 600;
+    color: #1c1b20;
+    font-size: 14px;
+}
+
+.ruta-destino {
+    font-size: 13px;
+    color: #494551;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 2px;
+}
+
+.icon-arrow {
+    font-size: 14px !important;
+}
+
+.viaje-tiempo {
+    display: flex;
+    flex-direction: column;
+}
+
+.tiempo-fecha {
+    color: #1c1b20;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.tiempo-hora {
+    color: #494551;
+    font-size: 13px;
+    margin-top: 2px;
+}
+
+.viaje-conductor {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.conductor-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #e0d4fd;
+    color: #644da1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.05em;
+}
+
+.conductor-nombre {
+    font-size: 14px;
+    font-weight: 500;
+    color: #1c1b20;
+}
+
+.viaje-vehiculo {
+    display: flex;
+    flex-direction: column;
+}
+
+.vehiculo-modelo {
+    color: #1c1b20;
+    font-size: 14px;
+}
+
+.vehiculo-patente {
+    font-family: monospace;
+    font-size: 11px;
+    color: #494551;
+    background: #f1ecf4;
+    padding: 1px 6px;
+    border-radius: 4px;
+    width: fit-content;
+    margin-top: 2px;
+}
+
+/* Status pills */
+.status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 16px;
+    border-radius: 9999px;
+    font-size: 12px;
+    font-weight: 700;
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.02);
+}
+
+.status-icon {
+    font-size: 14px !important;
+}
+
+.status-pill.disponible {
+    background-color: #dcfce7;
+    color: #15803d;
+}
+
+.status-pill.finalizado {
+    background-color: #ebe6ee;
+    color: #494551;
+}
+
+.status-pill.en-curso {
+    background-color: #ffdf93;
+    color: #755b00;
+}
+
+.status-pill.en-curso .status-icon {
+    animation: pulseAnimation 2s infinite;
+}
+
+.status-pill.asignado {
+    background-color: #e9ddff;
+    color: #22005d;
+}
+
+@keyframes pulseAnimation {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
+}
+
+/* Acciones en la fila de la tabla */
+.acciones-fila {
+    display: flex;
+    justify-content: flex-end;
+    gap: 4px;
+}
+
+.action-btn {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    color: #494551;
+    padding: 8px;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.action-btn:hover {
+    background-color: #e9ddff;
+    color: #22005d;
+}
+
+.action-btn span {
+    font-size: 18px !important;
+}
+
+
+/* ==========================================================================
+   4. BOTONES PRINCIPALES NATIVOS DE STITCH
+   ========================================================================== */
+.primary-btn-stitch {
+    background-color: #644da1;
+    color: #ffffff;
+    padding: 12px 28px;
+    border-radius: 9999px;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.primary-btn-stitch:hover {
+    background-color: #4e378a;
+}
+
+.primary-btn-stitch:active {
+    transform: scale(0.98);
+}
+
+
+/* ==========================================================================
+   5. MODAL DE PROGRAMAR VIAJE (DISEÑO PREDOMINANTE DEFINITIVO)
+   ========================================================================== */
 .modal-overlay {
     position: fixed;
     inset: 0;
@@ -56,24 +452,30 @@
     z-index: 9999;
 }
 
+.modal-overlay.hidden {
+    display: none;
+}
+
 .modal {
     width: 100%;
     max-width: 760px;
     max-height: 90vh;
     overflow-y: auto;
-
     background: var(--surface);
     border-radius: var(--radius-xl);
     box-shadow: var(--shadow-card);
+    display: flex;
+    flex-direction: column;
 }
 
+/* Cabecera del Modal */
 .modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-
     padding: 24px 28px;
     border-bottom: 1px solid var(--border);
+    background: #fdf8ff; /* Fondo claro Stitch */
 }
 
 .modal-title {
@@ -82,26 +484,23 @@
     gap: 12px;
 }
 
-.modal-title span {
-    color: var(--primary);
+.modal-title span.material-symbols-outlined {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background-color: #e9ddff; /* Caja violeta claro */
+    color: #22005d;
 }
 
 .modal-title h3 {
+    font-family: 'Inter', sans-serif;
     font-size: 22px;
-    font-weight: 700;
-}
-
-.modal-body {
-    padding: 28px;
-}
-
-.modal-footer {
-    display: flex;
-    justify-content: flex-end;
-    gap: 14px;
-
-    padding: 24px 28px;
-    border-top: 1px solid var(--border);
+    font-weight: 700; /* Peso robusto idéntico a Conductor */
+    color: #1c1b20;
+    margin: 0;
 }
 
 .modal-close {
@@ -119,71 +518,97 @@
     color: var(--primary);
 }
 
-.modal label {
-    display: block;
-    margin-bottom: 8px;
-
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--text-secondary);
-}
-
-.modal input,
-.modal select {
-    width: 100%;
-    padding: 14px 16px;
-
-    border: 1px solid var(--border);
-    border-radius: var(--radius-md);
-
-    background: var(--surface-soft);
-
-    font-size: 15px;
-    outline: none;
-
-    transition: .2s;
-}
-
-.modal input:focus,
-.modal select:focus {
-    border-color: var(--primary);
-
-    box-shadow: 0 0 0 4px rgba(79, 55, 138, .12);
-}
-
-.row {
-    display: grid;
-    grid-template-columns:1fr 1fr;
-    gap: 20px;
-    margin-bottom: 20px;
+/* Cuerpo e inputs */
+.modal-body {
+    padding: 28px;
 }
 
 .modal-body > div {
     margin-bottom: 22px;
 }
 
-@media (max-width: 768px) {
-
-    .row {
-        grid-template-columns:1fr;
-    }
-
-}
-
-#add-stop {
-    border: none;
-
-    background: none;
-
-    color: var(--primary);
-
+.modal label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
     font-weight: 600;
-
-    cursor: pointer;
+    color: #644da1; /* Violeta Stitch */
+    font-family: 'Inter', sans-serif;
 }
 
-#add-stop:hover {
-    text-decoration: underline;
+.modal input,
+.modal select {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--surface-soft);
+    font-size: 15px;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    transition: .2s;
+    box-sizing: border-box;
+}
+
+.modal input:focus,
+.modal select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(79, 55, 138, .12);
+}
+
+/* Configuración de Grilla Original de Inputs */
+.row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+/* COMPONENTE DE SELECCIÓN NUMÉRICA SIN FLECHAS CONTROLADO */
+.modal input[type="number"]::-webkit-outer-spin-button,
+.modal input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.modal input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+/* Paradas Intermedias Dinámicas */
+.stops-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 24px; /* Separación con el input de arriba */
+    margin-bottom: 14px;
+}
+
+.btn-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border: none;
+    background: none;
+    color: var(--primary);
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+}
+
+.btn-link:hover {
+    opacity: .8;
+}
+
+.btn-link .material-symbols-outlined {
+    font-size: 20px;
+}
+
+#stops-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
 .stop-item {
@@ -200,375 +625,112 @@
 .remove-stop {
     width: 42px;
     height: 42px;
-
     border: none;
-
     border-radius: 50%;
-
     background: #fdecec;
-
     color: #ba1a1a;
-
     cursor: pointer;
-
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.stops-header {
+/* Pie de página del modal (Footer con fondo Stitch) */
+.modal-footer {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 14px;
+    justify-content: flex-end;
+    gap: 14px;
+    padding: 24px 28px;
+    border-top: 1px solid var(--border);
+    background: #f7f2fa;
 }
 
-.btn-link {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    border: none;
-    background: none;
-    color: var(--primary);
-    font-weight: 600;
+.modal-footer .btn-secondary {
+    background: transparent;
+    border: 1px solid #7a7582;
+    color: #63597c;
+    padding: 12px 28px;
+    border-radius: 9999px;
+    font-weight: 500;
+    font-family: 'Inter', sans-serif;
     cursor: pointer;
-    font-size: 14px;
+    transition: all 0.2s;
 }
 
-.btn-link:hover {
-    opacity: .8;
+.modal-footer .btn-secondary:hover {
+    background-color: #ebe6ee;
 }
 
-.btn-link .material-symbols-outlined {
-    font-size: 20px;
+.modal-footer .btn-primary {
+    background-color: #644da1;
+    color: #ffffff;
+    padding: 12px 28px;
+    border-radius: 9999px;
+    font-weight: 500;
+    font-family: 'Inter', sans-serif;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.15);
+    transition: all 0.2s;
 }
 
-/* =========================
-   AJUSTES VIAJES DENTRO DEL PANEL ADMIN
-   ========================= */
-
-
-/*
-    El admin-content ya deja el espacio del sidebar.
-    No se toca porque lo usan conductores/combis.
-*/
-
-
-/* =========================
-   FILTROS VIAJES
-========================= */
-
-.filtros-viajes {
-
-    width: 100%;
-
-    display: flex;
-
-    gap: 20px;
-
-    align-items: flex-end;
-
-    flex-wrap: wrap;
-
+.modal-footer .btn-primary:hover {
+    filter: brightness(1.1);
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
 }
 
 
-/*
-    Evita que driver-modal-field
-    quede limitado por estilos del panel administrador
-*/
+/* ==========================================================================
+   6. SECCIÓN UNIFICADA DE MEDIA QUERIES (RESPONSIVE COMPLETAMENTE AGRUPADO)
+   ========================================================================== */
 
-.filtros-viajes .driver-modal-field {
-
-    flex: 1;
-
-    min-width: 220px;
-
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 10px;
-
-}
-
-
-
-.filtros-viajes .driver-modal-field label {
-
-    font-size: 14px;
-
-    font-weight: 600;
-
-    color: var(--text-secondary);
-
-}
-
-
-
-.filtros-viajes .driver-modal-field input,
-.filtros-viajes .driver-modal-field select {
-
-    width: 100%;
-
-    padding: 14px 16px;
-
-    border-radius: var(--radius-md);
-
-    border: 1px solid var(--border);
-
-    background: var(--surface-soft);
-
-    font-size: 15px;
-
-    outline: none;
-
-}
-
-
-
-.filtros-viajes .driver-modal-field input:focus,
-.filtros-viajes .driver-modal-field select:focus {
-
-    border-color: var(--primary);
-
-    box-shadow: 0 0 0 4px rgba(79,55,138,.12);
-
-}
-
-
-
-/*
-    Botón filtro
-*/
-
-.filtros-viajes .btn-secondary {
-
-    height: 48px;
-
-    white-space: nowrap;
-
-}
-
-
-
-/* =========================
-   CONTENEDOR CARD FILTRO
-========================= */
-
-
-/*
-    Evita que card del panel administrador
-    aplique restricciones distintas
-*/
-
-.section > .card:has(.filtros-viajes) {
-
-    width: 100%;
-
-}
-
-
-
-/* =========================
-   RESPONSIVE
-========================= */
-
-
-@media(max-width:1200px){
-
-
+/* Pantallas Medianas (Hasta 1200px) */
+@media (max-width: 1200px) {
     .filtros-viajes {
-
         flex-wrap: wrap;
-
     }
-
-
     .filtros-viajes .driver-modal-field {
-
         flex: 1 1 calc(50% - 20px);
-
     }
-
-
     .filtros-viajes .btn-secondary {
-
         flex: 1 1 100%;
-
     }
-
-
 }
 
-
-
-@media(max-width:992px){
-
-
+/* Pantallas de Tablets (Hasta 992px) */
+@media (max-width: 992px) {
     .filtros-viajes .driver-modal-field {
-
         flex: 1 1 100%;
-
     }
-
-
 }
 
+/* Pantallas Celulares (Hasta 768px) */
+@media (max-width: 768px) {
+    .row {
+        grid-template-columns: 1fr;
+    }
 
-
-@media(max-width:768px){
-
-
-    .filtros-viajes {
-
+    .filtros-viajes-layout {
         flex-direction: column;
-
         align-items: stretch;
+    }
 
+    .btn-filtrar-compacto {
+        justify-content: center;
+        width: 100%;
+    }
+
+    .filtros-viajes {
+        flex-direction: column;
+        align-items: stretch;
         gap: 16px;
-
     }
-
 
     .filtros-viajes .driver-modal-field {
-
         width: 100%;
-
     }
-
 
     .filtros-viajes .btn-secondary {
-
         width: 100%;
-
-    }
-
-
-}
-
-/* =========================
-   FIX LAYOUT VIAJES
-========================= */
-
-
-/*
-    Anula solamente el max-width del panel
-    para viajes
-*/
-
-.admin-content .page {
-
-    max-width: none;
-
-    width: 100%;
-
-    margin: 0;
-
-}
-
-
-/*
-    Sección viajes ocupa todo el ancho
-*/
-
-.admin-content .page .section {
-
-    width: 100%;
-
-}
-
-
-/*
-    Card del filtro
-*/
-
-.admin-content .page .section .card {
-
-    width: 100%;
-
-}
-
-
-
-/* =========================
-   FILTROS
-========================= */
-
-.filtros-viajes {
-
-    width:100%;
-
-    display:flex;
-
-    gap:20px;
-
-    align-items:flex-end;
-
-}
-
-
-.filtros-viajes .driver-modal-field {
-
-    flex:1;
-
-}
-
-
-.filtros-viajes .btn-secondary {
-
-    height:48px;
-
-    padding:0 28px;
-
-    white-space:nowrap;
-
-}
-
-
-
-
-@media(max-width:992px){
-
-
-    .filtros-viajes {
-
-        flex-wrap:wrap;
-
-    }
-
-
-    .filtros-viajes .driver-modal-field {
-
-        flex:1 1 calc(50% - 20px);
-
-    }
-
-
-}
-
-
-
-@media(max-width:768px){
-
-
-    .filtros-viajes {
-
-        flex-direction:column;
-
-        align-items:stretch;
-
-    }
-
-
-    .filtros-viajes .driver-modal-field {
-
-        width:100%;
-    }
-
-
-    .filtros-viajes .btn-secondary {
-        width:100%;
-
     }
 }

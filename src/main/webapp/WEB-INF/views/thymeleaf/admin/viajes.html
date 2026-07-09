@@ -17,17 +17,17 @@
     <div th:replace="componentes/sidebar-admin :: sidebar-admin('viajes')"></div>
     <main class="admin-content">
         <header class="admin-header">
-            <div>
-                <h1>Gestión de viajes</h1>
-                <p>Supervisa y coordina la logística en tiempo real.</p>
-            </div>
-            <div class="admin-actions">
-                <button class="primary-btn" id="open-modal">
-                    <span class="material-symbols-outlined">add_road</span>
-                    Programar viaje
-                </button>
-            </div>
-        </header>
+    <div>
+        <h1>Gestión de viajes</h1>
+        <p>Supervisa y coordina la logística en tiempo real.</p>
+    </div>
+    <div class="admin-actions">
+        <button class="primary-btn-stitch" id="open-modal">
+            <span class="material-symbols-outlined">add_road</span>
+            Programar viaje
+        </button>
+    </div>
+</header>
         <section class="page">
             <!--<div class="section">
                 <div class="grid-3">
@@ -64,118 +64,138 @@
                 </div>
             </div>-->
             <div class="section">
-                <div class="card">
-                    <div class="filtros-viajes">
-                        <div class="driver-modal-field">
-                            <label>Fecha</label>
-                            <input type="date">
-                        </div>
-                        <div class="driver-modal-field">
-                            <label>Estado</label>
-                            <select>
-                                <option>Todos</option>
-                                <option>Programado</option>
-                                <option>En curso</option>
-                                <option>Finalizado</option>
-                                <option>Cancelado</option>
-                            </select>
-                        </div>
-                        <div class="driver-modal-field">
-                            <label>Conductor</label>
-                            <input type="text" placeholder="Buscar conductor">
-                        </div>
-                        <button class="btn-secondary">
-                            Filtrar
-                        </button>
-                    </div>
+    <div class="card-filtros-container">
+        <div class="filtros-viajes-layout">
+            <div class="filtro-field">
+                <label>Fecha</label>
+                <div class="input-with-icon">
+                    <span class="material-symbols-outlined input-icon">calendar_today</span>
+                    <input type="date">
                 </div>
             </div>
+
+            <div class="filtro-field">
+                <label>Estado</label>
+                <select>
+                    <option>Todos los estados</option>
+                    <option>Programado</option>
+                    <option>En curso</option>
+                    <option>Finalizado</option>
+                    <option>Cancelado</option>
+                </select>
+            </div>
+
+            <div class="filtro-field">
+                <label>Conductor</label>
+                <select>
+                    <option value="">Todos los conductores</option>
+                    <option th:each="cond : ${conductores}" th:value="${cond.id}" th:text="${cond.nombre}">Ricardo Mendoza</option>
+                </select>
+            </div>
+
+            <button class="btn-filtrar-compacto">
+                <span class="material-symbols-outlined">filter_list</span>
+                Filtrar
+            </button>
+        </div>
+    </div>
+</div>
             <div class="section">
                 <div class="admin-table-card">
-                    <div class="table-header">
-                        <h3>Viajes registrados</h3>
-                        <!--<div class="table-search">
-                            <span class="material-symbols-outlined">
-                                search
+    <div class="table-header">
+        <h3>Viajes registrados</h3>
+    </div>
+    <div class="table-wrapper">
+        <table class="viajes-table">
+            <thead>
+                <tr>
+                    <th>Origen / Destino</th>
+                    <th>Fecha / Hora</th>
+                    <th>Conductor</th>
+                    <th>Vehículo</th>
+                    <th>Estado</th>
+                    <th class="text-right">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="viaje : ${viajes}">
+                    <td>
+                        <div class="viaje-ruta">
+                            <span class="ruta-origen" th:text="${viaje.paradas[0].parada.nombre}">Terminal Central</span>
+                            <span class="ruta-destino">
+                                <span class="material-symbols-outlined icon-arrow">arrow_forward</span>
+                                <th:block th:text="${viaje.paradas[viaje.paradas.size() - 1].parada.nombre}">Aeropuerto Intl.</th:block>
                             </span>
-                            <input type="text" placeholder="Buscar viaje">
-                        </div>-->
-                    </div>
-                    <div class="table-wrapper">
-                        <table>
-                            <thead>
-                            <tr>
-                                <th>Fecha</th>
-                                <th>Origen</th>
-                                <th>Destino</th>
-                                <th>Conductor</th>
-                                <th>Vehículo</th>
-                                <th>Estado</th>
-                                <!--<th>Acciones</th>-->
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr th:each="viaje : ${viajes}">
-                                <td th:text="${viaje.fecha + ' ' + viaje.horario}"></td>
-                                <td th:text="${viaje.paradas[0].parada.nombre}"></td>
-                                <td th:text="${viaje.paradas[viaje.paradas.size() - 1].parada.nombre}"></td>
-                                <td th:if="${viaje.conductor != null}" th:text="${viaje.conductor.nombre}"></td>
-                                <td th:if="${viaje.conductor == null}">Sin asignar</td>
-                                <td th:if="${viaje.combi != null}" th:text="${viaje.combi.marca}"></td>
-                                <td th:if="${viaje.combi == null}">Sin asignar</td>
-                                <td>
-                                    <span class="status"
-                                            th:text="${viaje.estadoDeViaje}"
-                                            th:classappend="${
-                                            viaje.estadoDeViaje.name() == 'DISPONIBLE' ? ' success' :
-                                            viaje.estadoDeViaje.name() == 'FINALIZADO' ? ' neutral' :
-                                            viaje.estadoDeViaje.name() == 'EN_CURSO' ? ' en-curso' :
-                                            viaje.estadoDeViaje.name() == 'ASIGNADO' ? 'info' :
-                                            ''
-                                          }">
-                                    </span>
-                                </td>
-                                <!--<td>
-                                    <div class="acciones-fila">
-                                        <button class="action-btn">
-                                            <span class="material-symbols-outlined">
-                                                edit_calendar
-                                            </span>
-                                        </button>
-                                        <button class="action-btn">
-                                            <span class="material-symbols-outlined">
-                                                person_edit
-                                            </span>
-                                        </button>
-                                        <button class="action-btn">
-                                            <span class="material-symbols-outlined">
-                                                more_vert
-                                            </span>
-                                        </button>
-                                    </div>
-                                </td>-->
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <!--<div class="pagination">
-                        <span>
-                            Mostrando 1 a 3 de 128 viajes
-                        </span>
-                        <div>
-                            <button>‹</button>
-                            <button class="active-page">1</button>
-                            <button>2</button>
-                            <button>3</button>
-                            <button>›</button>
                         </div>
-                    </div>-->
-                </div>
+                    </td>
+
+                    <td>
+                        <div class="viaje-tiempo">
+                            <span class="tiempo-fecha" th:text="${viaje.fecha}">12 Oct, 2026</span>
+                            <span class="tiempo-hora" th:text="${viaje.horario}">08:30 AM</span>
+                        </div>
+                    </td>
+
+                    <td>
+                        <div class="viaje-conductor">
+                            <div class="conductor-avatar">
+                                <span th:text="${viaje.conductor != null ? #strings.substring(viaje.conductor.nombre,0,2).toUpperCase() : 'S/A'}">RM</span>
+                            </div>
+                            <span class="conductor-nombre" th:text="${viaje.conductor != null ? viaje.conductor.nombre : 'Sin asignar'}">Ricardo Mendoza</span>
+                        </div>
+                    </td>
+
+                    <td>
+                        <div class="viaje-vehiculo">
+                            <span class="vehiculo-modelo" th:text="${viaje.combi != null ? viaje.combi.marca : 'Sin asignar'}">Mercedes-Benz</span>
+                            <span class="vehiculo-patente" th:if="${viaje.combi != null}" th:text="${viaje.combi.patente}">BND-2024</span>
+                        </div>
+                    </td>
+
+                    <td>
+                        <span class="status-pill"
+                                th:classappend="${
+                                viaje.estadoDeViaje.name() == 'DISPONIBLE' ? 'disponible' :
+                                viaje.estadoDeViaje.name() == 'FINALIZADO' ? 'finalizado' :
+                                viaje.estadoDeViaje.name() == 'EN_CURSO' ? 'en-curso' :
+                                viaje.estadoDeViaje.name() == 'ASIGNADO' ? 'asignado' : ''
+                              }">
+
+                            <span class="material-symbols-outlined status-icon"
+                                    th:text="${
+                                    viaje.estadoDeViaje.name() == 'DISPONIBLE' ? 'check_circle' :
+                                    viaje.estadoDeViaje.name() == 'FINALIZADO' ? 'check_circle' :
+                                    viaje.estadoDeViaje.name() == 'EN_CURSO' ? 'motion_photos_on' :
+                                    viaje.estadoDeViaje.name() == 'ASIGNADO' ? 'info' : 'help'
+                                  }">circle</span>
+
+                            <span th:text="${viaje.estadoDeViaje}">Estado</span>
+                        </span>
+                    </td>
+
+                    <td class="text-right">
+                        <div class="acciones-fila">
+                            <button class="action-btn" title="Editar horario">
+                                <span class="material-symbols-outlined">edit_calendar</span>
+                            </button>
+                            <button class="action-btn" title="Reasignar conductor">
+                                <span class="material-symbols-outlined">person_edit</span>
+                            </button>
+                            <button class="action-btn" title="Más opciones">
+                                <span class="material-symbols-outlined">more_vert</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
             </div>
         </section>
     </main>
 </div>
-<!-- MODAL PROGRAMAR VIAJE -->
+
 <div id="schedule-trip-modal" class="modal-overlay hidden">
     <div class="modal">
 
@@ -264,13 +284,13 @@
             </form>
         </div>
         <div class="modal-footer">
-             <button type="submit" form="trip-form" class="btn-primary">
-                Programar viaje
-            </button>
-            <button type="button" class="btn-secondary" id="cancel-modal">
-                Cancelar
-            </button>
-        </div>
+    <button type="button" class="btn-secondary" id="cancel-modal">
+        Cancelar
+    </button>
+    <button type="submit" form="trip-form" class="btn-primary">
+        Programar viaje
+    </button>
+</div>
     </div>
 </div>
 <script>
