@@ -7,7 +7,7 @@
         <link rel="stylesheet" th:href="@{/css/variables.css}">
         <link rel="stylesheet" th:href="@{/css/components.css}">
         <link rel="stylesheet" th:href="@{/css/admin/panel-administrador.css}">
-        <link rel="stylesheet" th:href="@{/css/admin/combis.css}">
+
         <link rel="stylesheet" th:href="@{/css/admin/conductores.css}">
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
         <link rel="icon" th:href="@{/imagenes/logo.png}" type="image/x-icon">
@@ -24,35 +24,56 @@
         </header>
             <section class="solicitudes-pendientes">
                 <div class="seccion-titulo">
+                    <div class="icono-prioridad">
+                        <span class="material-symbols-outlined">priority_high</span>
+                    </div>
                     <h2>Solicitudes pendientes</h2>
-                    <span class="badge-nuevas" th:text="${pendientes}"></span>
+                    <span class="badge-nuevas" th:text="${pendientes} + ' NUEVAS'"></span>
                 </div>
                 <div class="solicitudes-grid">
                     <article class="solicitud-card" th:each="c : ${conductoresPendientes}">
                         <div class="solicitud-card__decoracion"></div>
                         <div class="solicitud-card__header">
-                            <!--<img src="https://placehold.co/80x80" alt="Conductor">-->
-                            <div><h3 th:text="${c.nombre + ' ' + c.apellido}"></h3><p><span class="material-symbols-outlined">calendar_today</span> Hace 2 horas</p></div>
+                            <img th:src="@{/imagenes/chofer.jpeg}" alt="foto">
+                            <div>
+                                <h3 th:text="${c.nombre + ' ' + c.apellido}"></h3>
+                                <p><span class="material-symbols-outlined">calendar_today</span> Hace 2 horas</p>
+                            </div>
                         </div>
                         <div class="solicitud-card__datos">
-                            <div class="dato"><span>Licencia:</span> <strong th:text="${c.licencia}"></strong></div>
+                            <div class="dato">
+                                <span>Licencia:</span>
+                                <strong th:text="${c.licencia}"></strong>
+                            </div>
+                            <div class="dato">
+                                <span>Expedida:</span>
+                                <strong>12 Oct 2022</strong>
+                            </div>
                         </div>
-                        <div class="solicitud-card__acciones"><button class="btn-abrir-modal-asignacion btn-aprobar" th:data-conductor-id="${c.id}">Aprobar</button><button class="btn-rechazar">Rechazar</button></div>
+                        <div class="solicitud-card__acciones">
+                            <button class="btn-abrir-modal-asignacion btn-aprobar" th:data-conductor-id="${c.id}">Aprobar</button>
+                            <button class="btn-rechazar">Rechazar</button>
+                        </div>
                     </article>
-                    <!--
-                    <article class="solicitud-extra">
-                        <span class="material-symbols-outlined">assignment_ind</span>
-                        <p>1 Solicitud adicional</p>
-                        <button>Ver todas las colas</button>
-                    </article>-->
                 </div>
             </section>
 
             <section class="combis-fallas">
                 <div class="fallas-header">
-                    <div>
-                        <h2>Conductores</h2>
-                        <p>Disponibles - En viaje - Suspendidos</p>
+                    <div class="conductores-activos-titulo-wrapper">
+                        <div class="icono-grupo">
+                            <span class="material-symbols-outlined">group</span>
+                        </div>
+                        <div>
+                            <h2>Conductores</h2>
+                            <p>Disponibles - En viaje - Suspendidos</p>
+                        </div>
+                    </div>
+                    <div class="acciones-tabla">
+                        <button type="button">
+                            <span class="material-symbols-outlined">filter_list</span>
+                            Filtrar
+                        </button>
                     </div>
                 </div>
                 <div class="fallas-table-wrapper">
@@ -70,37 +91,44 @@
                             <tr th:each="conductor : ${conductores}">
                                 <td>
                                     <div class="conductor-info">
-                                        <!--<img src="https://placehold.co/60x60" alt="Conductor">-->
-                                        <div><strong th:text="${conductor.nombre}"></strong><span th:text="'ID: ' + ${conductor.id}"></span></div>
+                                        <img th:src="@{/imagenes/chofer.jpeg}" alt="Conductor">
+                                        <div>
+                                            <strong th:text="${conductor.nombre}"></strong>
+                                            <span th:text="'ID: BW-' + ${conductor.id}"></span>
+                                        </div>
                                     </div>
                                 </td>
                                 <td><span class="licencia" th:text="${conductor.licencia}"></span></td>
-                                <td><div class="calificacion"><span class="material-symbols-outlined">star</span><strong th:text="${conductor.calificacion}"></strong></div></td>
                                 <td>
-    <div
-            th:class="${'estado ' + (conductor.estadoConductor.name() == 'SUSPENDIDO' ? 'suspendido' : (conductor.estadoConductor.name() == 'DISPONIBLE' ? 'disponible' : (conductor.estadoConductor.name() == 'SUSPENSION_PENDIENTE' ? 'revision' : 'viaje')))}"
-            th:text="${conductor.estadoConductor.name() == 'SUSPENDIDO' ? 'Suspendido' : (conductor.estadoConductor.name() == 'DISPONIBLE' ? 'Disponible' : (conductor.estadoConductor.name() == 'SUSPENSION_PENDIENTE' ? 'Suspensión pendiente' : 'En viaje'))}">
-    </div>
-</td>
+                                    <div class="calificacion">
+                                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                                        <strong th:text="${conductor.calificacion}"></strong>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div th:class="${'estado ' + (conductor.estadoConductor.name() == 'SUSPENDIDO' ? 'suspendido' : (conductor.estadoConductor.name() == 'DISPONIBLE' ? 'disponible' : (conductor.estadoConductor.name() == 'SUSPENSION_PENDIENTE' ? 'revision' : 'viaje')))}">
+                                        <span class="punto-estado"></span>
+                                        <span th:text="${conductor.estadoConductor.name() == 'SUSPENDIDO' ? 'Suspendido' : (conductor.estadoConductor.name() == 'DISPONIBLE' ? 'Disponible' : (conductor.estadoConductor.name() == 'SUSPENSION_PENDIENTE' ? 'Suspensión pendiente' : 'En viaje'))}"></span>
+                                    </div>
+                                </td>
                                 <td>
                                     <div class="acciones">
                                         <button title="Ver detalle" class="btn-abrir-modal-detalle" th:data-conductor-id="${conductor.id}" th:data-conductor-nombre="${conductor.nombre + ' ' + conductor.apellido}" th:data-conductor-licencia="${conductor.licencia}" th:data-conductor-calificacion="${conductor.calificacion}"
                                                 th:data-conductor-telefono="${conductor.telefono}" th:data-conductor-documento="${conductor.documento}" th:data-conductor-email="${conductor.email}"
                                                 th:data-conductor-estado="${conductor.estadoConductor.name() == 'SUSPENDIDO' ? 'Suspendido' : (conductor.estadoConductor.name() == 'EN_VIAJE' ? 'En viaje' : (conductor.estadoConductor.name() == 'SUSPENSION_PENDIENTE' ? 'Suspensión pendiente' : 'Disponible'))}">
-                                        <span class="material-symbols-outlined">visibility</span>
-                                    </button>
-                                        <!--<button title="Editar" class="btn-abrir-modal-editar"><span class="material-symbols-outlined">edit</span></button>-->
+                                            <span class="material-symbols-outlined">visibility</span>
+                                        </button>
 
                                         <div th:if="${conductor.estadoConductor.name() != 'SUSPENDIDO'}">
                                             <form th:action="@{/suspender}" th:method="POST">
                                                 <input type="hidden" th:value="${conductor.id}" name="idConductor">
-                                                <button title="Suspender"><span class="material-symbols-outlined">block</span></button>
+                                                <button title="Suspender" class="btn-desactivar-tabla"><span class="material-symbols-outlined">block</span></button>
                                             </form>
                                         </div>
                                         <div th:if="${conductor.estadoConductor.name() == 'SUSPENDIDO'}">
                                             <form th:action="@{/reactivar}" th:method="POST">
                                                 <input type="hidden" th:value="${conductor.id}" name="idConductor">
-                                                 <button title="Reactivar"><span class="material-symbols-outlined">check</span></button>
+                                                 <button title="Reactivar" class="btn-reactivar-tabla"><span class="material-symbols-outlined">check</span></button>
                                             </form>
                                         </div>
                                     </div>
@@ -108,13 +136,14 @@
                             </tr>
                         </tbody>
                     </table>
-                    <!--<div class="paginacion">
-                        <p>Mostrando 1-3 de 20 conductores</p>
+                    <!-- Agregamos el pie de paginación de Stitch usando tus clases existentes limpiamente -->
+                    <div class="paginacion">
+                        <p>Mostrando 1-3 de 128 conductores</p>
                         <div class="paginacion-botones">
-                            <button><span class="material-symbols-outlined">chevron_left</span></button>
-                            <button><span class="material-symbols-outlined">chevron_right</span></button>
+                            <button type="button"><span class="material-symbols-outlined">chevron_left</span></button>
+                            <button type="button"><span class="material-symbols-outlined">chevron_right</span></button>
                         </div>
-                    </div>-->
+                    </div>
                 </div>
             </section>
         </section>
@@ -141,23 +170,71 @@
         </div>
     </div>
    <div id="modal-detalle" class="modal-overlay">
-    <div class="driver-modal">
-        <div class="driver-modal-icon">
-            <span class="material-symbols-outlined">badge</span>
-        </div>
-        <h2>Detalle conductor</h2>
+    <div class="driver-modal-shell">
 
-        <p><strong>Nombre:</strong> <span id="detalle-nombre"></span></p>
-        <p><strong>Licencia:</strong> <span id="detalle-licencia"></span></p>
-        <p><strong>Calificación:</strong> <span id="detalle-calificacion"></span></p>
-        <p><strong>Estado:</strong> <span id="detalle-estado"></span></p>
-        <p><strong>Teléfono:</strong> <span id="detalle-telefono"></span></p>
-        <p><strong>Documento:</strong> <span id="detalle-documento"></span></p>
-        <p><strong>Email:</strong> <span id="detalle-email"></span></p>
-
-        <div class="driver-modal-actions">
-            <button type="button" id="btn-cerrar-detalle" class="btn-primary">Cerrar</button>
+        <div class="driver-modal-header">
+            <div class="driver-modal-titulo-wrapper">
+                <div class="driver-modal-icon">
+                    <span class="material-symbols-outlined">badge</span>
+                </div>
+                <div>
+                    <h2>Detalle conductor</h2>
+                    <p>Legajo operativo e información de contacto</p>
+                </div>
+            </div>
+            <button type="button" class="btn-cerrar-cruz" onclick="document.getElementById('btn-cerrar-detalle').click()">
+                <span class="material-symbols-outlined">close</span>
+            </button>
         </div>
+
+        <div class="driver-modal-body">
+            <div class="driver-modal-grid">
+
+                <div class="driver-modal-campo">
+                    <label>Nombre Completo</label>
+                    <div class="driver-modal-valor" id="detalle-nombre"></div>
+                </div>
+
+                <div class="driver-modal-campo">
+                    <label>Categoría de Licencia</label>
+                    <div class="driver-modal-valor" id="detalle-licencia"></div>
+                </div>
+
+                <div class="driver-modal-campo">
+                    <label>Calificación Promedio</label>
+                    <div class="driver-modal-valor" id="detalle-calificacion"></div>
+                </div>
+
+                <div class="driver-modal-campo">
+                    <label>Teléfono de Contacto</label>
+                    <div class="driver-modal-valor" id="detalle-telefono"></div>
+                </div>
+
+                <div class="driver-modal-campo">
+                    <label>Documento (DNI)</label>
+                    <div class="driver-modal-valor" id="detalle-documento"></div>
+                </div>
+
+                <div class="driver-modal-campo">
+                    <label>Email Corporativo</label>
+                    <div class="driver-modal-valor" id="detalle-email"></div>
+                </div>
+
+                <div class="driver-modal-campo driver-campo-completo">
+                    <label>Estado Operativo Actual</label>
+                    <div class="driver-modal-valor valor-estado" id="detalle-estado"></div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="driver-modal-footer">
+            <button type="button" id="btn-cerrar-detalle" class="btn-primary">
+                <span class="material-symbols-outlined">arrow_back</span>
+                Volver
+            </button>
+        </div>
+
     </div>
 </div>
     <script>
