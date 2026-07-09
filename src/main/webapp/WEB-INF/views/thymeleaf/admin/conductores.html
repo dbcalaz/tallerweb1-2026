@@ -17,6 +17,9 @@
     <main class="panel-administracion">
         <section class="conductores">
             <header class="admin-header">
+                <button type="button" class="mobile-menu-toggle-btn" id="mobile-menu-btn">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
                 <div>
                  <h1>Gestión de conductores</h1>
                  <p>Supervisión y control de la flota humana de BondiWay.</p>
@@ -237,6 +240,30 @@
 
     </div>
 </div>
+    <div class="mobile-sidebar-overlay" id="mobile-sidebar"></div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const openMenuBtn = document.getElementById('mobile-menu-btn');
+        const sidebarElement = document.querySelector('.admin-sidebar');
+        const overlayElement = document.getElementById('mobile-sidebar');
+        const closeMenuBtn = document.getElementById('mobile-sidebar-close');
+
+        openMenuBtn?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            sidebarElement?.classList.add('open');
+            overlayElement?.classList.add('active');
+        });
+
+        const closeSidebar = () => {
+            sidebarElement?.classList.remove('open');
+            overlayElement?.classList.remove('active');
+        };
+
+        overlayElement?.addEventListener('click', closeSidebar);
+        closeMenuBtn?.addEventListener('click', closeSidebar);
+    });
+</script>
     <script>
         //Modal asignación combi para nuevo conductor
         const botonesAbrir = document.querySelectorAll(".btn-abrir-modal-asignacion");

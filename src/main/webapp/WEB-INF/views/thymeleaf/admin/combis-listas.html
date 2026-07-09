@@ -18,6 +18,9 @@
   <div th:replace="componentes/sidebar-admin :: sidebar-admin('combis')"></div>
   <main class="admin-content combis-content">
     <div class="combis-header">
+        <button type="button" class="mobile-menu-toggle-btn" id="mobile-menu-btn">
+        <span class="material-symbols-outlined">menu</span>
+    </button>
       <div>
         <h1>Gestión de vehículos</h1>
         <p>Administra la flota de combis, estado técnico y asignaciones.</p>
@@ -255,7 +258,30 @@
     </form>
   </div>
 </div>-->
+<div class="mobile-sidebar-overlay" id="mobile-sidebar"></div>
 
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const openMenuBtn = document.getElementById('mobile-menu-btn');
+        const sidebarElement = document.querySelector('.admin-sidebar');
+        const overlayElement = document.getElementById('mobile-sidebar');
+        const closeMenuBtn = document.getElementById('mobile-sidebar-close');
+
+        openMenuBtn?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            sidebarElement?.classList.add('open');
+            overlayElement?.classList.add('active');
+        });
+
+        const closeSidebar = () => {
+            sidebarElement?.classList.remove('open');
+            overlayElement?.classList.remove('active');
+        };
+
+        overlayElement?.addEventListener('click', closeSidebar);
+        closeMenuBtn?.addEventListener('click', closeSidebar);
+    });
+</script>
 <script th:inline="javascript">
   const panelFiltros = document.getElementById("panelFiltros");
 

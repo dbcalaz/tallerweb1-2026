@@ -3,20 +3,31 @@
 <body>
 <aside class="admin-sidebar" th:fragment="sidebar-admin(activePage)">
     <div class="admin-brand">
-        <h2>BondiWay</h2>
-        <span>Panel de Gestión</span>
+        <div class="brand-logo-wrapper">
+            <h2>BondiWay</h2>
+            <span>Panel de Gestión</span>
+        </div>
+        <button type="button" class="sidebar-close-btn" id="mobile-sidebar-close">
+            <span class="material-symbols-outlined">close</span>
+        </button>
     </div>
 
     <nav class="admin-nav">
-        <!--<a th:href="@{/admin}" th:classappend="${activePage == 'admin' ? ' active' : ''}"><span class="material-symbols-outlined">leaderboard</span> Estadísticas</a>-->
         <a th:href="@{/viajes}" th:classappend="${activePage == 'viajes' ? ' active' : ''}"><span class="material-symbols-outlined">directions_bus</span> Viajes</a>
         <a th:href="@{/combis}" th:classappend="${activePage == 'combis' ? ' active' : ''}"><span class="material-symbols-outlined">directions_car</span> Combis</a>
         <a th:href="@{/conductores}" th:classappend="${activePage == 'conductores' ? ' active' : ''}"><span class="material-symbols-outlined">person_pin</span> Conductores</a>
     </nav>
 
-    <div class="admin-user">
-        <span class="material-symbols-outlined">account_circle</span>
-        <div><strong>Admin Usuario</strong><small>Operaciones</small></div>
+    <div class="sidebar-footer-container">
+        <div class="admin-user">
+            <span class="material-symbols-outlined">account_circle</span>
+            <div><strong>Admin Usuario</strong><small>Operaciones</small></div>
+        </div>
+
+        <a th:href="@{/logout}" class="btn-logout">
+            <span class="material-symbols-outlined">logout</span>
+            <span>Cerrar Sesión</span>
+        </a>
     </div>
 </aside>
 </body>
