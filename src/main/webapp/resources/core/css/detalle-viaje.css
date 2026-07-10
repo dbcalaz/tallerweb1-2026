@@ -1,214 +1,569 @@
-.detalle-container {
-    max-width: 860px;
-    margin: 0 auto;
-    padding: 40px 20px 60px;
-}
-
-.viaje-hero {
-    background: linear-gradient(135deg, var(--primary, #4f378a) 0%, #7c5cbf 100%);
-    border-radius: var(--radius-xl, 20px);
-    padding: 36px 40px;
-    color: white;
-    position: relative;
-    overflow: hidden;
-    margin-bottom: 24px;
-    box-shadow: 0 8px 32px rgba(79,55,138,.25);
-}
-
-.viaje-hero::before {
-    content: '';
-    position: absolute;
-    top: -70px; right: -70px;
-    width: 260px; height: 260px;
-    background: rgba(255,255,255,.07);
-    border-radius: 50%;
-    pointer-events: none;
-}
-
-.viaje-hero-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    flex-wrap: wrap;
-    gap: 16px;
-}
-
-.badge-servicio {
-    display: inline-block;
-    background: rgba(255,255,255,.18);
-    border: 1px solid rgba(255,255,255,.3);
-    color: white;
-    padding: 4px 14px;
-    border-radius: 999px;
-    font-size: .75rem;
-    font-weight: 700;
-    letter-spacing: .6px;
-    text-transform: uppercase;
-    margin-bottom: 12px;
-}
-
-.viaje-ruta {
-    font-size: 2rem;
-    font-weight: 800;
-    letter-spacing: -.5px;
-    line-height: 1.1;
-    margin: 0 0 8px;
-}
-
-.viaje-ruta .arrow { opacity: .55; margin: 0 8px; }
-
-.viaje-fecha {
-    font-size: .9rem;
-    opacity: .8;
-    display: flex;
-    align-items: center;
-    gap: 6px;
+.detalle-body-page {
+    background-color: #fdf8ff;
+    color: #1c1b20;
     margin: 0;
 }
 
-.precio-box { text-align: right; }
-.precio-label { font-size: .8rem; opacity: .7; margin-bottom: 4px; }
-.precio-valor { font-size: 2.2rem; font-weight: 800; line-height: 1; }
-
-.info-tiles {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    margin-top: 24px;
+.detalle-page-container {
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    box-sizing: border-box;
+    padding: 40px 40px 80px;
 }
 
-.info-tile {
-    background: rgba(255,255,255,.13);
-    border: 1px solid rgba(255,255,255,.2);
-    border-radius: 12px;
-    padding: 14px 18px;
-}
-
-.tile-label {
-    font-size: .72rem;
-    opacity: .7;
-    text-transform: uppercase;
-    letter-spacing: .5px;
-    margin-bottom: 5px;
+.detalle-header-summary {
     display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 24px;
+    margin-bottom: 40px;
+}
+
+.btn-back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #494551;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    transition: color 0.2s;
+}
+
+.btn-back-link:hover {
+    color: #644da1;
+}
+
+.btn-back-link .material-symbols-outlined {
+    font-size: 18px;
+}
+
+.detalle-main-title {
+    font-size: 32px;
+    font-weight: 600;
+    color: #1c1b20;
+    margin: 0 0 8px 0;
+    letter-spacing: -0.01em;
+}
+
+.ruta-badge-group {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+}
+
+.ruta-ciudad-text {
+    font-size: 24px;
+    font-weight: 500;
+    color: #644da1;
+}
+
+.ruta-arrow-icon {
+    color: #7a7582;
+}
+
+.estado-badge-pill {
+    padding: 4px 12px;
+    border-radius: 999px;
+    display: inline-flex;
     align-items: center;
     gap: 4px;
+    font-size: 12px;
+    font-weight: 600;
 }
 
-.tile-label .material-symbols-outlined { font-size: .9rem; }
-.tile-value { font-size: 1.1rem; font-weight: 700; }
-
-.estado-pill {
-    display: inline-block;
-    padding: 3px 12px;
-    border-radius: 999px;
-    font-size: .78rem;
-    font-weight: 700;
+.estado-badge-pill .material-symbols-outlined {
+    font-size: 16px;
 }
 
-.estado-CONFIRMADO  { background: #d1fae5; color: #065f46; }
-.estado-PENDIENTE   { background: #fef3c7; color: #92400e; }
-.estado-FINALIZADO  { background: #e0e7ff; color: #3730a3; }
-.estado-CANCELADO   { background: #fee2e2; color: #991b1b; }
+.estado-CONFIRMADO, .estado-CONFIRMADA { background-color: #e0d4fd; color: #4a4263; }
+.estado-PENDIENTE { background-color: #ffdf93; color: #241a00; }
+.estado-FINALIZADO { background-color: #e6e1e9; color: #1c1b20; }
+.estado-CANCELADO { background-color: #ffdad6; color: #93000a; }
 
-.conductor-card {
-    background: white;
-    border: 1px solid var(--border, #e5e0f0);
-    border-radius: var(--radius-xl, 20px);
-    box-shadow: var(--shadow-card, 0 4px 24px rgba(79,55,138,.08));
-    padding: 28px 32px;
+.pasajeros-count-label {
+    font-size: 14px;
+    color: #494551;
+    font-weight: 500;
+    display: block;
+    text-align: right;
+    margin-bottom: 4px;
+}
+
+.precio-total-card {
+    background-color: #644da1;
+    color: #ffffff;
+    padding: 12px 24px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(100, 77, 161, 0.2);
+    text-align: right;
+    transition: transform 0.2s;
+}
+
+.precio-total-card:hover {
+    transform: scale(1.03);
+}
+
+.precio-card-title {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    opacity: 0.8;
+    margin-bottom: 4px;
+}
+
+.precio-card-value {
+    font-size: 24px;
+    font-weight: 600;
+}
+.detalle-grid-layout {
+    display: grid;
+    grid-template-columns: 8fr 4fr;
+    gap: 24px;
+    align-items: start;
+}
+
+.grid-left-column {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.info-viaje-card {
+    background-color: #ffffff;
+    border: 1px solid #cac4d2;
+    border-radius: 24px;
+    padding: 24px;
+    box-shadow: 0 4px 24px rgba(79, 55, 138, 0.05);
+    display: flex;
+    gap: 32px;
+    transition: box-shadow 0.2s;
+}
+
+.info-viaje-main {
+    flex: 1;
+}
+
+.info-viaje-title-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #644da1;
     margin-bottom: 24px;
 }
 
-.conductor-card-label {
-    font-size: .78rem;
+.info-viaje-title-row span {
+    font-size: 24px;
+}
+
+.info-viaje-title-row h2 {
+    font-size: 14px;
     font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: .6px;
-    color: var(--text-secondary, #6c757d);
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
+    margin: 0;
+    letter-spacing: 0.5px;
 }
 
-.conductor-card-label .material-symbols-outlined {
-    font-size: 1rem;
-    color: var(--primary, #4f378a);
-}
-
-.conductor-row {
-    display: flex;
-    align-items: center;
+.info-viaje-data-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: 16px;
 }
 
-.conductor-avatar {
-    width: 54px;
-    height: 54px;
+.data-item-label {
+    font-size: 12px;
+    color: #494551;
+    margin: 0 0 4px 0;
+    font-weight: 600;
+}
+
+.data-item-value {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1c1b20;
+    margin: 0;
+}
+
+.info-viaje-divider {
+    width: 1px;
+    background-color: #cac4d2;
+    opacity: 0.4;
+}
+
+.conductor-embed-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 220px;
+}
+
+.conductor-embed-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.conductor-avatar-wrapper {
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #4f378a, #7c5cbf);
+    background-color: #e9ddff;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
-    font-size: 1.3rem;
-    font-weight: 800;
+    border: 2px solid #cfbdff;
     flex-shrink: 0;
 }
 
-.conductor-nombre { font-size: 1.15rem; font-weight: 700; margin-bottom: 2px; }
-.conductor-sub { font-size: .82rem; color: var(--text-secondary, #6c757d); }
-
-.conductor-rating { margin-left: auto; text-align: right; }
-.rating-label { font-size: .75rem; color: var(--text-secondary, #6c757d); margin-bottom: 2px; }
-.rating-value { font-size: 1.1rem; font-weight: 800; color: var(--primary, #4f378a); }
-
-.acciones { display: flex; gap: 14px; flex-wrap: wrap; }
-
-.btn-volver {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: white;
-    color: var(--primary, #4f378a);
-    border: 2px solid var(--border, #e5e0f0);
-    border-radius: 999px;
-    padding: 12px 26px;
-    font-size: .95rem;
-    font-weight: 600;
-    text-decoration: none;
-    transition: border-color .2s;
-}
-
-.btn-volver:hover { border-color: var(--primary, #4f378a); }
-
-.btn-reservar {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: linear-gradient(135deg, #4f378a, #7c5cbf);
-    color: white;
-    border: none;
-    border-radius: 999px;
-    padding: 12px 30px;
-    font-size: .95rem;
+.conductor-avatar-wrapper span {
+    font-size: 18px;
     font-weight: 700;
-    text-decoration: none;
+    color: #22005d;
+    text-transform: uppercase;
+}
+
+.conductor-embed-meta strong {
+    display: block;
+    font-size: 14px;
+    font-weight: 700;
+    color: #1c1b20;
+}
+
+.conductor-rating-subrow {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 2px;
+}
+
+.conductor-rating-subrow .star-icon {
+    font-size: 16px;
+    color: #755b00;
+}
+
+.rating-number {
+    font-size: 12px;
+    font-weight: 600;
+    color: #1c1b20;
+}
+
+.rating-dot-separator {
+    color: #494551;
+    font-size: 10px;
+}
+
+.rating-verified-tag {
+    font-size: 12px;
+    color: #644da1;
+    font-weight: 600;
+}
+
+.btn-conductor-message {
+    width: 100%;
+    background-color: transparent;
+    border: 1px solid #644da1;
+    color: #644da1;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
     cursor: pointer;
-    transition: transform .2s, box-shadow .2s;
+    transition: background-color 0.2s, color 0.2s;
 }
 
-.btn-reservar:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(79,55,138,.35);
-    color: white;
+.btn-conductor-message:hover {
+    background-color: #7d66bc;
+    color: #ffffff;
+    border-color: #7d66bc;
 }
 
-@media (max-width: 600px) {
-    .info-tiles { grid-template-columns: 1fr; }
-    .viaje-ruta { font-size: 1.4rem; }
-    .precio-valor { font-size: 1.7rem; }
-    .viaje-hero { padding: 24px 20px; }
-    .conductor-card { padding: 20px; }
+.pasajeros-section {
+    margin-top: 16px;
+}
+
+.section-title-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+    padding-left: 8px;
+}
+
+.section-title-wrapper span {
+    color: #644da1;
+}
+
+.section-title-wrapper h2 {
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.pasajeros-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.pasajero-item-card {
+    background-color: #ffffff;
+    border: 1px solid #cac4d2;
+    border-radius: 24px;
+    padding: 24px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.pasajero-item-card:hover {
+    border-color: #644da1;
+}
+
+.pasajero-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 16px;
+}
+
+.pasajero-icon-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #e0d4fd;
+    color: #644da1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pasajero-asiento-badge {
+    background-color: #ebe6ee;
+    color: #494551;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.pasajero-card-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1c1b20;
+    margin: 0 0 4px 0;
+}
+
+.pasajero-titular-label {
+    color: #494551;
+    font-weight: 400;
+    font-size: 14px;
+}
+
+.pasajero-card-dni {
+    font-size: 14px;
+    color: #494551;
+    margin: 0;
+    font-weight: 500;
+}
+
+.pasajero-card-footer-action {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #cac4d2;
+}
+
+.btn-download-boleto {
+    background: transparent;
+    border: none;
+    color: #644da1;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 0;
+}
+
+.btn-download-boleto:hover span {
+    text-decoration: underline;
+}
+
+.recorrido-sticky-card {
+    background-color: #f7f2fa;
+    border: 1px solid #cac4d2;
+    border-radius: 24px;
+    padding: 24px;
+    position: sticky;
+    top: 24px;
+    transition: box-shadow 0.2s;
+}
+
+.timeline-container {
+    position: relative;
+    padding-left: 8px;
+}
+
+.timeline-container::before {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 12px;
+    bottom: 24px;
+    width: 2px;
+    background-color: #cac4d2;
+    z-index: 1;
+}
+
+.timeline-step-row {
+    display: flex;
+    gap: 16px;
+    position: relative;
+    padding-bottom: 32px;
+}
+
+.timeline-step-row:last-child {
+    padding-bottom: 0;
+}
+
+.timeline-left-rail {
+    position: relative;
+    z-index: 2;
+    width: 16px;
+    display: flex;
+    justify-content: center;
+}
+
+.timeline-bullet {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    margin-top: 4px;
+}
+
+.bullet-primary { background-color: #644da1; box-shadow: 0 0 0 4px #e9ddff; }
+.bullet-intermediate { background-color: #7a7582; box-shadow: 0 0 0 4px #ebe6ee; }
+.bullet-tertiary { background-color: #755b00; box-shadow: 0 0 0 4px #ffdf93; }
+
+.timeline-content-block {
+    flex: 1;
+}
+
+.timeline-step-tag {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0 0 4px 0;
+}
+
+.tag-primary { color: #644da1; }
+.tag-intermediate { color: #494551; }
+.tag-tertiary { color: #755b00; }
+
+.timeline-step-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1c1b20;
+    margin: 0 0 2px 0;
+}
+
+.timeline-step-time {
+    font-size: 14px;
+    color: #494551;
+    margin: 0;
+    font-weight: 500;
+}
+
+.gestion-reserva-actions {
+    margin-top: 40px;
+    padding-top: 32px;
+    border-top: 1px solid #cac4d2;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.btn-share-viaje {
+    width: 100%;
+    background-color: #e6e1e9;
+    color: #494551;
+    border: none;
+    padding: 12px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background-color 0.2s;
+}
+
+.btn-share-viaje:hover {
+    background-color: #cac4d2;
+}
+
+.btn-cancelar-reserva {
+    width: 100%;
+    background-color: transparent;
+    color: #ba1a1a;
+    border: none;
+    padding: 12px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background-color 0.2s;
+}
+
+.btn-cancelar-reserva:hover {
+    background-color: #ffdad6;
+}
+
+@media (max-width: 992px) {
+    .detalle-grid-layout {
+        grid-template-columns: 1fr;
+    }
+    .recorrido-sticky-card {
+        position: static;
+    }
+}
+
+@media (max-width: 768px) {
+    .detalle-page-container {
+        padding: 24px 16px 40px;
+    }
+    .detalle-header-summary {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .header-summary-right {
+        width: 100%;
+        text-align: left;
+    }
+    .pasajeros-count-label {
+        text-align: left;
+    }
+    .precio-total-card {
+        text-align: center;
+    }
+    .info-viaje-card {
+        flex-direction: column;
+        gap: 24px;
+    }
+    .info-viaje-divider {
+        width: 100%;
+        height: 1px;
+    }
+    .pasajeros-cards-grid {
+        grid-template-columns: 1fr;
+    }
 }

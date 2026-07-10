@@ -3,132 +3,173 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>BondiWay - Detalle Viaje</title>
+    <title>BondiWay - Detalle de Reserva</title>
     <link rel="icon" th:href="@{/imagenes/logo.png}" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
     <link rel="stylesheet" th:href="@{/css/variables.css}">
     <link rel="stylesheet" th:href="@{/css/components.css}">
-    <link rel="stylesheet" th:href="@{/css/home.css}">
-    <link rel="stylesheet" th:href="@{/css/perfilUsuario.css}">
     <link rel="stylesheet" th:href="@{/css/detalle-viaje.css}">
 </head>
-<body>
+<body class="detalle-body-page">
 <div th:replace="componentes/nav-bar :: navbar('home')"></div>
-<main class="detalle-container">
-    <div class="viaje-hero">
-        <div class="viaje-hero-top">
-            <div>
-                <span class="badge-servicio" th:text="${viaje.tipoDeViaje}">Estándar</span>
-                <h2 class="viaje-ruta">
-                    <span th:text="${viaje.origen}">Origen</span>
-                    <span class="arrow">→</span>
-                    <span th:text="${viaje.destino}">Destino</span>
-                </h2>
-                <p class="viaje-fecha">
-                    <span class="material-symbols-outlined" style="font-size:1rem;">calendar_month</span>
-                    <span th:text="${viaje.fecha}">Fecha</span>
-                    &nbsp;·&nbsp;
-                    <span class="material-symbols-outlined" style="font-size:1rem;">schedule</span>
-                    <span th:text="${viaje.horario}">Hora</span>
-                </p>
-            </div>
-            <div class="precio-box">
-                <div class="precio-label">Precio total de la reserva</div>
-                <div class="precio-label">
-                    <span>Pasajeros:</span>
-                    <span th:text="${#lists.size(reserva.pasajeros)}"></span>
-                </div>
-                <div class="precio-valor">$ <span th:text="${reserva.precioTotal}">0</span></div>
-            </div>
-        </div>
-        <div class="info-tiles">
-            <div class="info-tile">
-                <div class="tile-label">
-                    <span class="material-symbols-outlined">event_seat</span>
-                    Precio por asiento
-                </div>
-                <div class="tile-value" th:text="'$ ' + ${viaje.precio}">—</div>
-            </div>
-            <div class="info-tile">
-                <div class="tile-label">
-                    <span class="material-symbols-outlined">timer</span>
-                    Duración
-                </div>
-                <div class="tile-value" th:text="${viaje.duracion}">—</div>
-            </div>
-            <div class="info-tile">
-                <div class="tile-label">
-                    <span class="material-symbols-outlined">info</span>
-                    Estado
-                </div>
-                <div class="tile-value">
-                    <span class="estado-pill"
-                          th:classappend="'estado-' + ${viaje.estadoDeViaje}"
-                          th:text="${reserva.estadoReserva}">
-                    </span>
+<main class="detalle-page-container">
+    <header class="detalle-header-summary">
+        <div class="header-summary-left">
+            <a th:href="@{/perfilUsuario}" class="btn-back-link">
+                <span class="material-symbols-outlined">arrow_back</span>
+                <span>Volver a Mi Perfil</span>
+            </a>
+            <h1 class="detalle-main-title">Detalle de tu Reserva</h1>
+            <div class="ruta-badge-group">
+                <span class="ruta-ciudad-text" th:text="${viaje.origen}">Buenos Aires</span>
+                <span class="material-symbols-outlined ruta-arrow-icon">east</span>
+                <span class="ruta-ciudad-text" th:text="${viaje.destino}">Mar del Plata</span>
+                <div class="estado-badge-pill" th:classappend="'estado-' + ${viaje.estadoDeViaje}">
+                    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                    <span th:text="${reserva.estadoReserva}">Confirmada</span>
                 </div>
             </div>
         </div>
+        <div class="header-summary-right">
+            <span class="pasajeros-count-label" th:text="${#lists.size(reserva.pasajeros)} + (${#lists.size(reserva.pasajeros)} == 1 ? ' pasajero' : ' pasajeros')">2 pasajeros</span>
+            <div class="precio-total-card">
+                <span class="precio-card-title">Precio Total</span>
+                <strong class="precio-card-value" th:text="'$' + ${reserva.precioTotal}">$25.000</strong>
+            </div>
+        </div>
+    </header>
+    <div class="detalle-grid-layout">
+        <div class="grid-left-column">
+            <section class="info-viaje-card">
+                <div class="info-viaje-main">
+                    <div class="info-viaje-title-row">
+                        <span class="material-symbols-outlined">directions_bus</span>
+                        <h2 th:text="'Información del Viaje (' + ${viaje.tipoDeViaje.descripcion} + ')'">Información del Viaje</h2>
+                    </div>
+                    <div class="info-viaje-data-grid">
+                        <div class="data-grid-item">
+                            <p class="data-item-label">Salida</p>
+                            <p class="data-item-value" th:text="${viaje.horario}">08:30 AM</p>
+                        </div>
+                        <div class="data-grid-item">
+                            <p class="data-item-label">Fecha del Viaje</p>
+                            <p class="data-item-value" th:text="${viaje.fecha}">15/10/2024</p>
+                        </div>
+                        <div class="data-grid-item">
+                            <p class="data-item-label">Precio por asiento</p>
+                            <p class="data-item-value" th:text="'$' + ${viaje.precio}">$12.500</p>
+                        </div>
+                        <div class="data-grid-item">
+                            <p class="data-item-label">Duración estimada</p>
+                            <p class="data-item-value" th:text="${viaje.duracion}">5h 30m</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="info-viaje-divider"></div>
+                <div class="conductor-embed-box">
+                    <div class="conductor-embed-header">
+                        <div class="conductor-avatar-wrapper">
+                            <span th:text="${conductor.nombre.substring(0,1)}">R</span>
+                        </div>
+                        <div class="conductor-embed-meta">
+                            <strong th:text="${conductor.nombre + ' ' + conductor.apellido}">Roberto Gómez</strong>
+                            <div class="conductor-rating-subrow">
+                                <span class="material-symbols-outlined star-icon" style="font-variation-settings: 'FILL' 1;">star</span>
+                                <span class="rating-number" th:text="${conductor.calificacion}">4.8</span>
+                                <span class="rating-dot-separator">•</span>
+                                <span class="rating-verified-tag">Verificado</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-conductor-message">Enviar mensaje</button>
+                </div>
+            </section>
+            <section class="pasajeros-section">
+                <div class="section-title-wrapper">
+                    <span class="material-symbols-outlined">group</span>
+                    <h2>Pasajeros</h2>
+                </div>
+                <div class="pasajeros-cards-grid">
+                    <div class="pasajero-item-card" th:each="pasajero, iterStat : ${reserva.pasajeros}">
+                        <div class="pasajero-card-header">
+                            <div class="pasajero-icon-avatar">
+                                <span class="material-symbols-outlined">person</span>
+                            </div>
+                            <span class="pasajero-asiento-badge" th:text="'Asiento ' + ${pasajero.numeroAsiento}">Asiento 14A</span>
+                        </div>
+                        <h3 class="pasajero-card-name">
+                            <span th:text="${pasajero.nombre + ' ' + pasajero.apellido}">Juan Pérez</span>
+                            <span th:if="${iterStat.first}" class="pasajero-titular-label">(Tú)</span>
+                        </h3>
+                        <p class="pasajero-card-dni" th:text="'DNI ' + ${pasajero.dni}">DNI 12.345.678</p>
+                        <div class="pasajero-card-footer-action">
+                            <button type="button" class="btn-download-boleto">
+                                <span class="material-symbols-outlined">download</span>
+                                <span>Boleto Digital</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <aside class="grid-right-column">
+            <div class="recorrido-sticky-card">
+                <div class="section-title-wrapper" style="margin-bottom: 32px;">
+                    <span class="material-symbols-outlined">route</span>
+                    <h2>Recorrido</h2>
+                </div>
+                <div class="timeline-container">
+                    <div class="timeline-step-row" th:each="parada, iterStat : ${viaje.paradas}">
+                        <div class="timeline-left-rail">
+                            <div class="timeline-bullet"
+                                    th:classappend="${iterStat.first} ? 'bullet-primary' : (${iterStat.last} ? 'bullet-tertiary' : 'bullet-intermediate')">
+                            </div>
+                        </div>
+                        <div class="timeline-content-block">
+                            <p class="timeline-step-tag"
+                                    th:classappend="${iterStat.first} ? 'tag-primary' : (${iterStat.last} ? 'tag-tertiary' : 'tag-intermediate')"
+                                    th:text="${iterStat.first} ? 'Origen' : (${iterStat.last} ? 'Destino' : 'Intermedia')">
+                                Origen
+                            </p>
+                            <h4 class="timeline-step-title" th:text="${parada.parada.nombre}">Terminal Retiro</h4>
+                            <p class="timeline-step-time" th:text="'Parada #' + ${parada.orden}">08:30 AM</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="gestion-reserva-actions">
+                    <button type="button" class="btn-share-viaje">
+                        <span class="material-symbols-outlined">share</span>
+                        <span>Compartir viaje</span>
+                    </button>
+                    <form th:if="${reserva.puedeCancelarse()}" th:action="@{/cancelar-reserva}" method="post" style="width: 100%;">
+                        <input type="hidden" name="idReserva" th:value="${reserva.id}">
+                        <button type="submit" class="btn-cancelar-reserva">
+                            <span class="material-symbols-outlined">cancel</span>
+                            <span>Cancelar reserva</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </aside>
+
     </div>
-    <section class="detalle-section">
-<h3>
-    Pasajeros
-</h3>
-<div th:each="pasajero : ${reserva.pasajeros}">
-    <p>
-        <strong th:text="${pasajero.nombre + ' ' + pasajero.apellido}">
-        </strong>
-    </p>
-    <p th:text="'Asiento: ' + ${pasajero.numeroAsiento}">
-    </p>
-</div>
-        <section class="detalle-section">
-<h3>
-    Recorrido
-</h3>
-<div th:each="parada : ${viaje.paradas}">
-    <span th:text="${parada.orden}">
-    </span>
-    -->
-    <span th:text="${parada.parada.nombre}">
-    </span>
-</div>
-</section>
-</section>
-    <div class="conductor-card">
-        <div class="conductor-card-label">
-            <span class="material-symbols-outlined">badge</span>
-            Conductor asignado
-        </div>
-        <div class="conductor-row">
-            <div class="conductor-avatar">
-                <span th:text="${conductor.nombre.substring(0,1)}">?</span>
-            </div>
-            <div>
-                <div class="conductor-nombre">
-                    <span th:text="${conductor.nombre}">Nombre</span>
-                    <span th:text="${conductor.apellido}">Apellido</span>
-                </div>
-                <div class="conductor-sub">Conductor verificado · BondiWay</div>
-            </div>
-            <div class="conductor-rating">
-                <div class="rating-label">Valoración</div>
-                <div class="rating-value">⭐ 4.9</div>
-            </div>
-        </div>
-    </div>
-    <!--<div class="acciones">
-        <a th:href="@{/perfilUsuario}" class="btn-volver">
-            <span class="material-symbols-outlined" style="font-size:1rem;">arrow_back</span>
-            Volver
-        </a>
-        <a href="#" class="btn-reservar">
-            <span class="material-symbols-outlined" style="font-size:1rem;">confirmation_number</span>
-            Reservar asiento
-        </a>
-    </div>-->
 </main>
 <div th:replace="componentes/footer :: footer"></div>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const interactableCards = document.querySelectorAll('.info-viaje-card, .pasajero-item-card, .recorrido-sticky-card');
+        interactableCards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.boxShadow = '0 10px 30px rgba(79, 55, 138, 0.12)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.boxShadow = '0 4px 24px rgba(79, 55, 138, 0.05)';
+            });
+        });
+    });
+</script>
 </body>
 </html>

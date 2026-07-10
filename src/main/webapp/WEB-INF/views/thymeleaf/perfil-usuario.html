@@ -105,7 +105,8 @@
                         <button class="btn-cancel" type="submit">Cancelar</button>
                     </form>
                     <button th:if="${reserva.puedePuntuar()}"
-                            class="btn-calificar">
+                            class="btn-calificar"
+                            onclick="openRatingModal()">
                         Calificar conductor
                     </button>
                 </div>
@@ -114,5 +115,85 @@
     </section>
 </main>
 <div th:replace="componentes/footer :: footer"></div>
+<div class="rating-modal-overlay" id="rating-modal">
+    <div class="rating-modal-backdrop" onclick="closeRatingModal()"></div>
+
+    <div class="rating-modal-card">
+        <div class="rating-modal-content">
+
+            <div class="rating-modal-header">
+                <h2>Calificar conductor</h2>
+                <button type="button" class="rating-close-btn" onclick="closeRatingModal()">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+
+            <div class="rating-driver-profile">
+                <div class="rating-avatar-wrapper">
+                    <span class="material-symbols-outlined">account_circle</span>
+                </div>
+                <div class="rating-driver-info">
+                    <strong>Ricardo Gómez</strong>
+                    <p>Conductor verificado</p>
+                </div>
+            </div>
+
+            <div class="star-rating-container" id="star-rating-container">
+                <button type="button" class="star-btn" onclick="setRating(1)"><span class="material-symbols-outlined">star</span></button>
+                <button type="button" class="star-btn" onclick="setRating(2)"><span class="material-symbols-outlined">star</span></button>
+                <button type="button" class="star-btn" onclick="setRating(3)"><span class="material-symbols-outlined">star</span></button>
+                <button type="button" class="star-btn" onclick="setRating(4)"><span class="material-symbols-outlined">star</span></button>
+                <button type="button" class="star-btn" onclick="setRating(5)"><span class="material-symbols-outlined">star</span></button>
+            </div>
+
+            <!--<textarea class="rating-comment-textarea" placeholder="Escribe un comentario (opcional)" rows="3"></textarea>-->
+
+            <div class="rating-modal-actions">
+                <button type="button" class="btn-submit-rating" onclick="closeRatingModal()">Enviar calificación</button>
+                <button type="button" class="btn-cancel-rating" onclick="closeRatingModal()">Cancelar</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+    function openRatingModal() {
+        const modal = document.getElementById('rating-modal');
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeRatingModal() {
+        const modal = document.getElementById('rating-modal');
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+        resetStars();
+    }
+
+    function setRating(rating) {
+        const stars = document.querySelectorAll('.star-btn');
+        stars.forEach((star, index) => {
+            const icon = star.querySelector('.material-symbols-outlined');
+            if (index < rating) {
+                star.classList.add('selected');
+                icon.style.fontVariationSettings = "'FILL' 1";
+            } else {
+                star.classList.remove('selected');
+                icon.style.fontVariationSettings = "'FILL' 0";
+            }
+        });
+    }
+
+    function resetStars() {
+        const stars = document.querySelectorAll('.star-btn');
+        stars.forEach(star => {
+            star.classList.remove('selected');
+            star.querySelector('.material-symbols-outlined').style.fontVariationSettings = "'FILL' 0";
+        });
+
+        const textarea = document.querySelector('.rating-comment-textarea');
+        if (textarea) textarea.value = '';
+    }
+</script>
 </body>
 </html>

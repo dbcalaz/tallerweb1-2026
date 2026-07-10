@@ -4,7 +4,6 @@
     padding:40px;
 }
 
-/* ===== Encabezado de perfil ===== */
 .perfil-header{
     display:flex;
     flex-wrap:wrap;
@@ -62,17 +61,6 @@
     background:var(--surface-soft);
 }
 
-@media (max-width:768px){
-    .perfil-header{
-        flex-direction:column;
-        text-align:center;
-    }
-    .perfil-info{
-        align-items:center;
-    }
-}
-
-/* ===== Grid de estadísticas ===== */
 .estadisticas-grid{
     display:grid;
     grid-template-columns:repeat(4,1fr);
@@ -116,7 +104,6 @@
     color:var(--primary);
 }
 
-/* Colores por estadística, según el orden de las cards */
 .estadisticas-grid .feature-card:nth-child(2) .feature-icon{
     background:var(--stat-error-bg);
     color:var(--error);
@@ -138,20 +125,6 @@
     color:var(--primary);
 }
 
-@media (max-width:992px){
-    .estadisticas-grid{
-        grid-template-columns:repeat(2,1fr);
-    }
-}
-@media (max-width:768px){
-    .estadisticas-grid{
-        grid-template-columns:1fr;
-    }
-}
-
-/* ===== Historial de viajes =====
-   Prefijo "reserva-" a propósito, para no colisionar nunca con
-   .trip-card / .trip-info / .trip-date etc. de home.css. */
 .historial-section h2{
     margin-bottom:30px;
     font-size:var(--text-headline-lg);
@@ -262,23 +235,6 @@
     gap:10px;
 }
 
-@media (max-width:768px){
-    .reserva-card{
-        flex-direction:column;
-        align-items:stretch;
-    }
-    .reserva-divider{
-        display:none;
-    }
-    .reserva-actions{
-        flex-direction:row;
-    }
-    .reserva-info{
-        grid-template-columns:1fr;
-    }
-}
-
-/* ===== Estado vacío (sin cambios respecto a tu versión) ===== */
 .empty-state{
     margin-top: 20px;
     background: var(--surface);
@@ -345,3 +301,252 @@
 .empty-state-btn:hover{
     transform: translateY(-2px);
 }
+
+.rating-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+}
+
+.rating-modal-overlay.active {
+    display: flex;
+}
+
+.rating-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+}
+
+.rating-modal-card {
+    position: relative;
+    background-color: #ffffff;
+    border-radius: 24px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    width: 100%;
+    max-width: 440px;
+    overflow: hidden;
+    animation: ratingModalFadeIn 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.rating-modal-content {
+    padding: 24px;
+}
+
+.rating-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.rating-modal-header h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1c1b20;
+    margin: 0;
+}
+
+.rating-close-btn {
+    border: none;
+    background: transparent;
+    color: #49454f;
+    padding: 8px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+}
+
+.rating-close-btn:hover {
+    background-color: #f1ecf4;
+}
+
+.rating-driver-profile {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 32px;
+}
+
+.rating-avatar-wrapper {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background-color: #e8ddff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.rating-avatar-wrapper span {
+    font-size: 40px !important;
+    color: var(--primary, #644da1);
+}
+
+.rating-driver-info strong {
+    display: block;
+    font-size: 16px;
+    font-weight: 700;
+    color: #1c1b20;
+}
+
+.rating-driver-info p {
+    margin: 4px 0 0 0;
+    font-size: 14px;
+    color: #49454f;
+}
+
+.star-rating-container {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 32px;
+}
+
+.star-btn {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 4px;
+    color: #79747e;
+    transition: color 0.2s;
+    display: inline-flex;
+    align-items: center;
+}
+
+.star-btn span {
+    font-size: 40px !important;
+    font-variation-settings: 'FILL' 0, 'wght' 400;
+}
+
+.star-btn.selected {
+    color: var(--primary, #644da1);
+}
+
+.rating-comment-textarea {
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #f7f2fa;
+    border: 1px solid #79747e;
+    border-radius: 12px;
+    padding: 16px;
+    font-size: 14px;
+    font-family: inherit;
+    color: #1c1b20;
+    outline: none;
+    resize: none;
+    margin-bottom: 32px;
+    transition: border-color 0.2s;
+}
+
+.rating-comment-textarea:focus {
+    border-color: var(--primary, #644da1);
+}
+
+.rating-modal-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.btn-submit-rating {
+    width: 100%;
+    background-color: var(--primary, #644da1);
+    color: #ffffff;
+    border: none;
+    padding: 14px;
+    border-radius: 999px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    transition: opacity 0.2s, transform 0.1s;
+}
+
+.btn-submit-rating:hover {
+    opacity: 0.9;
+}
+
+.btn-submit-rating:active {
+    transform: scale(0.98);
+}
+
+.btn-cancel-rating {
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: var(--primary, #644da1);
+    padding: 10px;
+    border-radius: 999px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-cancel-rating:hover {
+    background-color: rgba(100, 77, 161, 0.08);
+}
+
+.btn-calificar {
+    border: none;
+    background: var(--primary-light);
+    color: var(--surface-soft);
+    padding: 14px 20px;
+    border-radius: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: wrap;
+}
+
+@keyframes ratingModalFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+@media (max-width:992px){
+    .estadisticas-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media (max-width:768px){
+    .perfil-header{
+        flex-direction:column;
+        text-align:center;
+    }
+    .perfil-info{
+        align-items:center;
+    }
+    .reserva-card{
+        flex-direction:column;
+        align-items:stretch;
+    }
+    .reserva-divider{
+        display:none;
+    }
+    .reserva-actions{
+        flex-direction:row;
+    }
+    .reserva-info{
+        grid-template-columns:1fr;
+    }
+    .estadisticas-grid{
+        grid-template-columns:1fr;
+    }
+}
+
