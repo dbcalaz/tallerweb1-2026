@@ -35,6 +35,10 @@
             </div>
             <div class="precio-box">
                 <div class="precio-label">Precio total de la reserva</div>
+                <div class="precio-label">
+                    <span>Pasajeros:</span>
+                    <span th:text="${#lists.size(reserva.pasajeros)}"></span>
+                </div>
                 <div class="precio-valor">$ <span th:text="${reserva.precioTotal}">0</span></div>
             </div>
         </div>
@@ -79,6 +83,18 @@
     <p th:text="'Asiento: ' + ${pasajero.numeroAsiento}">
     </p>
 </div>
+        <section class="detalle-section">
+<h3>
+    Recorrido
+</h3>
+<div th:each="parada : ${viaje.paradas}">
+    <span th:text="${parada.orden}">
+    </span>
+    -->
+    <span th:text="${parada.parada.nombre}">
+    </span>
+</div>
+</section>
 </section>
     <div class="conductor-card">
         <div class="conductor-card-label">

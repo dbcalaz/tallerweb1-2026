@@ -104,6 +104,10 @@
                         <input type="hidden" name="idReserva" th:value="${reserva.id}">
                         <button class="btn-cancel" type="submit">Cancelar</button>
                     </form>
+                    <button th:if="${reserva.puedePuntuar()}"
+                            class="btn-calificar">
+                        Calificar conductor
+                    </button>
                 </div>
             </article>
         </div>

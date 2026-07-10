@@ -37,13 +37,18 @@ public class RepositorioPuntuacionImpl implements RepositorioPuntuacion {
 
     @Override
     public void guardar(Puntuacion puntuacion) {
-        sessionFactory.getCurrentSession().save(puntuacion);
+        sessionFactory.getCurrentSession().saveOrUpdate(puntuacion);
     }
 
-    public Double obtenerPromedioPorConductor(Long idConductor) {
+    @Override
+    public Double obtenerPromedioPorConductor(Long idConductor){
+
         return (Double) sessionFactory.getCurrentSession()
-                .createQuery("SELECT AVG(p.puntos) FROM Puntuacion p WHERE p.conductor.id = :idConductor")
-                .setParameter("idConductor", idConductor)
+                .createCriteria(Puntuacion.class)
+                .createAlias("conductor","c")
+                .add(Restrictions.eq("c.id", idConductor))
+                .setProjection(Projections.avg("puntos"))
                 .uniqueResult();
+
     }
 }

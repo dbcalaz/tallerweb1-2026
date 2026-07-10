@@ -60,4 +60,8 @@ public class Reserva {
                 return "status-finalizada";
         }
     }
+
+    public boolean puedePuntuar() {
+        return estadoReserva == EstadoReserva.FINALIZADA;
+    }
 }
