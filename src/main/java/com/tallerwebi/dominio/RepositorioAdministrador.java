@@ -30,7 +30,7 @@ public interface RepositorioAdministrador {
 
     /* Conductores*/
 
-    List<Conductor> getConductores(Boolean cuentaHabilitada, String estado);
+    List<Conductor> getConductores(Boolean cuentaHabilitada, EstadoConductor estado);
 
     Conductor buscarConductorPorId(Long idConductor);
 
@@ -40,6 +40,8 @@ public interface RepositorioAdministrador {
 
     void reactivarConductor(Conductor conductor);
 
+    void rechazarSolicitudConductor(Conductor conductor);
+
     /*Viajes*/
     List<Parada> getParadas();
 
@@ -48,4 +50,5 @@ public interface RepositorioAdministrador {
     List<Viaje> getViajes();
 
     void updateFalla(ReporteFalla reporte);
+
 }

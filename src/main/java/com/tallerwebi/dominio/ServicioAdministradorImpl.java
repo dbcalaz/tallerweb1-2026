@@ -64,7 +64,7 @@ public class ServicioAdministradorImpl implements ServicioAdministrador {
 
     /*Conductor*/
     @Override
-    public List<Conductor> obtenerConductores(Boolean estadoCuenta, String estado) {
+    public List<Conductor> obtenerConductores(Boolean estadoCuenta, EstadoConductor estado) {
         return repositorioAdministrador.getConductores(estadoCuenta, estado);
     }
 
@@ -97,6 +97,17 @@ public class ServicioAdministradorImpl implements ServicioAdministrador {
         asignacion.setCombiActiva(true);
 
         repositorioAdministrador.guardarAsignacion(asignacion);
+    }
+
+    @Override
+    public void rechazarSolicitud(Long idConductor) {
+        Conductor conductor = repositorioAdministrador.buscarConductorPorId(idConductor);
+
+        if (conductor == null) {
+            throw new RuntimeException("No existe el conductor seleccionado");
+        }
+
+        repositorioAdministrador.rechazarSolicitudConductor(conductor);
     }
 
     @Override

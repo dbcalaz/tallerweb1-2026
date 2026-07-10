@@ -92,7 +92,7 @@ public class ControladorAdministrador {
         ModelMap model = new ModelMap();
 
         List<Conductor> conductores = servicioAdministrador.obtenerConductores(true, null);
-        List<Conductor> conductoresPendientes = servicioAdministrador.obtenerConductores(false, null);
+        List<Conductor> conductoresPendientes = servicioAdministrador.obtenerConductores(false, EstadoConductor.PENDIENTE_APROBACION);
         List<Combi> combisDisponibles = servicioAdministrador.obtenerCombisPorEstado(EstadoDeCombi.DISPONIBLE);
         Long pendientes = (long) conductoresPendientes.size();
 
@@ -107,6 +107,12 @@ public class ControladorAdministrador {
     @RequestMapping(path = "/habilitacion-asignacion", method =  RequestMethod.POST)
     public ModelAndView asignarCombiHabilitacionConductor(@RequestParam Long idConductor, @RequestParam Long idCombi) {
         servicioAdministrador.habilitarConductor(idConductor, idCombi);
+        return vistaConductores();
+    }
+
+    @RequestMapping(path = "/rechazar-solicitud", method =  RequestMethod.POST)
+    public ModelAndView rechazarSolicitudNuevoConductor(@RequestParam Long idConductor) {
+        servicioAdministrador.rechazarSolicitud(idConductor);
         return vistaConductores();
     }
 

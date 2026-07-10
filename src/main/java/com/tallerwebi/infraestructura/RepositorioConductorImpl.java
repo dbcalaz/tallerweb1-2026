@@ -38,6 +38,7 @@ public class RepositorioConductorImpl implements RepositorioConductor {
     @Override
     public void guardarConductor(Conductor conductor) {
         conductor.setCuentaHabilitada(false);
+        conductor.setEstadoConductor(EstadoConductor.PENDIENTE_APROBACION);
         sessionFactory.getCurrentSession().save(conductor);
     }
 

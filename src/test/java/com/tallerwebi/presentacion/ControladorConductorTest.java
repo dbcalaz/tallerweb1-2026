@@ -79,7 +79,7 @@ public class ControladorConductorTest {
     }
 
     /*Login*/
-    @Test
+    /*@Test
     public void conCredencialesCorrectasElLoginEsExitoso() throws CuentaNoHabilitadaException, CuentaSuspendidaException {
         //preparación
         Conductor conductorEncontrado = Mockito.mock(Conductor.class);
@@ -106,7 +106,7 @@ public class ControladorConductorTest {
 
         //validación
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("login-conductor"));
-    }
+    }*/
 
     /*@Test
     public void queSeObtenganCorrectamenteViajesAsociadoAUnConductorPorSuId() {

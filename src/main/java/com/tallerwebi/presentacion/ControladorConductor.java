@@ -1,9 +1,7 @@
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.*;
-import com.tallerwebi.dominio.excepcion.ConductorExistente;
-import com.tallerwebi.dominio.excepcion.CuentaNoHabilitadaException;
-import com.tallerwebi.dominio.excepcion.CuentaSuspendidaException;
+import com.tallerwebi.dominio.excepcion.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -68,7 +66,7 @@ public class ControladorConductor {
             model.put("datosLogin", new DatosLogin());
             return new ModelAndView("login-conductor", model);
 
-        } catch (CuentaNoHabilitadaException | CuentaSuspendidaException e) {
+        } catch (CuentaNoHabilitadaException | CuentaSuspendidaException | SolicitudRechazadaException e) {
             model.put("error", e.getMessage());
             model.put("datosLogin", new DatosLogin());
             return new ModelAndView("login-conductor", model);

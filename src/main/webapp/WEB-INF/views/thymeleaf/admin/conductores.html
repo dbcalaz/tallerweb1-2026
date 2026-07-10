@@ -55,7 +55,10 @@
                         </div>
                         <div class="solicitud-card__acciones">
                             <button class="btn-abrir-modal-asignacion btn-aprobar" th:data-conductor-id="${c.id}">Aprobar</button>
-                            <button class="btn-rechazar">Rechazar</button>
+                            <form method="POST" th:action="@{/rechazar-solicitud}">
+                                <input type="hidden" name="idConductor" th:value="${c.id}">
+                                <button type="submit"    class="btn-rechazar">Rechazar</button>
+                            </form>
                         </div>
                     </article>
                 </div>

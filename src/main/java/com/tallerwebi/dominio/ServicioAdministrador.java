@@ -19,7 +19,7 @@ public interface ServicioAdministrador {
     void resolverFalla(Long idReporte);
 
     /*Conductor*/
-    List<Conductor> obtenerConductores(Boolean estadoCuenta, String estado);
+    List<Conductor> obtenerConductores(Boolean estadoCuenta, EstadoConductor estado);
 
     void habilitarConductor(Long idConductor, Long idCombi);
 
@@ -36,4 +36,5 @@ public interface ServicioAdministrador {
 
     List<Viaje> obtenerViajes();
 
+    void rechazarSolicitud(Long idConductor);
 }

@@ -123,25 +123,18 @@ public class RepositorioAdministradorImpl implements RepositorioAdministrador {
         if (datosFiltro == null) {
             return criteria.list();
         }
-
-        // Filtro Exacto (Enum)
         if (datosFiltro.getEstadoDeCombi() != null) {
             criteria.add(Restrictions.eq("estadoDeCombi", datosFiltro.getEstadoDeCombi()));
         }
-
-        // Filtros de Texto (Usamos ilike y % para búsquedas parciales y case-insensitive)
         if (datosFiltro.getMarca() != null && !datosFiltro.getMarca().trim().isEmpty()) {
             criteria.add(Restrictions.ilike("marca", "%" + datosFiltro.getMarca() + "%"));
         }
-
         if (datosFiltro.getModelo() != null && !datosFiltro.getModelo().trim().isEmpty()) {
             criteria.add(Restrictions.ilike("modelo", "%" + datosFiltro.getModelo() + "%"));
         }
-
         if (datosFiltro.getPatente() != null && !datosFiltro.getPatente().trim().isEmpty()) {
             criteria.add(Restrictions.ilike("patente", "%" + datosFiltro.getPatente() + "%"));
         }
-
         return criteria.list();
     }
 
@@ -155,31 +148,15 @@ public class RepositorioAdministradorImpl implements RepositorioAdministrador {
 
     /* Conductores*/
     @Override
-    public List<Conductor> getConductores(Boolean cuentaHabilitada, String estado) {
+    public List<Conductor> getConductores(Boolean cuentaHabilitada, EstadoConductor estado) {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Conductor.class);
 
         if (cuentaHabilitada != null) {
             criteria.add(Restrictions.eq("cuentaHabilitada", cuentaHabilitada));
         }
 
-        if (estado != null && !estado.isEmpty() && !estado.equalsIgnoreCase("todos")) {
-            switch (estado.toLowerCase()) {
-                case "disponible":
-                    criteria.add(Restrictions.eq("disponible", true));
-                    break;
-
-                case "en_viaje":
-                    criteria.add(Restrictions.eq("enViaje", true));
-                    break;
-
-                case "suspendido":
-                    criteria.add(Restrictions.eq("suspendido", true));
-                    break;
-
-                case "suspension_pendiente":
-                    criteria.add(Restrictions.eq("suspensionPendiente", true));
-                    break;
-            }
+        if (estado != null) {
+            criteria.add(Restrictions.eq("estadoConductor", estado));
         }
 
         return criteria.list();
@@ -211,6 +188,13 @@ public class RepositorioAdministradorImpl implements RepositorioAdministrador {
     @Override
     public void reactivarConductor(Conductor conductor) {
         conductor.setEstadoConductor(EstadoConductor.DISPONIBLE);
+        sessionFactory.getCurrentSession().update(conductor);
+    }
+
+    @Override
+    public void rechazarSolicitudConductor(Conductor conductor) {
+        conductor.setCuentaHabilitada(false);
+        conductor.setEstadoConductor(EstadoConductor.RECHAZADO);
         sessionFactory.getCurrentSession().update(conductor);
     }
 
