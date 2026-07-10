@@ -1,7 +1,18 @@
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
 .encurso-body-page {
+    font-family: 'Inter', sans-serif;
     background-color: #fdf8ff;
     color: #1c1b20;
-    margin: 0;
+}
+
+.page-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 .encurso-page-container {
@@ -9,7 +20,8 @@
     max-width: 1280px;
     margin: 0 auto;
     box-sizing: border-box;
-    padding: 50px 40px 80px;
+    padding: 120px 40px 80px;
+    flex: 1;
 }
 
 .encurso-empty-state {

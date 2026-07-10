@@ -4,89 +4,116 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>BondiWay - Buscar Viajes</title>
-
     <link rel="icon" th:href="@{/imagenes/logo.png}" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
     <link rel="stylesheet" th:href="@{/css/variables.css}">
     <link rel="stylesheet" th:href="@{/css/components.css}">
     <link rel="stylesheet" th:href="@{/css/solicitar-viaje.css}">
 </head>
-<body style="background-color: var(--background);">
-<div th:replace="componentes/nav-bar :: navbar('busqueda')"></div>
+<body class="buscar-viajes-body">
+<div class="page-wrapper">
+    <div th:replace="componentes/nav-bar :: navbar('busqueda')"></div>
+    <main class="create-trip-page">
+        <div class="atmospheric-glow"></div>
+        <section class="page-header">
+            <h1>Buscar viajes disponibles</h1>
+            <p>Encuentra trayectos compartidos de forma simple y segura. Muévete por la ciudad con inteligencia.</p>
+        </section>
+        <section class="create-trip-layout">
+            <article class="trip-form-card">
+                <form th:action="@{/procesar-busqueda}" method="POST" th:object="${datosBusqueda}" class="trip-form">
 
-<main class="create-trip-page" style="padding-bottom: 120px;">
-    <section class="page-header" style="text-align: center;">
-        <h1>Buscar Viajes Disponibles</h1>
-        <p>Encuentra trayectos inteligentes activos y compartidos.</p>
-    </section>
-
-    <section class="create-trip-layout" style="display: flex; justify-content: center;">
-        <article class="trip-form-card" style="width: 100%; max-width: 650px; padding: 28px; background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); height: auto !important; min-height: auto !important; max-height: none !important;">
-            <form th:action="@{/procesar-busqueda}" method="POST" th:object="${datosBusqueda}" class="trip-form">
-
-                <div class="form-row two-columns-layout">
-                    <div class="form-group">
-                        <label>ORIGEN</label>
-                        <div class="field-wrapper">
-                            <span class="material-symbols-outlined">location_on</span>
-                            <input id="origenTexto" type="text" list="listaParadas" placeholder="¿Desde dónde sales?" autocomplete="off" required>
-                            <input type="hidden" th:field="*{idOrigen}" id="idOrigenOculto">
+                    <div class="search-fields-row">
+                        <div class="route-selection-container">
+                            <div class="form-group">
+                                <label for="origenTexto">Origen</label>
+                                <div class="field-wrapper">
+                                    <span class="material-symbols-outlined text-purple">location_on</span>
+                                    <input id="origenTexto" type="text" list="listaParadas" placeholder="¿Desde dónde sales?" autocomplete="off" required>
+                                    <input type="hidden" th:field="*{idOrigen}" id="idOrigenOculto">
+                                </div>
+                            </div>
+                            <div class="route-swap-trigger">
+                                <div class="swap-icon-circle" id="btnSwapRuta">
+                                    <span class="material-symbols-outlined">swap_horiz</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="destinoTexto">Destino</label>
+                                <div class="field-wrapper">
+                                    <span class="material-symbols-outlined text-purple">near_me</span>
+                                    <input id="destinoTexto" type="text" list="listaParadas" placeholder="¿A dónde vas?" autocomplete="off" required>
+                                    <input type="hidden" th:field="*{idDestino}" id="idDestinoOculto">
+                                </div>
+                            </div>
+                        </div>
+                        <datalist id="listaParadas">
+                            <option th:each="parada : ${paradas}" th:value="${parada.nombre}" th:data-id="${parada.id}"></option>
+                        </datalist>
+                        <div class="form-group date-column">
+                            <label for="fecha">Fecha del viaje</label>
+                            <div class="field-wrapper">
+                                <span class="material-symbols-outlined text-purple">calendar_today</span>
+                                <input th:field="*{fecha}" id="fecha" type="date" required>
+                            </div>
+                        </div>
+                        <div class="form-group passengers-column">
+                            <label for="pasajeros">Pasajeros</label>
+                            <div class="field-wrapper">
+                                <span class="material-symbols-outlined text-purple">group</span>
+                                <select th:field="*{pasajeros}" id="pasajeros" class="select-field-clean">
+                                    <option value="1">1 pasajero</option>
+                                    <option value="2">2 pasajeros</option>
+                                    <option value="3">3 pasajeros</option>
+                                </select>
+                                <span class="material-symbols-outlined select-arrow-indicator">expand_more</span>
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label>DESTINO</label>
-                        <div class="field-wrapper">
-                            <span class="material-symbols-outlined">near_me</span>
-                            <input id="destinoTexto" type="text" list="listaParadas" placeholder="¿A dónde vas?" autocomplete="off" required>
-                            <input type="hidden" th:field="*{idDestino}" id="idDestinoOculto">
+                    <div class="form-actions-row">
+                        <div class="error-message-box" th:if="${error != null}">
+                            <span class="material-symbols-outlined">error</span>
+                            <p th:text="${error}">Ocurrió un error inesperado</p>
                         </div>
+
+                        <button type="submit" class="btn-search-submit">
+                            <span class="material-symbols-outlined">search</span>
+                            <span>Buscar Viajes</span>
+                        </button>
                     </div>
+                </form>
+            </article>
+            <div class="trust-badges-grid">
+                <div class="badge-item">
+                    <div class="badge-icon-wrapper bg-violet-light">
+                        <span class="material-symbols-outlined text-purple">verified_user</span>
+                    </div>
+                    <h3>Viajes Seguros</h3>
+                    <p>Conductores verificados y soporte de la plataforma 24/7.</p>
                 </div>
-
-                <datalist id="listaParadas">
-                    <option th:each="parada : ${paradas}" th:value="${parada.nombre}" th:data-id="${parada.id}"></option>
-                </datalist>
-
-                <div class="form-row two-columns-layout">
-                    <div class="form-group">
-                        <label>FECHA DEL VIAJE</label>
-                        <div class="field-wrapper">
-                            <span class="material-symbols-outlined">calendar_today</span>
-                            <input th:field="*{fecha}" id="fecha" type="date" required>
-                        </div>
+                <div class="badge-item">
+                    <div class="badge-icon-wrapper bg-gold-light">
+                        <span class="material-symbols-outlined text-gold">bolt</span>
                     </div>
-                    <div class="form-group">
-                        <label>PASAJEROS</label>
-                        <div class="field-wrapper">
-                            <span class="material-symbols-outlined">group</span>
-                            <select th:field="*{pasajeros}" style="width:100%; border:none; background:transparent; font-family: inherit; font-size: inherit; cursor: pointer;">
-                                <option value="1">1 Pasajero</option>
-                                <option value="2">2 Pasajeros</option>
-                                <option value="3">3 Pasajeros</option>
-                            </select>
-                        </div>
+                    <h3>Reserva al Instante</h3>
+                    <p>Confirma tu lugar en segundos sin complicaciones ni demoras.</p>
+                </div>
+                <div class="badge-item">
+                    <div class="badge-icon-wrapper bg-green-light">
+                        <span class="material-symbols-outlined text-green">eco</span>
                     </div>
+                    <h3>Movilidad Eco</h3>
+                    <p>Reduce tu huella de carbono compartiendo tus trayectos.</p>
                 </div>
-
-                <div class="form-actions" style="margin-top: 20px;">
-                    <button type="submit" class="btn-primary create-btn" style="width: 100%; justify-content: center;">Buscar Viajes</button>
-                </div>
-
-                <p th:if="${error != null}" style="color: red; margin-top: 15px; font-weight: 600;" th:text="${error}"></p>
-            </form>
-        </article>
-    </section>
-</main>
-
-<div style="position: fixed; bottom: 0; left: 0; width: 100%; z-index: 1000;">
+            </div>
+        </section>
+    </main>
     <div th:replace="componentes/footer :: footer"></div>
 </div>
-
 <script>
-    /* eslint-disable indent, quotes */
     document.addEventListener("DOMContentLoaded", function() {
         function enlazar(visibleId, ocultoId) {
             const inputVisible = document.getElementById(visibleId);
@@ -106,12 +133,31 @@
         enlazar("origenTexto", "idOrigenOculto");
         enlazar("destinoTexto", "idDestinoOculto");
 
+        document.getElementById('btnSwapRuta').addEventListener('click', function() {
+            const origen = document.getElementById('origenTexto');
+            const destino = document.getElementById('destinoTexto');
+            const idOrigen = document.getElementById('idOrigenOculto');
+            const idDestino = document.getElementById('idDestinoOculto');
+
+            const tempTexto = origen.value;
+            origen.value = destino.value;
+            destino.value = tempTexto;
+
+            const tempId = idOrigen.value;
+            idOrigen.value = idDestino.value;
+            idDestino.value = tempId;
+        });
+
         const hoy = new Date();
         let mes = hoy.getMonth() + 1;
         let dia = hoy.getDate();
         if (mes < 10) mes = "0" + mes;
         if (dia < 10) dia = "0" + dia;
         document.getElementById("fecha").setAttribute("min", hoy.getFullYear() + "-" + mes + "-" + dia);
+
+        if(!document.getElementById("fecha").value) {
+            document.getElementById("fecha").value = hoy.getFullYear() + "-" + mes + "-" + dia;
+        }
     });
 </script>
 </body>

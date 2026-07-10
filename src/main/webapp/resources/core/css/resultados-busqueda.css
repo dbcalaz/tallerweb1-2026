@@ -1,0 +1,457 @@
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+.resultados-body-page {
+    font-family: 'Inter', sans-serif;
+    background-color: #fdf8ff;
+    color: #1c1b20;
+}
+
+.page-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.resultados-main-canvas {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    box-sizing: border-box;
+    padding: 120px 24px 80px;
+    flex: 1;
+}
+
+.resultados-empty-state {
+    background-color: #ffffff;
+    border: 2px dashed #cac4d2;
+    border-radius: 28px;
+    padding: 56px 24px;
+    text-align: center;
+    max-width: 640px;
+    margin: 60px auto 0 auto;
+    box-shadow: 0 4px 24px rgba(79, 55, 138, 0.02);
+}
+
+.resultados-body-page {
+    background-color: #fdf8ff;
+    color: #1c1b20;
+    margin: 0;
+}
+
+.resultados-main-canvas {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    box-sizing: border-box;
+    padding: 50px 24px 80px;
+}
+
+.resultados-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 24px;
+    margin-bottom: 40px;
+    border-bottom: 1px solid #cac4d2;
+    padding-bottom: 24px;
+}
+
+.resultados-main-title {
+    font-size: 32px;
+    font-weight: 700;
+    margin: 0 0 6px 0;
+    letter-spacing: -0.02em;
+}
+
+.resultados-subtitle {
+    font-size: 16px;
+    color: #494551;
+    margin: 0;
+}
+
+.header-meta-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+.route-pill-display {
+    background-color: rgba(100, 77, 161, 0.08);
+    border: 1px solid rgba(100, 77, 161, 0.2);
+    padding: 8px 18px;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.text-purple {
+    color: #644da1;
+    font-size: 20px;
+}
+
+.route-text-bold {
+    font-weight: 700;
+    font-size: 14px;
+    color: #644da1;
+}
+
+.search-specs-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 13px;
+    color: #63597c;
+}
+
+.spec-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.spec-item span.material-symbols-outlined {
+    font-size: 16px;
+}
+
+.spec-separator {
+    width: 4px;
+    height: 4px;
+    background-color: #cac4d2;
+    border-radius: 50%;
+}
+
+.resultados-cards-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.stitch-result-card {
+    background-color: #ffffff;
+    border: 1px solid #cac4d2;
+    border-radius: 24px;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    box-shadow: 0 4px 20px rgba(79, 55, 138, 0.02);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.stitch-result-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(100, 77, 161, 0.3);
+    box-shadow: 0 10px 30px rgba(100, 77, 161, 0.06);
+}
+
+.result-card-left-block {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-width: 130px;
+    padding-right: 24px;
+    border-r: none;
+    position: relative;
+}
+
+.result-card-left-block::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 4px;
+    bottom: 4px;
+    width: 1px;
+    background-color: #cac4d2;
+}
+
+.result-time-display {
+    font-size: 42px;
+    font-weight: 700;
+    color: #644da1;
+    line-height: 1;
+}
+
+.result-service-badge {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #63597c;
+    letter-spacing: 0.5px;
+    margin-top: 6px;
+}
+
+.result-rating-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: #755b00;
+    font-size: 13px;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+.result-rating-row span.material-symbols-outlined.fill-icon {
+    font-size: 16px;
+    font-variation-settings: 'FILL' 1;
+}
+
+.result-card-middle-block {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.driver-profile-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.driver-avatar-placeholder {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: #e9ddff;
+    color: #644da1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.driver-avatar-placeholder span {
+    font-size: 36px;
+}
+
+.driver-name-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.driver-fullname {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0;
+    color: #1c1b20;
+}
+
+.verified-driver-pill {
+    background-color: #e0d4fd;
+    color: #635a7c;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 999px;
+    letter-spacing: 0.02em;
+}
+
+.vehicle-details-text {
+    font-size: 14px;
+    color: #494551;
+    margin: 2px 0 0 0;
+}
+
+.result-features-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.feature-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    background-color: #f1ecf4;
+    color: #494551;
+}
+
+.feature-chip span.material-symbols-outlined {
+    font-size: 15px;
+}
+
+.seats-chip {
+    background-color: #ffdf93;
+    color: #241a00;
+}
+
+.result-card-right-block {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 16px;
+    min-width: 160px;
+}
+
+.pricing-summary-container {
+    text-align: right;
+}
+
+.price-single-row {
+    display: flex;
+    flex-direction: column;
+}
+
+.price-label {
+    font-size: 12px;
+    color: #63597c;
+}
+
+.price-value {
+    font-size: 26px;
+    font-weight: 800;
+    color: #1c1b20;
+    line-height: 1.2;
+}
+
+.price-total-row {
+    margin-top: 4px;
+    font-size: 12px;
+    color: #494551;
+}
+
+.price-total-value {
+    font-weight: 700;
+    color: #644da1;
+}
+
+.btn-stitch-select-seats {
+    background-color: #644da1;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 12px 20px;
+    border-radius: 14px;
+    font-weight: 700;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    width: 100%;
+    box-sizing: border-box;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.btn-stitch-select-seats:hover {
+    background-color: #4e378a;
+    color: #ffffff;
+}
+
+.resultados-empty-state {
+    background-color: #ffffff;
+    border: 2px dashed #cac4d2;
+    border-radius: 28px;
+    padding: 56px 24px;
+    text-align: center;
+    max-width: 640px;
+    margin: 40px auto 0 auto;
+    box-shadow: 0 4px 24px rgba(79, 55, 138, 0.02);
+}
+
+.empty-state-icon-box {
+    width: 72px;
+    height: 72px;
+    background-color: #f1ecf4;
+    color: #7a7582;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+}
+
+.empty-state-icon-box span {
+    font-size: 36px;
+}
+
+.empty-state-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1c1b20;
+    margin: 0 0 12px 0;
+}
+
+.empty-state-text {
+    font-size: 15px;
+    color: #494551;
+    line-height: 1.6;
+    margin: 0 0 32px 0;
+}
+
+.fw-semibold {
+    font-weight: 600;
+    color: #644da1;
+}
+
+.btn-solicitar-espera {
+    background-color: #644da1;
+    color: #ffffff;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 15px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.btn-solicitar-espera:hover {
+    background-color: #4e378a;
+}
+
+@media (max-width: 868px) {
+    .resultados-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+    .header-meta-right {
+        align-items: flex-start;
+        width: 100%;
+    }
+    .route-pill-display {
+        width: 100%;
+        box-sizing: border-box;
+        justify-content: center;
+    }
+    .stitch-result-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+    .result-card-left-block {
+        width: 100%;
+        border-bottom: 1px solid #cac4d2;
+        padding-bottom: 14px;
+        padding-right: 0;
+    }
+    .result-card-left-block::after {
+        display: none;
+    }
+    .result-card-right-block {
+        width: 100%;
+        align-items: flex-start;
+        background-color: #f7f2fa;
+        padding: 16px;
+        border-radius: 16px;
+        box-sizing: border-box;
+    }
+    .pricing-summary-container {
+        text-align: left;
+        width: 100%;
+    }
+}
