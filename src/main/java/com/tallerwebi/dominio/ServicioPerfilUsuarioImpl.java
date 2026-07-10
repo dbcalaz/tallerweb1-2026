@@ -35,16 +35,6 @@ public class ServicioPerfilUsuarioImpl implements ServicioPerfilUsuario {
     }
 
     @Override
-    public Long obtenerCantidaddeViajes(Long idUsuario){
-        return repositorioViaje.contarViajesPorUsuario(idUsuario);
-    }
-
-    @Override
-    public Long obtenerCantidadViajesCancelados(Long idUsuario){
-        return repositorioViaje.contarViajesCanceladosPorUsuario(idUsuario);
-    }
-
-    @Override
     public Reserva buscarReservaPorId(Long id){
         return repositorioReserva.buscarReservaPorId(id);
     }
@@ -82,4 +72,11 @@ public class ServicioPerfilUsuarioImpl implements ServicioPerfilUsuario {
         repositorioViaje.actualizar(viaje);
         repositorioReserva.actualizarEstadoReserva(reserva);
     }
+
+    @Override
+    public Reserva buscarReservaDetalle(Long idReserva) {
+        return buscarReservaPorId(idReserva);
+    }
+
+
 }

@@ -68,4 +68,20 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario {
                 .setProjection(Projections.rowCount())
                 .uniqueResult();
     }
+
+    @Override
+    public Reserva buscarReservaDetalle(Long idReserva) {
+
+        Reserva reserva = (Reserva) sessionFactory.getCurrentSession()
+                .createCriteria(Reserva.class)
+                .add(Restrictions.eq("id", idReserva))
+                .uniqueResult();
+
+        if(reserva != null){
+            reserva.getPasajeros().size();
+            reserva.getViaje().getParadas().size();
+        }
+
+        return reserva;
+    }
 }

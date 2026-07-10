@@ -67,6 +67,19 @@
             </div>
         </div>
     </div>
+    <section class="detalle-section">
+<h3>
+    Pasajeros
+</h3>
+<div th:each="pasajero : ${reserva.pasajeros}">
+    <p>
+        <strong th:text="${pasajero.nombre + ' ' + pasajero.apellido}">
+        </strong>
+    </p>
+    <p th:text="'Asiento: ' + ${pasajero.numeroAsiento}">
+    </p>
+</div>
+</section>
     <div class="conductor-card">
         <div class="conductor-card-label">
             <span class="material-symbols-outlined">badge</span>

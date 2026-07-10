@@ -13,4 +13,6 @@ public interface RepositorioUsuario {
   Usuario burscarPorId(Long id);
 
     Long getCantidadDeViajesPorEstado(Usuario usuario, EstadoReserva estadoReserva);
+
+    Reserva buscarReservaDetalle(Long idReserva);
 }
