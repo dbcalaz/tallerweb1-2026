@@ -9,7 +9,7 @@ public interface RepositorioReserva {
 
     List<Reserva> buscarUltimasReservasPorUsuario(long idUsuario);
 
-    Conductor obtenerConductorFavorito(Long id);
-
     Reserva buscarReservaPorId(Long id);
+
+    void actualizarEstadoReserva(Reserva reserva);
 }

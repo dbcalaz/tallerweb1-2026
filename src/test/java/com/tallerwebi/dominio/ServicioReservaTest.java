@@ -29,7 +29,7 @@ public class ServicioReservaTest {
         usuario.setId((long) 1L);
     }
 
-    @Test
+    /*@Test
     public void queSePuedaobtenerElConductorFavorito(){
 
         Usuario usuario = new Usuario();
@@ -84,5 +84,5 @@ public class ServicioReservaTest {
 
         assertEquals(conductor1, favorito);
 
-    }
+    }*/
 }

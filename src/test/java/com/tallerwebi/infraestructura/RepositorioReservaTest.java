@@ -89,7 +89,7 @@ public class RepositorioReservaTest {
         assertThat(reservas.get(3).getId(), equalTo(reserva1.getId()));
     }
 
-    @Test
+    /*@Test
     @Rollback
     public void queSePuedaobtenerElConductorFavorito(){
         Usuario usuario = new Usuario();
@@ -136,5 +136,5 @@ public class RepositorioReservaTest {
         Conductor favorito = repositorioReserva.obtenerConductorFavorito(usuario.getId());
 
         assertEquals(conductor2.getId(),favorito.getId());
-    }
+    }*/
 }

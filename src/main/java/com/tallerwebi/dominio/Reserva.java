@@ -43,4 +43,8 @@ public class Reserva {
 
     public Reserva() {
     }
+
+    public boolean puedeCancelarse() {
+        return estadoReserva == EstadoReserva.CONFIRMADA;
+    }
 }

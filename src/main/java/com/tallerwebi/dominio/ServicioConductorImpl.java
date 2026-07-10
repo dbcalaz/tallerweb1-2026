@@ -158,8 +158,12 @@ public class ServicioConductorImpl implements ServicioConductor {
         }
 
         conductor.setEstadoConductor(EstadoConductor.EN_VIAJE);
-        viaje.setEstadoDeViaje(EstadoDeViaje.EN_CURSO);
         combiEnViaje.setEstadoDeCombi(EstadoDeCombi.EN_VIAJE);
+        viaje.setEstadoDeViaje(EstadoDeViaje.EN_CURSO);
+
+        for (Reserva reserva : viaje.getReservas()) {
+            reserva.setEstadoReserva(EstadoReserva.EN_CURSO);
+        }
 
         repositorioConductor.actualizarConductor(conductor);
         repositorioConductor.guardarViaje(viaje);

@@ -19,8 +19,6 @@
 <body>
 <div th:replace="componentes/nav-bar :: navbar('home')"></div>
 <main class="page-container">
-
-    <!-- Encabezado de perfil -->
     <div class="perfil-header">
         <div class="perfil-avatar">
             <img th:src="@{/imagenes/maria.jpg}" alt="Foto de perfil">
@@ -32,14 +30,10 @@
                 <button class="btn-primary">
                     Editar Perfil
                 </button>
-                <!--<button class="btn-secundary">
-                    Configuración
-                </button>-->
             </div>
         </div>
     </div>
 
-    <!-- Estadísticas -->
     <section class="estadisticas-grid">
         <div class="feature-card">
             <span class="material-symbols-outlined feature-icon">
@@ -62,12 +56,12 @@
             <p class="feature-description" th:text="${viajesCancelados}">
             </p>
         </div>
-        <!--<div class="feature-card">
+        <div class="feature-card">
         <span class="material-symbols-outlined feature-icon">
-            star
+             route
         </span>
             <h3 class="feature-title">
-                Puntuación
+                Viaje en curso
             </h3>
             <p class="feature-description">
                 4.9
@@ -75,18 +69,16 @@
         </div>
         <div class="feature-card">
         <span class="material-symbols-outlined feature-icon">
-            person
+             route
         </span>
             <h3 class="feature-title">
-                Conductor Favorito
+                Viajes programados
             </h3>
             <p>
-                <span class="feature-description" th:text="${favorito}"></span>
+                <span class="feature-description"></span>
             </p>
-        </div>-->
+        </div>
     </section>
-
-    <!-- Historial de viajes -->
     <section class="historial-section">
         <div class="section-header">
             <div>
@@ -112,20 +104,17 @@
                 Buscar viajes
             </a>
         </section>
-
         <div class="trips-history-list"
                 th:unless="${#lists.isEmpty(reservas)}">
             <article class="reserva-card"
                     th:each="reserva : ${reservas}"
-                    th:with="estadoClase=${reserva.estadoReserva.name() == 'EN_CURSO'} ? 'status-en-curso' : (${reserva.estadoReserva.name() == 'CONFIRMADA'} ? 'status-confirmada' : (${reserva.estadoReserva.name() == 'CANCELADA'} ? 'status-cancelada' : 'status-finalizada')),
-                              puedeCancelarse=${reserva.estadoReserva.name() == 'EN_CURSO' or reserva.estadoReserva.name() == 'CONFIRMADA'}">
-
+                    th:with="estadoClase=${reserva.estadoReserva.name() == 'EN_CURSO'} ? 'status-en-curso' : (${reserva.estadoReserva.name() == 'CONFIRMADA'} ? 'status-confirmada' : (${reserva.estadoReserva.name() == 'CANCELADA'} ? 'status-cancelada' : 'status-finalizada'))">
                 <div class="reserva-main">
                     <div class="reserva-top">
                         <span th:class="'status-badge ' + ${estadoClase}"
                                 th:text="${reserva.estadoReserva}">
                         </span>
-                        <span class="reserva-date">Fecha no disponible</span>
+                        <span class="reserva-date" th:text="${reserva.viaje.fecha}"></span>
                     </div>
                     <div class="reserva-info">
                         <div class="reserva-info-item">
@@ -150,7 +139,6 @@
                 </div>
 
                 <div class="reserva-divider"></div>
-
                 <div class="reserva-stats">
                     <div>
                         <small>Precio</small>
@@ -162,11 +150,14 @@
                     <a th:href="@{/detalle-viaje/{id}(id=${reserva.id})}">
                         <button class="details-btn">Ver detalle</button>
                     </a>
-                    <button th:if="${puedeCancelarse}"
-                            class="btn-cancel"
-                            th:attr="data-reserva-id=${reserva.id}">
-                        Cancelar
-                    </button>
+                    <form th:action="@{/cancelar-reserva}" method="post">
+                        <input type="hidden" name="idReserva" th:value="${reserva.id}">
+                        <button th:if="${reserva.puedeCancelarse()}"
+                                class="btn-cancel"
+                                type="submit">
+                            Cancelar
+                        </button>
+                    </form>
                 </div>
             </article>
         </div>

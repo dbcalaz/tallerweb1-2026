@@ -21,9 +21,6 @@ public class ServicioPerfilUsuarioImpl implements ServicioPerfilUsuario {
         this.repositorioViaje = repositorioViaje;
     }
 
-    public ServicioPerfilUsuarioImpl(RepositorioUsuario repositorioUsuario, RepositorioReserva repositorioReserva) {
-    }
-
     @Override
     public Usuario buscarPorId(Long id) {
         return repositorioUsuario.burscarPorId(id);
@@ -32,13 +29,6 @@ public class ServicioPerfilUsuarioImpl implements ServicioPerfilUsuario {
     @Override
     public List<Reserva> obtenerReservasPorUsuario(Long idUsuario) {
         return repositorioReserva.buscarUltimasReservasPorUsuario(idUsuario);
-    }
-
-    @Override
-    public Conductor obtenerConductorFavorito(Long idUsuario) {
-
-        List<Reserva> reservas = repositorioReserva.buscarUltimasReservasPorUsuario(idUsuario);
-        return repositorioReserva.obtenerConductorFavorito(idUsuario);
     }
 
     @Override
@@ -56,4 +46,37 @@ public class ServicioPerfilUsuarioImpl implements ServicioPerfilUsuario {
         return repositorioReserva.buscarReservaPorId(id);
     }
 
+    @Override
+    public Long obtenerCantidadDeviajesPorEstadoPorUsuario(Long id, EstadoReserva estadoReserva) {
+        Usuario usuario = buscarPorId(id);
+
+        if ( usuario == null) {
+            throw new RuntimeException("Usuario no encontrado");
+        }
+
+        return repositorioUsuario.getCantidadDeViajesPorEstado(usuario, estadoReserva);
+    }
+
+    @Override
+    public void cancelarReserva(Reserva reserva) {
+
+        if (reserva == null) {
+            throw new RuntimeException("Reserva inexistente");
+        }
+
+        if (!EstadoReserva.CONFIRMADA.equals(reserva.getEstadoReserva())) {
+            throw new RuntimeException("La reserva no puede cancelarse");
+        }
+
+        Viaje viaje = reserva.getViaje();
+
+        Integer cantidadPasajeros = reserva.getPasajeros().size();
+
+        viaje.setAsientosDisponibles(viaje.getAsientosDisponibles() + cantidadPasajeros);
+
+        reserva.setEstadoReserva(EstadoReserva.CANCELADA);
+
+        repositorioViaje.actualizar(viaje);
+        repositorioReserva.actualizarEstadoReserva(reserva);
+    }
 }
