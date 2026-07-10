@@ -88,10 +88,12 @@ public class ControladorAdministrador {
     }
 
     @RequestMapping(path = "/admin/conductores")
-    public ModelAndView conductores() {
+    public ModelAndView conductores(
+            @RequestParam(required = false) EstadoConductor estadoConductor) {
+
         ModelMap model = new ModelMap();
 
-        List<Conductor> conductores = servicioAdministrador.obtenerConductores(true, null);
+        List<Conductor> conductores = servicioAdministrador.obtenerConductores(true, estadoConductor);
         List<Conductor> conductoresPendientes = servicioAdministrador.obtenerConductores(false, EstadoConductor.PENDIENTE_APROBACION);
         List<Combi> combisDisponibles = servicioAdministrador.obtenerCombisPorEstado(EstadoDeCombi.DISPONIBLE);
         Long pendientes = (long) conductoresPendientes.size();
@@ -100,6 +102,7 @@ public class ControladorAdministrador {
         model.put("conductoresPendientes", conductoresPendientes);
         model.put("pendientes", pendientes);
         model.put("combisDisponibles", combisDisponibles);
+        model.put("estadoSeleccionado", estadoConductor);
 
         return new ModelAndView("admin/conductores", model);
     }

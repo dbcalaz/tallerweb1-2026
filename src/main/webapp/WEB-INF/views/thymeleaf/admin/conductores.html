@@ -7,7 +7,6 @@
         <link rel="stylesheet" th:href="@{/css/variables.css}">
         <link rel="stylesheet" th:href="@{/css/components.css}">
         <link rel="stylesheet" th:href="@{/css/admin/panel-administrador.css}">
-
         <link rel="stylesheet" th:href="@{/css/admin/conductores.css}">
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
         <link rel="icon" th:href="@{/imagenes/logo.png}" type="image/x-icon">
@@ -57,31 +56,50 @@
                             <button class="btn-abrir-modal-asignacion btn-aprobar" th:data-conductor-id="${c.id}">Aprobar</button>
                             <form method="POST" th:action="@{/rechazar-solicitud}">
                                 <input type="hidden" name="idConductor" th:value="${c.id}">
-                                <button type="submit"    class="btn-rechazar">Rechazar</button>
+                                <button type="submit" class="btn-rechazar">Rechazar</button>
                             </form>
                         </div>
                     </article>
                 </div>
             </section>
-
             <section class="combis-fallas">
-                <div class="fallas-header">
-                    <div class="conductores-activos-titulo-wrapper">
-                        <div class="icono-grupo">
-                            <span class="material-symbols-outlined">group</span>
-                        </div>
-                        <div>
-                            <h2>Conductores</h2>
-                            <p>Disponibles - En viaje - Suspendidos</p>
-                        </div>
-                    </div>
-                    <div class="acciones-tabla">
-                        <button type="button">
-                            <span class="material-symbols-outlined">filter_list</span>
-                            Filtrar
-                        </button>
-                    </div>
-                </div>
+          <div class="conductores-section-header">
+
+    <div class="conductores-titulo-grupo">
+        <div class="icono-grupo">
+            <span class="material-symbols-outlined">group</span>
+        </div>
+        <div>
+            <h2>Conductores</h2>
+        </div>
+    </div>
+
+    <div class="conductores-filters">
+            <a th:href="@{/admin/conductores}" class="filter" th:classappend="${estadoSeleccionado == null} ? 'active'">
+            Todos
+        </a>
+        <a th:href="@{/admin/conductores(estadoConductor='DISPONIBLE')}" class="filter"
+                th:classappend="${estadoSeleccionado == T(com.tallerwebi.dominio.EstadoConductor).DISPONIBLE} ? 'active'">
+            Disponibles
+        </a>
+        <a th:href="@{/admin/conductores(estadoConductor='EN_VIAJE')}" class="filter"
+                th:classappend="${estadoSeleccionado == T(com.tallerwebi.dominio.EstadoConductor).EN_VIAJE} ? 'active'">
+            En Viaje
+        </a>
+        <a th:href="@{/admin/conductores(estadoConductor='SUSPENDIDO')}" class="filter"
+                th:classappend="${estadoSeleccionado == T(com.tallerwebi.dominio.EstadoConductor).SUSPENDIDO} ? 'active'">
+            Suspendidos
+        </a>
+             <a th:href="@{/admin/conductores(estadoConductor='SUSPENSION_PENDIENTE')}" class="filter"
+                     th:classappend="${estadoSeleccionado == T(com.tallerwebi.dominio.EstadoConductor).SUSPENSION_PENDIENTE} ? 'active'">
+            Suspensión pendiente
+        </a>
+         <a th:href="@{/admin/conductores(estadoConductor='RECHAZADO')}" class="filter"
+                 th:classappend="${estadoSeleccionado == T(com.tallerwebi.dominio.EstadoConductor).RECHAZADO} ? 'active'">
+            Rechazados
+        </a>
+    </div>
+</div>
                 <div class="fallas-table-wrapper">
                     <table class="fallas-table">
                         <thead>
@@ -119,9 +137,7 @@
                                 </td>
                                 <td>
                                     <div class="acciones">
-                                        <button title="Ver detalle" class="btn-abrir-modal-detalle" th:data-conductor-id="${conductor.id}" th:data-conductor-nombre="${conductor.nombre + ' ' + conductor.apellido}" th:data-conductor-licencia="${conductor.licencia}" th:data-conductor-calificacion="${conductor.calificacion}"
-                                                th:data-conductor-telefono="${conductor.telefono}" th:data-conductor-documento="${conductor.documento}" th:data-conductor-email="${conductor.email}"
-                                                th:data-conductor-estado="${conductor.estadoConductor.name() == 'SUSPENDIDO' ? 'Suspendido' : (conductor.estadoConductor.name() == 'EN_VIAJE' ? 'En viaje' : (conductor.estadoConductor.name() == 'SUSPENSION_PENDIENTE' ? 'Suspensión pendiente' : 'Disponible'))}">
+                                        <button title="Ver detalle" class="btn-abrir-modal-detalle" th:data-conductor-id="${conductor.id}" th:data-conductor-nombre="${conductor.nombre + ' ' + conductor.apellido}" th:data-conductor-licencia="${conductor.licencia}" th:data-conductor-calificacion="${conductor.calificacion}" th:data-conductor-telefono="${conductor.telefono}" th:data-conductor-documento="${conductor.documento}" th:data-conductor-email="${conductor.email}" th:data-conductor-estado="${conductor.estadoConductor.name() == 'SUSPENDIDO' ? 'Suspendido' : (conductor.estadoConductor.name() == 'EN_VIAJE' ? 'En viaje' : (conductor.estadoConductor.name() == 'SUSPENSION_PENDIENTE' ? 'Suspensión pendiente' : 'Disponible'))}">
                                             <span class="material-symbols-outlined">visibility</span>
                                         </button>
 

@@ -681,6 +681,51 @@
     color: #644da1;
 }
 
+.conductores-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    margin-top: 16px;
+}
+
+.conductores-titulo-grupo {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.conductores-filters {
+    display: flex;
+    gap: 8px;
+    margin: 0;
+}
+
+.filter{
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: none;
+    background-color: transparent;
+    color: #494551;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none !important;
+    transition: background-color 0.2s, color 0.2s;
+    display: inline-flex;
+    align-items: center;
+}
+
+.filter:hover {
+    background-color: #f1ecf4;
+}
+
+.filter.active {
+    background-color: #ebe6ee;
+    color: #1c1b20;
+    font-weight: 600;
+}
+
 .acciones-tabla {
     display: flex;
     gap: 8px;
@@ -1148,6 +1193,14 @@
 
 .driver-modal-footer .btn-primary:active {
     transform: scale(0.98);
+}
+
+@media (max-width: 992px) {
+    .conductores-section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
 }
 
 @media (max-width: 600px) {
