@@ -97,19 +97,22 @@
                     </div>
                 </div>
                 <div class="reserva-actions">
-                    <a th:href="@{/detalle-viaje/{id}(id=${reserva.id})}">
-                        <button class="details-btn">Ver detalle</button>
-                    </a>
-                    <form th:if="${reserva.puedeCancelarse()}" th:action="@{/cancelar-reserva}" method="post">
-                        <input type="hidden" name="idReserva" th:value="${reserva.id}">
-                        <button class="btn-cancel" type="submit">Cancelar</button>
-                    </form>
-                    <button th:if="${reserva.puedePuntuar()}"
-                            class="btn-calificar"
-                            onclick="openRatingModal()">
-                        Calificar conductor
-                    </button>
-                </div>
+    <a th:href="@{/detalle-viaje/{id}(id=${reserva.id})}">
+        <button class="details-btn">Ver detalle</button>
+    </a>
+    <div class="gestion-reserva-actions">
+        <button type="button" class="btn-cancel btn-abrir-cancelacion"
+                th:if="${reserva.puedeCancelarse()}"
+                th:data-id="${reserva.id}">
+            <span>Cancelar</span>
+        </button>
+    </div>
+                <button th:if="${reserva.puedePuntuar()}"
+                        class="btn-calificar"
+                        onclick="openRatingModal()">
+                    Calificar conductor
+                </button>
+            </div>
             </article>
         </div>
     </section>
@@ -117,17 +120,14 @@
 <div th:replace="componentes/footer :: footer"></div>
 <div class="rating-modal-overlay" id="rating-modal">
     <div class="rating-modal-backdrop" onclick="closeRatingModal()"></div>
-
     <div class="rating-modal-card">
         <div class="rating-modal-content">
-
             <div class="rating-modal-header">
                 <h2>Calificar conductor</h2>
                 <button type="button" class="rating-close-btn" onclick="closeRatingModal()">
                     <span class="material-symbols-outlined">close</span>
                 </button>
             </div>
-
             <div class="rating-driver-profile">
                 <div class="rating-avatar-wrapper">
                     <span class="material-symbols-outlined">account_circle</span>
@@ -137,7 +137,6 @@
                     <p>Conductor verificado</p>
                 </div>
             </div>
-
             <div class="star-rating-container" id="star-rating-container">
                 <button type="button" class="star-btn" onclick="setRating(1)"><span class="material-symbols-outlined">star</span></button>
                 <button type="button" class="star-btn" onclick="setRating(2)"><span class="material-symbols-outlined">star</span></button>
@@ -145,15 +144,37 @@
                 <button type="button" class="star-btn" onclick="setRating(4)"><span class="material-symbols-outlined">star</span></button>
                 <button type="button" class="star-btn" onclick="setRating(5)"><span class="material-symbols-outlined">star</span></button>
             </div>
-
             <!--<textarea class="rating-comment-textarea" placeholder="Escribe un comentario (opcional)" rows="3"></textarea>-->
-
             <div class="rating-modal-actions">
                 <button type="button" class="btn-submit-rating" onclick="closeRatingModal()">Enviar calificación</button>
                 <button type="button" class="btn-cancel-rating" onclick="closeRatingModal()">Cancelar</button>
             </div>
-
         </div>
+    </div>
+</div>
+<div id="cancelModal" class="modal-overlay modal-hidden">
+    <div class="modal-backdrop"></div>
+    <div class="modal-card">
+
+        <div class="modal-icon-wrapper">
+            <span class="material-symbols-outlined">warning</span>
+        </div>
+
+        <h3 class="modal-title">¿Cancelar reserva?</h3>
+        <p class="modal-text">Tu solicitud será eliminada y perderás los asientos asignados para este viaje.</p>
+        <p class="modal-help-text">Podrás buscar y reservar otro viaje en cualquier momento.</p>
+
+        <form th:action="@{/cancelar-reserva}" method="post" class="modal-actions-group">
+            <input type="hidden" name="idReserva" id="inputModalIdReserva" value="">
+
+            <button type="submit" class="btn-modal-confirm">
+                Sí, cancelar reserva
+            </button>
+
+            <button id="btnCloseModal" type="button" class="btn-modal-back">
+                Volver
+            </button>
+        </form>
     </div>
 </div>
 <script>
@@ -194,6 +215,45 @@
         const textarea = document.querySelector('.rating-comment-textarea');
         if (textarea) textarea.value = '';
     }
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const interactableCards = document.querySelectorAll('.info-viaje-card, .pasajero-item-card, .recorrido-sticky-card');
+    interactableCards.forEach(card => {
+        card.addEventListener('mouseenter', () => {
+            card.style.boxShadow = '0 10px 30px rgba(79, 55, 138, 0.12)';
+        });
+        card.addEventListener('mouseleave', () => {
+            card.style.boxShadow = '0 4px 24px rgba(79, 55, 138, 0.05)';
+        });
+    });
+
+    const botonesAbrir = document.querySelectorAll('.btn-abrir-cancelacion'); // Escucha todas las tarjetas
+    const btnCerrar = document.getElementById('btnCloseModal');
+    const modal = document.getElementById('cancelModal');
+    const inputOcultoModal = document.getElementById('inputModalIdReserva');
+
+    botonesAbrir.forEach(boton => {
+        boton.addEventListener('click', () => {
+            const idReserva = boton.getAttribute('data-id');
+            if (inputOcultoModal) {
+                inputOcultoModal.value = idReserva;
+            }
+            if (modal) {
+                modal.classList.remove('modal-hidden');
+            }
+        });
+    });
+
+    if (btnCerrar && modal) {
+        btnCerrar.addEventListener('click', () => {
+            modal.classList.add('modal-hidden');
+            if (inputOcultoModal) {
+                inputOcultoModal.value = "";
+            }
+        });
+    }
+});
 </script>
 </body>
 </html>

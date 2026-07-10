@@ -41,7 +41,7 @@ body {
     position: relative;
     z-index: 2;
     padding: 70px 60px;
-    max-width: 760px;
+    max-width: 940px;
 }
 
 .hero-content h1 {
@@ -63,7 +63,7 @@ body {
     padding: 32px;
     border-radius: 28px;
     box-shadow: var(--shadow-card);
-    max-width: 760px;
+    max-width: 940px;
 }
 
 .search-grid {

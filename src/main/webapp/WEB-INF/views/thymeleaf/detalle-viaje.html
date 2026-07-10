@@ -84,7 +84,7 @@
                             </div>
                         </div>
                     </div>
-                    <button type="button" class="btn-conductor-message">Enviar mensaje</button>
+                    <!--<button type="button" class="btn-conductor-message">Enviar mensaje</button>-->
                 </div>
             </section>
             <section class="pasajeros-section">
@@ -105,12 +105,12 @@
                             <span th:if="${iterStat.first}" class="pasajero-titular-label">(Tú)</span>
                         </h3>
                         <p class="pasajero-card-dni" th:text="'DNI ' + ${pasajero.dni}">DNI 12.345.678</p>
-                        <div class="pasajero-card-footer-action">
+                        <!--<div class="pasajero-card-footer-action">
                             <button type="button" class="btn-download-boleto">
                                 <span class="material-symbols-outlined">download</span>
                                 <span>Boleto Digital</span>
                             </button>
-                        </div>
+                        </div>-->
                     </div>
                 </div>
             </section>
@@ -140,24 +140,46 @@
                     </div>
                 </div>
                 <div class="gestion-reserva-actions">
-                    <button type="button" class="btn-share-viaje">
+                    <!--<button type="button" class="btn-share-viaje">
                         <span class="material-symbols-outlined">share</span>
                         <span>Compartir viaje</span>
-                    </button>
-                    <form th:if="${reserva.puedeCancelarse()}" th:action="@{/cancelar-reserva}" method="post" style="width: 100%;">
-                        <input type="hidden" name="idReserva" th:value="${reserva.id}">
-                        <button type="submit" class="btn-cancelar-reserva">
+                    </button>-->
+                        <button type="button" id="btnAbrirModalCancelacion" class="btn-cancelar-reserva" th:if="${reserva.puedeCancelarse()}">
                             <span class="material-symbols-outlined">cancel</span>
                             <span>Cancelar reserva</span>
                         </button>
-                    </form>
+
                 </div>
             </div>
         </aside>
-
     </div>
 </main>
 <div th:replace="componentes/footer :: footer"></div>
+<div id="cancelModal" class="modal-overlay modal-hidden">
+    <div class="modal-backdrop"></div>
+    <div class="modal-card">
+
+        <div class="modal-icon-wrapper">
+            <span class="material-symbols-outlined">warning</span>
+        </div>
+
+        <h3 class="modal-title">¿Cancelar reserva?</h3>
+        <p class="modal-text">Tu solicitud será eliminada y perderás los asientos asignados para este viaje.</p>
+        <p class="modal-help-text">Podrás buscar y reservar otro viaje en cualquier momento.</p>
+
+        <form th:action="@{/cancelar-reserva}" method="post" class="modal-actions-group">
+            <input type="hidden" name="idReserva" th:value="${reserva.id}">
+
+            <button type="submit" class="btn-modal-confirm">
+                Sí, cancelar reserva
+            </button>
+
+            <button id="btnCloseModal" type="button" class="btn-modal-back">
+                Volver
+            </button>
+        </form>
+    </div>
+</div>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const interactableCards = document.querySelectorAll('.info-viaje-card, .pasajero-item-card, .recorrido-sticky-card');
@@ -169,6 +191,32 @@
                 card.style.boxShadow = '0 4px 24px rgba(79, 55, 138, 0.05)';
             });
         });
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const interactableCards = document.querySelectorAll('.info-viaje-card, .pasajero-item-card, .recorrido-sticky-card');
+        interactableCards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.boxShadow = '0 10px 30px rgba(79, 55, 138, 0.12)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.boxShadow = '0 4px 24px rgba(79, 55, 138, 0.05)';
+            });
+        });
+        const btnAbrir = document.getElementById('btnAbrirModalCancelacion');
+        const btnCerrar = document.getElementById('btnCloseModal');
+        const modal = document.getElementById('cancelModal');
+        if (btnAbrir && modal) {
+            btnAbrir.addEventListener('click', () => {
+                modal.classList.remove('modal-hidden');
+            });
+        }
+        if (btnCerrar && modal) {
+            btnCerrar.addEventListener('click', () => {
+                modal.classList.add('modal-hidden');
+            });
+        }
     });
 </script>
 </body>
