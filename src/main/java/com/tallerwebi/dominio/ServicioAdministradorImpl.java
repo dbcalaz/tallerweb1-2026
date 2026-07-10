@@ -3,6 +3,7 @@ package com.tallerwebi.dominio;
 import com.tallerwebi.dominio.excepcion.ViajeException;
 import com.tallerwebi.presentacion.DatosCrearViaje;
 import com.tallerwebi.presentacion.DatosFiltro;
+import com.tallerwebi.presentacion.DatosFiltroViaje;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -139,8 +140,8 @@ public class ServicioAdministradorImpl implements ServicioAdministrador {
     }
 
     @Override
-    public List<Viaje> obtenerViajes() {
-        return repositorioAdministrador.getViajes();
+    public List<Viaje> obtenerViajes(DatosFiltroViaje filtro) {
+        return repositorioAdministrador.getViajes(filtro);
     }
 
     @Override

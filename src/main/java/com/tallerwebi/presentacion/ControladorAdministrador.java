@@ -135,17 +135,21 @@ public class ControladorAdministrador {
     @GetMapping("/viajes")
     public ModelAndView viajes() { return new ModelAndView("redirect:/admin/viajes");}
 
-    @RequestMapping( path = "/admin/viajes")
-    public ModelAndView vistaViajes() {
+    @RequestMapping(path = "/admin/viajes")
+    public ModelAndView vistaViajes(@ModelAttribute DatosFiltroViaje filtro) {
+
         ModelMap model = new ModelMap();
 
         List<Parada> paradas = servicioAdministrador.obtenerParadas();
-        List<Viaje> viajes = servicioAdministrador.obtenerViajes();
+        List<Viaje> viajes = servicioAdministrador.obtenerViajes(filtro);
+        List<Conductor> conductores = servicioAdministrador.obtenerConductores(true, null);
 
         model.put("datosCrearViaje", new DatosCrearViaje());
         model.put("paradas", paradas);
         model.put("tiposDeViaje", TipoDeViaje.values());
+        model.put("estadosViaje", EstadoDeViaje.values());
         model.put("viajes", viajes);
+        model.put("conductores", conductores);
 
         return new ModelAndView("admin/viajes", model);
     }

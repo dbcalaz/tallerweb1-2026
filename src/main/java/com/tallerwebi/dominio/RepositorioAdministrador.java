@@ -2,6 +2,7 @@ package com.tallerwebi.dominio;
 
 import com.tallerwebi.presentacion.DatosCrearViaje;
 import com.tallerwebi.presentacion.DatosFiltro;
+import com.tallerwebi.presentacion.DatosFiltroViaje;
 
 import java.util.List;
 
@@ -47,7 +48,7 @@ public interface RepositorioAdministrador {
 
     void insertNuevoViaje(Viaje viaje, DatosCrearViaje datos);
 
-    List<Viaje> getViajes();
+    List<Viaje> getViajes(DatosFiltroViaje filtro);
 
     void updateFalla(ReporteFalla reporte);
 

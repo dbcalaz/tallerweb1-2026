@@ -67,41 +67,48 @@
                 </div>
             </div>-->
             <div class="section">
-    <div class="card-filtros-container">
+                <form th:action="@{/admin/viajes}" method="get">
+                    <div class="card-filtros-container">
         <div class="filtros-viajes-layout">
             <div class="filtro-field">
                 <label>Fecha</label>
                 <div class="input-with-icon">
                     <span class="material-symbols-outlined input-icon">calendar_today</span>
-                    <input type="date">
+                    <input type="date" name="fecha">
                 </div>
             </div>
 
             <div class="filtro-field">
+                <label>Tipo</label>
+                <select name="tipoDeViaje">
+                    <option value="">Seleccione tipo de viaje</option>
+                    <option th:each="tv : ${tiposDeViaje}" th:text="${tv.descripcion}" th:value="${tv}"></option>
+                </select>
+            </div>
+
+             <div class="filtro-field">
                 <label>Estado</label>
-                <select>
-                    <option>Todos los estados</option>
-                    <option>Programado</option>
-                    <option>En curso</option>
-                    <option>Finalizado</option>
-                    <option>Cancelado</option>
+                <select name="estadoDeViaje">
+                    <option value="">Seleccione estado de viaje</option>
+                    <option th:each="es : ${estadosViaje}" th:text="${es.descripcion}" th:value="${es}"></option>
                 </select>
             </div>
 
             <div class="filtro-field">
                 <label>Conductor</label>
-                <select>
-                    <option value="">Todos los conductores</option>
-                    <option th:each="cond : ${conductores}" th:value="${cond.id}" th:text="${cond.nombre}">Ricardo Mendoza</option>
+                <select name="idConductor">
+                    <option value="">Seleccione un conductor</option>
+                    <option th:each="c : ${conductores}" th:value="${c.id}" th:text="${c.nombre + ' ' + c.apellido}"></option>
                 </select>
             </div>
 
-            <button class="btn-filtrar-compacto">
+            <button class="btn-filtrar-compacto" type="submit">
                 <span class="material-symbols-outlined">filter_list</span>
                 Filtrar
             </button>
         </div>
     </div>
+                </form>
 </div>
             <div class="section">
                 <div class="admin-table-card">
@@ -144,20 +151,19 @@
                             <div class="conductor-avatar">
                                 <span th:text="${viaje.conductor != null ? #strings.substring(viaje.conductor.nombre,0,2).toUpperCase() : 'S/A'}">RM</span>
                             </div>
-                            <span class="conductor-nombre" th:text="${viaje.conductor != null ? viaje.conductor.nombre : 'Sin asignar'}">Ricardo Mendoza</span>
+                            <span class="conductor-nombre" th:text="${viaje.conductor != null ? (viaje.conductor.nombre + ' ' + viaje.conductor.apellido) : 'Sin asignar'}">Ricardo Mendoza</span>
                         </div>
                     </td>
 
                     <td>
                         <div class="viaje-vehiculo">
-                            <span class="vehiculo-modelo" th:text="${viaje.combi != null ? viaje.combi.marca : 'Sin asignar'}">Mercedes-Benz</span>
-                            <span class="vehiculo-patente" th:if="${viaje.combi != null}" th:text="${viaje.combi.patente}">BND-2024</span>
+                            <span class="vehiculo-modelo" th:text="${viaje.combi != null ? viaje.combi.marca : 'Sin asignar'}"></span>
+                            <span class="vehiculo-patente" th:if="${viaje.combi != null}" th:text="${viaje.combi.patente}"></span>
                         </div>
                     </td>
 
                     <td>
-                        <span class="status-pill"
-                                th:classappend="${
+                        <span class="status-pill" th:classappend="${
                                 viaje.estadoDeViaje.name() == 'DISPONIBLE' ? 'disponible' :
                                 viaje.estadoDeViaje.name() == 'FINALIZADO' ? 'finalizado' :
                                 viaje.estadoDeViaje.name() == 'EN_CURSO' ? 'en-curso' :
@@ -165,8 +171,7 @@
                                 viaje.estadoDeViaje.name() == 'CANCELADO' ? 'cancelado' : ''
                               }">
 
-                            <span class="material-symbols-outlined status-icon"
-                                    th:text="${
+                            <span class="material-symbols-outlined status-icon" th:text="${
                                     viaje.estadoDeViaje.name() == 'DISPONIBLE' ? 'check_circle' :
                                     viaje.estadoDeViaje.name() == 'FINALIZADO' ? 'check_circle' :
                                     viaje.estadoDeViaje.name() == 'EN_CURSO' ? 'motion_photos_on' :
@@ -213,10 +218,7 @@
             </button>
         </div>
         <div class="modal-body">
-            <form id="trip-form"
-                    method="POST"
-                    th:action="@{/crear-viaje}"
-                    th:object="${datosCrearViaje}">
+            <form id="trip-form" method="POST" th:action="@{/crear-viaje}" th:object="${datosCrearViaje}">
                 <div class="row">
                     <div>
                         <label>Fecha</label>
@@ -232,9 +234,7 @@
                         <label>Tipo de viaje</label>
                         <select th:field="*{tipoDeViaje}" required>
                             <option value="">Seleccione el tipo de viaje</option>
-                            <option th:each="tipo : ${tiposDeViaje}"
-                                    th:value="${tipo.name()}"
-                                    th:text="${tipo.descripcion}">
+                            <option th:each="tipo : ${tiposDeViaje}" th:value="${tipo.name()}" th:text="${tipo.descripcion}">
                             </option>
                         </select>
                     </div>
@@ -247,9 +247,7 @@
                     <label>Parada de origen</label>
                     <select th:field="*{origenId}" required>
                         <option value="">Seleccione una parada</option>
-                        <option th:each="parada : ${paradas}"
-                                th:value="${parada.id}"
-                                th:text="${parada.nombre}">
+                        <option th:each="parada : ${paradas}" th:value="${parada.id}" th:text="${parada.nombre}">
                         </option>
                     </select>
                 </div>
@@ -265,9 +263,7 @@
                     <div class="stop-item">
                         <select name="paradasIntermedias">
                             <option value="">Seleccione una parada</option>
-                            <option th:each="parada : ${paradas}"
-                                    th:value="${parada.id}"
-                                    th:text="${parada.nombre}">
+                            <option th:each="parada : ${paradas}" th:value="${parada.id}" th:text="${parada.nombre}">
                             </option>
                         </select>
                         <button type="button" class="remove-stop">
@@ -279,9 +275,7 @@
                     <label>Destino</label>
                     <select th:field="*{destinoId}" required>
                         <option value="">Seleccione una parada</option>
-                        <option th:each="parada : ${paradas}"
-                                th:value="${parada.id}"
-                                th:text="${parada.nombre}">
+                        <option th:each="parada : ${paradas}" th:value="${parada.id}" th:text="${parada.nombre}">
                         </option>
                     </select>
                 </div>

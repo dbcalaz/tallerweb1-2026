@@ -3,6 +3,7 @@ package com.tallerwebi.infraestructura;
 import com.tallerwebi.dominio.*;
 import com.tallerwebi.presentacion.DatosCrearViaje;
 import com.tallerwebi.presentacion.DatosFiltro;
+import com.tallerwebi.presentacion.DatosFiltroViaje;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -247,12 +248,33 @@ public class RepositorioAdministradorImpl implements RepositorioAdministrador {
     }
 
     @Override
-    public List<Viaje> getViajes() {
-        return sessionFactory.getCurrentSession()
-                .createCriteria(Viaje.class, "v")
-                .createAlias("paradas", "p")
-                .createAlias("p.parada", "parada")
-                .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
-                .list();
+    public List<Viaje> getViajes(DatosFiltroViaje filtro) {
+
+        Criteria criteria = sessionFactory.getCurrentSession()
+                .createCriteria(Viaje.class, "v");
+
+        if (filtro.getFecha() != null) {
+            criteria.add(Restrictions.eq("v.fecha", filtro.getFecha()));
+        }
+
+        if (filtro.getTipoDeViaje() != null) {
+            criteria.add(Restrictions.eq("v.tipoDeViaje", filtro.getTipoDeViaje()));
+        }
+
+        if (filtro.getEstadoDeViaje() != null) {
+            criteria.add(Restrictions.eq("v.estadoDeViaje", filtro.getEstadoDeViaje()));
+        }
+
+        if (filtro.getIdConductor() != null) {
+            criteria.createAlias("v.conductor", "conductor");
+            criteria.add(Restrictions.eq("conductor.id", filtro.getIdConductor()));
+        }
+
+        criteria.createAlias("v.paradas", "vp");
+        criteria.createAlias("vp.parada", "parada");
+
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+
+        return criteria.list();
     }
 }
