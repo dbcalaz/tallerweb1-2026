@@ -30,15 +30,18 @@ public class ControladorPerfilUsuario {
         }
 
         List <Reserva> reservas = servicioperfilUsuario.obtenerReservasPorUsuario(usuario.getId());
-        Long viajeFinalizados = servicioperfilUsuario.obtenerCantidadDeviajesPorEstadoPorUsuario(usuario.getId(), EstadoReserva.FINALIZADA);
-        Long viajesContados = servicioperfilUsuario.obtenerCantidaddeViajes(usuario.getId());
-        Long viajesCancelados = servicioperfilUsuario.obtenerCantidadViajesCancelados(usuario.getId());
+        Long viajesFinalizados = servicioperfilUsuario.obtenerCantidadDeviajesPorEstadoPorUsuario(usuario.getId(), EstadoReserva.FINALIZADA);
+        Long viajesCancelados = servicioperfilUsuario.obtenerCantidadDeviajesPorEstadoPorUsuario(usuario.getId(), EstadoReserva.CANCELADA);
+        Long viajesEnCurso = servicioperfilUsuario.obtenerCantidadDeviajesPorEstadoPorUsuario(usuario.getId(), EstadoReserva.EN_CURSO);
+        Long viajesProgramados = servicioperfilUsuario.obtenerCantidadDeviajesPorEstadoPorUsuario(usuario.getId(), EstadoReserva.CONFIRMADA);
 
         ModelMap model = new ModelMap();
         model.put("usuario", usuario);
         model.put("reservas", reservas);
-        model.put("viajesRealizados", viajesContados != null ? viajesContados : 0);
-        model.put("viajesCancelados", viajesCancelados != null ? viajesCancelados : 0);
+        model.put("viajesFinalizados", viajesFinalizados != null ? viajesFinalizados : 0);
+        model.put("viajesCancelados", viajesCancelados != null ? viajesCancelados : 0 );
+        model.put("viajesEnCurso", viajesEnCurso != null ? viajesEnCurso : 0 );
+        model.put("viajesProgramados", viajesProgramados != null ? viajesProgramados : 0 );
 
         return new ModelAndView("perfil-usuario", model);
     }

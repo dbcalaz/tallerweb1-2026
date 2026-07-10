@@ -2,8 +2,10 @@ package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.EstadoReserva;
 import com.tallerwebi.dominio.RepositorioUsuario;
+import com.tallerwebi.dominio.Reserva;
 import com.tallerwebi.dominio.Usuario;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -58,6 +60,12 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario {
 
     @Override
     public Long getCantidadDeViajesPorEstado(Usuario usuario, EstadoReserva estadoReserva) {
-        return 1L;
+
+        return (Long) sessionFactory.getCurrentSession()
+                .createCriteria(Reserva.class)
+                .add(Restrictions.eq("usuario", usuario))
+                .add(Restrictions.eq("estadoReserva", estadoReserva))
+                .setProjection(Projections.rowCount())
+                .uniqueResult();
     }
 }

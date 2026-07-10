@@ -47,4 +47,17 @@ public class Reserva {
     public boolean puedeCancelarse() {
         return estadoReserva == EstadoReserva.CONFIRMADA;
     }
+
+    public String getClaseEstado() {
+        switch (estadoReserva) {
+            case EN_CURSO:
+                return "status-en-curso";
+            case CONFIRMADA:
+                return "status-confirmada";
+            case CANCELADA:
+                return "status-cancelada";
+            default:
+                return "status-finalizada";
+        }
+    }
 }

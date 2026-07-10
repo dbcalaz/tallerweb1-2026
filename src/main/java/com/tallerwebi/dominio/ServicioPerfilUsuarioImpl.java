@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -28,7 +29,9 @@ public class ServicioPerfilUsuarioImpl implements ServicioPerfilUsuario {
 
     @Override
     public List<Reserva> obtenerReservasPorUsuario(Long idUsuario) {
-        return repositorioReserva.buscarUltimasReservasPorUsuario(idUsuario);
+        List<Reserva> reservas = repositorioReserva.buscarUltimasReservasPorUsuario(idUsuario);
+
+        return reservas != null ? reservas : new ArrayList<>();
     }
 
     @Override

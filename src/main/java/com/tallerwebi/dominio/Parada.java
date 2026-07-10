@@ -16,8 +16,6 @@ public class Parada {
 
     private String nombre;
     private String direccion;
-    //private Double latitud;
-    //private Double longitud;
 
     public Parada() {
     }
@@ -26,9 +24,4 @@ public class Parada {
         this.nombre = nombre;
     }
 
-    /*public Parada(String nombre, Double latitud, Double longitud) {
-        this.nombre = nombre;
-        this.latitud = latitud;
-        this.longitud = longitud;
-    }*/
 }
