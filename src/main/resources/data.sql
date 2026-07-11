@@ -122,14 +122,17 @@ INSERT INTO Reserva (id_usuario, id_viaje, estadoReserva, precioTotal) VALUES
 
 -- pasajeros para la reserva nro1
 INSERT INTO Pasajero (nombre, apellido, dni, email, numeroAsiento, id_reserva) VALUES
-('Belén', 'Calaz', '40111222', 'belen@mail.com', 1, 1), ('Martín', 'López', '39222111', 'martin@mail.com', 2, 1),
+('María', 'Sanchez', '12345678', 'test@unlam.edu.ar', 1, 1), ('Martín', 'López', '39222111', 'martin@mail.com', 2, 1),
 ('Carla', 'Gómez', '41888333', 'carla@mail.com', 3, 1), ('Lucía', 'Fernández', '43111999', 'lucia@mail.com', 4, 1),
 ('Pedro', 'Ruiz', '38777666', 'pedro@mail.com', 5, 1);
 
 -- pasajeros para la reserva nro2
 INSERT INTO Pasajero (nombre, apellido, dni, email, numeroAsiento, id_reserva) VALUES
-('Juan', 'Bringa', '35666777', 'juan@mail.com', 6, 2), ('María', 'Sosa', '33444555', 'maria@mail.com', 7, 2),
+('Juan', 'Bringa', '35666777', 'j@j', 6, 2), ('María', 'Sosa', '33444555', 'maria@mail.com', 7, 2),
 ('Carlos', 'Pérez', '32111999', 'carlos@mail.com', 8, 2), ('Ana', 'Romero', '39999111', 'ana@mail.com', 9, 2),
 ('Sofía', 'Martínez', '41777111', 'sofia@mail.com', 10, 2);
 
 INSERT INTO Reserva (id_usuario, id_viaje, estadoReserva, precioTotal) VALUES (1, 6, 'CANCELADA', 4560), (1, 2, 'FINALIZADA', 6000);
+
+INSERT INTO Pasajero (nombre, apellido, dni, email, numeroAsiento, id_reserva) VALUES
+('María', 'Sanchez', '12345678', 'test@unlam.edu.ar', 1, 3), ('María', 'Sanchez', '12345678', 'test@unlam.edu.ar', 1, 4);

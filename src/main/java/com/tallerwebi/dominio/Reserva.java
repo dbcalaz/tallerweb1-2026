@@ -41,6 +41,9 @@ public class Reserva {
     @JoinColumn(name = "id_parada_destino")
     private ViajeParada paradaDestino;
 
+    @Transient
+    private boolean yaPuntuada;
+
     public Reserva() {
     }
 
@@ -62,6 +65,6 @@ public class Reserva {
     }
 
     public boolean puedePuntuar() {
-        return estadoReserva == EstadoReserva.FINALIZADA;
+        return estadoReserva == EstadoReserva.FINALIZADA && !yaPuntuada;
     }
 }

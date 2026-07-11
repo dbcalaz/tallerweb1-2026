@@ -2,8 +2,10 @@ package com.tallerwebi.dominio;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class ServicioPuntuacionImpl implements ServicioPuntuacion {
 
     private RepositorioPuntuacion repositorioPuntuacion;
@@ -21,9 +23,10 @@ public class ServicioPuntuacionImpl implements ServicioPuntuacion {
         return repositorioPuntuacion.existePuntuacioPorUsuarioYReserva(idUsuario, idReserva);
     }
 
+    @Override
     public void calificarConductor(Reserva reserva, Usuario usuario, Integer puntos) {
-        if (puntos == null || puntos < 0 || puntos > 5) {
-            throw new IllegalArgumentException("La calificación debe estar entre 0 y 5");
+        if (puntos == null || puntos < 1 || puntos > 5) {
+            throw new IllegalArgumentException("La calificación debe estar entre 1 y 5");
         }
 
         Puntuacion puntuacion = new Puntuacion();
@@ -37,9 +40,14 @@ public class ServicioPuntuacionImpl implements ServicioPuntuacion {
         actualizarPromedioConductor(reserva.getViaje().getConductor());
     }
 
-    private void actualizarPromedioConductor(Conductor conductor) {
-        Double promedio = repositorioPuntuacion.obtenerPromedioPorConductor(conductor.getId());
-        conductor.setCalificacion(promedio.floatValue());
-        repositorioConductor.actualizarConductor(conductor);
+    @Override
+    public void actualizarPromedioConductor(Conductor conductor) {
+
+        Double promedio =repositorioPuntuacion.obtenerPromedioPorConductor(conductor.getId());
+
+        if(promedio != null){
+            conductor.setCalificacion(promedio.floatValue());
+            repositorioConductor.actualizarConductor(conductor);
+        }
     }
 }

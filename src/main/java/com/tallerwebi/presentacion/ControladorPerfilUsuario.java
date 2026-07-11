@@ -17,8 +17,16 @@ import java.util.List;
 public class ControladorPerfilUsuario {
 
     ServicioPerfilUsuario servicioperfilUsuario;
+    ServicioPuntuacion servicioPuntuacion;
+
     @Autowired
-    public ControladorPerfilUsuario(ServicioPerfilUsuario servicioperfilUsuario) { this.servicioperfilUsuario = servicioperfilUsuario; }
+    public ControladorPerfilUsuario(
+            ServicioPerfilUsuario servicioperfilUsuario,
+            ServicioPuntuacion servicioPuntuacion) {
+
+        this.servicioperfilUsuario = servicioperfilUsuario;
+        this.servicioPuntuacion = servicioPuntuacion;
+    }
 
 
     @RequestMapping("/perfilUsuario")
@@ -36,6 +44,13 @@ public class ControladorPerfilUsuario {
         Long viajesProgramados = servicioperfilUsuario.obtenerCantidadDeviajesPorEstadoPorUsuario(usuario.getId(), EstadoReserva.CONFIRMADA);
 
         ModelMap model = new ModelMap();
+
+        for (Reserva reserva : reservas) {
+            reserva.setYaPuntuada(
+                    servicioPuntuacion.yaPuntuo(usuario.getId(), reserva.getId())
+            );
+        }
+
         model.put("usuario", usuario);
         model.put("reservas", reservas);
         model.put("viajesFinalizados", viajesFinalizados != null ? viajesFinalizados : 0);
@@ -58,6 +73,30 @@ public class ControladorPerfilUsuario {
         Reserva reserva = servicioperfilUsuario.buscarReservaPorId(idReserva);
 
         servicioperfilUsuario.cancelarReserva(reserva);
+
+        return new ModelAndView("redirect:/perfilUsuario");
+    }
+
+    @RequestMapping(path="/calificar-conductor", method=RequestMethod.POST)
+    public ModelAndView calificarConductor(@RequestParam Long idReserva, @RequestParam Integer puntos, HttpServletRequest request) {
+
+        Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
+
+        if(usuario == null){
+            return new ModelAndView("redirect:/login");
+        }
+
+        Reserva reserva = servicioperfilUsuario.buscarReservaPorId(idReserva);
+
+        if(reserva == null){
+            return new ModelAndView("redirect:/perfilUsuario");
+        }
+
+        if(!reserva.getUsuario().getId().equals(usuario.getId())){
+            return new ModelAndView("redirect:/perfilUsuario");
+        }
+
+        servicioPuntuacion.calificarConductor(reserva, usuario, puntos);
 
         return new ModelAndView("redirect:/perfilUsuario");
     }

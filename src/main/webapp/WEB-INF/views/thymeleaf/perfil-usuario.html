@@ -101,17 +101,18 @@
         <button class="details-btn">Ver detalle</button>
     </a>
     <div class="gestion-reserva-actions">
-        <button type="button" class="btn-cancel btn-abrir-cancelacion"
-                th:if="${reserva.puedeCancelarse()}"
-                th:data-id="${reserva.id}">
+        <button type="button" class="btn-cancel btn-abrir-cancelacion" th:if="${reserva.puedeCancelarse()}" th:data-id="${reserva.id}">
             <span>Cancelar</span>
         </button>
+        <button th:if="${reserva.puedePuntuar()}"
+                class="btn-calificar"
+                type="button"
+                th:data-id-reserva="${reserva.id}"
+                th:data-conductor="${reserva.viaje.conductor.nombre + ' ' + reserva.viaje.conductor.apellido}"
+                onclick="openRatingModal(this)">
+            Calificar conductor
+        </button>
     </div>
-                <button th:if="${reserva.puedePuntuar()}"
-                        class="btn-calificar"
-                        onclick="openRatingModal()">
-                    Calificar conductor
-                </button>
             </div>
             </article>
         </div>
@@ -120,35 +121,75 @@
 <div th:replace="componentes/footer :: footer"></div>
 <div class="rating-modal-overlay" id="rating-modal">
     <div class="rating-modal-backdrop" onclick="closeRatingModal()"></div>
+
     <div class="rating-modal-card">
         <div class="rating-modal-content">
+
             <div class="rating-modal-header">
                 <h2>Calificar conductor</h2>
                 <button type="button" class="rating-close-btn" onclick="closeRatingModal()">
                     <span class="material-symbols-outlined">close</span>
                 </button>
             </div>
+
             <div class="rating-driver-profile">
                 <div class="rating-avatar-wrapper">
                     <span class="material-symbols-outlined">account_circle</span>
                 </div>
                 <div class="rating-driver-info">
-                    <strong>Ricardo Gómez</strong>
+                    <strong id="modalNombreConductor">Ricardo Gómez</strong>
                     <p>Conductor verificado</p>
                 </div>
             </div>
+
+
             <div class="star-rating-container" id="star-rating-container">
-                <button type="button" class="star-btn" onclick="setRating(1)"><span class="material-symbols-outlined">star</span></button>
-                <button type="button" class="star-btn" onclick="setRating(2)"><span class="material-symbols-outlined">star</span></button>
-                <button type="button" class="star-btn" onclick="setRating(3)"><span class="material-symbols-outlined">star</span></button>
-                <button type="button" class="star-btn" onclick="setRating(4)"><span class="material-symbols-outlined">star</span></button>
-                <button type="button" class="star-btn" onclick="setRating(5)"><span class="material-symbols-outlined">star</span></button>
+                <button type="button" class="star-btn" onclick="setRating(1)">
+                    <span class="material-symbols-outlined">star</span>
+                </button>
+                <button type="button" class="star-btn" onclick="setRating(2)">
+                    <span class="material-symbols-outlined">star</span>
+                </button>
+                <button type="button" class="star-btn" onclick="setRating(3)">
+                    <span class="material-symbols-outlined">star</span>
+                </button>
+                <button type="button" class="star-btn" onclick="setRating(4)">
+                    <span class="material-symbols-outlined">star</span>
+                </button>
+                <button type="button" class="star-btn" onclick="setRating(5)">
+                    <span class="material-symbols-outlined">star</span>
+                </button>
             </div>
-            <!--<textarea class="rating-comment-textarea" placeholder="Escribe un comentario (opcional)" rows="3"></textarea>-->
+
+
             <div class="rating-modal-actions">
-                <button type="button" class="btn-submit-rating" onclick="closeRatingModal()">Enviar calificación</button>
-                <button type="button" class="btn-cancel-rating" onclick="closeRatingModal()">Cancelar</button>
+
+                <form th:action="@{/calificar-conductor}" method="post">
+
+                    <input type="hidden"
+                            name="idReserva"
+                            id="modalIdReserva">
+
+                    <input type="hidden"
+                            name="puntos"
+                            id="modalPuntuacion"
+                            value="0">
+
+                    <button type="submit" class="btn-submit-rating">
+                        Enviar calificación
+                    </button>
+
+                </form>
+
+
+                <button type="button"
+                        class="btn-cancel-rating"
+                        onclick="closeRatingModal()">
+                    Cancelar
+                </button>
+
             </div>
+
         </div>
     </div>
 </div>
@@ -178,8 +219,15 @@
     </div>
 </div>
 <script>
-    function openRatingModal() {
+    function openRatingModal(button) {
+        const idReserva = button.getAttribute("data-id-reserva");
+        const nombreConductor = button.getAttribute("data-conductor");
+
+        document.getElementById("modalIdReserva").value = idReserva;
+        document.getElementById("modalNombreConductor").textContent = nombreConductor;
+
         const modal = document.getElementById('rating-modal');
+
         modal.classList.add('active');
         document.body.style.overflow = 'hidden';
     }
@@ -192,6 +240,7 @@
     }
 
     function setRating(rating) {
+        document.getElementById("modalPuntuacion").value = rating;
         const stars = document.querySelectorAll('.star-btn');
         stars.forEach((star, index) => {
             const icon = star.querySelector('.material-symbols-outlined');

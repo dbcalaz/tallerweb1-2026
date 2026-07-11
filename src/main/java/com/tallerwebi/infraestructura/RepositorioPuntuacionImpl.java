@@ -11,7 +11,6 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
 @Repository
-@Transactional
 public class RepositorioPuntuacionImpl implements RepositorioPuntuacion {
 
     @Autowired
