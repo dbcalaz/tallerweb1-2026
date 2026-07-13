@@ -46,7 +46,9 @@ public class ServicioPuntuacionImpl implements ServicioPuntuacion {
         Double promedio =repositorioPuntuacion.obtenerPromedioPorConductor(conductor.getId());
 
         if(promedio != null){
-            conductor.setCalificacion(promedio.floatValue());
+            double promedioRedondeado = Math.round(promedio * 10.0) / 10.0;
+
+            conductor.setCalificacion((float) promedioRedondeado);
             repositorioConductor.actualizarConductor(conductor);
         }
     }

@@ -11,7 +11,7 @@ import javax.persistence.*;
 public class Puntuacion {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne

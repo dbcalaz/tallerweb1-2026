@@ -5,7 +5,6 @@ import lombok.Getter;
 @Getter
 public enum EstadoDeViaje {
 
-    PENDIENTE("Pendiente"),
     CANCELADO("Cancelado"),
     FINALIZADO("Finalizado"),
     EN_CURSO("En Curso"),

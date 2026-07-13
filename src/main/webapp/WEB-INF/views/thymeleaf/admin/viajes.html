@@ -124,78 +124,141 @@
                     <th>Conductor</th>
                     <th>Vehículo</th>
                     <th>Estado</th>
-                    <th class="text-right">Acciones</th>
+                    <!--<th class="text-right">Acciones</th>-->
                 </tr>
             </thead>
             <tbody>
-                <tr th:each="viaje : ${viajes}">
-                    <td>
-                        <div class="viaje-ruta">
-                            <span class="ruta-origen" th:text="${viaje.paradas[0].parada.nombre}">Terminal Central</span>
-                            <span class="ruta-destino">
-                                <span class="material-symbols-outlined icon-arrow">arrow_forward</span>
-                                <th:block th:text="${viaje.paradas[viaje.paradas.size() - 1].parada.nombre}">Aeropuerto Intl.</th:block>
-                            </span>
-                        </div>
-                    </td>
-
-                    <td>
-                        <div class="viaje-tiempo">
-                            <span class="tiempo-fecha" th:text="${viaje.fecha}">12 Oct, 2026</span>
-                            <span class="tiempo-hora" th:text="${viaje.horario}">08:30 AM</span>
-                        </div>
-                    </td>
-
-                    <td>
-                        <div class="viaje-conductor">
-                            <div class="conductor-avatar">
-                                <span th:text="${viaje.conductor != null ? #strings.substring(viaje.conductor.nombre,0,2).toUpperCase() : 'S/A'}">RM</span>
+                <th:block th:each="vd : ${viajesDetalle}">
+                    <tr class="viaje-row-clickable" onclick="const detailRow = this.nextElementSibling; detailRow.classList.toggle('hidden');">
+                        <td>
+                            <div class="viaje-ruta">
+                                <span class="ruta-origen" th:text="${vd.viaje.paradas[0].parada.nombre}">Terminal Central</span>
+                                <span class="ruta-destino">
+                                    <span class="material-symbols-outlined icon-arrow">arrow_forward</span>
+                                    <th:block th:text="${vd.viaje.paradas[vd.viaje.paradas.size() - 1].parada.nombre}">Aeropuerto Intl.</th:block>
+                                </span>
                             </div>
-                            <span class="conductor-nombre" th:text="${viaje.conductor != null ? (viaje.conductor.nombre + ' ' + viaje.conductor.apellido) : 'Sin asignar'}">Ricardo Mendoza</span>
-                        </div>
-                    </td>
+                        </td>
 
-                    <td>
-                        <div class="viaje-vehiculo">
-                            <span class="vehiculo-modelo" th:text="${viaje.combi != null ? viaje.combi.marca : 'Sin asignar'}"></span>
-                            <span class="vehiculo-patente" th:if="${viaje.combi != null}" th:text="${viaje.combi.patente}"></span>
-                        </div>
-                    </td>
+                        <td>
+                            <div class="viaje-tiempo">
+                                <span class="tiempo-fecha" th:text="${vd.viaje.fecha}">12 Oct, 2026</span>
+                                <span class="tiempo-hora" th:text="${vd.viaje.horario}">08:30 AM</span>
+                            </div>
+                        </td>
 
-                    <td>
-                        <span class="status-pill" th:classappend="${
-                                viaje.estadoDeViaje.name() == 'DISPONIBLE' ? 'disponible' :
-                                viaje.estadoDeViaje.name() == 'FINALIZADO' ? 'finalizado' :
-                                viaje.estadoDeViaje.name() == 'EN_CURSO' ? 'en-curso' :
-                                viaje.estadoDeViaje.name() == 'ASIGNADO' ? 'asignado' :
-                                viaje.estadoDeViaje.name() == 'CANCELADO' ? 'cancelado' : ''
-                              }">
+                        <td>
+                            <div class="viaje-conductor">
+                                <div class="conductor-avatar">
+                                    <span th:text="${vd.viaje.conductor != null ? #strings.substring(vd.viaje.conductor.nombre,0,2).toUpperCase() : 'S/A'}">RM</span>
+                                </div>
+                                <span class="conductor-nombre" th:text="${vd.viaje.conductor != null ? (vd.viaje.conductor.nombre + ' ' + vd.viaje.conductor.apellido) : 'Sin asignar'}">Ricardo Mendoza</span>
+                            </div>
+                        </td>
 
-                            <span class="material-symbols-outlined status-icon" th:text="${
-                                    viaje.estadoDeViaje.name() == 'DISPONIBLE' ? 'check_circle' :
-                                    viaje.estadoDeViaje.name() == 'FINALIZADO' ? 'check_circle' :
-                                    viaje.estadoDeViaje.name() == 'EN_CURSO' ? 'motion_photos_on' :
-                                    viaje.estadoDeViaje.name() == 'ASIGNADO' ? 'info' : 'help'
-                                  }">circle</span>
+                        <td>
+                            <div class="viaje-vehiculo">
+                                <span class="vehiculo-modelo" th:text="${vd.viaje.combi != null ? vd.viaje.combi.marca : 'Sin asignar'}"></span>
+                                <span class="vehiculo-patente" th:if="${vd.viaje.combi != null}" th:text="${vd.viaje.combi.patente}"></span>
+                            </div>
+                        </td>
 
-                            <span th:text="${viaje.estadoDeViaje}">Estado</span>
-                        </span>
-                    </td>
+                        <td>
+                            <span class="status-pill" th:classappend="${
+                                    vd.viaje.estadoDeViaje.name() == 'DISPONIBLE' ? 'disponible' :
+                                    vd.viaje.estadoDeViaje.name() == 'FINALIZADO' ? 'finalizado' :
+                                    vd.viaje.estadoDeViaje.name() == 'EN_CURSO' ? 'en-curso' :
+                                    vd.viaje.estadoDeViaje.name() == 'ASIGNADO' ? 'asignado' :
+                                    vd.viaje.estadoDeViaje.name() == 'CANCELADO' ? 'cancelado' : ''
+                                  }">
 
-                    <td class="text-right">
-                        <div class="acciones-fila">
-                            <button class="action-btn" title="Editar horario">
-                                <span class="material-symbols-outlined">edit_calendar</span>
-                            </button>
-                            <button class="action-btn" title="Reasignar conductor">
-                                <span class="material-symbols-outlined">person_edit</span>
-                            </button>
-                            <button class="action-btn" title="Más opciones">
-                                <span class="material-symbols-outlined">more_vert</span>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
+                                <span class="material-symbols-outlined status-icon" th:text="${
+                                        vd.viaje.estadoDeViaje.name() == 'DISPONIBLE' ? 'check_circle' :
+                                        vd.viaje.estadoDeViaje.name() == 'FINALIZADO' ? 'check_circle' :
+                                        vd.viaje.estadoDeViaje.name() == 'EN_CURSO' ? 'motion_photos_on' :
+                                        vd.viaje.estadoDeViaje.name() == 'ASIGNADO' ? 'info' : 'help'
+                                      }">circle</span>
+
+                                <span th:text="${vd.viaje.estadoDeViaje}">Estado</span>
+                            </span>
+                        </td>
+
+                        <!--<td class="text-right">
+                            <div class="acciones-fila">
+                                <button type="button" class="action-btn" title="Ver detalles">
+                                    <span class="material-symbols-outlined">expand_more</span>
+                                </button>
+                            </div>
+                        </td>-->
+                    </tr>
+
+                    <tr class="hidden detail-row-container">
+                        <td colspan="6" class="detail-cell-wrapper">
+                            <div class="stitch-detail-container">
+
+                                <div class="stitch-detail-col">
+                                    <h4 class="stitch-section-title">Ruta Detallada</h4>
+                                    <div class="stitch-timeline">
+                                        <div th:each="vp, pStat : ${vd.viaje.paradas}" class="stitch-timeline-item">
+                                            <span class="stitch-timeline-dot" th:classappend="${pStat.first || pStat.last ? 'dot-primary' : 'dot-muted'}"></span>
+                                            <div class="stitch-timeline-content">
+                                                <p class="stitch-node-name" th:text="${vp.parada.nombre}">Terminal Central</p>
+                                                <p class="stitch-node-type" th:text="${pStat.first ? 'Origen - ' + vd.viaje.horario : (pStat.last ? 'Destino' : 'Parada intermedia')}">Origen - 08:30 AM</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="stitch-detail-col">
+                                    <h4 class="stitch-section-title">Detalles del Viaje</h4>
+                                    <div class="stitch-info-list">
+                                        <div class="stitch-info-item">
+                                            <span class="stitch-info-label">Tarifa Base:</span>
+                                            <span class="stitch-info-value" th:text="${'$' + vd.viaje.precio}">$0.00</span>
+                                        </div>
+                                        <div class="stitch-info-item">
+                                            <span class="stitch-info-label">Precio Acumulado:</span>
+                                            <span class="stitch-info-value" th:text="${'$' + vd.precioAcumulado}">$0.00</span>
+                                        </div>
+                                        <div class="stitch-info-item">
+                                            <span class="stitch-info-label">Tipo de Servicio:</span>
+                                            <span class="stitch-info-value" th:text="${vd.viaje.tipoDeViaje.descripcion}">Común</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="stitch-detail-col">
+                                    <h4 class="stitch-section-title">Pasajeros</h4>
+                                    <div class="stitch-passengers-box">
+                                        <div class="stitch-progress-header">
+                                            <span class="stitch-progress-label">Ocupación</span>
+                                            <span class="stitch-progress-number" th:text="${vd.cantidadPasajeros + ' / ' + vd.capacidadMaxima}">0 / 19</span>
+                                        </div>
+                                        <div class="stitch-progress-bar">
+                                            <div class="stitch-progress-fill" th:style="'width: ' + ${vd.porcentajeOcupacion} + '%'"></div>
+                                        </div>
+
+                                        <button type="button" class="stitch-btn-toggle" onclick="const list = this.nextElementSibling; list.classList.toggle('hidden');">
+                                            Ver pasajeros
+                                            <span class="material-symbols-outlined stitch-icon-inline">expand_more</span>
+                                        </button>
+
+                                        <ul class="hidden stitch-passenger-list">
+                                            <li class="stitch-passenger-item" th:if="${#lists.isEmpty(vd.pasajerosTotales)}">
+                                                <span style="font-style: italic; color: #7a7582;">Sin pasajeros registrados</span>
+                                            </li>
+                                            <li class="stitch-passenger-item" th:each="pasajero : ${vd.pasajerosTotales}">
+                                                <span th:text="${pasajero.nombre + ' ' + pasajero.apellido}">Nombre Pasajero</span>
+                                                <span class="stitch-seat" th:text="${pasajero.numeroAsiento != null ? 'Asiento ' + pasajero.numeroAsiento : 'Sin Asiento'}">Asiento 0</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </td>
+                    </tr>
+                </th:block>
             </tbody>
         </table>
     </div>

@@ -144,11 +144,21 @@ public class ControladorAdministrador {
         List<Viaje> viajes = servicioAdministrador.obtenerViajes(filtro);
         List<Conductor> conductores = servicioAdministrador.obtenerConductores(true, null);
 
+        // NUEVO: Mapeamos la lista de Viaje a la lista de ViajeDetalleDTO
+        List<DatosViajeDetalle> viajesDetalle = new ArrayList<>();
+        if (viajes != null) {
+            for (Viaje v : viajes) {
+                viajesDetalle.add(new DatosViajeDetalle(v));
+            }
+        }
+
         model.put("datosCrearViaje", new DatosCrearViaje());
         model.put("paradas", paradas);
         model.put("tiposDeViaje", TipoDeViaje.values());
         model.put("estadosViaje", EstadoDeViaje.values());
-        model.put("viajes", viajes);
+
+        // Mandamos el DTO procesado a la vista en vez de la entidad cruda
+        model.put("viajesDetalle", viajesDetalle);
         model.put("conductores", conductores);
 
         return new ModelAndView("admin/viajes", model);

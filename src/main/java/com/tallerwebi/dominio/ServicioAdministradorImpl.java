@@ -140,8 +140,25 @@ public class ServicioAdministradorImpl implements ServicioAdministrador {
     }
 
     @Override
+    @Transactional
     public List<Viaje> obtenerViajes(DatosFiltroViaje filtro) {
-        return repositorioAdministrador.getViajes(filtro);
+
+        List<Viaje> viajes = repositorioAdministrador.getViajes(filtro);
+
+        if (viajes != null) {
+            for (Viaje viaje : viajes) {
+                if (viaje.getReservas() != null) {
+                    viaje.getReservas().size();
+
+                    for (Reserva reserva : viaje.getReservas()) {
+                        if (reserva.getPasajeros() != null) {
+                            reserva.getPasajeros().size();
+                        }
+                    }
+                }
+            }
+        }
+        return viajes;
     }
 
     @Override

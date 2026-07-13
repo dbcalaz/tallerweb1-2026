@@ -16,12 +16,13 @@ public class ServicioConductorTest {
 
     private ServicioConductor servicioConductor;
     private RepositorioConductor repositorioConductor;
+    private ServicioPuntuacion servicioPuntuacion;
     private Conductor conductor;
 
     @BeforeEach
     void init() {
         repositorioConductor = Mockito.mock(RepositorioConductor.class);
-        servicioConductor = new ServicioConductorImpl(repositorioConductor);
+        servicioConductor = new ServicioConductorImpl(repositorioConductor, servicioPuntuacion);
         conductor = Mockito.mock(Conductor.class);
         when(conductor.getId()).thenReturn(1L);
     }

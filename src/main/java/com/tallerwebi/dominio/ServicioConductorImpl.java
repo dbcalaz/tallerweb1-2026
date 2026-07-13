@@ -11,9 +11,11 @@ import java.util.List;
 public class ServicioConductorImpl implements ServicioConductor {
 
     private final RepositorioConductor repositorioConductor;
+    private ServicioPuntuacion servicioPuntuacion;
 
-    public ServicioConductorImpl(RepositorioConductor repositorioConductor) {
+    public ServicioConductorImpl(RepositorioConductor repositorioConductor,  ServicioPuntuacion servicioPuntuacion) {
         this.repositorioConductor = repositorioConductor;
+        this.servicioPuntuacion = servicioPuntuacion;
     }
 
     @Override
@@ -50,9 +52,15 @@ public class ServicioConductorImpl implements ServicioConductor {
     }
 
     @Override
-    public Conductor buscarPorId(Long idConductor) {
-        validarIdConductor(idConductor);
-        return repositorioConductor.buscarPorId(idConductor);
+    @Transactional
+    public Conductor buscarPorId(Long id) {
+        Conductor conductor = repositorioConductor.buscarPorId(id);
+
+        if (conductor != null) {
+            servicioPuntuacion.actualizarPromedioConductor(conductor);
+        }
+
+        return conductor;
     }
 
     @Override

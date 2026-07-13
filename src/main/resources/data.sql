@@ -7,7 +7,7 @@ insert into Usuario(email, password, rol, activo) values('usuario2@gmail.com', '
 
 -- 2. Inserción de Conductores
 insert into Conductor (nombre, apellido, email, telefono, documento, password, licencia, calificacion, ganancia, cuentaHabilitada, estadoConductor)
-values ('Eduardo', 'Zaens', 'ezaens@mail.com', '1123456789', '12345678', 'asd', 'D2', 3.9, 75000.0, true, 'DISPONIBLE');
+values ('Eduardo', 'Zaens', 'ezaens@mail.com', '1123456789', '12345678', 'asd', 'D2', 0.0, 75000.0, true, 'DISPONIBLE');
 
 INSERT INTO Conductor (nombre, apellido, email, telefono, documento, licencia, calificacion, ganancia, cuentaHabilitada, estadoConductor)
 VALUES ('María', 'Sosa', 'msosa@mail.com', '1134567890', '23456789', 'D1', 4.7, 92000.0, true, 'DISPONIBLE'),
@@ -51,8 +51,8 @@ insert into Parada (nombre, direccion) values
 insert into Viaje (fecha, horario, precio, numeroViaje, asientosDisponibles, duracion, tipoDeViaje, estadoDeViaje, id_combi, id_conductor) values
 ('2026-05-20', '18:00', 2800.0, 1003, 0, '40 min', 'COMUN', 'FINALIZADO', 1, 1),
 ('2026-05-18', '14:15', 1900.0, 1004, 0, '35 min', 'COMUN', 'FINALIZADO', 2, 2),
-('2026-06-25', '08:00', 4200.0, 1005, 4, '40 min', 'COMUN', 'DISPONIBLE', null, null),
-('2026-06-25', '09:30', 5100.0, 1006, 3, '55 min', 'EJECUTIVO', 'DISPONIBLE', null, null),
+('2026-07-25', '08:00', 4200.0, 1005, 4, '40 min', 'COMUN', 'DISPONIBLE', null, null),
+('2026-07-25', '09:30', 5100.0, 1006, 3, '55 min', 'EJECUTIVO', 'DISPONIBLE', null, null),
 ('2026-06-25', '11:00', 3900.0, 1007, 2, '35 min', 'COMUN', 'ASIGNADO', 1, 1),
 ('2026-06-20', '18:15', 4700.0, 1008, 1, '50 min', 'COMUN', 'FINALIZADO', 1, 1);
 
@@ -132,7 +132,17 @@ INSERT INTO Pasajero (nombre, apellido, dni, email, numeroAsiento, id_reserva) V
 ('Carlos', 'Pérez', '32111999', 'carlos@mail.com', 8, 2), ('Ana', 'Romero', '39999111', 'ana@mail.com', 9, 2),
 ('Sofía', 'Martínez', '41777111', 'sofia@mail.com', 10, 2);
 
-INSERT INTO Reserva (id_usuario, id_viaje, estadoReserva, precioTotal) VALUES (1, 6, 'CANCELADA', 4560), (1, 2, 'FINALIZADA', 6000);
+INSERT INTO Reserva (id_usuario, id_viaje, estadoReserva, precioTotal) VALUES (1, 6, 'CANCELADA', 4700), (1, 2, 'FINALIZADA', 1900);
 
 INSERT INTO Pasajero (nombre, apellido, dni, email, numeroAsiento, id_reserva) VALUES
 ('María', 'Sanchez', '12345678', 'test@unlam.edu.ar', 1, 3), ('María', 'Sanchez', '12345678', 'test@unlam.edu.ar', 1, 4);
+
+-- Reservas finalizadas para probar puntuación del conductor 1 (Eduardo)
+INSERT INTO Reserva (id_usuario, id_viaje, estadoReserva, precioTotal) VALUES
+(1, 6, 'FINALIZADA', 4700),
+(2, 6, 'FINALIZADA', 4700);
+
+INSERT INTO Puntuacion(id_usuario,id_reserva,id_conductor,puntos)
+VALUES
+(1,5,1,3),
+(2,6,1,5);

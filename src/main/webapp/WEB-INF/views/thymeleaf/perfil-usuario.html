@@ -23,9 +23,9 @@
         <div class="perfil-info">
             <h1 th:text="${usuario.nombre + ' ' + usuario.apellido}">Usuario</h1>
             <p th:text="${usuario.email}">email</p>
-            <div class="perfil-botones">
+            <!--<div class="perfil-botones">
                 <button class="btn-primary">Editar Perfil</button>
-            </div>
+            </div>-->
         </div>
     </div>
     <section class="estadisticas-grid">
@@ -110,7 +110,7 @@
                 th:data-id-reserva="${reserva.id}"
                 th:data-conductor="${reserva.viaje.conductor.nombre + ' ' + reserva.viaje.conductor.apellido}"
                 onclick="openRatingModal(this)">
-            Calificar conductor
+            Calificar
         </button>
     </div>
             </div>

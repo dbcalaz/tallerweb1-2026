@@ -654,6 +654,233 @@
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
 }
 
+/* --- REPLICA EXACTA DEL DESPLEGABLE STITCH --- */
+
+.viajes-table tbody tr.hidden {
+    display: none !important;
+}
+
+/* Fondo general de la celda expandida (Gris de tu paleta) */
+.detail-cell-wrapper {
+    padding: 24px !important;
+    background-color: #f7f2fa !important;
+    border-bottom: 1px solid #cac4d2 !important;
+}
+
+/* Contenedor unificado Stitch (Sin tarjetas individuales) */
+.stitch-detail-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    background: #f7f2fa;
+    border: 1px solid #cac4d2;
+    border-radius: 12px;
+    padding: 24px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Columnas de información */
+.stitch-detail-col {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Títulos de sección en violeta corporativo */
+.stitch-section-title {
+    font-size: 11px;
+    font-weight: 700;
+    color: #644da1;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0;
+}
+
+/* --- COLUMNA 1: LÍNEA DE TIEMPO (TIMELINE) --- */
+.stitch-timeline {
+    position: relative;
+    padding-left: 24px;
+    border-left: 2px solid rgba(100, 77, 161, 0.3); /* Línea violeta suave */
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin-left: 8px;
+}
+
+.stitch-timeline-item {
+    position: relative;
+}
+
+/* Burbujas de la línea de tiempo */
+.stitch-timeline-dot {
+    position: absolute;
+    left: -33px;
+    top: 2px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 4px solid #f7f2fa; /* Hace el efecto de corte sobre la línea */
+}
+
+.stitch-timeline-dot.dot-primary {
+    background-color: #644da1; /* Violeta para Origen/Destino */
+}
+
+.stitch-timeline-dot.dot-muted {
+    background-color: #cac4d2; /* Gris para intermedias */
+}
+
+.stitch-node-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1c1b20;
+    margin: 0;
+}
+
+.stitch-node-type {
+    font-size: 12px;
+    color: #494551;
+    margin: 2px 0 0 0;
+}
+
+/* --- COLUMNA 2: DETALLES COMERCIALES --- */
+.stitch-info-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.stitch-info-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #ebe6ee;
+}
+
+.stitch-info-item:last-child {
+    border-bottom: none;
+}
+
+.stitch-info-label {
+    color: #494551;
+}
+
+.stitch-info-value {
+    font-weight: 600;
+    color: #1c1b20;
+}
+
+/* --- COLUMNA 3: PASAJEROS --- */
+.stitch-passengers-box {
+    display: flex;
+    flex-direction: column;
+    background: #ffffff; /* Caja contenedora para los pasajeros */
+    padding: 16px;
+    border-radius: 8px;
+    border: 1px solid #cac4d2;
+}
+
+.stitch-progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.stitch-progress-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #1c1b20;
+}
+
+.stitch-progress-number {
+    font-size: 13px;
+    font-weight: 700;
+    color: #644da1;
+}
+
+.stitch-progress-bar {
+    width: 100%;
+    height: 8px;
+    background-color: #cac4d2;
+    border-radius: 9999px;
+    overflow: hidden;
+}
+
+.stitch-progress-fill {
+    height: 100%;
+    background-color: #644da1;
+}
+
+/* Botón Ver Pasajeros */
+.stitch-btn-toggle {
+    background: none;
+    border: none;
+    color: #644da1;
+    font-size: 12px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    margin-top: 16px;
+    padding: 0;
+    width: fit-content;
+}
+
+.stitch-btn-toggle:hover {
+    text-decoration: underline;
+}
+
+.stitch-icon-inline {
+    font-size: 16px !important;
+}
+
+/* Sub-lista desplegable de Pasajeros */
+.stitch-passenger-list {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #ebe6ee;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 150px;
+    overflow-y: auto;
+    padding-left: 0;
+}
+
+.stitch-passenger-list.hidden {
+    display: none !important;
+}
+
+.stitch-passenger-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: #1c1b20;
+}
+
+.stitch-seat {
+    color: #494551;
+    font-size: 11px;
+    background-color: #f1ecf4;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+/* Adaptación Mobile */
+@media (max-width: 768px) {
+    .stitch-detail-container {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+}
+
 @media (max-width: 1200px) {
     .filtros-viajes {
         flex-wrap: wrap;
