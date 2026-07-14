@@ -169,8 +169,12 @@ public class ServicioConductorImpl implements ServicioConductor {
         combiEnViaje.setEstadoDeCombi(EstadoDeCombi.EN_VIAJE);
         viaje.setEstadoDeViaje(EstadoDeViaje.EN_CURSO);
 
+        // SOLO pasamos a EN_CURSO las reservas que estaban CONFIRMADAS
+        // Evitamos afectar a las que el usuario ya canceló previamente.
         for (Reserva reserva : viaje.getReservas()) {
-            reserva.setEstadoReserva(EstadoReserva.EN_CURSO);
+            if (reserva.getEstadoReserva() == EstadoReserva.CONFIRMADA) {
+                reserva.setEstadoReserva(EstadoReserva.EN_CURSO);
+            }
         }
 
         repositorioConductor.actualizarConductor(conductor);
@@ -201,9 +205,11 @@ public class ServicioConductorImpl implements ServicioConductor {
         combiEnViaje.setEstadoDeCombi(EstadoDeCombi.DISPONIBLE);
         conductor.setEstadoConductor(EstadoConductor.DISPONIBLE);
 
-        //Actualizo el estado de las reservas de CONFIRMADA a CANCELADAS_POR_CONDUCTOR, asociadas a este viaje
+        // Actualizo el estado de las reservas SOLAMENTE si estaban confirmadas.
         for (Reserva reserva : viaje.getReservas()) {
-            reserva.setEstadoReserva(EstadoReserva.CANCELADA_POR_CONDUCTOR);
+            if (reserva.getEstadoReserva() == EstadoReserva.CONFIRMADA) {
+                reserva.setEstadoReserva(EstadoReserva.CANCELADA_POR_CONDUCTOR);
+            }
         }
 
         repositorioConductor.actualizarConductor(conductor);
@@ -254,9 +260,11 @@ public class ServicioConductorImpl implements ServicioConductor {
             conductor.setEstadoConductor(EstadoConductor.DISPONIBLE);
         }
 
-        //Actualizo el estado de las reservas de CONFIRMADA a FINALIZADA, asociadas a este viaje
+        // Actualizo el estado de las reservas a FINALIZADA SOLAMENTE si estaban EN_CURSO
         for (Reserva reserva : viaje.getReservas()) {
-            reserva.setEstadoReserva(EstadoReserva.FINALIZADA);
+            if (reserva.getEstadoReserva() == EstadoReserva.EN_CURSO) {
+                reserva.setEstadoReserva(EstadoReserva.FINALIZADA);
+            }
         }
 
         repositorioConductor.actualizarConductor(conductor);

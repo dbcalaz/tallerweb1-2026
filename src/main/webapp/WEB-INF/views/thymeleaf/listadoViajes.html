@@ -36,23 +36,24 @@
                 </div>
             </div>
         </header>
+
         <section th:if="${sinResultados}" class="resultados-empty-state">
             <div class="empty-state-icon-box">
                 <span class="material-symbols-outlined">search_off</span>
             </div>
             <h3 class="empty-state-title">No encontramos viajes disponibles</h3>
             <p class="empty-state-text">
-                Actualmente no hay unidades programadas de <span class="fw-semibold" th:text="${origen}"></span> a <span class="fw-semibold" th:text="${destino}"></span>. Podés solicitar el viaje de todas formas y te avisaremos si se abre un cupo.
+                Actualmente no hay unidades programadas de <span class="fw-semibold" th:text="${origen}"></span> a <span class="fw-semibold" th:text="${destino}"></span>. Te invitamos a modificar los parámetros e intentarlo nuevamente.
             </p>
-            <form th:action="@{/solicitar-espera}" method="POST" class="empty-state-action-form">
-                <input type="hidden" name="origen" th:value="${origen}"/>
-                <input type="hidden" name="destino" th:value="${destino}"/>
+
+            <form th:action="@{/buscar-viaje}" method="GET" class="empty-state-action-form">
                 <button type="submit" class="btn-solicitar-espera">
-                    <span class="material-symbols-outlined">notification_add</span>
-                    <span>Solicitar viaje de todas formas</span>
+                    <span class="material-symbols-outlined">search</span>
+                    <span>Realizar otra búsqueda</span>
                 </button>
             </form>
         </section>
+
         <section th:unless="${sinResultados}" class="resultados-cards-stack">
             <article th:each="viaje : ${viajes}" class="stitch-result-card">
                 <div class="result-card-left-block">

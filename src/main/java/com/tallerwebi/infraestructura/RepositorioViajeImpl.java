@@ -105,7 +105,9 @@ public class RepositorioViajeImpl implements RepositorioViaje {
     @Override
     @SuppressWarnings("unchecked")
     public List<Integer> obtenerAsientosOcupados(Long idViaje) {
-        String hql = "SELECT p.numeroAsiento FROM Pasajero p WHERE p.reserva.viaje.id = :idViaje AND p.numeroAsiento IS NOT NULL";
+        // Agregamos la condición para excluir reservas canceladas
+        String hql = "SELECT p.numeroAsiento FROM Pasajero p WHERE p.reserva.viaje.id = :idViaje AND p.numeroAsiento IS NOT NULL AND p.reserva.estadoReserva NOT IN ('CANCELADA', 'CANCELADA_POR_CONDUCTOR')";
+
         return sessionFactory.getCurrentSession()
                 .createQuery(hql, Integer.class)
                 .setParameter("idViaje", idViaje)
