@@ -71,7 +71,16 @@ public class ServicioConductorImpl implements ServicioConductor {
             throw new IllegalArgumentException("El estado del viaje es obligatorio");
         }
 
-        return repositorioConductor.obtenerViajesDelConductorPorEstado(idConductor, estado);
+        List<Viaje> viajes = repositorioConductor.obtenerViajesDelConductorPorEstado(idConductor, estado);
+
+        for (Viaje viaje : viajes) {
+            org.hibernate.Hibernate.initialize(viaje.getReservas());
+            for (Reserva reserva : viaje.getReservas()) {
+                org.hibernate.Hibernate.initialize(reserva.getPasajeros());
+            }
+        }
+
+        return viajes;
     }
 
     @Override
@@ -82,7 +91,17 @@ public class ServicioConductorImpl implements ServicioConductor {
     @Override
     public Viaje obtenerViajeEnCursoDelConductor(Long idConductor) {
         validarIdConductor(idConductor);
-        return repositorioConductor.obtenerViajeEnCursoDelConductor(idConductor);
+
+        Viaje viaje = repositorioConductor.obtenerViajeEnCursoDelConductor(idConductor);
+
+        if (viaje != null) {
+            org.hibernate.Hibernate.initialize(viaje.getReservas());
+            for (Reserva reserva : viaje.getReservas()) {
+                org.hibernate.Hibernate.initialize(reserva.getPasajeros());
+            }
+        }
+
+        return viaje;
     }
 
     @Override

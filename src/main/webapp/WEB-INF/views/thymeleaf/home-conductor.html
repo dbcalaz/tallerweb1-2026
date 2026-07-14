@@ -114,7 +114,7 @@
                     </div>
                     <div class="driver-status-meta">
                         <span class="material-symbols-outlined">group</span>
-                        <span>Pasajeros no disponibles</span>
+                        <span th:text="${viajeEnCurso.cantidadPasajeros} + ' pasajero(s)'">Pasajeros no disponibles</span>
                     </div>
                     <form th:action="@{/conductor/finalizar-viaje}" method="post">
                         <input type="hidden" name="idViaje" th:value="${viajeEnCurso.id}">
@@ -124,43 +124,44 @@
                         </button>
                     </form>
                 </div>
-                <div th:if="${viajeEnCurso == null and tieneViajeAsignado}">
+               <div th:if="${viajeEnCurso == null and tieneViajeAsignado}">
                     <div>
                         <h3>Viaje asignado</h3>
                         <p>Ya aceptaste un viaje. Cuando estés listo, podés iniciarlo.</p>
                     </div>
-                    <div class="driver-status-route" th:each="viaje : ${viajesAsignados}">
-                        <div class="driver-status-route-item">
-                            <span class="material-symbols-outlined">location_on</span>
-                            <span th:text="${viaje.origen}"></span>
-                        </div>
-                        <div class="driver-status-route-item">
-                            <span class="material-symbols-outlined">near_me</span>
-                            <span th:text="${viaje.destino}"></span>
-                        </div>
-                    </div>
-                    <div class="driver-status-meta">
-                        <span class="material-symbols-outlined">group</span>
-                        <span>Pasajeros no disponibles</span>
-                    </div>
+
                     <div th:each="viaje : ${viajesAsignados}">
+                        <div class="driver-status-route">
+                            <div class="driver-status-route-item">
+                                <span class="material-symbols-outlined">location_on</span>
+                                <span th:text="${viaje.origen}"></span>
+                            </div>
+                            <div class="driver-status-route-item">
+                                <span class="material-symbols-outlined">near_me</span>
+                                <span th:text="${viaje.destino}"></span>
+                            </div>
+                        </div>
 
-    <form th:action="@{/conductor/empezar-viaje}" method="post">
-        <input type="hidden" name="idViaje" th:value="${viaje.id}">
-        <button class="driver-toggle-btn" type="submit">
-            <span class="material-symbols-outlined">play_arrow</span>
-            Empezar viaje
-        </button>
-    </form>
+                        <div class="driver-status-meta">
+                            <span class="material-symbols-outlined">group</span>
+                            <span th:text="${viaje.cantidadPasajeros} + ' pasajero(s)'">Pasajeros no disponibles</span>
+                        </div>
 
-    <form th:action="@{/conductor/cancelar-viaje}" method="post">
-        <input type="hidden" name="idViaje" th:value="${viaje.id}">
-        <button type="submit" class="link-button">
-            Cancelar viaje
-        </button>
-    </form>
+                        <form th:action="@{/conductor/empezar-viaje}" method="post">
+                            <input type="hidden" name="idViaje" th:value="${viaje.id}">
+                            <button class="driver-toggle-btn" type="submit">
+                                <span class="material-symbols-outlined">play_arrow</span>
+                                Empezar viaje
+                            </button>
+                        </form>
 
-</div>
+                        <form th:action="@{/conductor/cancelar-viaje}" method="post">
+                            <input type="hidden" name="idViaje" th:value="${viaje.id}">
+                            <button type="submit" class="link-button">
+                                Cancelar viaje
+                            </button>
+                        </form>
+                    </div>
                 </div>
                 <div th:if="${viajeEnCurso == null and !tieneViajeAsignado}">
                     <div>

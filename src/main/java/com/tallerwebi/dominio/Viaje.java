@@ -66,4 +66,17 @@ public class Viaje {
         }
         return total;
     }
+
+    public Integer getCantidadPasajeros() {
+        if (reservas == null) {
+            return 0;
+        }
+        int total = 0;
+        for (Reserva reserva : reservas) {
+            if (reserva.getPasajeros() != null) {
+                total += reserva.getPasajeros().size();
+            }
+        }
+        return total;
+    }
 }
