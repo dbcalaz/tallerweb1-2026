@@ -200,7 +200,10 @@ public class ControladorBusqueda {
                 Pasajero p = new Pasajero();
                 p.setNombre(nombres.get(i));
                 p.setApellido(apellidos.get(i));
-                p.setDni(dnis.get(i));
+
+                String dniPasajero = dnis.get(i);
+                p.setDni("SIN-DNI".equals(dniPasajero) ? null : dniPasajero);
+
                 p.setEmail(emails.get(i));
                 p.setNumeroAsiento(Integer.parseInt(arrayAsientos[i]));
                 p.setReserva(reserva);
