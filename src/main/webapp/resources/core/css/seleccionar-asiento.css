@@ -1,0 +1,484 @@
+.contenedor-principal {
+    margin-top: 40px;
+    padding-bottom: 96px;
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 40px;
+    padding-right: 40px;
+    box-sizing: border-box;
+    font-family: var(--font-main);
+}
+
+.encabezado-vista {
+    margin-bottom: 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.subtitulo-seccion {
+    font-size: var(--text-label);
+    font-weight: 600;
+    color: var(--primary);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.titulo-pantalla {
+    font-size: var(--text-display);
+    font-weight: 700;
+    color: var(--text);
+    margin: 0;
+    letter-spacing: -0.02em;
+}
+
+.descripcion-pantalla {
+    font-size: var(--text-subtitle);
+    color: var(--text-secondary);
+    max-width: 42rem;
+    margin: 0;
+}
+
+.resaltado-pasajeros {
+    font-weight: 700;
+    color: var(--primary);
+}
+
+/* Grilla del Layout */
+.distribucion-columnas {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+}
+
+@media (min-width: 1024px) {
+    .distribucion-columnas {
+        grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    }
+}
+
+/* --- Columna Izquierda: Mapa de la Combi --- */
+.columna-mapa {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.tarjeta-mapa {
+    background-color: var(--surface-soft);
+    padding: 32px;
+    border-radius: var(--radius-xl);
+    width: 100%;
+    max-width: 380px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid var(--border);
+    box-sizing: border-box;
+}
+
+.referencias-asientos {
+    display: flex;
+    gap: 16px;
+    font-size: var(--text-label);
+    font-weight: 500;
+    margin-bottom: 32px;
+}
+
+.item-referencia {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.ref-cuadro {
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+}
+
+.ref-cuadro.libre {
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+}
+
+.ref-cuadro.seleccionado {
+    background-color: var(--primary);
+}
+
+.ref-cuadro.ocupado {
+    background-color: var(--status-neutral-bg);
+}
+
+/* Cascarón del Bus (Inspirado en Stitch) */
+.bus-shell {
+    background: linear-gradient(180deg, var(--surface-soft) 0%, var(--surface) 100%);
+    border: 2px solid var(--border);
+    border-radius: 48px 48px var(--radius-lg) var(--radius-lg);
+    width: 260px;
+    padding: 24px;
+    position: relative;
+    box-sizing: border-box;
+}
+
+.cabina-conductor {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+}
+
+.icono-volante {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: var(--status-neutral-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+}
+
+.icono-puerta {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-md);
+    border: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    opacity: 0.5;
+}
+
+.grilla-vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.fila-asientos {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+}
+
+.lado-asientos {
+    display: flex;
+    gap: 8px;
+}
+
+.asiento {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    font-size: var(--text-label);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--border);
+    background-color: var(--surface);
+    color: var(--text);
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.asiento.disponible:hover {
+    background-color: var(--surface-soft);
+    border-color: var(--primary);
+}
+
+.asiento.seleccionado {
+    background-color: var(--primary) !important;
+    color: var(--surface) !important;
+    border-color: var(--primary) !important;
+    box-shadow: var(--shadow-button);
+}
+
+.asiento.ocupado {
+    background-color: var(--status-neutral-bg) !important;
+    color: var(--text-secondary) !important;
+    border-color: var(--border) !important;
+    cursor: not-allowed !important;
+}
+
+.motor-label {
+    position: absolute;
+    bottom: -16px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--background);
+    padding: 4px 16px;
+    border-radius: 9999px;
+    border: 1px solid var(--border);
+    font-size: var(--text-small);
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.stitch-alert-info {
+    background-color: var(--status-info-bg);
+    color: var(--status-info-text);
+    padding: 12px 24px;
+    border-radius: var(--radius-md);
+    font-size: var(--text-body);
+    font-weight: 600;
+    text-align: center;
+    margin-top: 24px;
+    width: 100%;
+    max-width: 320px;
+}
+
+/* --- Columna Derecha: Formularios de Pasajeros --- */
+.columna-formularios {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.grupo-formularios {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.tarjeta-pasajero {
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    padding: 24px;
+    border-radius: var(--radius-lg);
+}
+
+.cabecera-pasajero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+}
+
+.info-pasajero-titulo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.avatar-pasajero {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--status-neutral-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+}
+
+.avatar-pasajero.titular-bg {
+    background-color: var(--status-info-bg);
+    color: var(--primary);
+}
+
+.texto-pasajero-h3 {
+    font-size: var(--text-title);
+    font-weight: 600;
+    color: var(--text);
+    margin: 0;
+}
+
+.subtitulo-titular {
+    margin: 0;
+    font-size: var(--text-label);
+    color: var(--primary);
+    font-weight: 500;
+}
+
+.subtitulo-titular.secondary-color {
+    color: var(--text-secondary);
+}
+
+.badge-asiento {
+    font-size: var(--text-label);
+    font-weight: 600;
+    color: var(--surface);
+    background-color: var(--primary);
+    padding: 6px 14px;
+    border-radius: var(--radius-md);
+}
+
+.grilla-campos {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+}
+
+@media (min-width: 768px) {
+    .grilla-campos {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.campo-formulario {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.campo-formulario label {
+    font-size: var(--text-label);
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.stitch-input {
+    border: 2px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 12px;
+    font-size: var(--text-body);
+    outline: none;
+    background-color: var(--surface);
+    color: var(--text);
+    transition: border-color 0.2s;
+}
+
+.stitch-input:focus {
+    border-color: var(--primary);
+}
+
+/* Tarjeta Resumen */
+.tarjeta-resumen {
+    background-color: var(--surface-soft);
+    border: 1px solid var(--border);
+    padding: 24px;
+    border-radius: var(--radius-lg);
+}
+
+.titulo-resumen {
+    font-size: var(--text-title);
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 0;
+    margin-bottom: 24px;
+}
+
+.lista-resumen {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 24px;
+}
+
+.resumen-vacio {
+    font-size: var(--text-body);
+    color: var(--text-secondary);
+    font-style: italic;
+    text-align: center;
+    padding: 16px 0;
+}
+
+.fila-resumen-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.fila-resumen-item:last-child {
+    border-bottom: 0;
+}
+
+.resumen-item-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.resumen-nombre {
+    font-size: var(--text-body);
+    font-weight: 700;
+    color: var(--text);
+}
+
+.resumen-asiento {
+    font-size: var(--text-small);
+    color: var(--text-secondary);
+}
+
+.resumen-precio {
+    font-size: var(--text-body);
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.desglose-precios {
+    border-top: 1px solid var(--border);
+    padding-top: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.fila-precio {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: var(--text-body);
+    color: var(--text-secondary);
+}
+
+.border-t-total {
+    border-top: 1px solid var(--border);
+    padding-top: 16px;
+}
+
+.valor-precio {
+    color: var(--text);
+}
+
+.total-label {
+    font-size: var(--text-title);
+    font-weight: 600;
+    color: var(--text);
+}
+
+.total-valor {
+    font-size: var(--text-headline-lg);
+    font-weight: 600;
+    color: var(--primary);
+}
+
+.btn-confirmar {
+    width: 100%;
+    margin-top: 32px;
+    background: var(--gradient-primary);
+    color: var(--surface);
+    padding: 16px 32px;
+    border-radius: 9999px;
+    font-weight: 700;
+    font-size: var(--text-subtitle);
+    border: none;
+    cursor: pointer;
+    box-shadow: var(--shadow-button);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-confirmar:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(79, 55, 138, 0.35);
+}
+
+.btn-confirmar:active {
+    transform: translateY(1px);
+}
+
+.nota-adicional {
+    text-align: center;
+    margin-top: 16px;
+    margin-bottom: 0;
+    font-size: var(--text-small);
+    color: var(--text-secondary);
+}
+
+.font-semibold { font-weight: 600; }
+.shadow-sm { box-shadow: var(--shadow-card); }
