@@ -37,7 +37,7 @@
             <span class="pasajeros-count-label" th:text="${#lists.size(reserva.pasajeros)} + (${#lists.size(reserva.pasajeros)} == 1 ? ' pasajero' : ' pasajeros')">2 pasajeros</span>
             <div class="precio-total-card">
                 <span class="precio-card-title">Precio Total</span>
-                <strong class="precio-card-value" th:text="'$' + ${reserva.precioTotal}">$25.000</strong>
+                <strong class="precio-card-value" th:text="'$' + ${#numbers.formatDecimal(reserva.precioTotal, 1, 'POINT', 2, 'COMMA')}">$25.000</strong>
             </div>
         </div>
     </header>
@@ -60,7 +60,7 @@
                         </div>
                         <div class="data-grid-item">
                             <p class="data-item-label">Precio por asiento</p>
-                            <p class="data-item-value" th:text="'$' + ${viaje.precio}">$12.500</p>
+                            <p class="data-item-value" th:text="'$' + ${#numbers.formatDecimal(precioPorAsiento, 1, 'POINT', 2, 'COMMA')}">$12.500</p>
                         </div>
                         <div class="data-grid-item">
                             <p class="data-item-label">Duración estimada</p>
@@ -72,11 +72,11 @@
                 <div class="conductor-embed-box">
                     <div class="conductor-embed-header">
                         <div class="conductor-avatar-wrapper">
-                            <span th:text="${conductor.nombre.substring(0,1)}">R</span>
+                            <span th:text="${conductor.nombre != null ? conductor.nombre.substring(0,1) : 'C'}">R</span>
                         </div>
                         <div class="conductor-embed-meta">
-                            <strong th:text="${conductor.nombre + ' ' + conductor.apellido}">Roberto Gómez</strong>
-                            <div class="conductor-rating-subrow">
+                            <strong th:text="${conductor.nombre != null ? conductor.nombre + ' ' + conductor.apellido : 'Sin Conductor'}">Roberto Gómez</strong>
+                            <div class="conductor-rating-subrow" th:if="${conductor.nombre != null}">
                                 <span class="material-symbols-outlined star-icon" style="font-variation-settings: 'FILL' 1;">star</span>
                                 <span class="rating-number" th:text="${conductor.calificacion}">4.8</span>
                                 <span class="rating-dot-separator">•</span>
@@ -84,7 +84,6 @@
                             </div>
                         </div>
                     </div>
-                    <!--<button type="button" class="btn-conductor-message">Enviar mensaje</button>-->
                 </div>
             </section>
             <section class="pasajeros-section">
@@ -105,12 +104,6 @@
                             <span th:if="${iterStat.first}" class="pasajero-titular-label">(Tú)</span>
                         </h3>
                         <p class="pasajero-card-dni" th:text="'DNI ' + ${pasajero.dni}">DNI 12.345.678</p>
-                        <!--<div class="pasajero-card-footer-action">
-                            <button type="button" class="btn-download-boleto">
-                                <span class="material-symbols-outlined">download</span>
-                                <span>Boleto Digital</span>
-                            </button>
-                        </div>-->
                     </div>
                 </div>
             </section>
@@ -125,13 +118,13 @@
                     <div class="timeline-step-row" th:each="parada, iterStat : ${viaje.paradas}">
                         <div class="timeline-left-rail">
                             <div class="timeline-bullet"
-                                    th:classappend="${iterStat.first} ? 'bullet-primary' : (${iterStat.last} ? 'bullet-tertiary' : 'bullet-intermediate')">
+                                 th:classappend="${iterStat.first} ? 'bullet-primary' : (${iterStat.last} ? 'bullet-tertiary' : 'bullet-intermediate')">
                             </div>
                         </div>
                         <div class="timeline-content-block">
                             <p class="timeline-step-tag"
-                                    th:classappend="${iterStat.first} ? 'tag-primary' : (${iterStat.last} ? 'tag-tertiary' : 'tag-intermediate')"
-                                    th:text="${iterStat.first} ? 'Origen' : (${iterStat.last} ? 'Destino' : 'Intermedia')">
+                               th:classappend="${iterStat.first} ? 'tag-primary' : (${iterStat.last} ? 'tag-tertiary' : 'tag-intermediate')"
+                               th:text="${iterStat.first} ? 'Origen' : (${iterStat.last} ? 'Destino' : 'Intermedia')">
                                 Origen
                             </p>
                             <h4 class="timeline-step-title" th:text="${parada.parada.nombre}">Terminal Retiro</h4>
@@ -140,15 +133,10 @@
                     </div>
                 </div>
                 <div class="gestion-reserva-actions">
-                    <!--<button type="button" class="btn-share-viaje">
-                        <span class="material-symbols-outlined">share</span>
-                        <span>Compartir viaje</span>
-                    </button>-->
-                        <button type="button" id="btnAbrirModalCancelacion" class="btn-cancelar-reserva" th:if="${reserva.puedeCancelarse()}">
-                            <span class="material-symbols-outlined">cancel</span>
-                            <span>Cancelar reserva</span>
-                        </button>
-
+                    <button type="button" id="btnAbrirModalCancelacion" class="btn-cancelar-reserva" th:if="${reserva.puedeCancelarse()}">
+                        <span class="material-symbols-outlined">cancel</span>
+                        <span>Cancelar reserva</span>
+                    </button>
                 </div>
             </div>
         </aside>
@@ -180,19 +168,6 @@
         </form>
     </div>
 </div>
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const interactableCards = document.querySelectorAll('.info-viaje-card, .pasajero-item-card, .recorrido-sticky-card');
-        interactableCards.forEach(card => {
-            card.addEventListener('mouseenter', () => {
-                card.style.boxShadow = '0 10px 30px rgba(79, 55, 138, 0.12)';
-            });
-            card.addEventListener('mouseleave', () => {
-                card.style.boxShadow = '0 4px 24px rgba(79, 55, 138, 0.05)';
-            });
-        });
-    });
-</script>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const interactableCards = document.querySelectorAll('.info-viaje-card, .pasajero-item-card, .recorrido-sticky-card');

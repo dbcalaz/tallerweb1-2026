@@ -93,7 +93,7 @@
                 <div class="reserva-stats">
                     <div>
                         <small>Precio</small>
-                        <strong th:text="'$' + ${reserva.precioTotal}">$0</strong>
+                        <strong th:text="'$' + ${#numbers.formatDecimal(reserva.precioTotal, 1, 'POINT', 2, 'COMMA')}">$0</strong>
                     </div>
                 </div>
                 <div class="reserva-actions">

@@ -63,8 +63,6 @@ public class ServicioViajeImpl implements ServicioViaje {
 
     @Override
     public void guardarReserva(Reserva reserva) {
-        // calcularPrecio(reserva);
-
         repositorioViaje.guardarReserva(reserva);
     }
 
@@ -78,58 +76,92 @@ public class ServicioViajeImpl implements ServicioViaje {
         repositorioViaje.eliminarReserva(idReserva);
     }
 
-    // Se aplica una logica de sobre una regla para verificar un viaje dentro de las 24 horas
     @Override
     public void verificarViajes24Horas(Long idViaje) {
         Viaje viaje = repositorioViaje.buscarPorId(idViaje);
 
         if (viaje != null) {
-            // Se calcula cual es el cupo minimo para que asi la combi pueda salir (puse de ejemplo 30%)
             int capacidadTotal = viaje.getCombi().getCantidadDeAsientos();
             int cupoMinimo = (int) (capacidadTotal * 0.30);
 
-            // Calculamos a cuantos asientos se ocuparon realmente
             int asientosOcupados = capacidadTotal - viaje.getAsientosDisponibles();
 
-            // Con esto se verifica en caso de la siguiente situacion: a este viaje le falta el conductor o no llegó al cupo mínimo de gente?
             if (viaje.getConductor() == null || asientosOcupados < cupoMinimo) {
-                // Si llega a pasar, el viaje se cancela de forma automatica.
                 viaje.setEstadoDeViaje(EstadoDeViaje.CANCELADO);
                 repositorioViaje.actualizar(viaje);
             }
         }
     }
 
-    // Este metodo tiene que ser llamado por el metodo que crea la reserva
-    public double calcularPrecio(Reserva reserva) {
-        Viaje viaje = reserva.getViaje();
-
+    // Calculamos el precio en base a un viaje y los tramos específicos buscados
+    public double calcularPrecioPorTramo(Viaje viaje, Long idOrigen, Long idDestino) {
         int totalTramos = viaje.getParadas().size() - 1;
 
         if (totalTramos <= 0) {
             return viaje.getPrecio();
         }
 
-        int tramosDelPasajero =
-                reserva.getParadaDestino().getOrden() -
-                        reserva.getParadaOrigen().getOrden();
+        ViajeParada paradaOrigen = null;
+        ViajeParada paradaDestino = null;
 
+        for (ViajeParada vp : viaje.getParadas()) {
+            if (vp.getParada().getId().equals(idOrigen)) {
+                paradaOrigen = vp;
+            }
+            if (vp.getParada().getId().equals(idDestino)) {
+                paradaDestino = vp;
+            }
+        }
+
+        if (paradaOrigen == null || paradaDestino == null) {
+            return viaje.getPrecio();
+        }
+
+        int tramosDelPasajero = paradaDestino.getOrden() - paradaOrigen.getOrden();
+        if (tramosDelPasajero <= 0) {
+            return viaje.getPrecio();
+        }
+
+        double precioPorTramo = viaje.getPrecio() / (double) totalTramos;
+        return precioPorTramo * tramosDelPasajero;
+    }
+
+    // Este metodo tiene que ser llamado por el metodo que crea la reserva
+    public double calcularPrecio(Reserva reserva) {
+        if (reserva.getParadaOrigen() == null || java.util.Objects.equals(reserva.getParadaOrigen(), null) || reserva.getParadaDestino() == null) {
+            return reserva.getViaje().getPrecio();
+        }
+
+        Viaje viaje = reserva.getViaje();
+        int totalTramos = viaje.getParadas().size() - 1;
+
+        if (totalTramos <= 0) {
+            return viaje.getPrecio();
+        }
+
+        int tramosDelPasajero = reserva.getParadaDestino().getOrden() - reserva.getParadaOrigen().getOrden();
         double precioPorTramo = viaje.getPrecio() / (double) totalTramos;
 
         return precioPorTramo * tramosDelPasajero;
     }
 
-    // Este metodo calcula el horario de las paradas intermedias. Es para los usuarios que hacen menos recorrido.
+    // Modificamos para calcular en base al orden inicial (así el origen suma 0 minutos)
     public LocalTime calcularHorarioParada(Viaje viaje, ViajeParada viajeParada) {
+        if (viaje.getParadas() == null || viaje.getParadas().isEmpty()) {
+            return viaje.getHorario();
+        }
+        // Obtenemos el orden de la primera parada del recorrido completo
+        int ordenBase = viaje.getParadas().get(0).getOrden();
 
-        int minutosEstimados = viajeParada.getOrden() * 15;
+        // Calculamos la diferencia de paradas multiplicada por 15 minutos
+        int minutosEstimados = (viajeParada.getOrden() - ordenBase) * 15;
 
         return viaje.getHorario().plusMinutes(minutosEstimados);
     }
 
     @Override
-    public List<Reserva> buscarReservasPorUsuario(Long idUsuario) {
-        List<Reserva> misReservas = repositorioViaje.buscarReservasPorUsuario(idUsuario);
+    public List<Reserva> buscarReservasPorEstado(Long idUsuario, EstadoReserva estado) {
+        List<Reserva> misReservas = repositorioViaje.buscarReservasPorEstado(idUsuario, estado);
 
         for (Reserva reserva : misReservas) {
             org.hibernate.Hibernate.initialize(reserva.getPasajeros());

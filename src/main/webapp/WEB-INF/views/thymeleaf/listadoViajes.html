@@ -60,7 +60,7 @@
                     <span class="result-service-badge" th:text="${viaje.tipoDeViaje}">Expreso</span>
                     <div class="result-rating-row">
                         <span class="material-symbols-outlined fill-icon">star</span>
-                        <span th:text="${viaje.conductor.calificacion}">4.9</span>
+                        <span th:text="${viaje.calificacionConductor}">4.9</span>
                     </div>
                 </div>
                 <div class="result-card-middle-block">
@@ -70,10 +70,10 @@
                         </div>
                         <div class="driver-info-meta">
                             <div class="driver-name-row">
-                                <h3 class="driver-fullname" th:text="${viaje.conductor.nombre} + ' ' + ${viaje.conductor.apellido}">Ricardo Gómez</h3>
+                                <h3 class="driver-fullname" th:text="${viaje.nombreConductor}">Ricardo Gómez</h3>
                                 <span class="verified-driver-pill">Verificado</span>
                             </div>
-                            <p class="vehicle-details-text" th:text="${viaje.combi.marca} + ' ' + ${viaje.combi.modelo}">Mercedes-Benz Sprinter 2023</p>
+                            <p class="vehicle-details-text" th:text="${viaje.marcaModeloCombi}">Mercedes-Benz Sprinter 2023</p>
                         </div>
                     </div>
                     <div class="result-features-row">
@@ -83,7 +83,7 @@
                         </span>
                         <span class="feature-chip duration-chip">
                             <span class="material-symbols-outlined">hourglass_empty</span>
-                            <span th:text="'Duración: ' + ${viaje.horario}">Duración aprox: 45m</span>
+                            <span th:text="'Pasa a las: ' + ${viaje.horario}">Pasa a las: 12:15</span>
                         </span>
                         <span class="feature-chip date-chip">
                             <span class="material-symbols-outlined">calendar_today</span>
@@ -95,14 +95,14 @@
                     <div class="pricing-summary-container">
                         <div class="price-single-row">
                             <span class="price-label">Por asiento</span>
-                            <strong class="price-value" th:text="'$' + ${viaje.precio}">$7.000</strong>
+                            <strong class="price-value" th:text="'$' + ${#numbers.formatDecimal(viaje.precio, 1, 'POINT', 0, 'COMMA')}">$7.000</strong>
                         </div>
                         <div class="price-total-row">
                             <span class="price-total-label">Total estimado:</span>
-                            <span class="price-total-value" th:text="'$' + (${viaje.precio} * ${pasajeros})">$14.000</span>
+                            <span class="price-total-value" th:text="'$' + ${#numbers.formatDecimal(viaje.precio * pasajeros, 1, 'POINT', 0, 'COMMA')}">$14.000</span>
                         </div>
                     </div>
-                    <a th:href="@{/seleccionar-asiento(idViaje=${viaje.id}, pasajeros=${pasajeros})}" class="btn-stitch-select-seats">
+                    <a th:href="@{/seleccionar-asiento(idViaje=${viaje.id}, pasajeros=${pasajeros}, idParadaOrigen=${viaje.idParadaOrigen}, idParadaDestino=${viaje.idParadaDestino})}" class="btn-stitch-select-seats">
                         <span>Elegir asientos</span>
                         <span class="material-symbols-outlined">chevron_right</span>
                     </a>

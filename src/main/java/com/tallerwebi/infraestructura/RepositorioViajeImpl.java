@@ -122,7 +122,7 @@ public class RepositorioViajeImpl implements RepositorioViaje {
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<Reserva> buscarReservasPorUsuario(Long idUsuario) {
+    public List<Reserva> buscarReservasPorEstado(Long idUsuario, EstadoReserva estado) {
         String hql = "SELECT DISTINCT r FROM Reserva r " +
                 "LEFT JOIN FETCH r.pasajeros " +
                 "WHERE r.usuario.id = :idUsuario " +
@@ -131,7 +131,7 @@ public class RepositorioViajeImpl implements RepositorioViaje {
         return sessionFactory.getCurrentSession()
                 .createQuery(hql, Reserva.class)
                 .setParameter("idUsuario", idUsuario)
-                .setParameter("estado", EstadoReserva.CONFIRMADA)
+                .setParameter("estado", estado)
                 .getResultList();
     }
 }

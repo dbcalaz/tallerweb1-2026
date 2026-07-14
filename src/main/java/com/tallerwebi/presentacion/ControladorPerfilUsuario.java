@@ -51,6 +51,13 @@ public class ControladorPerfilUsuario {
             );
         }
 
+        // LEEMOS EL MENSAJE DE ÉXITO DE RESERVA (SI EXISTE)
+        String mensajeReserva = (String) request.getSession().getAttribute("mensajeReserva");
+        if (mensajeReserva != null) {
+            model.put("mensaje", mensajeReserva);
+            request.getSession().removeAttribute("mensajeReserva");
+        }
+
         model.put("usuario", usuario);
         model.put("reservas", reservas);
         model.put("viajesFinalizados", viajesFinalizados != null ? viajesFinalizados : 0);
@@ -109,6 +116,4 @@ public class ControladorPerfilUsuario {
         }
         return new ModelAndView("redirect:/login");
     }
-
-
 }

@@ -125,7 +125,7 @@
 
                     <div class="passenger-box-footer-meta">
                         <span>Total abonado:</span>
-                        <strong th:text="'$' + ${reserva.precioTotal}">$25.000</strong>
+                        <strong th:text="'$' + ${#numbers.formatDecimal(reserva.precioTotal, 1, 'POINT', 2, 'COMMA')}">$25.000</strong>
                     </div>
                 </section>
                 <!--<div class="encurso-actions-container">

@@ -7,6 +7,9 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -38,9 +41,65 @@ public class ControladorBusqueda {
         }
 
         List<Viaje> viajesEncontrados = servicioViaje.buscarViajes(datosBusqueda);
-        modelo.put("viajes", viajesEncontrados);
+        List<ViajeDisponible> viajesCalculados = new ArrayList<>();
+
+        String nombreOrigenBuscado = "";
+        String nombreDestinoBuscado = "";
+
+        for (Viaje v : viajesEncontrados) {
+            ViajeParada vpOrigen = null;
+            ViajeParada vpDestino = null;
+
+            for (ViajeParada vp : v.getParadas()) {
+                if (vp.getParada().getId().equals(datosBusqueda.getIdOrigen())) {
+                    vpOrigen = vp;
+                    nombreOrigenBuscado = vp.getParada().getNombre();
+                }
+                if (vp.getParada().getId().equals(datosBusqueda.getIdDestino())) {
+                    vpDestino = vp;
+                    nombreDestinoBuscado = vp.getParada().getNombre();
+                }
+            }
+
+            if (vpOrigen != null && vpDestino != null) {
+                // Se invoca directamente usando el servicio inyectado
+                LocalTime horarioCalculado = servicioViaje.calcularHorarioParada(v, vpOrigen);
+                String horarioFormateado = horarioCalculado.format(DateTimeFormatter.ofPattern("HH:mm"));
+
+                // Se invoca directamente usando el servicio inyectado
+                double precioCalculado = servicioViaje.calcularPrecioPorTramo(v, datosBusqueda.getIdOrigen(), datosBusqueda.getIdDestino());
+
+                String nombreConductor = v.getConductor() != null ?
+                        (v.getConductor().getApellido() != null ? v.getConductor().getNombre() + " " + v.getConductor().getApellido() : v.getConductor().getNombre())
+                        : "Sin Conductor";
+
+                double calificacion = v.getConductor() != null ? v.getConductor().getCalificacion() : 5.0;
+                String combiDetalle = v.getCombi() != null ? (v.getCombi().getMarca() + " " + v.getCombi().getModelo()) : "Unidad estándar";
+
+                ViajeDisponible vd = new ViajeDisponible(
+                        v.getId(),
+                        vpOrigen.getParada().getNombre(),
+                        vpDestino.getParada().getNombre(),
+                        horarioFormateado,
+                        precioCalculado,
+                        v.getAsientosDisponibles(),
+                        v.getTipoDeViaje().name(),
+                        calificacion,
+                        nombreConductor,
+                        combiDetalle,
+                        v.getFecha().toString(),
+                        vpOrigen.getId(),
+                        vpDestino.getId()
+                );
+                viajesCalculados.add(vd);
+            }
+        }
+
+        modelo.put("viajes", viajesCalculados);
         modelo.put("pasajeros", datosBusqueda.getPasajeros());
-        modelo.put("sinResultados", viajesEncontrados.isEmpty());
+        modelo.put("origen", nombreOrigenBuscado.isEmpty() ? "Origen" : nombreOrigenBuscado);
+        modelo.put("destino", nombreDestinoBuscado.isEmpty() ? "Destino" : nombreDestinoBuscado);
+        modelo.put("sinResultados", viajesCalculados.isEmpty());
         return new ModelAndView("listadoViajes", modelo);
     }
 
@@ -52,11 +111,16 @@ public class ControladorBusqueda {
     }
 
     @RequestMapping(path = "/seleccionar-asiento", method = RequestMethod.GET)
-    public ModelAndView irASeleccionarAsiento(@RequestParam("idViaje") Long idViaje, @RequestParam("pasajeros") Integer pasajeros) {
+    public ModelAndView irASeleccionarAsiento(@RequestParam("idViaje") Long idViaje,
+                                              @RequestParam("pasajeros") Integer pasajeros,
+                                              @RequestParam(value = "idParadaOrigen", required = false) Long idParadaOrigen,
+                                              @RequestParam(value = "idParadaDestino", required = false) Long idParadaDestino) {
         ModelMap modelo = new ModelMap();
         Viaje viaje = servicioViaje.buscarPorId(idViaje);
         modelo.put("idViaje", idViaje);
         modelo.put("pasajeros", pasajeros);
+        modelo.put("idParadaOrigen", idParadaOrigen);
+        modelo.put("idParadaDestino", idParadaDestino);
         modelo.put("cantidadAsientos", viaje.getCombi().getCantidadDeAsientos());
         modelo.put("asientosOcupados", servicioViaje.obtenerAsientosOcupados(idViaje));
         return new ModelAndView("seleccionarAsiento", modelo);
@@ -70,6 +134,8 @@ public class ControladorBusqueda {
                                          @RequestParam("apellidos") List<String> apellidos,
                                          @RequestParam("dnis") List<String> dnis,
                                          @RequestParam("emails") List<String> emails,
+                                         @RequestParam(value = "idParadaOrigen", required = false) Long idParadaOrigen,
+                                         @RequestParam(value = "idParadaDestino", required = false) Long idParadaDestino,
                                          HttpServletRequest request) {
 
         Usuario usuarioLogueado = (Usuario) request.getSession().getAttribute("usuario");
@@ -82,7 +148,25 @@ public class ControladorBusqueda {
             reserva.setUsuario(usuarioLogueado);
             reserva.setViaje(viaje);
             reserva.setEstadoReserva(EstadoReserva.CONFIRMADA);
-            reserva.setPrecioTotal(viaje.getPrecio() * pasajerosCount);
+
+            if (idParadaOrigen != null && idParadaDestino != null) {
+                ViajeParada vpOrigen = new ViajeParada();
+                vpOrigen.setId(idParadaOrigen);
+                reserva.setParadaOrigen(vpOrigen);
+
+                ViajeParada vpDestino = new ViajeParada();
+                vpDestino.setId(idParadaDestino);
+                reserva.setParadaDestino(vpDestino);
+
+                // Se invoca el calculo utilizando la interfaz
+                double precioPorTramo = servicioViaje.calcularPrecioPorTramo(viaje,
+                        viaje.getParadas().stream().filter(p -> p.getId().equals(idParadaOrigen)).findFirst().get().getParada().getId(),
+                        viaje.getParadas().stream().filter(p -> p.getId().equals(idParadaDestino)).findFirst().get().getParada().getId()
+                );
+                reserva.setPrecioTotal(precioPorTramo * pasajerosCount);
+            } else {
+                reserva.setPrecioTotal(viaje.getPrecio() * pasajerosCount);
+            }
 
             reserva.setPasajeros(new java.util.ArrayList<>());
 
@@ -101,7 +185,9 @@ public class ControladorBusqueda {
 
             servicioViaje.guardarReserva(reserva);
 
-            return new ModelAndView("redirect:/viajeEnCurso");
+            // AHORA REDIRIGIMOS AL PERFIL Y GUARDAMOS EL MENSAJE DE ÉXITO EN SESIÓN
+            request.getSession().setAttribute("mensajeReserva", "¡El viaje fue reservado con éxito!");
+            return new ModelAndView("redirect:/perfilUsuario");
 
         } catch (Exception e) {
             System.err.println("ERROR AL GUARDAR RESERVA: ");
@@ -116,7 +202,8 @@ public class ControladorBusqueda {
         Usuario usuarioLogueado = (Usuario) request.getSession().getAttribute("usuario");
         if (usuarioLogueado == null) return new ModelAndView("redirect:/login");
 
-        List<Reserva> misReservas = servicioViaje.buscarReservasPorUsuario(usuarioLogueado.getId());
+        // AHORA SOLO BUSCAMOS RESERVAS CUANDO EL ESTADO SEA 'EN_CURSO'
+        List<Reserva> misReservas = servicioViaje.buscarReservasPorEstado(usuarioLogueado.getId(), EstadoReserva.EN_CURSO);
 
         modelo.put("misReservas", misReservas);
         modelo.put("sinViajes", misReservas.isEmpty());
@@ -128,7 +215,9 @@ public class ControladorBusqueda {
     public ModelAndView cancelarViaje(@RequestParam("idViaje") Long idViaje, HttpServletRequest request) {
         Usuario usuarioLogueado = (Usuario) request.getSession().getAttribute("usuario");
         if (usuarioLogueado == null) return new ModelAndView("redirect:/login");
-        List<Reserva> misReservas = servicioViaje.buscarReservasPorUsuario(usuarioLogueado.getId());
+
+        // CANCELAMOS BUSCANDO EN LAS CONFIRMADAS
+        List<Reserva> misReservas = servicioViaje.buscarReservasPorEstado(usuarioLogueado.getId(), EstadoReserva.CONFIRMADA);
 
         Reserva reservaACancelar = misReservas.stream()
                 .filter(reserva -> reserva.getViaje().getId().equals(idViaje))
@@ -145,6 +234,7 @@ public class ControladorBusqueda {
                 servicioViaje.eliminarReserva(reservaACancelar.getId());
             }
         }
-        return new ModelAndView("redirect:/viajeEnCurso");
+        // VUELVE A PERFIL LUEGO DE CANCELAR
+        return new ModelAndView("redirect:/perfilUsuario");
     }
 }

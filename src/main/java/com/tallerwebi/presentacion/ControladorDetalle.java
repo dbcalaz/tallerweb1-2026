@@ -51,11 +51,20 @@ public class ControladorDetalle {
 
         boolean yaPuntuo = servicioPuntuacion.yaPuntuo(usuarioLogueado.getId(), reserva.getId());
 
+        // Calculamos el precio por asiento basándonos en el total del tramo y la cantidad de pasajeros
+        double precioPorAsiento = 0.0;
+        if (reserva.getPasajeros() != null && !reserva.getPasajeros().isEmpty()) {
+            precioPorAsiento = reserva.getPrecioTotal() / reserva.getPasajeros().size();
+        } else {
+            precioPorAsiento = reserva.getPrecioTotal();
+        }
+
         model.put("yaPuntuo", yaPuntuo);
         model.put("reserva", reserva);
         model.put("viaje", reserva.getViaje());
         model.put("conductor", reserva.getViaje().getConductor());
-        return new ModelAndView("detalle-viaje", model);
+        model.put("precioPorAsiento", precioPorAsiento); // Enviamos el dato a la vista
 
+        return new ModelAndView("detalle-viaje", model);
     }
 }
