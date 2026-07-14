@@ -11,6 +11,7 @@ import javax.persistence.*;
 public class Pasajero {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long id;
 
     private String nombre;

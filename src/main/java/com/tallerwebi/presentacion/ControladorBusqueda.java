@@ -114,15 +114,41 @@ public class ControladorBusqueda {
     public ModelAndView irASeleccionarAsiento(@RequestParam("idViaje") Long idViaje,
                                               @RequestParam("pasajeros") Integer pasajeros,
                                               @RequestParam(value = "idParadaOrigen", required = false) Long idParadaOrigen,
-                                              @RequestParam(value = "idParadaDestino", required = false) Long idParadaDestino) {
+                                              @RequestParam(value = "idParadaDestino", required = false) Long idParadaDestino,
+                                              HttpServletRequest request) {
+
+        Usuario usuarioLogueado = (Usuario) request.getSession().getAttribute("usuario");
+        if (usuarioLogueado == null) return new ModelAndView("redirect:/login");
+
         ModelMap modelo = new ModelMap();
         Viaje viaje = servicioViaje.buscarPorId(idViaje);
+
+        double precioPorPasajero;
+        if (idParadaOrigen != null && idParadaDestino != null) {
+            Long idParadaOrigenReal = viaje.getParadas().stream()
+                    .filter(p -> p.getId().equals(idParadaOrigen))
+                    .findFirst().get().getParada().getId();
+            Long idParadaDestinoReal = viaje.getParadas().stream()
+                    .filter(p -> p.getId().equals(idParadaDestino))
+                    .findFirst().get().getParada().getId();
+
+            precioPorPasajero = servicioViaje.calcularPrecioPorTramo(viaje, idParadaOrigenReal, idParadaDestinoReal);
+        } else {
+            precioPorPasajero = viaje.getPrecio();
+        }
+
+        Integer cantidadAsientos = viaje.getCombi().getCantidadDeAsientos();
+        Integer filasAsientos = (cantidadAsientos + 1) / 2; // ceil(cantidadAsientos / 2) con enteros
+
         modelo.put("idViaje", idViaje);
         modelo.put("pasajeros", pasajeros);
         modelo.put("idParadaOrigen", idParadaOrigen);
         modelo.put("idParadaDestino", idParadaDestino);
-        modelo.put("cantidadAsientos", viaje.getCombi().getCantidadDeAsientos());
+        modelo.put("cantidadAsientos", cantidadAsientos);
+        modelo.put("filasAsientos", filasAsientos);
         modelo.put("asientosOcupados", servicioViaje.obtenerAsientosOcupados(idViaje));
+        modelo.put("usuarioLogueado", usuarioLogueado);
+        modelo.put("precioViaje", precioPorPasajero);
         return new ModelAndView("seleccionarAsiento", modelo);
     }
 

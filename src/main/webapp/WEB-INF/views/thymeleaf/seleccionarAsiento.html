@@ -54,23 +54,25 @@
                         </div>
 
                         <div class="grilla-vertical">
-                            <div th:each="fila : ${#numbers.sequence(0, 5)}" class="fila-asientos">
+                            <div th:each="fila : ${#numbers.sequence(0, filasAsientos - 1)}" class="fila-asientos">
                                 <div class="lado-asientos">
-                                    <div th:with="numIzq=${(fila * 2) + 1}"
+                                    <div th:if="${(fila * 2) + 1 <= cantidadAsientos}"
+                                            th:with="numIzq=${(fila * 2) + 1}"
                                             th:text="${numIzq}"
                                             th:class="${#lists.contains(asientosOcupados, numIzq)} ? 'asiento ocupado' : 'asiento disponible'"
                                             th:attr="data-numero=${numIzq}">
                                     </div>
                                 </div>
                                 <div class="lado-asientos">
-                                    <div th:with="numDer=${(fila * 2) + 2}"
+                                    <div th:if="${(fila * 2) + 2 <= cantidadAsientos}"
+                                            th:with="numDer=${(fila * 2) + 2}"
                                             th:text="${numDer}"
                                             th:class="${#lists.contains(asientosOcupados, numDer)} ? 'asiento ocupado' : 'asiento disponible'"
                                             th:attr="data-numero=${numDer}">
                                     </div>
                                 </div>
                             </div>
-                        </div>
+</div>
 
                         <div class="motor-label">MOTOR</div>
                     </div>
@@ -83,42 +85,60 @@
 
             <div class="columna-formularios">
                 <section class="grupo-formularios">
-                    <div th:each="i : ${#numbers.sequence(1, pasajeros)}" class="tarjeta-pasajero shadow-sm">
-                        <div class="cabecera-pasajero">
-                            <div class="info-pasajero-titulo">
-                                <div class="avatar-pasajero" th:classappend="${i == 1} ? 'titular-bg' : ''">
-                                    <span class="material-symbols-outlined" th:text="${i == 1} ? 'person' : 'person_add'">person</span>
-                                </div>
-                                <div>
-                                    <h3 class="texto-pasajero-h3" th:text="'Pasajero ' + ${i}">Pasajero 1</h3>
-                                    <p class="subtitulo-titular" th:if="${i == 1}">Titular de la reserva</p>
-                                    <p class="subtitulo-titular secondary-color" th:if="${i > 1}">Acompañante</p>
-                                </div>
-                            </div>
-                            <div class="badge-asiento">
-                                Asiento: <span th:id="'asiento-elegido-' + ${i}">--</span>
-                            </div>
-                        </div>
+                    <div th:each="i : ${#numbers.sequence(1, pasajeros)}"
+                            class="tarjeta-pasajero shadow-sm"
+                            th:classappend="${i > 1} ? ' pasajero-oculto' : ''"
+                            th:id="'tarjeta-pasajero-' + ${i}">
 
-                        <div class="grilla-campos">
-                            <div class="campo-formulario">
-                                <label>Nombre</label>
-                                <input type="text" class="stitch-input" name="nombres" placeholder="Ej: Juan" required>
-                            </div>
-                            <div class="campo-formulario">
-                                <label>Apellido</label>
-                                <input type="text" class="stitch-input" name="apellidos" placeholder="Ej: Pérez" required>
-                            </div>
-                            <div class="campo-formulario">
-                                <label>DNI</label>
-                                <input type="text" class="stitch-input" name="dnis" placeholder="Ej: 38444555" required>
-                            </div>
-                            <div class="campo-formulario">
-                                <label>Email</label>
-                                <input type="email" class="stitch-input" name="emails" placeholder="Ej: juan@mail.com" required>
-                            </div>
-                        </div>
-                    </div>
+    <div class="cabecera-pasajero">
+        <div class="info-pasajero-titulo">
+            <div class="avatar-pasajero" th:classappend="${i == 1} ? 'titular-bg' : ''">
+                <span class="material-symbols-outlined" th:text="${i == 1} ? 'person' : 'person_add'">person</span>
+            </div>
+            <div>
+                <h3 class="texto-pasajero-h3" th:text="'Pasajero ' + ${i}">Pasajero 1</h3>
+                <p class="subtitulo-titular" th:if="${i == 1}">Titular de la reserva</p>
+                <p class="subtitulo-titular secondary-color" th:if="${i > 1}">Acompañante</p>
+            </div>
+        </div>
+        <div class="badge-asiento">
+            Asiento: <span th:id="'asiento-elegido-' + ${i}">--</span>
+        </div>
+    </div>
+
+                        <!-- Pasajero 1: una sola línea con los datos de sesión, no editable -->
+    <div th:if="${i == 1}">
+        <input type="hidden" name="nombres" th:value="${usuarioLogueado.nombre}"/>
+        <input type="hidden" name="apellidos" th:value="${usuarioLogueado.apellido}"/>
+        <input type="hidden" name="dnis" value=""/>
+        <input type="hidden" name="emails" th:value="${usuarioLogueado.email}"/>
+
+        <p class="dato-titular"
+                th:text="${usuarioLogueado.nombre} + ' ' + ${usuarioLogueado.apellido} + ' (' + ${usuarioLogueado.email} + ')'">
+            Nombre Apellido (email)
+        </p>
+    </div>
+
+                        <!-- Pasajero 2+: formulario editable, oculto hasta que se elija su asiento -->
+    <div th:if="${i > 1}" class="grilla-campos">
+        <div class="campo-formulario">
+            <label>Nombre</label>
+            <input type="text" class="stitch-input" name="nombres" placeholder="Ej: Juan">
+        </div>
+        <div class="campo-formulario">
+            <label>Apellido</label>
+            <input type="text" class="stitch-input" name="apellidos" placeholder="Ej: Pérez">
+        </div>
+        <div class="campo-formulario">
+            <label>DNI</label>
+            <input type="text" class="stitch-input" name="dnis" placeholder="Ej: 38444555">
+        </div>
+        <div class="campo-formulario">
+            <label>Email</label>
+            <input type="email" class="stitch-input" name="emails" placeholder="Ej: juan@mail.com">
+        </div>
+    </div>
+</div>
                 </section>
 
                 <div class="tarjeta-resumen shadow-sm">
@@ -171,8 +191,9 @@
         const subtotalText = document.getElementById('subtotalText');
         const confirmBtn = document.getElementById('confirmBtn');
 
-        // Inicializar UI de totales basados en precio real
+        // Inicializar UI de totales y visibilidad de formularios
         actualizarTotales(0);
+        actualizarVisibilidadFormularios();
 
         document.querySelectorAll('.asiento.disponible').forEach(asiento => {
             asiento.addEventListener('click', function() {
@@ -222,6 +243,7 @@
                 }
 
                 actualizarTotales(asientosSeleccionados.length);
+                actualizarVisibilidadFormularios();
             });
         });
 
@@ -229,6 +251,23 @@
             const total = cantidad * PRICE_PER_SEAT;
             subtotalText.innerText = `$${total.toLocaleString('es-AR')}`;
             totalText.innerText = `$${total.toLocaleString('es-AR')}`;
+        }
+
+        // Muestra el formulario del Pasajero N recién cuando se seleccionó el asiento N-ésimo
+        function actualizarVisibilidadFormularios() {
+            for (let i = 2; i <= maxPasajeros; i++) {
+                const tarjeta = document.getElementById('tarjeta-pasajero-' + i);
+                if (!tarjeta) continue;
+
+                const inputs = tarjeta.querySelectorAll('input');
+                if (asientosSeleccionados.length >= i) {
+                    tarjeta.classList.remove('pasajero-oculto');
+                    inputs.forEach(inp => inp.setAttribute('required', 'required'));
+                } else {
+                    tarjeta.classList.add('pasajero-oculto');
+                    inputs.forEach(inp => inp.removeAttribute('required'));
+                }
+            }
         }
 
         document.getElementById('form-confirmar').addEventListener('submit', function(e) {

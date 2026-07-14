@@ -9,10 +9,10 @@ insert into Usuario(email, password, rol, activo) values('usuario2@gmail.com', '
 insert into Conductor (nombre, apellido, email, telefono, documento, password, licencia, calificacion, ganancia, cuentaHabilitada, estadoConductor)
 values ('Eduardo', 'Zaens', 'ezaens@mail.com', '1123456789', '12345678', 'asd', 'D2', 0.0, 75000.0, true, 'DISPONIBLE');
 
-INSERT INTO Conductor (nombre, apellido, email, telefono, documento, licencia, calificacion, ganancia, cuentaHabilitada, estadoConductor)
-VALUES ('María', 'Sosa', 'msosa@mail.com', '1134567890', '23456789', 'D1', 4.7, 92000.0, true, 'DISPONIBLE'),
-       ('Carlos', 'Ruiz', 'cruiz@mail.com', '1145678901', '34567890', 'D2', 4.3, 81000.0, true, 'EN_VIAJE'),
-       ('Lucía', 'Fernández', 'lfernandez@mail.com', '1156789012', '45678901', 'D1', 4.9, 98000.0, true, 'SUSPENDIDO');
+INSERT INTO Conductor (nombre, apellido, email, telefono, documento, password, licencia, calificacion, ganancia, cuentaHabilitada, estadoConductor)
+VALUES ('María', 'Sosa', 'msosa@mail.com', '1134567890', '23456789', 'qwe' ,'D1', 4.7, 92000.0, true, 'DISPONIBLE'),
+       ('Carlos', 'Ruiz', 'cruiz@mail.com', '1145678901', '34567890', 'zxc' ,'D2', 4.3, 81000.0, true, 'EN_VIAJE'),
+       ('Lucía', 'Fernández', 'lfernandez@mail.com', '1156789012', 'zaq' ,'45678901', 'D1', 4.9, 98000.0, true, 'SUSPENDIDO');
 
 -- 3. Inserción de Combis
 insert into Combi (tipoDeCombi, cantidadDeAsientos, tipoDeTransmision, patente, marca, modelo,EstadoDeCombi, kilometros)
@@ -28,7 +28,7 @@ insert into Combi (tipoDeCombi, cantidadDeAsientos, tipoDeTransmision, patente, 
 ('ESTANDAR', 14, 'Manual', 'AK-332-UV', 'Toyota', 'Hiace','DISPONIBLE',21500);
 
 -- 4. Asignaciones y Reportes de fallas
-insert into AsignacionCombiConductor (id_conductor, id_combi, combiActiva) values (1, 1, true);
+insert into AsignacionCombiConductor (id_conductor, id_combi, combiActiva) values (1, 1, true), (2, 4, true);
 
 insert into ReporteFalla (descripcion, estadoReporte, conductor_id, combi_id, fechaCreacionReporte, fechaResueltoReporte) values
 ('Falla en el motor, pérdida de potencia en subida', 'PENDIENTE', 2, 6, '2026-06-01', NULL),
