@@ -27,16 +27,41 @@
                 <h1>Inteligencia en Movimiento</h1>
                 <p>Descubre la forma más eficiente y cómoda de moverte por la ciudad con BondiWay.</p>
 
-                <form th:action="@{/procesar-busqueda}" method="POST" class="search-card">
+                <form th:action="@{/procesar-busqueda}" method="POST" th:object="${datosBusqueda}" class="search-card">
                     <div class="search-grid">
-                        <div class="input-group"><label>Origen</label><div class="input-wrapper"><span class="material-symbols-outlined">location_on</span><input type="text" name="origen" placeholder="¿Desde dónde?"></div></div>
-                        <div class="input-group"><label>Destino</label><div class="input-wrapper"><span class="material-symbols-outlined">navigation</span><input type="text" name="destino" placeholder="¿A dónde vas?"></div></div>
-                        <div class="input-group"><label>Fecha</label><div class="input-wrapper"><span class="material-symbols-outlined">calendar_today</span><input type="date" name="fecha"></div></div>
+                        <div class="input-group">
+                            <label>Origen</label>
+                            <div class="input-wrapper">
+                                <span class="material-symbols-outlined">location_on</span>
+                                <input id="origenTexto" type="text" list="listaParadas" placeholder="¿Desde dónde?" autocomplete="off" required>
+                                <input type="hidden" th:field="*{idOrigen}" id="idOrigenOculto">
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label>Destino</label>
+                            <div class="input-wrapper">
+                                <span class="material-symbols-outlined">navigation</span>
+                                <input id="destinoTexto" type="text" list="listaParadas" placeholder="¿A dónde vas?" autocomplete="off" required>
+                                <input type="hidden" th:field="*{idDestino}" id="idDestinoOculto">
+                            </div>
+                        </div>
+
+                        <datalist id="listaParadas">
+                            <option th:each="parada : ${paradas}" th:value="${parada.nombre}" th:data-id="${parada.id}"></option>
+                        </datalist>
+
+                        <div class="input-group">
+                            <label>Fecha</label>
+                            <div class="input-wrapper">
+                                <span class="material-symbols-outlined">calendar_today</span>
+                                <input th:field="*{fecha}" id="fecha" type="date" required>
+                            </div>
+                        </div>
                         <div class="input-group">
                             <label>Pasajeros</label>
                             <div class="input-wrapper">
                                 <span class="material-symbols-outlined">group</span>
-                                <select name="pasajeros" style="width: 100%; border: none; background: transparent; outline: none; -webkit-appearance: none; cursor: pointer;">
+                                <select th:field="*{pasajeros}" style="width: 100%; border: none; background: transparent; outline: none; -webkit-appearance: none; cursor: pointer;">
                                     <option value="1">1 Pasajero</option>
                                     <option value="2">2 Pasajeros</option>
                                     <option value="3">3 Pasajeros</option>
@@ -48,43 +73,6 @@
                     <button type="submit" class="btn-primary search-btn" style="width: 100%;">Buscar viaje</button>
                 </form>
             </div>
-        </div>
-    </section>
-
-    <section class="recommended-section">
-        <div class="section-header">
-            <div>
-                <h2>Viajes recomendados</h2>
-                <p>Basado en tus rutas frecuentes y preferencias.</p>
-            </div>
-            <!--<a href="#" class="see-all-link">Ver todos <span class="material-symbols-outlined">arrow_forward</span></a>-->
-        </div>
-
-        <div class="trips-grid">
-            <article class="trip-card">
-                <div class="trip-top"><div><span class="trip-date">HOY, 18:30</span><h3>Buenos Aires → Pilar</h3></div><span class="seats-tag">4 Asientos</span></div>
-                <div class="trip-info">
-                    <div class="trip-info-item"><span class="material-symbols-outlined">schedule</span><p>Duración: 55 min</p></div>
-                    <div class="trip-info-item"><span class="material-symbols-outlined">directions_bus</span><p>Servicio Premium Express</p></div>
-                </div>
-                <div class="trip-footer"><div><span class="price-label">Precio</span><h4>$4.500</h4></div><button class="details-btn">Ver detalle</button></div>
-            </article>
-            <article class="trip-card">
-                <div class="trip-top"><div><span class="trip-date">MAÑANA, 09:15</span><h3>La Plata → CABA</h3></div><span class="seats-tag">2 Asientos</span></div>
-                <div class="trip-info">
-                    <div class="trip-info-item"><span class="material-symbols-outlined">schedule</span><p>Duración: 1h 10 min</p></div>
-                    <div class="trip-info-item"><span class="material-symbols-outlined">eco</span><p>Vehículo Eléctrico</p></div>
-                </div>
-                <div class="trip-footer"><div><span class="price-label">Precio</span><h4>$3.800</h4></div><button class="details-btn">Ver detalle</button></div>
-            </article>
-            <article class="trip-card">
-                <div class="trip-top"><div><span class="trip-date">MAÑANA, 20:00</span><h3>Nordelta → Belgrano</h3></div><span class="seats-tag">6 Asientos</span></div>
-                <div class="trip-info">
-                    <div class="trip-info-item"><span class="material-symbols-outlined">schedule</span><p>Duración: 40 min</p></div>
-                    <div class="trip-info-item"><span class="material-symbols-outlined">workspace_premium</span><p>Servicio VIP Concierge</p></div>
-                </div>
-                <div class="trip-footer"><div><span class="price-label">Precio</span><h4>$5.200</h4></div><button class="details-btn">Ver detalle</button></div>
-            </article>
         </div>
     </section>
 
@@ -108,5 +96,41 @@
     </section>
 </main>
 <div th:replace="componentes/footer :: footer"></div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        function enlazar(visibleId, ocultoId) {
+            const inputVisible = document.getElementById(visibleId);
+            const inputOculto = document.getElementById(ocultoId);
+            const opciones = document.getElementById("listaParadas").options;
+
+            inputVisible.addEventListener("input", function() {
+                inputOculto.value = "";
+                for (let i = 0; i < opciones.length; i++) {
+                    if (opciones[i].value === inputVisible.value) {
+                        inputOculto.value = opciones[i].getAttribute("data-id");
+                        break;
+                    }
+                }
+            });
+        }
+        enlazar("origenTexto", "idOrigenOculto");
+        enlazar("destinoTexto", "idDestinoOculto");
+
+        const hoy = new Date();
+        let mes = hoy.getMonth() + 1;
+        let dia = hoy.getDate();
+        if (mes < 10) mes = "0" + mes;
+        if (dia < 10) dia = "0" + dia;
+
+        const fechaInput = document.getElementById("fecha");
+        if(fechaInput) {
+            fechaInput.setAttribute("min", hoy.getFullYear() + "-" + mes + "-" + dia);
+            if(!fechaInput.value) {
+                fechaInput.value = hoy.getFullYear() + "-" + mes + "-" + dia;
+            }
+        }
+    });
+</script>
 </body>
 </html>

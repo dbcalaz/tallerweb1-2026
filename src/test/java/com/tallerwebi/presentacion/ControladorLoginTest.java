@@ -6,6 +6,7 @@ import static org.hamcrest.text.IsEqualIgnoringCase.equalToIgnoringCase;
 import static org.mockito.Mockito.*;
 
 import com.tallerwebi.dominio.ServicioLogin;
+import com.tallerwebi.dominio.ServicioViaje;
 import com.tallerwebi.dominio.Usuario;
 import com.tallerwebi.dominio.excepcion.UsuarioExistente;
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +23,7 @@ public class ControladorLoginTest {
   private HttpServletRequest requestMock;
   private HttpSession sessionMock;
   private ServicioLogin servicioLoginMock;
+  private ServicioViaje servicioViajeMock; // Declaramos el nuevo mock
 
   @BeforeEach
   public void init() {
@@ -31,7 +33,10 @@ public class ControladorLoginTest {
     requestMock = mock(HttpServletRequest.class);
     sessionMock = mock(HttpSession.class);
     servicioLoginMock = mock(ServicioLogin.class);
-    controladorLogin = new ControladorLogin(servicioLoginMock);
+    servicioViajeMock = mock(ServicioViaje.class); // Inicializamos el mock de ServicioViaje
+
+    // Le pasamos AMBOS servicios al controlador tal como lo exige ahora
+    controladorLogin = new ControladorLogin(servicioLoginMock, servicioViajeMock);
   }
 
   @Test
@@ -45,8 +50,8 @@ public class ControladorLoginTest {
     // validacion
     assertThat(modelAndView.getViewName(), equalToIgnoringCase("login"));
     assertThat(
-      modelAndView.getModel().get("error").toString(),
-      equalToIgnoringCase("Usuario o clave incorrecta")
+            modelAndView.getModel().get("error").toString(),
+            equalToIgnoringCase("Usuario o clave incorrecta")
     );
     verify(sessionMock, times(0)).setAttribute("ROL", "ADMIN");
   }
@@ -59,7 +64,7 @@ public class ControladorLoginTest {
 
     when(requestMock.getSession()).thenReturn(sessionMock);
     when(servicioLoginMock.consultarUsuario(anyString(), anyString()))
-      .thenReturn(usuarioEncontradoMock);
+            .thenReturn(usuarioEncontradoMock);
 
     // ejecucion
     ModelAndView modelAndView = controladorLogin.validarLogin(datosLoginMock, requestMock);
@@ -71,7 +76,7 @@ public class ControladorLoginTest {
 
   @Test
   public void registrameSiUsuarioNoExisteDeberiaCrearUsuarioYVolverAlLogin()
-    throws UsuarioExistente {
+          throws UsuarioExistente {
     // ejecucion
     ModelAndView modelAndView = controladorLogin.registrarme(usuarioMock);
 
@@ -82,7 +87,7 @@ public class ControladorLoginTest {
 
   @Test
   public void registrarmeSiUsuarioExisteDeberiaVolverAFormularioYMostrarError()
-    throws UsuarioExistente {
+          throws UsuarioExistente {
     // preparacion
     doThrow(UsuarioExistente.class).when(servicioLoginMock).registrar(usuarioMock);
 
@@ -92,8 +97,8 @@ public class ControladorLoginTest {
     // validacion
     assertThat(modelAndView.getViewName(), equalToIgnoringCase("nuevo-usuario"));
     assertThat(
-      modelAndView.getModel().get("error").toString(),
-      equalToIgnoringCase("El usuario ya existe")
+            modelAndView.getModel().get("error").toString(),
+            equalToIgnoringCase("El usuario ya existe")
     );
   }
 
@@ -108,8 +113,8 @@ public class ControladorLoginTest {
     // validacion
     assertThat(modelAndView.getViewName(), equalToIgnoringCase("nuevo-usuario"));
     assertThat(
-      modelAndView.getModel().get("error").toString(),
-      equalToIgnoringCase("Error al registrar el nuevo usuario")
+            modelAndView.getModel().get("error").toString(),
+            equalToIgnoringCase("Error al registrar el nuevo usuario")
     );
   }
 
@@ -122,16 +127,6 @@ public class ControladorLoginTest {
     assertThat(modelAndView.getViewName(), equalToIgnoringCase("login"));
     assertThat(modelAndView.getModel().get("datosLogin"), instanceOf(DatosLogin.class));
   }
-
-  /*@Test
-  public void nuevoUsuarioDeberiaRetornarVistaNuevoUsuarioConUsuarioVacio() {
-    // ejecucion
-    ModelAndView modelAndView = controladorLogin.nuevoUsuario();
-
-    // validacion
-    assertThat(modelAndView.getViewName(), equalToIgnoringCase("nuevo-usuario"));
-    assertThat(modelAndView.getModel().get("usuario"), instanceOf(Usuario.class));
-  }*/
 
   @Test
   public void irAHomeDeberiaRetornarVistaHome() {

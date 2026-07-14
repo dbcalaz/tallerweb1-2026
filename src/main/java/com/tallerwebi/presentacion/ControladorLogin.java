@@ -1,6 +1,7 @@
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.ServicioLogin;
+import com.tallerwebi.dominio.ServicioViaje;
 import com.tallerwebi.dominio.Usuario;
 import com.tallerwebi.dominio.excepcion.UsuarioExistente;
 
@@ -18,10 +19,12 @@ import org.springframework.web.servlet.ModelAndView;
 public class ControladorLogin {
 
     private ServicioLogin servicioLogin;
+    private ServicioViaje servicioViaje;
 
     @Autowired
-    public ControladorLogin(ServicioLogin servicioLogin) {
+    public ControladorLogin(ServicioLogin servicioLogin, ServicioViaje servicioViaje) {
         this.servicioLogin = servicioLogin;
+        this.servicioViaje = servicioViaje;
     }
 
     @RequestMapping("/login")
@@ -76,7 +79,12 @@ public class ControladorLogin {
 
     @RequestMapping(path = "/home", method = RequestMethod.GET)
     public ModelAndView irAHome() {
-        return new ModelAndView("home");
+        ModelMap modelo = new ModelMap();
+        // Enviamos el objeto de busqueda y la lista de paradas a la vista Home
+        modelo.put("datosBusqueda", new DatosBusqueda());
+        modelo.put("paradas", servicioViaje.obtenerTodasLasParadas());
+
+        return new ModelAndView("home", modelo);
     }
 
     @RequestMapping(path = "/", method = RequestMethod.GET)
