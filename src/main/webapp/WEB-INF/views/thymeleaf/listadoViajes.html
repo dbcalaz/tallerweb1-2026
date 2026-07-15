@@ -26,7 +26,7 @@
             <div class="header-meta-right">
                 <div class="route-pill-display">
                     <span class="material-symbols-outlined text-purple">route</span>
-                    <span class="route-text-bold" th:text="${origen} + ' → ' + ${destino}">Morón → Ramos Mejía</span>
+                    <span class="route-text-bold" th:text="${origen} + ' → ' +${destino}">Morón → Ramos Mejía</span>
                 </div>
                 <div class="search-specs-row">
                     <span class="spec-item">
@@ -61,7 +61,7 @@
                     <span class="result-service-badge" th:text="${viaje.tipoDeViaje}">Expreso</span>
                     <div class="result-rating-row">
                         <span class="material-symbols-outlined fill-icon">star</span>
-                        <span th:text="${viaje.calificacionConductor}">4.9</span>
+                        <span th:text="${#numbers.formatDecimal(viaje.calificacionConductor, 1, 1)}">4.9</span>
                     </div>
                 </div>
                 <div class="result-card-middle-block">
@@ -96,11 +96,11 @@
                     <div class="pricing-summary-container">
                         <div class="price-single-row">
                             <span class="price-label">Por asiento</span>
-                            <strong class="price-value" th:text="'$' + ${#numbers.formatDecimal(viaje.precio, 1, 'POINT', 0, 'COMMA')}">$7.000</strong>
+                            <strong class="price-value" th:text="'$' +${#numbers.formatDecimal(viaje.precio, 1, 'POINT', 0, 'COMMA')}">$7.000</strong>
                         </div>
                         <div class="price-total-row">
                             <span class="price-total-label">Total estimado:</span>
-                            <span class="price-total-value" th:text="'$' + ${#numbers.formatDecimal(viaje.precio * pasajeros, 1, 'POINT', 0, 'COMMA')}">$14.000</span>
+                            <span class="price-total-value" th:text="'$' +${#numbers.formatDecimal(viaje.precio * pasajeros, 1, 'POINT', 0, 'COMMA')}">$14.000</span>
                         </div>
                     </div>
                     <a th:href="@{/seleccionar-asiento(idViaje=${viaje.id}, pasajeros=${pasajeros}, idParadaOrigen=${viaje.idParadaOrigen}, idParadaDestino=${viaje.idParadaDestino})}" class="btn-stitch-select-seats">
@@ -115,10 +115,121 @@
 </div>
 <script>
     document.querySelectorAll('.btn-stitch-select-seats, .btn-solicitar-espera').forEach(btn => {
-        btn.addEventListener('mousedown', () => btn.style.transform = 'scale(0.97)');
-        btn.addEventListener('mouseup', () => btn.style.transform = 'scale(1)');
-        btn.addEventListener('mouseleave', () => btn.style.transform = 'scale(1)');
-    });
-</script>
-</body>
-</html>
+        btn.addEventListener('mousedown', () => btn.style.transform<!DOCTYPE HTML>
+        <html lang="es" xmlns:th="http://www.thymeleaf.org">
+            <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <title>Viajes Disponibles - BondiWay</title>
+        <link rel="icon" th:href="@{/imagenes/logo.png}" type="image/x-icon">
+            <link rel="preconnect" href="https://fonts.googleapis.com">
+                <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+                    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+                        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+
+                        <link rel="stylesheet" th:href="@{/css/variables.css}">
+                            <link rel="stylesheet" th:href="@{/css/components.css}">
+                                <link rel="stylesheet" th:href="@{/css/resultados-busqueda.css}">
+                                </head>
+                                <body class="resultados-body-page">
+                                <div class="page-wrapper">
+                                    <div th:replace="componentes/nav-bar :: navbar('busqueda')"></div>
+                                    <main class="resultados-main-canvas">
+                                        <header th:unless="${sinResultados}" class="resultados-header">
+                                            <div class="header-info-left">
+                                                <h1 class="resultados-main-title">Viajes encontrados</h1>
+                                                <p class="resultados-subtitle">Resultados disponibles para tu recorrido seleccionado</p>
+                                            </div>
+                                            <div class="header-meta-right">
+                                                <div class="route-pill-display">
+                                                    <span class="material-symbols-outlined text-purple">route</span>
+                                                    <span class="route-text-bold" th:text="${origen} + ' → ' +${destino}">Morón → Ramos Mejía</span>
+                                                </div>
+                                                <div class="search-specs-row">
+                    <span class="spec-item">
+                        <span class="material-symbols-outlined">group</span>
+                        <span th:text="${pasajeros} + ' pasajeros'">2 pasajeros</span>
+                    </span>
+                                                </div>
+                                            </div>
+                                        </header>
+
+                                        <section th:if="${sinResultados}" class="resultados-empty-state">
+                                            <div class="empty-state-icon-box">
+                                                <span class="material-symbols-outlined">search_off</span>
+                                            </div>
+                                            <h3 class="empty-state-title">No encontramos viajes disponibles</h3>
+                                            <p class="empty-state-text">
+                                                Actualmente no hay unidades programadas de <span class="fw-semibold" th:text="${origen}"></span> a <span class="fw-semibold" th:text="${destino}"></span>. Te invitamos a modificar los parámetros e intentarlo nuevamente.
+                                            </p>
+
+                                            <form th:action="@{/buscar-viaje}" method="GET" class="empty-state-action-form">
+                                                <button type="submit" class="btn-solicitar-espera">
+                                                    <span class="material-symbols-outlined">search</span>
+                                                    <span>Realizar otra búsqueda</span>
+                                                </button>
+                                            </form>
+                                        </section>
+
+                                        <section th:unless="${sinResultados}" class="resultados-cards-stack">
+                                            <article th:each="viaje : ${viajes}" class="stitch-result-card">
+                                                <div class="result-card-left-block">
+                                                    <span class="result-time-display" th:text="${viaje.horario}">08:30</span>
+                                                    <span class="result-service-badge" th:text="${viaje.tipoDeViaje}">Expreso</span>
+                                                    <div class="result-rating-row">
+                                                        <span class="material-symbols-outlined fill-icon">star</span>
+                                                        <span th:text="${#numbers.formatDecimal(viaje.calificacionConductor, 1, 1)}">4.9</span>
+                                                    </div>
+                                                </div>
+                                                <div class="result-card-middle-block">
+                                                    <div class="driver-profile-header">
+                                                        <div class="driver-avatar-placeholder">
+                                                            <span class="material-symbols-outlined">account_circle</span>
+                                                        </div>
+                                                        <div class="driver-info-meta">
+                                                            <div class="driver-name-row">
+                                                                <h3 class="driver-fullname" th:text="${viaje.nombreConductor}">Ricardo Gómez</h3>
+                                                                <span class="verified-driver-pill">Verificado</span>
+                                                            </div>
+                                                            <p class="vehicle-details-text" th:text="${viaje.marcaModeloCombi}">Mercedes-Benz Sprinter 2023</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="result-features-row">
+                        <span class="feature-chip seats-chip">
+                            <span class="material-symbols-outlined">event_seat</span>
+                            <span th:text="${viaje.asientosDisponibles} + ' asientos libres'">12 as. libres</span>
+                        </span>
+                                                        <span class="feature-chip duration-chip">
+                            <span class="material-symbols-outlined">hourglass_empty</span>
+                            <span th:text="'Pasa a las: ' + ${viaje.horario}">Pasa a las: 12:15</span>
+                        </span>
+                                                        <span class="feature-chip date-chip">
+                            <span class="material-symbols-outlined">calendar_today</span>
+                            <span th:text="${viaje.fecha}">15 de Agosto</span>
+                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="result-card-right-block">
+                                                    <div class="pricing-summary-container">
+                                                        <div class="price-single-row">
+                                                            <span class="price-label">Por asiento</span>
+                                                            <strong class="price-value" th:text="'$' +${#numbers.formatDecimal(viaje.precio, 1, 'POINT', 0, 'COMMA')}">$7.000</strong>
+                                                        </div>
+                                                        <div class="price-total-row">
+                                                            <span class="price-total-label">Total estimado:</span>
+                                                            <span class="price-total-value" th:text="'$' +${#numbers.formatDecimal(viaje.precio * pasajeros, 1, 'POINT', 0, 'COMMA')}">$14.000</span>
+                                                        </div>
+                                                    </div>
+                                                    <a th:href="@{/seleccionar-asiento(idViaje=${viaje.id}, pasajeros=${pasajeros}, idParadaOrigen=${viaje.idParadaOrigen}, idParadaDestino=${viaje.idParadaDestino})}" class="btn-stitch-select-seats">
+                                                        <span>Elegir asientos</span>
+                                                        <span class="material-symbols-outlined">chevron_right</span>
+                                                    </a>
+                                                </div>
+                                            </article>
+                                        </section>
+                                    </main>
+                                    <div th:replace="componentes/footer :: footer"></div>
+                                </div>
+                                <script>
+                                    document.querySelectorAll('.btn-stitch-select-seats, .btn-solicitar-espera').forEach(btn => {
+                                    btn.addEventListener('mousedown', () => btn.style.transform
