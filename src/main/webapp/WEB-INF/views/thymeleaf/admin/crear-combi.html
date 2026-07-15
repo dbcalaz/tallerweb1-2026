@@ -16,6 +16,157 @@
     <link rel="stylesheet" th:href="@{/css/variables.css}">
     <link rel="stylesheet" th:href="@{/css/components.css}">
     <link rel="stylesheet" th:href="@{/css/solicitar-viaje.css}">
+
+    <!-- Estilos específicos para arreglar los selectores, el sidebar y el botón -->
+    <style>
+        /* Corrección de los selectores (Transmisión y Tipo) */
+        .field-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .field-wrapper select {
+            width: 100%;
+            padding: 12px 40px 12px 45px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            appearance: none;
+            -webkit-appearance: none;
+            background-color: #fff;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            color: #333;
+            cursor: pointer;
+        }
+        .field-wrapper select:focus {
+            outline: none;
+            border-color: var(--primary-color, #4a6ee0);
+            box-shadow: 0 0 0 2px rgba(74, 110, 224, 0.2);
+        }
+        .field-wrapper .material-symbols-outlined {
+            position: absolute;
+            left: 12px;
+            color: #666;
+            pointer-events: none;
+        }
+        .field-wrapper .select-arrow {
+            left: auto;
+            right: 12px;
+        }
+
+        /* Corrección del Panel de Detalles (Aside) */
+        .route-preview {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            min-width: 300px;
+        }
+        .preview-card, .ai-card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid #eaeaea;
+        }
+        .preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        .preview-header h2 {
+            font-size: 1.25rem;
+            margin: 0;
+            color: #333;
+        }
+        .preview-header span {
+            color: var(--primary-color, #4a6ee0);
+        }
+        .route-steps {
+            display: flex;
+            flex-direction: column;
+        }
+        .step-item {
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+        }
+        .step-icon {
+            background: #f0f4ff;
+            color: var(--primary-color, #4a6ee0);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .step-item p {
+            margin: 5px 0 0 0;
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.4;
+        }
+        .step-item small {
+            font-weight: 700;
+            color: #333;
+            font-size: 0.95rem;
+        }
+        .step-line {
+            width: 2px;
+            height: 24px;
+            background: #e0e0e0;
+            margin-left: 17px;
+            margin-top: 4px;
+            margin-bottom: 4px;
+        }
+        .ai-card {
+            background: #f8f9fa;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        .ai-card p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: #555;
+            line-height: 1.5;
+        }
+        .ai-card span {
+            color: #2e7d32;
+            font-size: 28px;
+        }
+
+        /* Corrección del Botón Cancelar */
+        .cancel-btn {
+            padding: 12px 24px;
+            background-color: transparent;
+            color: #d32f2f;
+            border: 1px solid #d32f2f;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            display: inline-block;
+        }
+        .cancel-btn:hover {
+            background-color: #ffebee;
+        }
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .form-actions a {
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
 <main class="create-trip-page">
@@ -29,37 +180,25 @@
 
                 <div class="form-row three-columns-layout">
                     <div class="form-group">
-                        <label for="patente">
-                            PATENTE
-                        </label>
+                        <label for="patente">PATENTE</label>
                         <div class="field-wrapper">
-                            <span class="material-symbols-outlined">
-                                pin
-                            </span>
+                            <span class="material-symbols-outlined">pin</span>
                             <input th:field="*{patente}" id="patente" type="text" placeholder="Ej: AB123CD" >
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="marca">
-                            MARCA
-                        </label>
+                        <label for="marca">MARCA</label>
                         <div class="field-wrapper">
-                            <span class="material-symbols-outlined">
-                                sell
-                            </span>
+                            <span class="material-symbols-outlined">sell</span>
                             <input th:field="*{marca}" id="marca" type="text" placeholder="Ej: Mercedes-Benz" >
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="modelo">
-                            MODELO
-                        </label>
+                        <label for="modelo">MODELO</label>
                         <div class="field-wrapper">
-                            <span class="material-symbols-outlined">
-                                directions_car
-                            </span>
+                            <span class="material-symbols-outlined">directions_car</span>
                             <input th:field="*{modelo}" id="modelo" type="text" placeholder="Ej: Sprinter 311" >
                         </div>
                     </div>
@@ -67,65 +206,45 @@
 
                 <div class="form-row three-columns-layout">
                     <div class="form-group">
-                        <label for="asientos">
-                            CANTIDAD DE ASIENTOS
-                        </label>
+                        <label for="asientos">CANTIDAD DE ASIENTOS</label>
                         <div class="field-wrapper">
-                            <span class="material-symbols-outlined">
-                                airline_seat_recline_normal
-                            </span>
+                            <span class="material-symbols-outlined">airline_seat_recline_normal</span>
                             <input th:field="*{cantidadDeAsientos}" id="asientos" type="number" min="1" max="50" placeholder="Ej: 19" >
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="transmision">
-                            TRANSMISIÓN
-                        </label>
+                        <label for="transmision">TRANSMISIÓN</label>
                         <div class="field-wrapper">
-                            <span class="material-symbols-outlined">
-                                settings
-                            </span>
+                            <span class="material-symbols-outlined">settings</span>
                             <select th:field="*{tipoDeTransmision}" id="transmision" >
                                 <option value="" >Seleccione...</option>
                                 <option value="MANUAL">Manual</option>
                                 <option value="AUTOMATICA">Automática</option>
                             </select>
-                            <span class="material-symbols-outlined select-arrow">
-                                expand_more
-                            </span>
+                            <span class="material-symbols-outlined select-arrow">expand_more</span>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="tipo">
-                            TIPO DE COMBI
-                        </label>
+                        <label for="tipo">TIPO DE COMBI</label>
                         <div class="field-wrapper">
-                            <span class="material-symbols-outlined">
-                                airport_shuttle
-                            </span>
+                            <span class="material-symbols-outlined">airport_shuttle</span>
                             <select th:field="*{tipoDeCombi}" id="tipo" >
                                 <option value="" >Seleccione...</option>
                                 <option value="ESTANDAR">Estándar</option>
                                 <option value="TURISTICA">Turístico</option>
                             </select>
-                            <span class="material-symbols-outlined select-arrow">
-                                expand_more
-                            </span>
+                            <span class="material-symbols-outlined select-arrow">expand_more</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="form-row three-columns-layout">
                     <div class="form-group">
-                        <label for="kilometros">
-                            KILÓMETROS
-                        </label>
+                        <label for="kilometros">KILÓMETROS</label>
                         <div class="field-wrapper">
-                            <span class="material-symbols-outlined">
-                                speed
-                            </span>
+                            <span class="material-symbols-outlined">speed</span>
                             <input th:field="*{kilometros}" id="kilometros" type="number" min="0" placeholder="Ej: 1500" >
                         </div>
                     </div>
@@ -135,9 +254,7 @@
 
                 <div class="form-actions">
                     <button type="submit" class="btn-primary create-btn">
-                        <span class="material-symbols-outlined">
-                            directions_bus
-                        </span>
+                        <span class="material-symbols-outlined">directions_bus</span>
                         Registrar unidad
                     </button>
                     <a th:href="@{/admin}">
@@ -154,16 +271,12 @@
             <div class="preview-card">
                 <div class="preview-header">
                     <h2>Detalles de la Unidad</h2>
-                    <span class="material-symbols-outlined">
-                        directions_car
-                    </span>
+                    <span class="material-symbols-outlined">directions_car</span>
                 </div>
                 <div class="route-steps">
                     <div class="step-item">
                         <div class="step-icon start">
-                            <span class="material-symbols-outlined">
-                                info
-                            </span>
+                            <span class="material-symbols-outlined">info</span>
                         </div>
                         <div>
                             <small>Importante</small>
@@ -173,9 +286,7 @@
                     <div class="step-line"></div>
                     <div class="step-item">
                         <div class="step-icon end">
-                            <span class="material-symbols-outlined">
-                                verified_user
-                            </span>
+                            <span class="material-symbols-outlined">verified_user</span>
                         </div>
                         <div>
                             <small>Seguro</small>
@@ -185,9 +296,7 @@
                 </div>
             </div>
             <div class="ai-card">
-                <span class="material-symbols-outlined">
-                    admin_panel_settings
-                </span>
+                <span class="material-symbols-outlined">admin_panel_settings</span>
                 <p>Al registrar este vehículo, pasará a estar disponible inmediatamente para la asignación de viajes en el sistema.</p>
             </div>
         </aside>

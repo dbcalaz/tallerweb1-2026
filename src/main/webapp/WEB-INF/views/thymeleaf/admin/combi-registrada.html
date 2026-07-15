@@ -10,6 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
@@ -17,6 +18,75 @@
     <link rel="stylesheet" th:href="@{/css/variables.css}">
     <link rel="stylesheet" th:href="@{/css/components.css}">
     <link rel="stylesheet" th:href="@{/css/solicitar-viaje.css}">
+
+    <style>
+        /* Botón de Registrar otra unidad */
+        .btn-secondary-custom {
+            padding: 12px 24px;
+            background-color: transparent;
+            color: var(--primary-color, #4a6ee0);
+            border: 2px solid var(--primary-color, #4a6ee0);
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            height: 44px;
+        }
+        .btn-secondary-custom:hover {
+            background-color: var(--primary-color, #4a6ee0);
+            color: #fff;
+        }
+
+        /* Grilla interna para los detalles de la combi */
+        .resumen-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .resumen-item-card {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .resumen-icon-wrapper {
+            background: #eef2ff;
+            color: var(--primary-color, #4a6ee0);
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .resumen-icon-wrapper span {
+            font-size: 22px;
+        }
+        .resumen-info p {
+            margin: 0;
+            font-size: 0.75rem;
+            color: #6b7280;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        .resumen-info h4 {
+            margin: 2px 0 0 0;
+            font-size: 0.95rem;
+            color: #111827;
+            font-weight: 700;
+        }
+    </style>
 </head>
 <body>
 <div th:replace="componentes/nav-bar :: navbar('flota')"></div>
@@ -27,149 +97,114 @@
     </section>
 
     <section class="create-trip-layout">
+
         <article class="trip-form-card" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 4rem 2rem;">
-            <span class="material-symbols-outlined" style="font-size: 5rem; color: #10b981; margin-bottom: 1rem;">
-                check_circle
-            </span>
+            <span class="material-symbols-outlined" style="font-size: 5rem; color: #10b981; margin-bottom: 1rem;">check_circle</span>
             <h2 style="margin-bottom: 0.5rem; font-size: 1.5rem;">¡Todo listo!</h2>
             <p style="color: #6b7280; margin-bottom: 2.5rem; max-width: 400px;">
                 La combi ya forma parte de tu flota activa y está disponible para ser asignada a los próximos viajes.
             </p>
 
-            <div class="form-actions" style="justify-content: center; gap: 1rem;">
-                <a th:href="@{/admin}">
+            <div class="form-actions" style="justify-content: center; gap: 1rem; display: flex; align-items: center;">
+                <a th:href="@{/admin}" style="text-decoration: none;">
                     <button type="button" class="btn-primary create-btn">
-                        <span class="material-symbols-outlined">
-                            home
-                        </span>
+                        <span class="material-symbols-outlined">home</span>
                         Ir al inicio
                     </button>
                 </a>
-                <a th:href="@{/crear-combi}">
-                    <button type="button" class="cancel-btn">
+                <a th:href="@{/crear-combi}" style="text-decoration: none;">
+                    <button type="button" class="btn-secondary-custom">
                         Registrar otra unidad
                     </button>
                 </a>
             </div>
         </article>
 
-
         <aside class="route-preview">
             <div class="preview-card">
                 <div class="preview-header">
                     <h2>Resumen de la Unidad</h2>
-                    <span class="material-symbols-outlined">
-                        directions_bus
-                    </span>
+                    <span class="material-symbols-outlined">directions_bus</span>
                 </div>
-                <div class="route-steps">
 
-                    <div class="step-item">
-                        <div class="step-icon start">
-                            <span class="material-symbols-outlined">
-                                tag
-                            </span>
+                <div class="resumen-grid">
+
+                    <div class="resumen-item-card">
+                        <div class="resumen-icon-wrapper">
+                            <span class="material-symbols-outlined">tag</span>
                         </div>
-                        <div>
-                            <small>Número de Unidad</small>
+                        <div class="resumen-info">
+                            <p>Nº Unidad</p>
                             <h4 th:text="'# ' + ${combi.id}"># 1</h4>
                         </div>
                     </div>
 
-                    <div class="step-line"></div>
-
-                    <div class="step-item">
-                        <div class="step-icon" style="background: var(--surface-200); color: var(--text-500);">
-                            <span class="material-symbols-outlined">
-                                pin
-                            </span>
+                    <div class="resumen-item-card">
+                        <div class="resumen-icon-wrapper">
+                            <span class="material-symbols-outlined">pin</span>
                         </div>
-                        <div>
-                            <small>Patente</small>
+                        <div class="resumen-info">
+                            <p>Patente</p>
                             <h4 th:text="${combi.patente}">AB123CD</h4>
                         </div>
                     </div>
 
-                    <div class="step-line"></div>
-
-                    <div class="step-item">
-                        <div class="step-icon" style="background: var(--surface-200); color: var(--text-500);">
-                            <span class="material-symbols-outlined">
-                                sell
-                            </span>
+                    <div class="resumen-item-card">
+                        <div class="resumen-icon-wrapper">
+                            <span class="material-symbols-outlined">sell</span>
                         </div>
-                        <div>
-                            <small>Marca</small>
+                        <div class="resumen-info">
+                            <p>Marca</p>
                             <h4 th:text="${combi.marca}">Mercedes-Benz</h4>
                         </div>
                     </div>
 
-                    <div class="step-line"></div>
-
-                    <div class="step-item">
-                        <div class="step-icon" style="background: var(--surface-200); color: var(--text-500);">
-                            <span class="material-symbols-outlined">
-                                directions_car
-                            </span>
+                    <div class="resumen-item-card">
+                        <div class="resumen-icon-wrapper">
+                            <span class="material-symbols-outlined">directions_car</span>
                         </div>
-                        <div>
-                            <small>Modelo</small>
+                        <div class="resumen-info">
+                            <p>Modelo</p>
                             <h4 th:text="${combi.modelo}">Sprinter 311</h4>
                         </div>
                     </div>
 
-                    <div class="step-line"></div>
-
-                    <div class="step-item">
-                        <div class="step-icon" style="background: var(--surface-200); color: var(--text-500);">
-                            <span class="material-symbols-outlined">
-                                airline_seat_recline_normal
-                            </span>
+                    <div class="resumen-item-card">
+                        <div class="resumen-icon-wrapper">
+                            <span class="material-symbols-outlined">airline_seat_recline_normal</span>
                         </div>
-                        <div>
-                            <small>Capacidad</small>
+                        <div class="resumen-info">
+                            <p>Capacidad</p>
                             <h4 th:text="${combi.cantidadDeAsientos} + ' Pasajeros'">19 Pasajeros</h4>
                         </div>
                     </div>
 
-                    <div class="step-line"></div>
-
-                    <div class="step-item">
-                        <div class="step-icon" style="background: var(--surface-200); color: var(--text-500);">
-                            <span class="material-symbols-outlined">
-                                settings
-                            </span>
+                    <div class="resumen-item-card">
+                        <div class="resumen-icon-wrapper">
+                            <span class="material-symbols-outlined">settings</span>
                         </div>
-                        <div>
-                            <small>Transmisión</small>
+                        <div class="resumen-info">
+                            <p>Transmisión</p>
                             <h4 th:text="${combi.tipoDeTransmision}">MANUAL</h4>
                         </div>
                     </div>
 
-                    <div class="step-line"></div>
-
-                    <div class="step-item">
-                        <div class="step-icon" style="background: var(--surface-200); color: var(--text-500);">
-                            <span class="material-symbols-outlined">
-                                airport_shuttle
-                            </span>
+                    <div class="resumen-item-card">
+                        <div class="resumen-icon-wrapper">
+                            <span class="material-symbols-outlined">airport_shuttle</span>
                         </div>
-                        <div>
-                            <small>Categoría</small>
+                        <div class="resumen-info">
+                            <p>Categoría</p>
                             <h4 th:text="${combi.tipoDeCombi}">ESTANDAR</h4>
                         </div>
                     </div>
 
-                    <div class="step-line"></div>
-
-                    <div class="step-item">
-                        <div class="step-icon end">
-                            <span class="material-symbols-outlined">
-                                speed
-                            </span>
+                    <div class="resumen-item-card">
+                        <div class="resumen-icon-wrapper">
+                            <span class="material-symbols-outlined">speed</span>
                         </div>
-                        <div>
-                            <small>Kilometraje Inicial</small>
+                        <div class="resumen-info">
+                            <p>Kilometraje</p>
                             <h4 th:text="${combi.kilometros} + ' Km'">1500 Km</h4>
                         </div>
                     </div>
