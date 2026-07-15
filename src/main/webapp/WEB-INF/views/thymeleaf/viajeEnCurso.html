@@ -12,6 +12,19 @@
     <link rel="stylesheet" th:href="@{/css/variables.css}">
     <link rel="stylesheet" th:href="@{/css/components.css}">
     <link rel="stylesheet" th:href="@{/css/viaje-en-curso.css}">
+
+    <style>
+        .encurso-body-page {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* La pantalla ocupa al menos el 100% de la altura de la ventana */
+            margin: 0;
+        }
+        .encurso-page-container {
+            flex: 1; /* Hace que el contenido principal crezca y empuje el footer al fondo */
+            width: 100%;
+        }
+    </style>
 </head>
 <body class="encurso-body-page">
 <div th:replace="componentes/nav-bar :: navbar('viajes')"></div>
@@ -72,10 +85,10 @@
                         </div>
                         <div class="timeline-node-info">
                             <p class="node-title"
-                                    th:classappend="${iterStat.first} ? 'text-purple' : ''"
-                                    th:text="${parada.parada.nombre}">Plaza de la República</p>
+                               th:classappend="${iterStat.first} ? 'text-purple' : ''"
+                               th:text="${parada.parada.nombre}">Plaza de la República</p>
                             <p class="node-subtitle"
-                                    th:text="${iterStat.first} ? 'Punto de partida • Salida efectuada' : ('Parada intermedia • Orden #' + parada.orden)">
+                               th:text="${iterStat.first} ? 'Punto de partida • Salida efectuada' : ('Parada intermedia • Orden #' + parada.orden)">
                                 Parada intermedia • Arribo estimado
                             </p>
                         </div>
@@ -128,12 +141,6 @@
                         <strong th:text="'$' + ${#numbers.formatDecimal(reserva.precioTotal, 1, 'POINT', 2, 'COMMA')}">$25.000</strong>
                     </div>
                 </section>
-                <!--<div class="encurso-actions-container">
-                    <a th:href="@{/reserva/detalle(id=${reserva.id})}" class="btn-view-full-detail">
-                        <span class="material-symbols-outlined">visibility</span>
-                        <span>Ver comprobante completo</span>
-                    </a>
-                </div>-->
             </div>
         </div>
     </div>
