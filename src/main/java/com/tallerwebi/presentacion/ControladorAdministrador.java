@@ -21,7 +21,7 @@ public class ControladorAdministrador {
 
     @GetMapping("/admin")
     public ModelAndView dashboard() {
-        return new ModelAndView("admin/panel-administrador");
+        return new ModelAndView("redirect:/admin/combis");
     }
 
     //Combis

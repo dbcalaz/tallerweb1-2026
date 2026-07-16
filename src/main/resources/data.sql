@@ -51,8 +51,8 @@ insert into Parada (nombre, direccion) values
 insert into Viaje (fecha, horario, precio, numeroViaje, asientosDisponibles, duracion, tipoDeViaje, estadoDeViaje, id_combi, id_conductor) values
 ('2026-05-20', '18:00', 2800.0, 1003, 0, '40 min', 'COMUN', 'FINALIZADO', 1, 1),
 ('2026-05-18', '14:15', 1900.0, 1004, 0, '35 min', 'COMUN', 'FINALIZADO', 2, 2),
-('2026-07-25', '08:00', 4200.0, 1005, 4, '40 min', 'COMUN', 'DISPONIBLE', null, null),
-('2026-07-25', '09:30', 5100.0, 1006, 3, '55 min', 'EJECUTIVO', 'DISPONIBLE', null, null),
+('2026-07-16', '08:00', 4200.0, 1005, 4, '40 min', 'COMUN', 'DISPONIBLE', null, null),
+('2026-07-16', '09:30', 5100.0, 1006, 3, '55 min', 'EJECUTIVO', 'DISPONIBLE', null, null),
 ('2026-06-25', '11:00', 3900.0, 1007, 2, '35 min', 'COMUN', 'ASIGNADO', 1, 1),
 ('2026-06-20', '18:15', 4700.0, 1008, 1, '50 min', 'COMUN', 'FINALIZADO', 1, 1);
 
