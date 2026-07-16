@@ -1,14 +1,20 @@
 package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.*;
+import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.Subqueries;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import java.util.List;
-import java.time.LocalDate;
 
-import static org.hibernate.criterion.Restrictions.eq;
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
 
 @Repository
 public class RepositorioViajeImpl implements RepositorioViaje {
@@ -25,29 +31,22 @@ public class RepositorioViajeImpl implements RepositorioViaje {
         sessionFactory.getCurrentSession().save(viaje);
     }
 
-    // ------------------------
-    //NOTA IMPORTANTE  ----------->  REEMPLAZAR TODAS LAS CONSULTAS POR CRITERIA
-    // ------------------------
     @Override
+    @SuppressWarnings("unchecked")
     public List<Viaje> buscarViajes(Long idOrigen, Long idDestino, String fecha, Integer pasajeros) {
-        String hql = "SELECT DISTINCT v FROM Viaje v " +
-                "JOIN v.paradas vpOrigen " +
-                "JOIN v.paradas vpDestino " +
-                "WHERE vpOrigen.parada.id = :idOrigen " +
-                "AND vpDestino.parada.id = :idDestino " +
-                "AND vpOrigen.orden < vpDestino.orden " +
-                "AND v.fecha = :fecha " +
-                "AND v.asientosDisponibles >= :pasajeros";
+        DetachedCriteria subqueryDestino = DetachedCriteria.forClass(ViajeParada.class, "vpDestino")
+                .add(Restrictions.eq("vpDestino.parada.id", idDestino))
+                .add(Restrictions.eqProperty("vpDestino.viaje.id", "v.id"))
+                .setProjection(Projections.property("vpDestino.orden"));
 
-        LocalDate fechaLocalDate = LocalDate.parse(fecha);
-
-        return sessionFactory.getCurrentSession()
-                .createQuery(hql, Viaje.class)
-                .setParameter("idOrigen", idOrigen)
-                .setParameter("idDestino", idDestino)
-                .setParameter("fecha", fechaLocalDate)
-                .setParameter("pasajeros", pasajeros)
-                .getResultList();
+        return sessionFactory.getCurrentSession().createCriteria(Viaje.class, "v")
+                .createAlias("v.paradas", "vpOrigen")
+                .add(Restrictions.eq("vpOrigen.parada.id", idOrigen))
+                .add(Subqueries.propertyLt("vpOrigen.orden", subqueryDestino))
+                .add(Restrictions.eq("v.fecha", LocalDate.parse(fecha)))
+                .add(Restrictions.ge("v.asientosDisponibles", pasajeros))
+                .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
+                .list();
     }
 
     @Override
@@ -68,20 +67,18 @@ public class RepositorioViajeImpl implements RepositorioViaje {
 
     @Override
     public Long contarViajesPorUsuario(long idUsuario) {
-        return (Long) sessionFactory.getCurrentSession()
-                .createCriteria(Reserva.class)
-                .add(eq("usuario.id", idUsuario))
-                .add(eq("estadoReserva", EstadoReserva.FINALIZADA))
+        return (Long) sessionFactory.getCurrentSession().createCriteria(Reserva.class)
+                .add(Restrictions.eq("usuario.id", idUsuario))
+                .add(Restrictions.eq("estadoReserva", EstadoReserva.FINALIZADA))
                 .setProjection(Projections.rowCount())
                 .uniqueResult();
     }
 
     @Override
     public Long contarViajesCanceladosPorUsuario(long idUsuario) {
-        return (Long) sessionFactory.getCurrentSession()
-                .createCriteria(Reserva.class)
-                .add(eq("usuario.id", idUsuario))
-                .add(eq("estadoReserva", EstadoReserva.CANCELADA))
+        return (Long) sessionFactory.getCurrentSession().createCriteria(Reserva.class)
+                .add(Restrictions.eq("usuario.id", idUsuario))
+                .add(Restrictions.eq("estadoReserva", EstadoReserva.CANCELADA))
                 .setProjection(Projections.rowCount())
                 .uniqueResult();
     }
@@ -89,12 +86,11 @@ public class RepositorioViajeImpl implements RepositorioViaje {
     @Override
     @SuppressWarnings("unchecked")
     public List<Viaje> buscarUltimosViajesDelUsuario(Long idUsuario) {
-        String hql = "FROM Viaje v WHERE v.usuario.id = :idUsuario ORDER BY v.id DESC";
-        return sessionFactory.getCurrentSession()
-                .createQuery(hql, Viaje.class)
-                .setParameter("idUsuario", idUsuario)
+        return sessionFactory.getCurrentSession().createCriteria(Viaje.class)
+                .add(Restrictions.eq("usuario.id", idUsuario))
+                .addOrder(Order.desc("id"))
                 .setMaxResults(3)
-                .getResultList();
+                .list();
     }
 
     @Override
@@ -105,35 +101,30 @@ public class RepositorioViajeImpl implements RepositorioViaje {
     @Override
     @SuppressWarnings("unchecked")
     public List<Integer> obtenerAsientosOcupados(Long idViaje) {
-        // Agregamos la condición para excluir reservas canceladas
-        String hql = "SELECT p.numeroAsiento FROM Pasajero p WHERE p.reserva.viaje.id = :idViaje AND p.numeroAsiento IS NOT NULL AND p.reserva.estadoReserva NOT IN ('CANCELADA', 'CANCELADA_POR_CONDUCTOR')";
-
-        return sessionFactory.getCurrentSession()
-                .createQuery(hql, Integer.class)
-                .setParameter("idViaje", idViaje)
-                .getResultList();
+        return sessionFactory.getCurrentSession().createCriteria(Pasajero.class, "p")
+                .createAlias("p.reserva", "r")
+                .add(Restrictions.eq("r.viaje.id", idViaje))
+                .add(Restrictions.isNotNull("p.numeroAsiento"))
+                .add(Restrictions.not(Restrictions.in("r.estadoReserva",
+                        Arrays.asList(EstadoReserva.CANCELADA, EstadoReserva.CANCELADA_POR_CONDUCTOR))))
+                .setProjection(Projections.property("p.numeroAsiento"))
+                .list();
     }
 
     @Override
     public void eliminarReserva(Long idReserva) {
         Reserva reserva = sessionFactory.getCurrentSession().get(Reserva.class, idReserva);
-        if (reserva != null) {
-            sessionFactory.getCurrentSession().delete(reserva);
-        }
+        if (reserva != null) sessionFactory.getCurrentSession().delete(reserva);
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public List<Reserva> buscarReservasPorEstado(Long idUsuario, EstadoReserva estado) {
-        String hql = "SELECT DISTINCT r FROM Reserva r " +
-                "LEFT JOIN FETCH r.pasajeros " +
-                "WHERE r.usuario.id = :idUsuario " +
-                "AND r.estadoReserva = :estado";
-
-        return sessionFactory.getCurrentSession()
-                .createQuery(hql, Reserva.class)
-                .setParameter("idUsuario", idUsuario)
-                .setParameter("estado", estado)
-                .getResultList();
+        return sessionFactory.getCurrentSession().createCriteria(Reserva.class, "r")
+                .setFetchMode("r.pasajeros", FetchMode.JOIN)
+                .add(Restrictions.eq("r.usuario.id", idUsuario))
+                .add(Restrictions.eq("r.estadoReserva", estado))
+                .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
+                .list();
     }
 }
